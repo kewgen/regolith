@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false">
+    <joined-subclass name="com.geargames.regolith.units.tackle.Weapon"
+              extends="com.geargames.regolith.units.tackle.StateTackle"
+              table="weapon">
+        <key column="id"/>
+        <many-to-one lazy="false" name="weaponType" column="weapon_type_id" class="com.geargames.regolith.units.tackle.WeaponType"/>
+        <property name="load" column="weapon_load" type="short"/>
+        <many-to-one lazy="false" name="projectile" column="projectile_id" class="com.geargames.regolith.units.tackle.Projectile"/>
+    </joined-subclass>
+</hibernate-mapping>

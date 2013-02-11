@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false">
+    <class name="com.geargames.regolith.units.Clan" table="clan">
+        <id name="id" type="int" column="id">
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">clan_sequence</param>
+            </generator>
+        </id>
+        <property name="name" column="name" type="string" unique="true"/>
+        <component name="accounts" class="com.geargames.regolith.units.dictionaries.ServerAccountCollection" >
+            <list name="accounts">
+                <key column="clan_id"/>
+                <index column="number"/>
+                <one-to-many class="com.geargames.regolith.units.Account"/>
+            </list>
+        </component>
+        <many-to-one class="com.geargames.regolith.units.Account" name="leader" column="leader_id" unique="true"/>
+        <many-to-one class="com.geargames.regolith.units.Account" name="assistant" column="assistant_id" unique="true"/>
+        <property name="money" column="money" type="int"/>
+        <property name="regolith" column="regolith" type="int"/>
+    </class>
+</hibernate-mapping>

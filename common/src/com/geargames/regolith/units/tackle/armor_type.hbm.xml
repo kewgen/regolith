@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <union-subclass name="com.geargames.regolith.units.tackle.ArmorType"
+                    extends="com.geargames.regolith.units.tackle.Tackle"
+                    table="armor_type">
+        <property name="bodyParticle" column="body_particle" />
+        <property name="speedBonus" column="speed_bonus"/>
+        <property name="visibilityBonus" column="visibility_bonus"/>
+        <property name="strengthBonus" column="strength_bonus"/>
+        <property name="craftinessBonus" column="craftiness_bonus"/>
+        <property name="regenerationBonus" column="regeneration_bonus"/>
+        <property name="marksmanshipBonus" column="marksmanship_bonus"/>
+        <property name="baseFirmness" column="base_firmness"/>
+        <property name="armor" column="armor"/>
+    </union-subclass>
+</hibernate-mapping>

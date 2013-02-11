@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration SYSTEM "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.useUnicode">true</property>
+        <!--<property name="hibernate.connection.characterEncoding">UTF-8</property>-->
+        <property name="hibernate.connection.charSet">UTF-8</property>
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost/regolith
+            <!--jdbc:postgresql://localhost:5432/regolith-->
+        </property>
+        <property name="hibernate.connection.driver_class">
+            com.mysql.jdbc.Driver
+            <!--org.postgresql.Driver -->
+        </property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+        <!--<property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">postgres</property>-->
+
+        <property name="hibernate.connection.pool_size">0</property>
+        <property name="hibernate.dialect">
+            <!--org.hibernate.dialect.MySQLMyISAMDialect-->
+            <!--org.hibernate.dialect.MySQLInnoDBDialect-->
+            org.hibernate.dialect.MySQLDialect
+            <!--org.hibernate.dialect.PostgreSQLDialect-->
+        </property>
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <mapping resource="com/geargames/regolith/units/account.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/ammunition_bag.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/ammunition_packet.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/bag.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/clan.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/rank.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/skill.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/subordination_damage.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/underload.hbm.xml"/>
+
+        <mapping resource="com/geargames/regolith/units/tackle/ammunition.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/ammunition_category.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/armor.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/armor_type.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/medikit.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/projectile.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/state_tackle.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/tackle.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/weapon.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/weapon_category.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/tackle/weapon_type.hbm.xml"/>
+
+        <mapping resource="com/geargames/regolith/units/map/battle_map.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/map/exit_zone.hbm.xml"/>
+
+        <mapping resource="com/geargames/regolith/units/battle/battle.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/battle/battle_alliance.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/battle/battle_group.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/battle/battle_type.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/battle/server_border.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/battle/warrior.hbm.xml"/>
+
+        <mapping resource="com/geargames/regolith/units/base/base.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/base_configuration.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/battle_configuration.hbm.xml"/>
+
+        <mapping resource="com/geargames/regolith/units/base_warrior_market.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

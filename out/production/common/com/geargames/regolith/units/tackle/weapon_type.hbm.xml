@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false">
+    <union-subclass name="com.geargames.regolith.units.tackle.WeaponType"
+                    extends="com.geargames.regolith.units.tackle.Tackle"
+                    table="weapon_type">
+        <component name="projectiles" class="com.geargames.regolith.units.dictionaries.ServerProjectileCollection">
+            <bag name="projectiles" cascade="save-update" table="projectile_weapon_type">
+                <key column="weapon_type_id"/>
+                <many-to-many column="projectile_id" class="com.geargames.regolith.units.tackle.Projectile"/>
+            </bag>
+        </component>
+        <component name="distance" class="com.geargames.regolith.units.tackle.WeaponDistances">
+            <property name="min" column="min_distance"/>
+            <property name="max" column="max_distance"/>
+            <property name="maxOptimal" column="max_optimal_distance"/>
+            <property name="minOptimal" column="min_optimal_distance"/>
+        </component>
+        <component name="minDamage" class="com.geargames.regolith.units.tackle.WeaponDamage">
+            <property name="minDistance" column="min_min_distance"/>
+            <property name="optDistance" column="min_opt_distance"/>
+            <property name="maxDistance" column="min_max_distance"/>
+        </component>
+        <component name="maxDamage" class="com.geargames.regolith.units.tackle.WeaponDamage">
+            <property name="minDistance" column="max_min_distance"/>
+            <property name="optDistance" column="max_opt_distance"/>
+            <property name="maxDistance" column="max_max_distance"/>
+        </component>
+        <many-to-one lazy="false" column="category_id" name="category" class="com.geargames.regolith.units.tackle.WeaponCategory"/>
+        <property name="accuracy" column="accuracy"/>
+        <property name="capacity" column="capacity"/>
+        <property name="ammunitionPerShoot" column="ammunition_per_shoot"/>
+        <property name="quickAction" column="quick_action"/>
+        <property name="accurateAction" column="accurate_action"/>
+        <property name="criticalDamage" column="critical_damage"/>
+        <property name="baseFirmness" column="base_firmness"/>
+        <many-to-one lazy="false" name="minSkill" column="skill_id" class="com.geargames.regolith.units.Skill"/>
+    </union-subclass>
+</hibernate-mapping>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false">
+    <class name="com.geargames.regolith.BattleConfiguration" table="battle_configuration">
+        <id name="revision" type="short" column="revision">
+            <generator class="assigned"/>
+        </id>
+        <array name="subordinationDamage" table="configuration_subordination" cascade="all">
+            <key column="battle_configuration_id"/>
+            <index column="idx"/>
+            <one-to-many class="com.geargames.regolith.units.SubordinationDamage"/>
+        </array>
+        <array name="underloads" table="configuration_load" cascade="all">
+            <key column="battle_configuration_id"/>
+            <index column="idx"/>
+            <one-to-many class="com.geargames.regolith.units.Underload"/>
+        </array>
+        <component name="actionFees">
+            <property name="move" column="move"/>
+            <property name="sitOrStand" column="sit_stand"/>
+            <property name="shutOrOpen" column="shut_open"/>
+            <property name="changeWeapon" column="change_weapon"/>
+            <property name="pickupTackle" column="pickup_tackle"/>
+            <property name="rechargeWeapon" column="recharge_weapon"/>
+        </component>
+        <property name="walkSpeed"/>
+        <property name="armorSpoiling"/>
+        <property name="activeTime"/>
+        <property name="minimalMapSize"/>
+        <property name="accurateShootFix" column="accurate_shoot_fix"/>
+        <property name="quickShootFix" column="quick_shoot_fix"/>
+        <property name="sitHunterShootFix" column="sit_hunter_shoot_fix"/>
+        <property name="standHunterShootFix" column="stand_hunter_shoot_fix"/>
+        <property name="sitVictimShootFix" column="sit_victim_shoot_fix"/>
+        <property name="standVictimShootFix" column="stand_victim_shoot_fix"/>
+        <property name="criticalBarrierToVictimDistance" column="critical_barrier_to_victim_distance"/>
+        <property name="killExperienceMultiplier" column="kill_experience_multiplier"/>
+        <property name="abilityMax" column="ability_max"/>
+    </class>
+</hibernate-mapping>

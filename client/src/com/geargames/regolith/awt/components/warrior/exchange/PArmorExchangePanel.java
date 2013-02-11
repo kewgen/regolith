@@ -1,0 +1,141 @@
+package com.geargames.regolith.awt.components.warrior.exchange;
+
+import com.geargames.awt.components.*;
+import com.geargames.common.*;
+import com.geargames.common.String;
+import com.geargames.common.packer.Index;
+import com.geargames.common.packer.IndexObject;
+import com.geargames.common.packer.PObject;
+import com.geargames.common.util.ArrayList;
+import com.geargames.regolith.UIUtils;
+import com.geargames.regolith.awt.components.warrior.exchange.storehouse.PTStoreHouse2BagButton;
+import com.geargames.regolith.awt.components.warrior.exchange.storehouse.PTStoreHouse2WarriorButton;
+import com.geargames.regolith.units.tackle.Armor;
+import com.geargames.regolith.units.tackle.ArmorType;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: mikhail.kutuzov
+ * Date: 08.12.12
+ * Панель для отображения брони на складе которую требуется переложить в сумку
+ * бойца либо надеть на него.
+ */
+public abstract class PArmorExchangePanel extends PExchangePanel {
+    private PLabel caption;
+
+    private PLabel weight;
+    private PLabel firmness;
+    private PLabel state;
+    private PLabel upgrade;
+
+    private PLabel armor;
+    private PLabel baseFirmness;
+    private PLabel craftinessBonus;
+    private PLabel marksmanshipBonus;
+    private PLabel regenerationBonus;
+/*
+    private PLabel speedBonus;
+    private PLabel strengthBonus;
+*/
+    private PLabel visibilityBonus;
+
+    public PArmorExchangePanel(PObject prototype) {
+        super(prototype);
+        ArrayList indexes = prototype.getIndexes();
+
+        for (int i = 0; i < indexes.size(); i++) {
+            IndexObject index = (IndexObject) indexes.get(i);
+            if (index.isSlot()) {
+                switch (index.getSlot()) {
+                    case 0:
+                        addButton1((PObject) index.getPrototype(), index);
+                        break;
+                    case 1:
+                        addButton2((PObject) index.getPrototype(), index);
+                        break;
+                    case 2:
+                        caption = new PSimpleLabel(index);
+                        addPassiveChild(caption, index);
+                        break;
+                    case 3:
+                        firmness = new PSimpleLabel(index);
+                        addPassiveChild(firmness, index);
+                        break;
+                    case 4:
+                        state = new PSimpleLabel(index);
+                        addPassiveChild(state, index);
+                        break;
+                    case 5:
+                        weight = new PSimpleLabel(index);
+                        addPassiveChild(weight, index);
+                        break;
+                    case 6:
+                        upgrade = new PSimpleLabel(index);
+                        addPassiveChild(upgrade, index);
+                        break;
+                    case 7:
+                        armor = new PSimpleLabel(index);
+                        addPassiveChild(armor, index);
+                        break;
+                    case 8:
+                        baseFirmness = new PSimpleLabel(index);
+                        addPassiveChild(baseFirmness, index);
+                        break;
+                    case 9:
+                        craftinessBonus = new PSimpleLabel(index);
+                        addPassiveChild(craftinessBonus, index);
+                        break;
+                    case 10:
+                        marksmanshipBonus = new PSimpleLabel(index);
+                        addPassiveChild(marksmanshipBonus, index);
+                        break;
+                    case 11:
+                        regenerationBonus = new PSimpleLabel(index);
+                        addPassiveChild(regenerationBonus, index);
+                        break;
+/*
+                    case 12:
+                        speedBonus = new PSimpleLabel(index);
+                        addPassiveChild(speedBonus, index);
+                        break;
+                    case 13:
+                        strengthBonus = new PSimpleLabel(index);
+                        addPassiveChild(strengthBonus, index);
+                        break;
+*/
+                    case 14:
+                        visibilityBonus = new PSimpleLabel(index);
+                        addPassiveChild(visibilityBonus, index);
+                        break;
+                }
+            }
+        }
+    }
+
+    protected void initiate() {
+        Armor tackle = (Armor)getTackle();
+
+        caption.setData(String.valueOfC(tackle.getName()));
+        weight.setData(UIUtils.getWeightRepresentation(tackle.getWeight()));
+        firmness.setData(String.valueOfI(tackle.getFirmness()));
+        state.setData(String.valueOfI(tackle.getState()));
+        upgrade.setData(String.valueOfI(tackle.getUpgrade()));
+
+        ArmorType armorType = tackle.getArmorType();
+        armor.setData(String.valueOfI(armorType.getArmor()));
+        baseFirmness.setData(String.valueOfI(armorType.getBaseFirmness()));
+
+        craftinessBonus.setData(String.valueOfI(armorType.getCraftinessBonus()));
+        marksmanshipBonus.setData(String.valueOfI(armorType.getMarksmanshipBonus()));
+        regenerationBonus.setData(String.valueOfI(armorType.getRegenerationBonus()));
+/*
+        speedBonus.setData(String.valueOfI(armorType.getSpeedBonus()));
+        strengthBonus.setData(UIUtils.getWeightRepresentation(armorType.getStrengthBonus()));
+*/
+        visibilityBonus.setData(String.valueOfI(armorType.getVisibilityBonus()));
+    }
+
+    public PStepSpinBox getAmountBox() {
+        return null;
+    }
+}

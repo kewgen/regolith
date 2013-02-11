@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.geargames.regolith.units.SubordinationDamage" table="subordination_damage">
+        <id name="id" type="int" column="id">
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">subordination_damage_sequence</param>
+            </generator>
+        </id>
+        <property name="damage" column="damage" type="short"/>
+        <property name="minRankDifference" column="min_diference" type="byte"/>
+        <property name="maxRankDifference" column="max_diference" type="byte"/>
+    </class>
+</hibernate-mapping>

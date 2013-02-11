@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false">
+    <class name="com.geargames.regolith.units.AmmunitionPacket" table="ammunition_packet">
+        <id name="id" type="int" column="id">
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="sequence_name">ammunition_packet_sequence</param>
+            </generator>
+        </id>
+        <many-to-one lazy="false" unique="false" column="ammunition_id" name="ammunition" class="com.geargames.regolith.units.tackle.Ammunition"/>
+        <property name="count" column="count" type="short"/>
+    </class>
+</hibernate-mapping>
