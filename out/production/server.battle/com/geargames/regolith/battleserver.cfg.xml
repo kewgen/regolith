@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<serverConfiguration>
-    <messageBufferSize>2048</messageBufferSize>
-    <messageOutputDataProcessorsAmount>1</messageOutputDataProcessorsAmount>
-    <actionTime>30</actionTime>
-    <beginDelay>0</beginDelay>
-</serverConfiguration>
