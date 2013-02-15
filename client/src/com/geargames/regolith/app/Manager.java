@@ -8,7 +8,7 @@ import com.geargames.packer.Canvas;
 import com.geargames.packer.Display;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.Port;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 public final class Manager extends com.geargames.Manager implements Runnable {
 
@@ -94,7 +94,7 @@ public final class Manager extends com.geargames.Manager implements Runnable {
         if (app == null) return;
         Port.setWH(w, h);
         app.createScreenBuffer(w, h);
-        PPanelSingletonFabric.getInstance().onScreenResize();
+        PRegolithPanelManager.getInstance().onScreenResize();
     }
 
 
@@ -134,14 +134,14 @@ public final class Manager extends com.geargames.Manager implements Runnable {
 
 
     // ------------THREAD CONTROL----------------
-    public void startMainThread() {// Запускает поток Main game.Game loop
+    public void startMainThread() {
         if (thread == null) {
             thread = new Thread(this);
             thread.start();
         }
     }
 
-    public void stopMainThread() {// Останавливает поток Main game.Game loop
+    public void stopMainThread() {
         running = false;
         thread = null;
         Debug.log(String.valueOfC("Manager.stopMainThread"));
@@ -288,7 +288,7 @@ public final class Manager extends com.geargames.Manager implements Runnable {
                 break;
             case Canvas.ACTION_UP:
                 if (isDoubleClick()) {
-                    app.eventAdd(Event.EVENT_TOUCH_DOUBBLE_CLICK, 0, null, x, y);
+                    app.eventAdd(Event.EVENT_TOUCH_DOUBLE_CLICK, 0, null, x, y);
                 }
                 if (isLongClick()) {
                     app.eventAdd(Event.EVENT_TOUCH_LONG_CLICK, 0, null, x, y);

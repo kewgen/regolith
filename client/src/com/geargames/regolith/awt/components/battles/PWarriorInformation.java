@@ -13,19 +13,14 @@ public class PWarriorInformation extends PContentPanel {
 
     public PWarriorInformation(PObject prototype) {
         super(prototype);
+    }
 
-        ArrayList indexes = prototype.getIndexes();
-        for (int i = 0; i < indexes.size(); i++) {
-            IndexObject index = (IndexObject) indexes.get(i);
-            if (index.isSlot()) {
-                switch (index.getSlot()) {
-                    case 0:
-
-                        break;
-                    case 1:
-                        break;
-                }
-            }
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()) {
+            case 0:
+                break;
+            case 1:
+                break;
         }
     }
 }

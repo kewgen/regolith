@@ -1,8 +1,8 @@
 package com.geargames.regolith.awt.components.warrior;
 
 import com.geargames.Debug;
+import com.geargames.awt.DrawablePPanel;
 import com.geargames.common.util.ArrayList;
-import com.geargames.regolith.awt.components.DrawablePPanel;
 import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 

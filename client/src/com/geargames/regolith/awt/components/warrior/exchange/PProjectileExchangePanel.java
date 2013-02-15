@@ -28,43 +28,42 @@ public abstract class PProjectileExchangePanel extends PExchangePanel {
 
     public PProjectileExchangePanel(PObject prototype) {
         super(prototype);
-        ArrayList indexes = prototype.getIndexes();
-        for (int i = 0; i < indexes.size(); i++) {
-            IndexObject index = (IndexObject) indexes.get(i);
-            if (index.isSlot()) {
-                switch (index.getSlot()) {
-                    case 0:
-                        addButton1((PObject) index.getPrototype(), index);
-                        break;
-                    case 1:
-                        addButton2((PObject) index.getPrototype(), index);
-                        break;
-                    case 2:
-                        caption = new PSimpleLabel(index);
-                        addPassiveChild(caption, index);
-                        break;
-                    case 3:
-                        weight = new PSimpleLabel(index);
-                        addPassiveChild(weight, index);
-                        break;
-                    case 4:
-                        category = new PSimpleLabel(index);
-                        addPassiveChild(category, index);
-                        break;
-                    case 5:
-                        weaponTypes = new PSimpleLabel(index);
-                        addPassiveChild(weaponTypes, index);
-                        break;
-                    case 6:
-                        amount = new PSimpleLabel(index);
-                        addPassiveChild(amount, index);
-                        break;
-                    case 15:
-                        box = new PGradualSpinBox((PObject)index.getPrototype(), (short)0, Application.mult_fps * 8);
-                        addActiveChild(box, index);
-                        break;
-                }
-            }
+    }
+
+
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()) {
+            case 0:
+                addButton1((PObject) index.getPrototype(), index);
+                break;
+            case 1:
+                addButton2((PObject) index.getPrototype(), index);
+                break;
+            case 2:
+                caption = new PSimpleLabel(index);
+                addPassiveChild(caption, index);
+                break;
+            case 3:
+                weight = new PSimpleLabel(index);
+                addPassiveChild(weight, index);
+                break;
+            case 4:
+                category = new PSimpleLabel(index);
+                addPassiveChild(category, index);
+                break;
+            case 5:
+                weaponTypes = new PSimpleLabel(index);
+                addPassiveChild(weaponTypes, index);
+                break;
+            case 6:
+                amount = new PSimpleLabel(index);
+                addPassiveChild(amount, index);
+                break;
+            case 15:
+                box = new PGradualSpinBox((PObject)index.getPrototype(), (short)0);
+                box.setFps(Application.mult_fps * 8);
+                addActiveChild(box, index);
+                break;
         }
     }
 

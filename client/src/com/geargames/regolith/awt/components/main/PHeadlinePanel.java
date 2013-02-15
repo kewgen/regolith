@@ -3,6 +3,7 @@ package com.geargames.regolith.awt.components.main;
 import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PLabel;
 import com.geargames.common.Graphics;
+import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.NullRegion;
 import com.geargames.common.util.Region;
@@ -15,6 +16,9 @@ public class PHeadlinePanel extends PContentPanel {
 
     public PHeadlinePanel(PObject prototype) {
         super(prototype);
+    }
+
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
     }
 
     public void draw(Graphics graphics, int x, int y) {

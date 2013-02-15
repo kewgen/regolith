@@ -1,15 +1,12 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
 import com.geargames.awt.components.PContentPanel;
-import com.geargames.awt.components.PStepSpinBox;
-import com.geargames.awt.components.PStepSpinButton;
 import com.geargames.awt.components.PValueComponent;
 import com.geargames.common.Event;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
-import com.geargames.regolith.awt.components.warrior.PAbstractTacklePanel;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.AbstractTackle;
@@ -53,7 +50,7 @@ public abstract class PExchangePanel extends PContentPanel {
                 result = super.event(code, param, xTouch, yTouch);
             } else {
                 if (code == Event.EVENT_TOUCH_RELEASED) {
-                    PPanelSingletonFabric fabric = PPanelSingletonFabric.getInstance();
+                    PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
                     if (fabric.isModal()) {
                         fabric.hideModal();
                     }
@@ -85,7 +82,7 @@ public abstract class PExchangePanel extends PContentPanel {
      * @return
      */
     public Warrior getWarrior() {
-        return ((PWarriorPanel) PPanelSingletonFabric.getInstance().getWarrior().getElement()).getCharacteristics().getWarrior();
+        return ((PWarriorPanel) PRegolithPanelManager.getInstance().getWarrior().getElement()).getCharacteristics().getWarrior();
     }
 
     public boolean isVisible() {

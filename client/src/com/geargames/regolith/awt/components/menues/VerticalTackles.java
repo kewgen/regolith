@@ -1,7 +1,7 @@
 package com.geargames.regolith.awt.components.menues;
 
-import com.geargames.awt.VerticalScrollView;
 import com.geargames.awt.components.PPrototypeElement;
+import com.geargames.awt.components.VerticalScrollView;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;

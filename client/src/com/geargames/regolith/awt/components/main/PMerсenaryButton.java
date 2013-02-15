@@ -2,8 +2,7 @@ package com.geargames.regolith.awt.components.main;
 
 import com.geargames.awt.components.PTouchButton;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.awt.components.DrawablePPanel;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 /**
  * User: mikhail v. kutuzov
@@ -15,8 +14,8 @@ public class PMerсenaryButton extends PTouchButton {
     }
 
     public void action() {
-        PPanelSingletonFabric instance = PPanelSingletonFabric.getInstance();
-        instance.hide((DrawablePPanel)instance.getMainMenu());
-        instance.show((DrawablePPanel)instance.getWarrior());
+        PRegolithPanelManager instance = PRegolithPanelManager.getInstance();
+        instance.hide(instance.getMainMenu());
+        instance.show(instance.getWarrior());
     }
 }

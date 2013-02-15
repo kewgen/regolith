@@ -1,14 +1,10 @@
 package com.geargames.regolith.awt.components.warrior.exchange.warrior;
 
-import com.geargames.awt.utils.ScrollHelper;
-import com.geargames.awt.utils.motions.InertMotionListener;
 import com.geargames.common.String;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
-import com.geargames.regolith.awt.components.menues.BagVerticalTackles;
-import com.geargames.regolith.awt.components.menues.WarriorVerticalTackles;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PExchangeButton;
 import com.geargames.regolith.serializers.BatchMessageManager;
@@ -33,7 +29,7 @@ public class PTWarrior2BagButton extends PExchangeButton {
         StateTackle tackle = (StateTackle) getPanel().getTackle();
         TackleTransitionHelper.moveStateTackleWarrior2Bag(warrior, tackle);
 
-        PPanelSingletonFabric fabric = PPanelSingletonFabric.getInstance();
+        PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
         PWarriorPanel warriorPanel = ((PWarriorPanel)fabric.getWarrior().getElement());
         warriorPanel.getWarriorTacklesElement().initiateMotionListener();
         warriorPanel.getBagTacklesElement().initiateMotionListener();

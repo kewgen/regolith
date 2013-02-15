@@ -3,7 +3,7 @@ package com.geargames.regolith.awt.components.warrior.exchange;
 import com.geargames.awt.components.PEntitledTouchButton;
 import com.geargames.common.String;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 /**
  * User: mikhail v. kutuzov
@@ -26,7 +26,7 @@ public abstract class PExchangeButton extends PEntitledTouchButton {
 
     public void action() {
         doAction();
-        PPanelSingletonFabric.getInstance().hideModal();
+        PRegolithPanelManager.getInstance().hideModal();
     }
 
     protected abstract void doAction();

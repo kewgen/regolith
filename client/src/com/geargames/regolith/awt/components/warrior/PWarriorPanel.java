@@ -6,6 +6,8 @@ import com.geargames.common.Render;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
+import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.app.Application;
 import com.geargames.regolith.awt.components.menues.BagVerticalTackles;
 import com.geargames.regolith.awt.components.menues.StoreHouseVerticalTackles;
 import com.geargames.regolith.awt.components.menues.WarriorVerticalTackles;
@@ -21,48 +23,55 @@ public class PWarriorPanel extends PContentPanel {
     private BagVerticalTackles bagTacklesElement;
     private WarriorVerticalTackles warriorTacklesElement;
     private StoreHouseVerticalTackles storeTacklesElement;
+    private PRadioGroup group;
 
-    public PWarriorPanel(PObject prototype, Render render, Account account) {
+    public PWarriorPanel(PObject prototype) {
         super(prototype);
+    }
 
-        ArrayList indexes = prototype.getIndexes();
+    @Override
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()) {
+            case 0:
+                IndexObject view = (IndexObject) prototype.getIndexBySlot(53);
 
-        PRadioGroup group = new PRadioGroup(3);
-        for (int i = 0; i < indexes.size(); i++) {
-            IndexObject index = (IndexObject) indexes.get(i);
-            if (index.isSlot()) {
-                switch (index.getSlot()) {
-                    case 0:
-                        IndexObject three = (IndexObject) indexes.get(3);
+                Account account = ClientConfigurationFactory.getConfiguration().getAccount();
+                PObject object = (PObject) view.getPrototype();
+                bagTacklesElement = new BagVerticalTackles(object);
+                warriorTacklesElement = new WarriorVerticalTackles(object);
+                storeTacklesElement = new StoreHouseVerticalTackles(object, account.getBase().getStoreHouse());
 
-                        PObject object = (PObject) three.getPrototype();
-                        bagTacklesElement = new BagVerticalTackles(object);
-                        warriorTacklesElement = new WarriorVerticalTackles(object);
-                        storeTacklesElement = new StoreHouseVerticalTackles(object, account.getBase().getStoreHouse());
-
-                        characteristics = new PWarriorCharacteristics((PObject) index.getPrototype(), render, account, this);
-                        addActiveChild(characteristics, index.getX(), index.getY());
-                        addActiveChild(bagTacklesElement, three.getX(), three.getY());
-                        addActiveChild(warriorTacklesElement, three.getX(), three.getY());
-                        addActiveChild(storeTacklesElement, three.getX(), three.getY());
-                        break;
-                    case 52:
-                        PStoreHouseButton houseButton = new PStoreHouseButton((PObject) index.getPrototype(), this);
-                        addActiveChild(houseButton, index.getX(), index.getY());
-                        group.addButton(houseButton);
-                        break;
-                    case 51:
-                        PBagButton bagButton = new PBagButton((PObject) index.getPrototype(), this);
-                        addActiveChild(bagButton, index.getX(), index.getY());
-                        group.addButton(bagButton);
-                        break;
-                    case 50:
-                        PWarriorButton warriorButton = new PWarriorButton((PObject) index.getPrototype(), this);
-                        addActiveChild(warriorButton, index.getX(), index.getY());
-                        group.addButton(warriorButton);
-                        break;
+                characteristics = new PWarriorCharacteristics((PObject) index.getPrototype(), this);
+                characteristics.reset();
+                addActiveChild(characteristics, index.getX(), index.getY());
+                addActiveChild(bagTacklesElement, view.getX(), view.getY());
+                addActiveChild(warriorTacklesElement, view.getX(), view.getY());
+                addActiveChild(storeTacklesElement, view.getX(), view.getY());
+                break;
+            case 52:
+                if(group == null){
+                    group = new PRadioGroup(3);
                 }
-            }
+                PStoreHouseButton houseButton = new PStoreHouseButton((PObject) index.getPrototype(), this);
+                addActiveChild(houseButton, index.getX(), index.getY());
+                group.addButton(houseButton);
+                break;
+            case 51:
+                if(group == null){
+                    group = new PRadioGroup(3);
+                }
+                PBagButton bagButton = new PBagButton((PObject) index.getPrototype(), this);
+                addActiveChild(bagButton, index.getX(), index.getY());
+                group.addButton(bagButton);
+                break;
+            case 50:
+                if(group == null){
+                    group = new PRadioGroup(3);
+                }
+                PWarriorButton warriorButton = new PWarriorButton((PObject) index.getPrototype(), this);
+                addActiveChild(warriorButton, index.getX(), index.getY());
+                group.addButton(warriorButton);
+                break;
         }
     }
 

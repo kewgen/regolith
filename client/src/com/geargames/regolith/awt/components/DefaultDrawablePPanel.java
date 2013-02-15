@@ -1,6 +1,7 @@
 package com.geargames.regolith.awt.components;
 
 import com.geargames.awt.Anchors;
+import com.geargames.awt.DrawablePPanel;
 
 /**
  * User: mikhail v. kutuzov

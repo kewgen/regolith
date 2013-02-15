@@ -55,87 +55,83 @@ public abstract class PAbstractTacklePanel extends PContentPanel {
     public PAbstractTacklePanel(PObject prototype) {
         super(prototype);
         initiated = false;
-        ArrayList indexes = prototype.getIndexes();
-        int size = indexes.size();
-        for (int i = 1; i < size; i++) {
-            IndexObject index = (IndexObject) indexes.get(i);
-            if (index.isSlot()) {
-                switch (i) {
-                    case 2:
-                        image = new PPrototypeElement();
-                        addPassiveChild(image, index.getX(), index.getY());
-                        image.setRegion(NullRegion.instance);
-                        break;
-                    case 3:
-                        paramName1 = new PSimpleLabel(index);
-                        addPassiveChild(paramName1, index);
-                        break;
-                    case 4:
-                        paramName2 = new PSimpleLabel(index);
-                        addPassiveChild(paramName2, index);
-                        break;
-                    case 5:
-                        paramName3 = new PSimpleLabel(index);
-                        addPassiveChild(paramName3, index);
-                        break;
-                    case 6:
-                        paramName4 = new PSimpleLabel(index);
-                        addPassiveChild(paramName4, index);
-                        break;
-                    case 7:
-                        indicator1 = new PSimpleIndicator((PObject) index.getPrototype());
-                        addPassiveChild(indicator1, index.getX(), index.getY());
-                        break;
-                    case 8:
-                        indicator2 = new PSimpleIndicator((PObject) index.getPrototype());
-                        addPassiveChild(indicator2, index.getX(), index.getY());
-                        break;
-                    case 9:
-                        indicator3 = new PSimpleIndicator((PObject) index.getPrototype());
-                        addPassiveChild(indicator3, index.getX(), index.getY());
-                        break;
-                    case 10:
-                        indicator4 = new PSimpleIndicator((PObject) index.getPrototype());
-                        addPassiveChild(indicator4, index.getX(), index.getY());
-                        break;
-                    case 11:
-                        paramValue1 = new PSimpleLabel(index);
-                        addPassiveChild(paramValue1);
-                        break;
-                    case 12:
-                        paramValue2 = new PSimpleLabel(index);
-                        addPassiveChild(paramValue2, index);
-                        break;
-                    case 13:
-                        paramValue3 = new PSimpleLabel(index);
-                        addPassiveChild(paramValue3, index);
-                        break;
-                    case 14:
-                        paramValue4 = new PSimpleLabel(index);
-                        addPassiveChild(paramValue4, index);
-                        break;
-                    case 15:
-                        label1 = new PSimpleLabel(index);
-                        addPassiveChild(label1, index);
-                        break;
-                    case 16:
-                        label2 = new PSimpleLabel(index);
-                        addPassiveChild(label2, index);
-                        break;
-                    case 17:
-                        label3 = new PSimpleLabel(index);
-                        addPassiveChild(label3, index);
-                        break;
-                    case 18:
-                        label4 = new PSimpleLabel(index);
-                        addPassiveChild(label4, index);
-                        break;
-                    case 19:
-                        elementSize = new PSimpleLabel(index);
-                        addPassiveChild(elementSize, index);
-                        break;
-                }
-            }
+    }
+
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()) {
+            case 76:
+                image = new PPrototypeElement();
+                addPassiveChild(image, index.getX(), index.getY());
+                image.setRegion(NullRegion.instance);
+                break;
+            case 60:
+                paramName1 = new PSimpleLabel(index);
+                addPassiveChild(paramName1, index);
+                break;
+            case 61:
+                paramName2 = new PSimpleLabel(index);
+                addPassiveChild(paramName2, index);
+                break;
+            case 62:
+                paramName3 = new PSimpleLabel(index);
+                addPassiveChild(paramName3, index);
+                break;
+            case 63:
+                paramName4 = new PSimpleLabel(index);
+                addPassiveChild(paramName4, index);
+                break;
+            case 64:
+                indicator1 = new PSimpleIndicator((PObject) index.getPrototype());
+                addPassiveChild(indicator1, index.getX(), index.getY());
+                break;
+            case 65:
+                indicator2 = new PSimpleIndicator((PObject) index.getPrototype());
+                addPassiveChild(indicator2, index.getX(), index.getY());
+                break;
+            case 66:
+                indicator3 = new PSimpleIndicator((PObject) index.getPrototype());
+                addPassiveChild(indicator3, index.getX(), index.getY());
+                break;
+            case 67:
+                indicator4 = new PSimpleIndicator((PObject) index.getPrototype());
+                addPassiveChild(indicator4, index.getX(), index.getY());
+                break;
+            case 68:
+                paramValue1 = new PSimpleLabel(index);
+                addPassiveChild(paramValue1);
+                break;
+            case 69:
+                paramValue2 = new PSimpleLabel(index);
+                addPassiveChild(paramValue2, index);
+                break;
+            case 70:
+                paramValue3 = new PSimpleLabel(index);
+                addPassiveChild(paramValue3, index);
+                break;
+            case 71:
+                paramValue4 = new PSimpleLabel(index);
+                addPassiveChild(paramValue4, index);
+                break;
+            case 72:
+                label1 = new PSimpleLabel(index);
+                addPassiveChild(label1, index);
+                break;
+            case 73:
+                label2 = new PSimpleLabel(index);
+                addPassiveChild(label2, index);
+                break;
+            case 74:
+                label3 = new PSimpleLabel(index);
+                addPassiveChild(label3, index);
+                break;
+            case 75:
+                label4 = new PSimpleLabel(index);
+                addPassiveChild(label4, index);
+                break;
+            case 115:
+                elementSize = new PSimpleLabel(index);
+                addPassiveChild(elementSize, index);
+                break;
         }
     }
 

@@ -1,10 +1,10 @@
 package com.geargames.regolith.awt.components.main;
 
+import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.components.PLabel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.util.Region;
-import com.geargames.regolith.awt.components.DrawablePPanel;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 /**
  * User: mikhail v. kutuzov
@@ -19,13 +19,10 @@ public class PShowingModalLabel extends PLabel {
         this.region = region;
     }
 
-    public PShowingModalLabel() {
-    }
-
     public boolean event(int code, int param, int x, int y) {
         if (region.isWithIn(x, y)) {
             if (panel != null) {
-                PPanelSingletonFabric.getInstance().showModal(panel);
+                PRegolithPanelManager.getInstance().showModal(panel);
             }
         }
         return false;

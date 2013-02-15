@@ -5,10 +5,7 @@ import com.geargames.awt.components.PLabel;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.ArrayList;
-import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
-import com.geargames.regolith.units.battle.BattleAlliance;
 
 /**
  * User: mikhail v. kutuzov
@@ -22,29 +19,25 @@ public class PBattleListItem extends PContentPanel {
 
     public PBattleListItem(PObject prototype) {
         super(prototype);
+    }
 
-        ArrayList indexes = prototype.getIndexes();
-        for (int i = 0; i < indexes.size(); i++) {
-            IndexObject index = (IndexObject) indexes.get(i);
-            if (index.isSlot()) {
-                switch (index.getSlot()) {
-                    case 0:
-                        battleButtons = new PBattleButtons((PObject) index.getPrototype(), this);
-                        break;
-                    case 1:
-                        battleTypeLabel = new PSimpleLabel(index);
-                        addPassiveChild(battleTypeLabel, index);
-                        break;
-                    case 2:
-                        composition = new PSimpleLabel(index);
-                        addPassiveChild(composition, index);
-                        break;
-                    case 3:
-                        level = new PSimpleLabel(index);
-                        addPassiveChild(level, index);
-                        break;
-                }
-            }
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()) {
+            case 0:
+                battleButtons = new PBattleButtons((PObject) index.getPrototype(), this);
+                break;
+            case 1:
+                battleTypeLabel = new PSimpleLabel(index);
+                addPassiveChild(battleTypeLabel, index);
+                break;
+            case 2:
+                composition = new PSimpleLabel(index);
+                addPassiveChild(composition, index);
+                break;
+            case 3:
+                level = new PSimpleLabel(index);
+                addPassiveChild(level, index);
+                break;
         }
     }
 

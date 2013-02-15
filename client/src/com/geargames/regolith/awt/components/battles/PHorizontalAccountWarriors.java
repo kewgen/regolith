@@ -1,6 +1,6 @@
 package com.geargames.regolith.awt.components.battles;
 
-import com.geargames.awt.HorizontalScrollView;
+import com.geargames.awt.components.HorizontalScrollView;
 import com.geargames.awt.components.PPrototypeElement;
 import com.geargames.awt.utils.ScrollHelper;
 import com.geargames.awt.utils.motions.InertMotionListener;
@@ -10,9 +10,6 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.Region;
-import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
 import java.util.Vector;
 

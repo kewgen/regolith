@@ -1,16 +1,12 @@
 package com.geargames.regolith.awt.components.warrior.exchange.storehouse;
 
-import com.geargames.awt.utils.ScrollHelper;
-import com.geargames.awt.utils.motions.InertMotionListener;
 import com.geargames.common.String;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
-import com.geargames.regolith.awt.components.menues.StoreHouseVerticalTackles;
-import com.geargames.regolith.awt.components.menues.WarriorVerticalTackles;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PExchangeButton;
 import com.geargames.regolith.serializers.BatchMessageManager;
@@ -40,7 +36,7 @@ public class PTStoreHouse2WarriorButton extends PExchangeButton {
         short number = (short) getPanel().getNumber();
         StateTackle tackle = TackleTransitionHelper.moveStateTackleStoreHouse2Warrior(storeHouse, number, warrior, baseConfiguration);
         if (tackle != null) {
-            PPanelSingletonFabric fabric = PPanelSingletonFabric.getInstance();
+            PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
             PWarriorPanel warriorPanel = ((PWarriorPanel) fabric.getWarrior().getElement());
 
             warriorPanel.getWarriorTacklesElement().initiateMotionListener();

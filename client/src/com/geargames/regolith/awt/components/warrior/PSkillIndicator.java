@@ -32,39 +32,43 @@ public class PSkillIndicator extends PContentPanel {
     private Warrior warrior;
 
     public PSkillIndicator(PObject prototype) {
-        super(prototype, false);
-        Application application = Application.getInstance();
-        IndexObject index = (IndexObject)prototype.getIndexBySlot(22);
-        indicator = new PSimpleIndicator((PObject)(index.getPrototype()));
-        addActiveChild(indicator, index);
+        super(prototype);
+    }
 
-        index = (IndexObject)prototype.getIndexBySlot(23);
-        nameLabel = new PSimpleLabel(index);
-        nameLabel.setFont(application.getFont10());
-        addPassiveChild(nameLabel, index);
-
-        index = (IndexObject)prototype.getIndexBySlot(24);
-        valueLabel = new PSimpleLabel(index);
-        valueLabel.setFont(application.getFont10());
-        addPassiveChild(valueLabel, index);
-
-        index = (IndexObject)prototype.getIndexBySlot(25);
-        icon = new PPrototypeElement();
-        basePID = index.getPrototype().getPID();
-
-        addPassiveChild(icon, index);
-        icon.setRegion(NullRegion.instance);
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()) {
+            case 22:
+                indicator = new PSimpleIndicator((PObject) (index.getPrototype()));
+                addActiveChild(indicator, index);
+                break;
+            case 23:
+                nameLabel = new PSimpleLabel(index);
+                nameLabel.setFont(Application.getInstance().getFont10());
+                addPassiveChild(nameLabel, index);
+                break;
+            case 24:
+                valueLabel = new PSimpleLabel(index);
+                valueLabel.setFont(Application.getInstance().getFont10());
+                addPassiveChild(valueLabel, index);
+                break;
+            case 25:
+                icon = new PPrototypeElement();
+                basePID = index.getPrototype().getPID();
+                addPassiveChild(icon, index);
+                icon.setRegion(NullRegion.instance);
+                break;
+        }
     }
 
     public void draw(Graphics graphics, int x, int y) {
-        if(!initiated){
+        if (!initiated) {
             Render render = graphics.getRender();
             icon.setPrototype(render.getSprite(basePID + category.getId()));
             short categoryScore = WarriorHelper.getSkillScore(warrior, category);
             nameLabel.setData(String.valueOfC(category.getName()));
             valueLabel.setData(String.valueOfI(categoryScore));
             BaseConfiguration configuration = ClientConfigurationFactory.getConfiguration().getBaseConfiguration();
-            indicator.setValue((WarriorHelper.getSkillByExperience(categoryScore, configuration).getId()+1));
+            indicator.setValue((WarriorHelper.getSkillByExperience(categoryScore, configuration).getId() + 1));
             initiated = true;
         }
         super.draw(graphics, x, y);
@@ -85,6 +89,7 @@ public class PSkillIndicator extends PContentPanel {
 
     /**
      * Установить бойца.
+     *
      * @param warrior
      */
     public void setWarrior(Warrior warrior) {

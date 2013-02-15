@@ -9,11 +9,10 @@ import com.geargames.common.packer.PFontComposite;
 import com.geargames.common.packer.PFontManager;
 import com.geargames.common.util.ArrayByte;
 import com.geargames.common.util.ArrayIntegerDual;
-import com.geargames.packer.Canvas;
 import com.geargames.packer.Graphics;
 import com.geargames.packer.Image;
-import com.geargames.regolith.Game;
 import com.geargames.regolith.Port;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,13 +39,7 @@ import java.util.Vector;
 
 
 public final class Application {
-
     public static final int mult_fps = /*@MULT_FPS@*/2/*END*/;//1 2 4 = 6 12 24
-
-    // Константы основного состояния
-    public final static int S_MENU = 1;
-    public final static int S_MAP = 2;
-
 
     // Состояние регистрации
     public Loader loader;
@@ -54,7 +47,6 @@ public final class Application {
 
     private boolean vibrationEnabled;
     private boolean soundEnabled;
-    private int applicationState;
 
     public int userId, userMidletId;
     public int clientId;
@@ -74,6 +66,8 @@ public final class Application {
     private PFont font10;
     private PFont font11;
     private PFont baseFont;
+
+    private PRegolithPanelManager panels;
 
     public PFont getFont5() {
         return font5;
@@ -115,8 +109,8 @@ public final class Application {
         /*ObjC uncomment*///return self;
     }
 
-    public static Application getInstance(){
-        if(instance == null){
+    public static Application getInstance() {
+        if (instance == null) {
             instance = new Application();
         }
         return instance;
@@ -152,14 +146,15 @@ public final class Application {
         try {
             i_buf = Image.createImage(w, h);
             graphicsBuffer = i_buf.getGraphics();
-            if (render != null) getGraphics().setRender(render);
+            if (render != null) {
+                getGraphics().setRender(render);
+            }
         } catch (Exception ex) {
             Debug.logEx(ex);
         }
     }
 
     public void loading() {
-
         tSleep = System.currentTimeMillis();
 
         Debug.log(String.valueOfC("Memory total,free:").concatL(Manager.getTotalMemory()).concatC(",").concatL(Manager.getFreeMemory()));
@@ -176,7 +171,7 @@ public final class Application {
 
         ArrayIntegerDual fontIndexes = new ArrayIntegerDual(1, 2);
 
-        fontIndexes.set(0, 0 , Graph.SPR_FONT_SYMB);
+        fontIndexes.set(0, 0, Graph.SPR_FONT_SYMB);
         fontIndexes.set(0, 1, Graph.SPR_FONT_RU);
 
         fontManager.init(render, fontIndexes);
@@ -196,9 +191,18 @@ public final class Application {
         initPreferenceOnStart();
         isLoading = false;
 
-        rmenuRun();
+        Manager.getInstance().setLSK(Manager.SK_OK);
+        Manager.getInstance().setRSK(Manager.SK_EXIT);
 
-        Game.getInstance().create(render);
+        panels = PRegolithPanelManager.getInstance();
+        panels.initiate(render);
+        panels.show(panels.getMainMenu());
+        panels.show(panels.getLeft());
+/*
+        panels.show(panels.getHeadline());
+*/
+        panels.show(panels.getRight());
+
     }
 
     public void resetPreference() {
@@ -209,18 +213,20 @@ public final class Application {
     private void initPreferenceOnStart() {
         if (!loadOptionsRMS()) {
             resetPreference();
-            saveOptionsRMS();//при запуске создаём рмс
+            saveOptionsRMS();
         }
     }
 
     protected void onStop(boolean correct) {
-        log(String.valueOfC("onStop.disconnect"));
-        if (correct) saveOptionsRMS();//при выходе из игры
+        Debug.log(String.valueOfC("onStop.disconnect"));
+        if (correct) {
+            saveOptionsRMS();
+        }
         Debug.trace("Application.onStop");
     }
 
     public void destroy(boolean correct) {
-        log(String.valueOfC("destroy ").concatC(correct ? "correct" : "uncorrect"));
+        Debug.log(String.valueOfC("destroy ").concatC(correct ? "correct" : "uncorrect"));
         Manager.getInstance().destroy(correct);
     }
 
@@ -249,10 +255,14 @@ public final class Application {
             res = false;
         } finally {
             try {
-                if (dos != null) dos.close();
-                if (baos != null) baos.close();
+                if (dos != null) {
+                    dos.close();
+                }
+                if (baos != null) {
+                    baos.close();
+                }
             } catch (Exception e) {
-                logEx(e);
+                Debug.logEx(e);
             }
             return res;
         }
@@ -284,7 +294,9 @@ public final class Application {
                     Recorder.RMSStoreClean(RMS_SETTINGS);
                     return false;
                 }
-                if (dis != null) dis.close();
+                if (dis != null) {
+                    dis.close();
+                }
                 /*ObjC uncomment*///[bais release];
                 /*ObjC uncomment*///[dis release];
             }
@@ -293,15 +305,6 @@ public final class Application {
             Debug.trace(String.valueOfC("RMSLoad stream "), e);
             return false;
         }
-    }
-
-    private void setApplicationState(int newState) {
-        Debug.log(String.valueOfI(getApplicationState()).concatC(" -> ").concatI(newState));
-        applicationState = newState;
-    }
-
-    public int getApplicationState() {
-        return applicationState;
     }
 
     public PFontManager getFontManager() {
@@ -321,25 +324,23 @@ public final class Application {
             msgQueue = new Vector(64);
         }
         boolean normal = msgQueue.size() < 64;
-        if (!normal) Debug.warning(String.valueOfC("queue length exceed 64 events"));
+        if (!normal) {
+            Debug.warning(String.valueOfC("queue length exceed 64 events"));
+        }
         Event event = new Event(eventid, param, data, x, y);
         msgQueue.addElement(event);
     }
 
     protected void eventProcess() {
-        if (msgQueue == null) return;
-
+        if (msgQueue == null) {
+            return;
+        }
         try {
-            //передача указателей на хранилища событий  для разнесения обработки и добавления событий
-            synchronized (msgQueue) {
-
-                while (!msgQueue.isEmpty()) {
-                    Event event = (Event) msgQueue.firstElement();
-                    msgQueue.removeElement(event);//перед вызовом события нужно его убрать из очереди на случай эксепта
-                    onEvent(event);
-                    event = null;//ObjC
-                }
-
+            while (!msgQueue.isEmpty()) {
+                Event event = (Event) msgQueue.firstElement();
+                msgQueue.removeElement(event);//перед вызовом события нужно его убрать из очереди на случай эксепта
+                onEvent(event);
+                event = null;//ObjC
             }
             if (Application.isTimer(Manager.TIMERID_KEYDELAY) && !Application.isTimer(Manager.TIMERID_KEYREPEAT))//TODO сделать один интервал на все фпс
                 eventAdd(Event.EVENT_KEY_REPEATED, Manager.getInstance().getPressedKey(), null);
@@ -361,12 +362,15 @@ public final class Application {
     }
 
     private static Etimer findTimer(int timerId) {
-        if (timers == null) timers = new Vector(16);
+        if (timers == null) {
+            timers = new Vector(16);
+        }
         for (Enumeration e = timers.elements(); e.hasMoreElements(); ) {
             Etimer timer = (Etimer) e.nextElement();
             if (timer.getId() == timerId)
                 return timer;
         }
+        Debug.trace("getTimerElapsedTime. Timer " + timerId + " not found");
         return null;
     }
 
@@ -375,14 +379,11 @@ public final class Application {
     }
 
     public static final void setTimer(int timerId, long interval, long data, boolean periodic) {
-
         Etimer timer = Application.findTimer(timerId);
-
         if (timer == null) {
             timer = new Etimer(timerId, interval, data, periodic);
             timers.addElement(timer);
         }
-        //Debug.trace("timer " + Integer.toHexString((int) timer[0]) + " set");
     }
 
     public final void resetTimer(int timerId) {
@@ -402,13 +403,11 @@ public final class Application {
 
     public final long getTimerElapsedTime(int timerId) {
         Etimer timer = Application.findTimer(timerId);
-        //Debug.assertMsg("getTimerElapsedTime. Timer " + timerId + " not found", timer != null);
         return System.currentTimeMillis() - timer.getTime();
     }
 
     public final boolean isTimerExpired(int timerId) {
         Etimer timer = Application.findTimer(timerId);
-        //Debug.assertMsg("isTimerExpied. Timer " + timerId + " not found", timer != null);
         long timedelta = (System.currentTimeMillis() - timer.getTime());
         return timedelta >= timer.getWait();
     }
@@ -435,7 +434,6 @@ public final class Application {
         }
     }
 
-
     // ---------------MAIN LOOP------------------
 
     protected Graphics graphicsBuffer;
@@ -445,7 +443,6 @@ public final class Application {
     private int time_delay_render;
 
     public void mainLoop() {
-
         try {
 
             if (Manager.getInstance().isSuspended() || isLoading) {
@@ -456,8 +453,7 @@ public final class Application {
             processTimers();
             Ticker.processTickers();
             eventProcess();
-            if (getApplicationState() == S_MAP)
-                Game.getInstance().event(Event.EVENT_TICK, 0, 0, 0);
+            panels.event(Event.EVENT_TICK, 0, 0, 0);
             time_delay_ai = (int) (System.currentTimeMillis() - time_delay_ai_start);
 
             long time_delay_render_start = System.currentTimeMillis();
@@ -478,7 +474,7 @@ public final class Application {
             manageFPS(fps);
             globalTick++;
         } catch (Exception e) {
-            logEx(e);
+            Debug.logEx(e);
         }
     }
 
@@ -517,22 +513,11 @@ public final class Application {
     }
 
 
-    // ----------------- DRAWING --------------------------
     private void draw(Graphics g) {
-        try {
-            switch (getApplicationState()) {
-                case S_MENU:
-                    rMenuDraw(g);
-                    break;
-                case S_MAP:
-                    mapDraw(g);
-                    break;
-            }
-            g.setColor(0xffffff);
-            /*ObjC uncomment*///if ([Port isOpenGL]) [gles_view paintEnd];
-        } catch (Exception e) {
-            Debug.logEx(e);
-        }
+        g.setColor(0xffffff);
+        g.fillRect(0, 0, i_buf.getWidth(), i_buf.getHeight());
+        panels.draw(g);
+        /*ObjC uncomment*///if ([Port isOpenGL]) [gles_view paintEnd];
     }
 
     public Image getBuffer() {
@@ -547,134 +532,17 @@ public final class Application {
         this.is_drawing = is_drawing_;
     }
 
-
-    // ---------------MESSAGE HANDLERS------------------
     protected void onEvent(Event event) {
         int code = event.getUid();
         int param = event.getParam();
 
-        if (code == Event.EVENT_TIMER_END)
+        if (code == Event.EVENT_TIMER_END) {
             switch (param) {
                 case TIMER_CONTROLPACKET:
                     return;
             }
-
-        // Все оставшиеся сообщения, ре-роутим в конкретный обработчик
-        switch (getApplicationState()) {
-            case S_MENU:
-                rmenuEventOn(code, param, event.getX(), event.getY());
-                break;
-            case S_MAP:
-                mapEventOn(code, param, event.getX(), event.getY());
-                break;
-            default:
-                Debug.assertMsg(String.valueOfC("Application.onEvent. Not handled state:").concatI(getApplicationState()), false);
-                break;
         }
-
-    }
-
-
-    // ------------------- MENU ----------------------------
-    private final static int RMENU_REGISTRATION = 1;
-    private final static int RMENU_ENTER = 0;
-    private final static int RMENU_RECOVERY = 2;
-    private int menu_x;
-    private int menu_y;
-
-    private void rmenuRun() {
-        setApplicationState(S_MENU);
-        Manager.getInstance().setLSK(Manager.SK_OK);
-        Manager.getInstance().setRSK(Manager.SK_EXIT);
-    }
-
-    private void rmenuEventOn(int code, int param, int x, int y) {
-        //Debug.trace("Application.rmenuEventOn, " + code + "," + param);
-        switch (code) {
-            case Event.EVENT_KEY_PRESSED:
-            case Event.EVENT_KEY_REPEATED:
-                if (param == Canvas.KEY_OK || param == Canvas.KEY_FIRE) {
-                    mapRun();
-                    return;
-                } else if (param == Canvas.KEY_LEFT) {
-                    menu_x -= 5;
-                    return;
-                } else if (param == Canvas.KEY_RIGHT) {
-                    menu_x += 5;
-                    return;
-                } else if (param == Canvas.KEY_UP) {
-                    menu_y -= 5;
-                    return;
-                } else if (param == Canvas.KEY_DOWN) {
-                    menu_y += 5;
-                    return;
-                } else if (param == Canvas.KEY_CANCEL) {
-                    return;
-                }
-                break;
-            case Event.EVENT_TOUCH_RELEASED:
-                if (x < 40 && y < 40 || true) mapRun();
-                break;
-        }
-    }
-
-    private void rMenuDraw(Graphics g) {
-        try {
-            if (splash == null) splash = Image.createImage(String.valueOfC("/s1.png"), Manager.getInstance());
-            g.drawImage(splash, splash.getWidth() / 2, splash.getHeight() / 2, Graphics.HCENTER | Graphics.VCENTER);
-        } catch (Exception e) {
-            logEx(e);
-        }
-    }
-
-
-    // ------------------- MAP ----------------------------
-    private void mapRun() {
-        setApplicationState(S_MAP);
-        Manager.getInstance().setLSK(Manager.SK_OK);
-        Manager.getInstance().setRSK(Manager.SK_EXIT);
-    }
-
-    private void mapEventOn(int code, int param, int x, int y) {
-        //Debug.trace("Application.mapEventOn, " + code + "," + param);
-        Game.getInstance().event(code, param, x, y);
-        switch (code) {
-            case Event.EVENT_KEY_PRESSED:
-            case Event.EVENT_KEY_REPEATED:
-                if (param == Canvas.KEY_OK || param == Canvas.KEY_FIRE) {
-                } else if (param == Canvas.KEY_LEFT) {
-                    return;
-                } else if (param == Canvas.KEY_RIGHT) {
-                    return;
-                } else if (param == Canvas.KEY_UP) {
-                    return;
-                } else if (param == Canvas.KEY_DOWN) {
-                    return;
-                } else if (param == Canvas.KEY_CANCEL) {
-                    rmenuRun();
-                    return;
-                }
-                break;
-            case Event.EVENT_TOUCH_RELEASED:
-                if (x < 20 && y > Port.getH()) rmenuRun();
-                break;
-
-        }
-    }
-
-    private void mapDraw(Graphics g) {
-        g.setColor(0xffffff);
-        g.fillRect(0, 0, i_buf.getWidth(), i_buf.getHeight());
-        Game.getInstance().draw(g);
-    }
-
-
-    private void log(String str) {
-        Debug.log(str);
-    }
-
-    private void logEx(Exception e) {
-        Debug.logEx(e);
+        panels.event(code, param, event.getX(), event.getY());
     }
 
     public Graphics getGraphics() {

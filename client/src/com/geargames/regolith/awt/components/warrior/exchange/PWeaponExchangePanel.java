@@ -32,86 +32,65 @@ public abstract class PWeaponExchangePanel extends PExchangePanel {
     private PLabel accuracy;
     private PLabel accurateAction;
     private PLabel baseFirmness;
-/*
-    private PLabel category;
-    private PLabel distance;
-*/
     private PLabel ammunitionPerShoot;
-    private PLabel minSkill;
-    private PLabel maxDamage;
-    private PLabel minDamage;
 
     public PWeaponExchangePanel(PObject prototype) {
         super(prototype);
-        ArrayList indexes = prototype.getIndexes();
+    }
 
-        for (int i = 0; i < indexes.size(); i++) {
-            IndexObject index = (IndexObject) indexes.get(i);
-            if (index.isSlot()) {
-                switch (index.getSlot()) {
-                    case 0:
-                        addButton1((PObject)index.getPrototype(), index);
-                        break;
-                    case 1:
-                        addButton2((PObject)index.getPrototype(), index);
-                        break;
-                    case 2:
-                        caption = new PSimpleLabel(index);
-                        addPassiveChild(caption, index);
-                        break;
-                    case 3:
-                        firmness = new PSimpleLabel(index);
-                        addPassiveChild(firmness, index);
-                        break;
-                    case 4:
-                        state = new PSimpleLabel(index);
-                        addPassiveChild(state, index);
-                        break;
-                    case 5:
-                        weight = new PSimpleLabel(index);
-                        addPassiveChild(weight, index);
-                        break;
-                    case 6:
-                        upgrade = new PSimpleLabel(index);
-                        addPassiveChild(upgrade, index);
-                        break;
-                    case 7:
-                        load = new PSimpleLabel(index);
-                        addPassiveChild(load, index);
-                        break;
-                    case 8:
-                        capacity = new PSimpleLabel(index);
-                        addPassiveChild(capacity, index);
-                        break;
-                    case 9:
-                        accuracy = new PSimpleLabel(index);
-                        addPassiveChild(accuracy, index);
-                        break;
-                    case 10:
-                        accurateAction = new PSimpleLabel(index);
-                        addPassiveChild(accurateAction, index);
-                        break;
-                    case 11:
-                        baseFirmness = new PSimpleLabel(index);
-                        addPassiveChild(baseFirmness,  index);
-                        break;
-/*
-                    case 12:
-                        category = new PSimpleLabel(index);
-                        addPassiveChild(category , index);
-                        break;
-                    case 13:
-                        distance = new PSimpleLabel(index);
-                        addPassiveChild(distance, index);
-                        break;
-*/
-                    case 14:
-                        ammunitionPerShoot = new PSimpleLabel(index);
-                        addPassiveChild(ammunitionPerShoot, index);
-                        break;
-                    default:
-                }
-            }
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()) {
+            case 0:
+                addButton1((PObject)index.getPrototype(), index);
+                break;
+            case 1:
+                addButton2((PObject)index.getPrototype(), index);
+                break;
+            case 2:
+                caption = new PSimpleLabel(index);
+                addPassiveChild(caption, index);
+                break;
+            case 3:
+                firmness = new PSimpleLabel(index);
+                addPassiveChild(firmness, index);
+                break;
+            case 4:
+                state = new PSimpleLabel(index);
+                addPassiveChild(state, index);
+                break;
+            case 5:
+                weight = new PSimpleLabel(index);
+                addPassiveChild(weight, index);
+                break;
+            case 6:
+                upgrade = new PSimpleLabel(index);
+                addPassiveChild(upgrade, index);
+                break;
+            case 7:
+                load = new PSimpleLabel(index);
+                addPassiveChild(load, index);
+                break;
+            case 8:
+                capacity = new PSimpleLabel(index);
+                addPassiveChild(capacity, index);
+                break;
+            case 9:
+                accuracy = new PSimpleLabel(index);
+                addPassiveChild(accuracy, index);
+                break;
+            case 10:
+                accurateAction = new PSimpleLabel(index);
+                addPassiveChild(accurateAction, index);
+                break;
+            case 11:
+                baseFirmness = new PSimpleLabel(index);
+                addPassiveChild(baseFirmness,  index);
+                break;
+            case 14:
+                ammunitionPerShoot = new PSimpleLabel(index);
+                addPassiveChild(ammunitionPerShoot, index);
+                break;
+            default:
         }
     }
 

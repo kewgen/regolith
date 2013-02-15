@@ -1,16 +1,12 @@
 package com.geargames.regolith.awt.components.warrior.exchange.storehouse;
 
-import com.geargames.awt.utils.ScrollHelper;
-import com.geargames.awt.utils.motions.InertMotionListener;
 import com.geargames.common.String;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
-import com.geargames.regolith.awt.components.menues.BagVerticalTackles;
-import com.geargames.regolith.awt.components.menues.StoreHouseVerticalTackles;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PExchangeButton;
 import com.geargames.regolith.serializers.BatchMessageManager;
@@ -45,7 +41,7 @@ public class PAStoreHouse2BagButton extends PExchangeButton {
 
         int realAmount = TackleTransitionHelper.moveAmmunitionStoreHouse2Bag(storeHouse, number, amount, warrior, baseConfiguration);
         if (realAmount != 0) {
-            PPanelSingletonFabric fabric = PPanelSingletonFabric.getInstance();
+            PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
             PWarriorPanel warriorPanel = ((PWarriorPanel)fabric.getWarrior().getElement());
 
             warriorPanel.getStoreTacklesElement().initiateMotionListener();

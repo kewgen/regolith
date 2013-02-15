@@ -13,9 +13,14 @@ public class PLeftPanel extends PContentPanel {
 
     public PLeftPanel(PObject prototype) {
         super(prototype);
-        IndexObject index = (IndexObject)prototype.getIndexBySlot(1);
-        button = new PBackButton((PObject)index.getPrototype());
-        addActiveChild(button, index);
     }
 
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()){
+            case 1:
+                button = new PBackButton((PObject)index.getPrototype());
+                addActiveChild(button, index);
+                break;
+        }
+    }
 }

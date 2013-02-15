@@ -33,66 +33,60 @@ public abstract class PArmorExchangePanel extends PExchangePanel {
     private PLabel craftinessBonus;
     private PLabel marksmanshipBonus;
     private PLabel regenerationBonus;
-/*
-    private PLabel speedBonus;
-    private PLabel strengthBonus;
-*/
     private PLabel visibilityBonus;
 
     public PArmorExchangePanel(PObject prototype) {
         super(prototype);
-        ArrayList indexes = prototype.getIndexes();
+    }
 
-        for (int i = 0; i < indexes.size(); i++) {
-            IndexObject index = (IndexObject) indexes.get(i);
-            if (index.isSlot()) {
-                switch (index.getSlot()) {
-                    case 0:
-                        addButton1((PObject) index.getPrototype(), index);
-                        break;
-                    case 1:
-                        addButton2((PObject) index.getPrototype(), index);
-                        break;
-                    case 2:
-                        caption = new PSimpleLabel(index);
-                        addPassiveChild(caption, index);
-                        break;
-                    case 3:
-                        firmness = new PSimpleLabel(index);
-                        addPassiveChild(firmness, index);
-                        break;
-                    case 4:
-                        state = new PSimpleLabel(index);
-                        addPassiveChild(state, index);
-                        break;
-                    case 5:
-                        weight = new PSimpleLabel(index);
-                        addPassiveChild(weight, index);
-                        break;
-                    case 6:
-                        upgrade = new PSimpleLabel(index);
-                        addPassiveChild(upgrade, index);
-                        break;
-                    case 7:
-                        armor = new PSimpleLabel(index);
-                        addPassiveChild(armor, index);
-                        break;
-                    case 8:
-                        baseFirmness = new PSimpleLabel(index);
-                        addPassiveChild(baseFirmness, index);
-                        break;
-                    case 9:
-                        craftinessBonus = new PSimpleLabel(index);
-                        addPassiveChild(craftinessBonus, index);
-                        break;
-                    case 10:
-                        marksmanshipBonus = new PSimpleLabel(index);
-                        addPassiveChild(marksmanshipBonus, index);
-                        break;
-                    case 11:
-                        regenerationBonus = new PSimpleLabel(index);
-                        addPassiveChild(regenerationBonus, index);
-                        break;
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+        switch (index.getSlot()) {
+            case 0:
+                addButton1((PObject) index.getPrototype(), index);
+                break;
+            case 1:
+                addButton2((PObject) index.getPrototype(), index);
+                break;
+            case 2:
+                caption = new PSimpleLabel(index);
+                addPassiveChild(caption, index);
+                break;
+            case 3:
+                firmness = new PSimpleLabel(index);
+                addPassiveChild(firmness, index);
+                break;
+            case 4:
+                state = new PSimpleLabel(index);
+                addPassiveChild(state, index);
+                break;
+            case 5:
+                weight = new PSimpleLabel(index);
+                addPassiveChild(weight, index);
+                break;
+            case 6:
+                upgrade = new PSimpleLabel(index);
+                addPassiveChild(upgrade, index);
+                break;
+            case 7:
+                armor = new PSimpleLabel(index);
+                addPassiveChild(armor, index);
+                break;
+            case 8:
+                baseFirmness = new PSimpleLabel(index);
+                addPassiveChild(baseFirmness, index);
+                break;
+            case 9:
+                craftinessBonus = new PSimpleLabel(index);
+                addPassiveChild(craftinessBonus, index);
+                break;
+            case 10:
+                marksmanshipBonus = new PSimpleLabel(index);
+                addPassiveChild(marksmanshipBonus, index);
+                break;
+            case 11:
+                regenerationBonus = new PSimpleLabel(index);
+                addPassiveChild(regenerationBonus, index);
+                break;
 /*
                     case 12:
                         speedBonus = new PSimpleLabel(index);
@@ -103,12 +97,10 @@ public abstract class PArmorExchangePanel extends PExchangePanel {
                         addPassiveChild(strengthBonus, index);
                         break;
 */
-                    case 14:
-                        visibilityBonus = new PSimpleLabel(index);
-                        addPassiveChild(visibilityBonus, index);
-                        break;
-                }
-            }
+            case 14:
+                visibilityBonus = new PSimpleLabel(index);
+                addPassiveChild(visibilityBonus, index);
+                break;
         }
     }
 

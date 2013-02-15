@@ -5,7 +5,7 @@ import com.geargames.common.Port;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.common.Event;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.warrior.PAbstractTacklePanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PExchangePanel;
 import com.geargames.regolith.units.AmmunitionPacket;
@@ -36,7 +36,7 @@ public class StoreHouseVerticalTackleItem extends PAbstractTacklePanel {
     private void click(int number) {
         StoreHouse storeHouse = ClientConfigurationFactory.getConfiguration().getAccount().getBase().getStoreHouse();
         StateTackle tackle = StoreHouseHelper.getStateTackle(storeHouse, number);
-        PPanelSingletonFabric panels = PPanelSingletonFabric.getInstance();
+        PRegolithPanelManager panels = PRegolithPanelManager.getInstance();
 
         DrawablePElement drawable;
         PExchangePanel panel;

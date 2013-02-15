@@ -4,7 +4,7 @@ import com.geargames.awt.DrawablePElement;
 import com.geargames.common.Event;
 import com.geargames.common.Port;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.warrior.PAbstractTacklePanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PExchangePanel;
 import com.geargames.regolith.units.tackle.StateTackle;
@@ -29,7 +29,7 @@ public class WarriorVerticalTackleItem extends PAbstractTacklePanel {
 
     private void click() {
         StateTackle tackle = (StateTackle) getTackle();
-        PPanelSingletonFabric fabric = PPanelSingletonFabric.getInstance();
+        PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
         DrawablePElement drawable;
         PExchangePanel panel;
         switch (tackle.getType()) {

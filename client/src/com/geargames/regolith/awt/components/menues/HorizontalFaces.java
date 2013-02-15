@@ -1,6 +1,6 @@
 package com.geargames.regolith.awt.components.menues;
 
-import com.geargames.awt.HorizontalScrollView;
+import com.geargames.awt.components.HorizontalScrollView;
 import com.geargames.awt.components.PPrototypeElement;
 import com.geargames.awt.utils.ScrollHelper;
 import com.geargames.awt.utils.motions.CenteredElasticInertMotionListener;

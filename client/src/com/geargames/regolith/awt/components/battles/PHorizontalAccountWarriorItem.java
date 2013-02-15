@@ -4,12 +4,10 @@ import com.geargames.awt.components.PLabel;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.awt.components.PTouchButton;
 import com.geargames.common.Graphics;
-import com.geargames.common.packer.Index;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.app.Render;
-import com.geargames.regolith.awt.components.PPanelSingletonFabric;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 
@@ -51,7 +49,7 @@ public class PHorizontalAccountWarriorItem extends PTouchButton {
     }
 
     public void action() {
-        PPanelSingletonFabric fabric = PPanelSingletonFabric.getInstance();
+        PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
         fabric.showModal(fabric.getWarriorInfo());
     }
 

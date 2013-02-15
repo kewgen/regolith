@@ -1,6 +1,7 @@
 package com.geargames.regolith.awt.components.battles;
 
 import com.geargames.awt.components.PContentPanel;
+import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 
 /**
@@ -12,9 +13,8 @@ public class PFighterSelectPanel extends PContentPanel {
 
     public PFighterSelectPanel(PObject prototype) {
         super(prototype);
-
-
     }
 
-
+    protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
+    }
 }

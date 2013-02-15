@@ -1,6 +1,5 @@
 package com.geargames.regolith.units.map;
 
-import com.geargames.regolith.Game;
 import com.geargames.regolith.Port;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
@@ -184,7 +183,7 @@ public class BattleScreen {
             }
         }
         offset += (unit.getWarrior().getDirection().getNumber() + 1)%8;
-        Game.getInstance().getRender().getUnit(unit.getWarrior().getFrameId() + offset).draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY, null);
+        graphics.getRender().getUnit(unit.getWarrior().getFrameId() + offset).draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY, null);
     }
 
     private void drawGrid(Graphics graphics) {
@@ -215,7 +214,7 @@ public class BattleScreen {
         while (x < Port.getScreenW()) {
             int y = tmp;
             while (y < Port.getScreenH()) {
-                Game.getInstance().getRender().getSprite(1).draw(graphics, x, y);
+                graphics.getRender().getSprite(1).draw(graphics, x, y);
                 y += GROUNR_HEIGHT;
             }
             x += GROUNR_WIDTH;
@@ -295,7 +294,7 @@ public class BattleScreen {
                     }
                 }
                 break;
-            case Event.EVENT_TOUCH_DOUBBLE_CLICK:
+            case Event.EVENT_TOUCH_DOUBLE_CLICK:
                 if (isMyTurn()) {
                     if (isOnTheMap(x, y)) {
                         Pair cell = cellFinder.find(x + mapX, y + mapY, this);
