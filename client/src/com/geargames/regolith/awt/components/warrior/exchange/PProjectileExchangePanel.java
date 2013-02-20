@@ -1,14 +1,11 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
 import com.geargames.awt.components.*;
-import com.geargames.common.*;
 import com.geargames.common.String;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.UIUtils;
-import com.geargames.regolith.app.Application;
-import com.geargames.regolith.units.AmmunitionPacket;
+import com.geargames.regolith.application.Application;
 import com.geargames.regolith.units.dictionaries.WeaponTypeCollection;
 import com.geargames.regolith.units.tackle.Projectile;
 

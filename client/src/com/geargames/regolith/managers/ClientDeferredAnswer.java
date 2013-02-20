@@ -1,7 +1,6 @@
 package com.geargames.regolith.managers;
 
-import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.app.Manager;
+import com.geargames.regolith.application.Manager;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 
 /**

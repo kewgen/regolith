@@ -3,8 +3,8 @@ package com.geargames.regolith.network;
 import com.geargames.Debug;
 import com.geargames.common.util.Lock;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.app.Application;
-import com.geargames.regolith.app.Manager;
+import com.geargames.regolith.application.Application;
+import com.geargames.regolith.application.Manager;
 
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.io.Connector;

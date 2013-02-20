@@ -2,13 +2,11 @@ package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationHelper;
-import com.geargames.regolith.app.ObjectManager;
+import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.DeSerializedMessage;
 import com.geargames.regolith.serializers.MicroByteBuffer;
 import com.geargames.regolith.serializers.SimpleDeserializer;
 import com.geargames.regolith.units.battle.Battle;
-import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import com.geargames.regolith.units.map.BattleMap;
 
@@ -17,11 +15,10 @@ import com.geargames.regolith.units.map.BattleMap;
  * Date: 06.07.12
  */
 public class ClientBrowseBattlesAnswer extends ClientDeSerializedMessage {
-    private ClientBattleCollection battles;
     private BaseConfiguration baseConfiguration;
 
     public ClientBattleCollection getBattles() {
-        return battles;
+        return ObjectManager.getInstance().getBattleCollection();
     }
 
     public ClientBrowseBattlesAnswer(BaseConfiguration baseConfiguration) {
@@ -43,6 +40,5 @@ public class ClientBrowseBattlesAnswer extends ClientDeSerializedMessage {
             battle.setMap(map);
             battles.add(battle);
         }
-        this.battles = battles;
     }
 }

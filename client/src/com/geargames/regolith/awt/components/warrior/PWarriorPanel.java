@@ -2,12 +2,9 @@ package com.geargames.regolith.awt.components.warrior;
 
 import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PRadioGroup;
-import com.geargames.common.Render;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.app.Application;
 import com.geargames.regolith.awt.components.menues.BagVerticalTackles;
 import com.geargames.regolith.awt.components.menues.StoreHouseVerticalTackles;
 import com.geargames.regolith.awt.components.menues.WarriorVerticalTackles;

@@ -8,7 +8,7 @@ import com.geargames.common.packer.PObject;
 import com.geargames.common.util.NullRegion;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.app.Application;
+import com.geargames.regolith.application.Application;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.tackle.WeaponCategory;

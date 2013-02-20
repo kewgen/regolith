@@ -4,7 +4,7 @@ import com.geargames.Debug;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.app.Manager;
+import com.geargames.regolith.application.Manager;
 import com.geargames.regolith.serializers.MicroByteBuffer;
 
 

@@ -6,7 +6,7 @@ import com.geargames.awt.components.PTouchButton;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.app.Render;
+import com.geargames.regolith.application.Render;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;

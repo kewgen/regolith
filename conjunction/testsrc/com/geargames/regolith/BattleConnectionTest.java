@@ -11,6 +11,7 @@ import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.map.BattleMapHelper;
+import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.Vector;
@@ -46,34 +47,23 @@ public class BattleConnectionTest {
         Login login = new Login();
         login.setName("автор1");
         login.setPassword("секрет");
-        System.out.println("A client checking for a login name");
 
         ClientDeferredAnswer answer = commonManager.checkForName(login.getName());
-        if (!waitForAnswer(answer)) {
-            return;
-        }
+        Assert.assertTrue(waitForAnswer(answer));
 
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        if (confirm.isConfirm()) {
-            System.out.println("The client is trying to createAmmunitionBag the login name");
+        Assert.assertTrue("a name " + login.getName() + "already exists",confirm.isConfirm());
+
+            System.out.println();
             answer = commonManager.create(login);
-            if (!waitForAnswer(answer)) {
-                return;
-            }
+            Assert.assertTrue("The client could not create the login name",waitForAnswer(answer));
 
             confirm = (ClientConfirmationAnswer) answer.getAnswer();
-            if (!confirm.isConfirm()) {
-                System.out.println("The client could not createAmmunitionBag an account");
-                return;
-            }
-        }
+            Assert.assertTrue("The client could not createAmmunitionBag an account",!confirm.isConfirm());
 
-        System.out.println("The client going to log in");
 
         answer = commonManager.login(login);
-        if (!waitForAnswer(answer)) {
-            return;
-        }
+        Assert.assertTrue(!waitForAnswer(answer));
 
         ClientLoginAnswer loginAnswer = (ClientLoginAnswer) answer.getAnswer();
         if (loginAnswer.getError() != null) {

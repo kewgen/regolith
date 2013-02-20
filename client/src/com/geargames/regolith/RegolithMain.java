@@ -1,6 +1,6 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.app.Regolith;
+import com.geargames.regolith.application.Regolith;
 
 import java.io.IOException;
 

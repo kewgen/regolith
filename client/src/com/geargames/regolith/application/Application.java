@@ -1,14 +1,16 @@
-package com.geargames.regolith.app;
+package com.geargames.regolith.application;
 
 
 import com.geargames.Debug;
 import com.geargames.Recorder;
 import com.geargames.common.String;
+import com.geargames.common.env.Environment;
 import com.geargames.common.packer.PFont;
 import com.geargames.common.packer.PFontComposite;
 import com.geargames.common.packer.PFontManager;
 import com.geargames.common.util.ArrayByte;
 import com.geargames.common.util.ArrayIntegerDual;
+import com.geargames.env.ConsoleEnvironment;
 import com.geargames.packer.Graphics;
 import com.geargames.packer.Image;
 import com.geargames.regolith.Port;
@@ -67,7 +69,16 @@ public final class Application {
     private PFont font11;
     private PFont baseFont;
 
+    private Environment environment;
     private PRegolithPanelManager panels;
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
 
     public PFont getFont5() {
         return font5;
@@ -112,6 +123,7 @@ public final class Application {
     public static Application getInstance() {
         if (instance == null) {
             instance = new Application();
+            instance.setEnvironment(ConsoleEnvironment.getInstance());
         }
         return instance;
     }
@@ -155,9 +167,9 @@ public final class Application {
     }
 
     public void loading() {
-        tSleep = System.currentTimeMillis();
+        tSleep = environment.currentTimeMillis();
 
-        Debug.log(String.valueOfC("Memory total,free:").concatL(Manager.getTotalMemory()).concatC(",").concatL(Manager.getFreeMemory()));
+        Debug.log(String.valueOfC("Memory total,free:").concatL(environment.totalMemory()).concatC(",").concatL(environment.freeMemory()));
 
         loader = new Loader(Manager.getInstance());
         render = new Render();
@@ -388,7 +400,7 @@ public final class Application {
 
     public final void resetTimer(int timerId) {
         Etimer timer = Application.findTimer(timerId);
-        if (timer != null) timer.setTime(System.currentTimeMillis());
+        if (timer != null) timer.setTime(environment.currentTimeMillis());
     }
 
     public final void killTimer(int timerId) {
@@ -403,12 +415,12 @@ public final class Application {
 
     public final long getTimerElapsedTime(int timerId) {
         Etimer timer = Application.findTimer(timerId);
-        return System.currentTimeMillis() - timer.getTime();
+        return environment.currentTimeMillis() - timer.getTime();
     }
 
     public final boolean isTimerExpired(int timerId) {
         Etimer timer = Application.findTimer(timerId);
-        long timedelta = (System.currentTimeMillis() - timer.getTime());
+        long timedelta = (environment.currentTimeMillis() - timer.getTime());
         return timedelta >= timer.getWait();
     }
 
@@ -421,12 +433,12 @@ public final class Application {
         for (Enumeration e = timers.elements(); e.hasMoreElements(); ) {
             Etimer timer = (Etimer) e.nextElement();
 
-            long timedelta = (System.currentTimeMillis() - timer.getTime());
+            long timedelta = (environment.currentTimeMillis() - timer.getTime());
             if (timedelta >= timer.getWait()) {
                 int timer_ = timer.getId();
                 eventAdd(Event.EVENT_TIMER_END, timer_, timer);
                 if ((timer.getData() & 0x8000000000000000L) != 0) {
-                    timer.setTime(System.currentTimeMillis());
+                    timer.setTime(environment.currentTimeMillis());
                 } else {
                     timers.removeElement(timer);
                 }
@@ -449,16 +461,16 @@ public final class Application {
                 Manager.paused(10);
                 return;
             }
-            long time_delay_ai_start = System.currentTimeMillis();
+            long time_delay_ai_start = environment.currentTimeMillis();
             processTimers();
             Ticker.processTickers();
             eventProcess();
             panels.event(Event.EVENT_TICK, 0, 0, 0);
-            time_delay_ai = (int) (System.currentTimeMillis() - time_delay_ai_start);
+            time_delay_ai = (int) (environment.currentTimeMillis() - time_delay_ai_start);
 
-            long time_delay_render_start = System.currentTimeMillis();
+            long time_delay_render_start = environment.currentTimeMillis();
             draw(graphicsBuffer);
-            time_delay_render = (int) (System.currentTimeMillis() - time_delay_render_start);
+            time_delay_render = (int) (environment.currentTimeMillis() - time_delay_render_start);
 
             if (true/* || this.equals(manager.getDisplay())*/) {
                 is_drawing = true;
@@ -486,14 +498,14 @@ public final class Application {
     public void manageFPS(int fps) {
         if (fps != 0) {
             int timeFPS = (1000 / fps);//задержка для установленного фпс
-            long timeElapsed = System.currentTimeMillis() - tSleep;//реальная задержка
+            long timeElapsed = environment.currentTimeMillis() - tSleep;//реальная задержка
             long paused = timeFPS - timeElapsed;//делаем затержку для выдерживания фпс
             if (timeElapsed <= 0) timeElapsed = 1;
             if (paused > 0) {
                 Manager.paused(paused);
             }
             fps_cur = (fps_cur + 1000 / (timeElapsed/* - (paused > 0 ? paused : 0)*/)) / 2;
-            tSleep = System.currentTimeMillis();
+            tSleep = environment.currentTimeMillis();
         } else {
             Manager.paused(1);
         }

@@ -1,7 +1,7 @@
 package com.geargames.regolith;
 
 import com.geargames.common.util.Lock;
-import com.geargames.regolith.app.MELock;
+import com.geargames.regolith.application.MELock;
 
 /**
  * @author Mikhail_Kutuzov

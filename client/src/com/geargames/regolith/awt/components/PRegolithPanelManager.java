@@ -3,7 +3,7 @@ package com.geargames.regolith.awt.components;
 import com.geargames.awt.*;
 import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.app.Graph;
+import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.awt.components.battles.PWarriorInformation;
 import com.geargames.regolith.awt.components.main.PHeadlinePanel;
 import com.geargames.regolith.awt.components.main.PLeftPanel;

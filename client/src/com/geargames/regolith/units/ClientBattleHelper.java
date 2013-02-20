@@ -61,45 +61,6 @@ public class ClientBattleHelper {
         unit.setMapY(pair.getY());
     }
 
-    /**
-     * Загрузить объект карта битвы по её имени name.
-     * @param name
-     * @return игровая карта
-     */
-    public static BattleMap getBattleMapByName(String name){
-        return createBattleMap(20);
-    }
-
-    /**
-     * Проверочный метод, только для разработки.
-     * Создать битву с имененм name.
-     * @param name
-     * @param mapName имя карты
-     * @return
-     */
-    public static Battle createBattle(String name, String mapName) {
-        Battle battle = new Battle();
-        battle.setName(name);
-
-        battle.setAlliances(new BattleAlliance[2]);
-        for(int i = 0; i < battle.getAlliances().length; i++){
-             BattleAlliance alliance = new BattleAlliance();
-             alliance.setAllies(new ClientBattleGroupCollection());
-             alliance.setBattle(battle);
-             battle.getAlliances()[i] = alliance;
-        }
-        BattleMap battleMap = getBattleMapByName(mapName);
-        battle.setMap(battleMap);
-        BattleType[] types = new BattleType[1];
-        BattleType type = new BattleType();
-        type.setAllianceAmount(2);
-        type.setGroupSize(1);
-        type.setAllianceSize(1);
-        types[0] = type;
-        battleMap.setPossibleBattleTypes(types);
-
-        return battle;
-    }
 
     /**
      * Создать игровую карту размера size*size.

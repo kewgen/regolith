@@ -1,4 +1,4 @@
-package com.geargames.regolith.app;
+package com.geargames.regolith.application;
 
 import com.geargames.common.util.Lock;
 

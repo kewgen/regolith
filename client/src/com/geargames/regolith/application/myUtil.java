@@ -1,4 +1,4 @@
-package com.geargames.regolith.app;
+package com.geargames.regolith.application;
 
 import java.util.Random;
 import java.lang.Exception;

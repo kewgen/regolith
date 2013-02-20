@@ -7,7 +7,7 @@ import com.geargames.common.*;
 import com.geargames.common.String;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.app.Graph;
+import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.units.Account;
 
 /**

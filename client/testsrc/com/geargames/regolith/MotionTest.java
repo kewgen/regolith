@@ -40,7 +40,7 @@ public class MotionTest {
         battleGroup.setWarriors(new ClientWarriorCollection(new Vector()));
         WarriorHelper.addWarriorToGroup(battleGroup, warrior);
 
-        Battle battle = ClientBattleHelper.createBattle("test", "test");
+        Battle battle = ClientTestHelper.createBattle("test", "test");
         BattleAlliance battleAlliance = battle.getAlliances()[0];
         WarriorHelper.addGroupIntoAlliance(battleAlliance, battleGroup);
 

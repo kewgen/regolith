@@ -3,7 +3,7 @@ package com.geargames.regolith.network;
 import com.geargames.Debug;
 import com.geargames.common.util.Lock;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.app.MELock;
+import com.geargames.regolith.application.MELock;
 import com.geargames.regolith.serializers.SerializedMessage;
 
 import java.io.DataOutputStream;

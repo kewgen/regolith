@@ -6,7 +6,7 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.ClientHelper;
-import com.geargames.regolith.app.Application;
+import com.geargames.regolith.application.Application;
 import com.geargames.regolith.awt.components.menues.HorizontalFaces;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;

@@ -49,7 +49,7 @@ public class SynchronizationTest {
         battleGroup.setAccount(account);
         WarriorHelper.addWarriorToGroup(battleGroup, warrior);
 
-        battle = ClientBattleHelper.createBattle("test", "test");
+        battle = ClientTestHelper.createBattle("test", "test");
         BattleAlliance battleAlliance = battle.getAlliances()[0];
         WarriorHelper.addGroupIntoAlliance(battleAlliance, battleGroup);
 

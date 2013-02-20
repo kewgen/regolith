@@ -4,7 +4,7 @@ import com.geargames.regolith.Port;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.app.Event;
+import com.geargames.regolith.application.Event;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.Unit;

@@ -1,4 +1,4 @@
-package com.geargames.regolith.app;
+package com.geargames.regolith.application;
 
 public class Event extends com.geargames.common.Event {
 
