@@ -107,24 +107,24 @@ public abstract class PArmorExchangePanel extends PExchangePanel {
     protected void initiate() {
         Armor tackle = (Armor)getTackle();
 
-        caption.setData(String.valueOfC(tackle.getName()));
-        weight.setData(UIUtils.getWeightRepresentation(tackle.getWeight()));
-        firmness.setData(String.valueOfI(tackle.getFirmness()));
-        state.setData(String.valueOfI(tackle.getState()));
-        upgrade.setData(String.valueOfI(tackle.getUpgrade()));
+        caption.setText(String.valueOfC(tackle.getName()));
+        weight.setText(UIUtils.getWeightRepresentation(tackle.getWeight()));
+        firmness.setText(String.valueOfI(tackle.getFirmness()));
+        state.setText(String.valueOfI(tackle.getState()));
+        upgrade.setText(String.valueOfI(tackle.getUpgrade()));
 
         ArmorType armorType = tackle.getArmorType();
-        armor.setData(String.valueOfI(armorType.getArmor()));
-        baseFirmness.setData(String.valueOfI(armorType.getBaseFirmness()));
+        armor.setText(String.valueOfI(armorType.getArmor()));
+        baseFirmness.setText(String.valueOfI(armorType.getBaseFirmness()));
 
-        craftinessBonus.setData(String.valueOfI(armorType.getCraftinessBonus()));
-        marksmanshipBonus.setData(String.valueOfI(armorType.getMarksmanshipBonus()));
-        regenerationBonus.setData(String.valueOfI(armorType.getRegenerationBonus()));
+        craftinessBonus.setText(String.valueOfI(armorType.getCraftinessBonus()));
+        marksmanshipBonus.setText(String.valueOfI(armorType.getMarksmanshipBonus()));
+        regenerationBonus.setText(String.valueOfI(armorType.getRegenerationBonus()));
 /*
-        speedBonus.setData(String.valueOfI(armorType.getSpeedBonus()));
-        strengthBonus.setData(UIUtils.getWeightRepresentation(armorType.getStrengthBonus()));
+        speedBonus.setText(String.valueOfI(armorType.getSpeedBonus()));
+        strengthBonus.setText(UIUtils.getWeightRepresentation(armorType.getStrengthBonus()));
 */
-        visibilityBonus.setData(String.valueOfI(armorType.getVisibilityBonus()));
+        visibilityBonus.setText(String.valueOfI(armorType.getVisibilityBonus()));
     }
 
     public PStepSpinBox getAmountBox() {

@@ -14,7 +14,7 @@ public class PCraftinessLabel extends PSimpleLabel {
     private Warrior warrior;
 
     public void draw(Graphics graphics, int x, int y) {
-        setData(String.valueOfI(warrior.getCraftiness()));
+        setText(String.valueOfI(warrior.getCraftiness()));
         super.draw(graphics, x, y);
     }
 

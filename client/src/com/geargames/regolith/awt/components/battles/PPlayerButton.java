@@ -46,15 +46,15 @@ public class PPlayerButton extends PRadioButton {
 
     protected void initiate(Render render) {
         if (account != null) {
-            title.setData(String.valueOfC(account.getName()));
+            title.setText(String.valueOfC(account.getName()));
         } else {
-            title.setData(null);
+            title.setText(null);
         }
         flag.setPrototype(render.getSprite(Graph.SPR_TEAM_COLOR + number));
         initiated = true;
     }
 
-    protected void action() {
+    public void action() {
 
     }
 

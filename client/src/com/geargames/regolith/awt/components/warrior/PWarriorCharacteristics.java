@@ -164,7 +164,7 @@ public class PWarriorCharacteristics extends PContentPanel {
         panel.getWarriorTacklesElement().setWarrior(warrior);
 
         healthIndicator.setWarrior(warrior);
-        fighter.setData(String.valueOfC(warrior.getName()));
+        fighter.setText(String.valueOfC(warrior.getName()));
         vitality.setWarrior(warrior);
         strength.setWarrior(warrior);
         speed.setWarrior(warrior);

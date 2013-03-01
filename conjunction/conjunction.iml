@@ -21,9 +21,6 @@
     <orderEntry type="module" module-name="server" />
     <orderEntry type="module" module-name="client" />
     <orderEntry type="module" module-name="server.main" />
-    <orderEntry type="module" module-name="gg.awt.console" />
-    <orderEntry type="module" module-name="gg.common" />
-    <orderEntry type="module" module-name="gg.console" />
     <orderEntry type="module" module-name="regolith" />
   </component>
 </module>

@@ -96,22 +96,22 @@ public abstract class PWeaponExchangePanel extends PExchangePanel {
 
     protected void initiate() {
         Weapon weapon = (Weapon)getTackle();
-        caption.setData(String.valueOfC(weapon.getName()));
-        weight.setData(UIUtils.getWeightRepresentation(weapon.getWeight()));
-        firmness.setData(String.valueOfI(weapon.getFirmness()));
-        state.setData(String.valueOfI(weapon.getState()));
-        upgrade.setData(String.valueOfI(weapon.getUpgrade()));
-        load.setData(UIUtils.getWeightRepresentation(weapon.getLoad()));
+        caption.setText(String.valueOfC(weapon.getName()));
+        weight.setText(UIUtils.getWeightRepresentation(weapon.getWeight()));
+        firmness.setText(String.valueOfI(weapon.getFirmness()));
+        state.setText(String.valueOfI(weapon.getState()));
+        upgrade.setText(String.valueOfI(weapon.getUpgrade()));
+        load.setText(UIUtils.getWeightRepresentation(weapon.getLoad()));
         WeaponType weaponType = weapon.getWeaponType();
 
-        capacity.setData(String.valueOfI(weaponType.getCapacity()));
-        accuracy.setData(String.valueOfI(weaponType.getAccuracy()));
-        accurateAction.setData(String.valueOfI(weaponType.getAccurateAction()));
-        baseFirmness.setData(String.valueOfI(weaponType.getBaseFirmness()));
-        /*category.setData(String.valueOfC(weaponType.getCategory().getName()));*/
+        capacity.setText(String.valueOfI(weaponType.getCapacity()));
+        accuracy.setText(String.valueOfI(weaponType.getAccuracy()));
+        accurateAction.setText(String.valueOfI(weaponType.getAccurateAction()));
+        baseFirmness.setText(String.valueOfI(weaponType.getBaseFirmness()));
+        /*category.setText(String.valueOfC(weaponType.getCategory().getName()));*/
         WeaponDistances distances = weaponType.getDistance();
-        /*distance.setData(String.valueOfC(distances.getMin() + "/" + distances.getMinOptimal() + "/" + distances.getMaxOptimal() + "/" + distances.getMax()));*/
-        ammunitionPerShoot.setData(String.valueOfI(weaponType.getAmmunitionPerShoot()));
+        /*distance.setText(String.valueOfC(distances.getMin() + "/" + distances.getMinOptimal() + "/" + distances.getMaxOptimal() + "/" + distances.getMax()));*/
+        ammunitionPerShoot.setText(String.valueOfI(weaponType.getAmmunitionPerShoot()));
     }
 
     public int getNumber() {

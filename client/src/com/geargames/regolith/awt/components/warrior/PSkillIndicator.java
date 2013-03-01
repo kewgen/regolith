@@ -65,8 +65,8 @@ public class PSkillIndicator extends PContentPanel {
             Render render = graphics.getRender();
             icon.setPrototype(render.getSprite(basePID + category.getId()));
             short categoryScore = WarriorHelper.getSkillScore(warrior, category);
-            nameLabel.setData(String.valueOfC(category.getName()));
-            valueLabel.setData(String.valueOfI(categoryScore));
+            nameLabel.setText(String.valueOfC(category.getName()));
+            valueLabel.setText(String.valueOfI(categoryScore));
             BaseConfiguration configuration = ClientConfigurationFactory.getConfiguration().getBaseConfiguration();
             indicator.setValue((WarriorHelper.getSkillByExperience(categoryScore, configuration).getId() + 1));
             initiated = true;
