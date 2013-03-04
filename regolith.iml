@@ -7,6 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="gg.common" />
+    <orderEntry type="module" module-name="gg.awt.console" />
+    <orderEntry type="module" module-name="gg.console" />
   </component>
 </module>
 

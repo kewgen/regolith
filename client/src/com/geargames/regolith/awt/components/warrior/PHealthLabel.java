@@ -16,7 +16,7 @@ public class PHealthLabel extends PSimpleLabel {
     private Warrior warrior;
 
     public void draw(Graphics graphics, int x, int y) {
-        setData(com.geargames.common.String.valueOfI(warrior.getHealth()).concat(String.valueOfC("/").concatI(WarriorHelper.getMaxHealth(warrior, ClientConfigurationFactory.getConfiguration().getBaseConfiguration()))));
+        setText(com.geargames.common.String.valueOfI(warrior.getHealth()).concat(String.valueOfC("/").concatI(WarriorHelper.getMaxHealth(warrior, ClientConfigurationFactory.getConfiguration().getBaseConfiguration()))));
         super.draw(graphics, x, y);
     }
 

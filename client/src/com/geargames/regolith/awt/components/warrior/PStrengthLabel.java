@@ -14,7 +14,7 @@ public class PStrengthLabel extends PSimpleLabel {
     private Warrior warrior;
 
     public void draw(Graphics graphics, int x, int y) {
-        setData(String.valueOfI(warrior.getStrength()));
+        setText(String.valueOfI(warrior.getStrength()));
         super.draw(graphics, x, y);
     }
 

@@ -57,8 +57,7 @@ public abstract class PProjectileExchangePanel extends PExchangePanel {
                 addPassiveChild(amount, index);
                 break;
             case 15:
-                box = new PGradualSpinBox((PObject)index.getPrototype(), (short)0);
-                box.setFps(Application.mult_fps * 8);
+                box = new PGradualSpinBox((PObject)index.getPrototype(), 0);
                 addActiveChild(box, index);
                 break;
         }
@@ -70,16 +69,16 @@ public abstract class PProjectileExchangePanel extends PExchangePanel {
 
     protected void initiate() {
         Projectile projectile = (Projectile)getTackle();
-        caption.setData(String.valueOfC(projectile.getName()));
-        weight.setData(UIUtils.getWeightRepresentation(projectile.getWeight()));
-        category.setData(String.valueOfC(projectile.getCategory().getName()));
+        caption.setText(String.valueOfC(projectile.getName()));
+        weight.setText(UIUtils.getWeightRepresentation(projectile.getWeight()));
+        category.setText(String.valueOfC(projectile.getCategory().getName()));
         WeaponTypeCollection types = projectile.getWeaponTypes();
         String weapons = String.valueOfC("");
         for (int i = 0; i < types.size(); i++) {
             weapons = weapons.concatC(types.get(i).getName());
         }
-        weaponTypes.setData(weapons);
-        amount.setData(String.valueOfI(getAmount()));
+        weaponTypes.setText(weapons);
+        amount.setText(String.valueOfI(getAmount()));
 
     }
 }

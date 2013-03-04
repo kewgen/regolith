@@ -158,41 +158,41 @@ public abstract class PAbstractTacklePanel extends PContentPanel {
             switch (tackle.getType()) {
                 case TackleType.WEAPON:
                     Weapon weapon = (Weapon) tackle;
-                    paramName1.setData(String.valueOfC("ТОЧНОСТЬ"));
+                    paramName1.setText(String.valueOfC("ТОЧНОСТЬ"));
                     paramName1.setFont(application.getFont8());
-                    paramName2.setData(String.valueOfC("ДАЛЬНОСТЬ"));
+                    paramName2.setText(String.valueOfC("ДАЛЬНОСТЬ"));
                     paramName2.setFont(application.getFont8());
-                    paramName3.setData(String.valueOfC("УРОН"));
+                    paramName3.setText(String.valueOfC("УРОН"));
                     paramName3.setFont(application.getFont8());
-                    paramName4.setData(String.valueOfC("ВЕС"));
+                    paramName4.setText(String.valueOfC("ВЕС"));
                     paramName4.setFont(application.getFont8());
 
                     BaseConfiguration baseConfiguration = ClientConfigurationFactory.getConfiguration().getBaseConfiguration();
 
                     int value = WeaponHelper.getWeaponAccuracy(weapon, baseConfiguration) * indicator1.getCardinality() / 100;
                     indicator1.setValue(value);
-                    paramValue1.setData(String.valueOfI(value));
+                    paramValue1.setText(String.valueOfI(value));
                     paramValue1.setFont(application.getFont8());
                     value = weapon.getWeaponType().getMaxDamage().getMaxDistance() * indicator2.getCardinality() / baseConfiguration.getMaxDistance();
                     indicator2.setValue(value);
-                    paramValue2.setData(String.valueOfI(value));
+                    paramValue2.setText(String.valueOfI(value));
                     paramValue2.setFont(application.getFont8());
                     value = WeaponHelper.getMaxWeaponDamage(weapon, weapon.getWeaponType().getMaxDamage().getOptDistance(), baseConfiguration) * indicator3.getCardinality() / baseConfiguration.getMaxDamage();
                     indicator3.setValue(value);
-                    paramValue3.setData(String.valueOfI(value));
+                    paramValue3.setText(String.valueOfI(value));
                     paramValue3.setFont(application.getFont8());
                     value = weapon.getWeight() * indicator4.getCardinality() / baseConfiguration.getMaxWeight();
                     indicator4.setValue(value);
-                    paramValue4.setData(String.valueOfI(value));
+                    paramValue4.setText(String.valueOfI(value));
                     paramValue4.setFont(application.getFont8());
 
-                    label1.setData(String.valueOfC(weapon.getName()));
+                    label1.setText(String.valueOfC(weapon.getName()));
                     label1.setFont(application.getFont10());
-                    label2.setData(String.valueOfI(weapon.getUpgrade()));
+                    label2.setText(String.valueOfI(weapon.getUpgrade()));
                     label2.setFont(application.getFont8());
-                    label3.setData(String.valueOfC(weapon.getLoad() + "/" + weapon.getWeaponType().getCapacity()));
+                    label3.setText(String.valueOfC(weapon.getLoad() + "/" + weapon.getWeaponType().getCapacity()));
                     label3.setFont(application.getFont8());
-                    label4.setData(String.valueOfC(weapon.getState() + "/" + weapon.getFirmness()));
+                    label4.setText(String.valueOfC(weapon.getState() + "/" + weapon.getFirmness()));
                     label4.setFont(application.getFont8());
 
                     break;

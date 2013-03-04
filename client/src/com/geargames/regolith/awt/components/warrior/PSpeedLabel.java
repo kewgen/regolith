@@ -15,7 +15,7 @@ public class PSpeedLabel extends PSimpleLabel {
     private Warrior warrior;
 
     public void draw(Graphics graphics, int x, int y) {
-        setData(String.valueOfI(warrior.getSpeed()));
+        setText(String.valueOfI(warrior.getSpeed()));
         super.draw(graphics, x, y);
     }
 

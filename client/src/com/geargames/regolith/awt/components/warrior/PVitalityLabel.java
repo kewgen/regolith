@@ -15,7 +15,7 @@ public class PVitalityLabel extends PSimpleLabel {
     private Warrior warrior;
 
     public void draw(Graphics graphics, int x, int y) {
-        setData(String.valueOfI(warrior.getVitality()));
+        setText(String.valueOfI(warrior.getVitality()));
         super.draw(graphics, x, y);
     }
 

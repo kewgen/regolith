@@ -14,7 +14,7 @@ public class PMarksmanshipLabel extends PSimpleLabel {
     private Warrior warrior;
 
     public void draw(Graphics graphics, int x, int y) {
-        setData(String.valueOfI(warrior.getMarksmanship()));
+        setText(String.valueOfI(warrior.getMarksmanship()));
         super.draw(graphics, x, y);
     }
 

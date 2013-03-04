@@ -75,13 +75,13 @@ public abstract class PMedikitExchangePanel extends PExchangePanel {
     protected void initiate() {
         Medikit medikit =(Medikit) getTackle();
 
-        caption.setData(String.valueOfC(medikit.getName()));
-        weight.setData(UIUtils.getWeightRepresentation(medikit.getWeight()));
+        caption.setText(String.valueOfC(medikit.getName()));
+        weight.setText(UIUtils.getWeightRepresentation(medikit.getWeight()));
 
-        minSkill.setData(String.valueOfI(medikit.getMinSkill().getAction()).concatI(medikit.getMinSkill().getExperience()));
-        actionScores.setData(String.valueOfI(medikit.getActionScores()));
-        value.setData(String.valueOfI(medikit.getValue()));
-        category.setData(String.valueOfC(medikit.getCategory().getName()));
-        amount.setData(String.valueOfI(getAmount()));
+        minSkill.setText(String.valueOfI(medikit.getMinSkill().getAction()).concatI(medikit.getMinSkill().getExperience()));
+        actionScores.setText(String.valueOfI(medikit.getActionScores()));
+        value.setText(String.valueOfI(medikit.getValue()));
+        category.setText(String.valueOfC(medikit.getCategory().getName()));
+        amount.setText(String.valueOfI(getAmount()));
     }
 }
