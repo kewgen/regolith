@@ -16,7 +16,7 @@ import java.util.Hashtable;
  */
 public class PBattleButtons {
     private Battle battle;
-    private ArrayList active;
+    private ArrayList activeBattles;
 
     private ArrayList type1x1x1;
     private ArrayList type1x1;
@@ -116,12 +116,12 @@ public class PBattleButtons {
      * @param battle
      */
     public void setBattle(Battle battle) {
-        if (active != null) {
-            visibility(active, false);
+        if (activeBattles != null) {
+            visibility(activeBattles, false);
         }
         ArrayList list = (ArrayList) table.get(battle.getBattleType().getName());
         visibility(list, true);
-        active = list;
+        activeBattles = list;
 
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
@@ -129,7 +129,7 @@ public class PBattleButtons {
                 BattleGroupCollection groups = alliances[i].getAllies();
                 for (int j = 0; j < groups.size(); j++) {
                     if (groups.get(j) != null) {
-                        ((PPlayerButton) active.get(i + j)).setAccount(groups.get(j).getAccount());
+                        ((PPlayerButton) activeBattles.get(i + j)).setAccount(groups.get(j).getAccount());
                     }
                 }
             }
@@ -142,14 +142,17 @@ public class PBattleButtons {
     }
 
     /**
-     * Установить текущий аккаунт для соответсвующей следующим номерам кнопке на панели.
-     * @param allianceNumber союза номер
-     * @param groupNumber боевой группы номер
+     * Установить аккаунт для отрисовки на кнопке игрока.
+     * @param allianceNumber номер союза из которого берётся аккаунт
+     * @param groupNumber номер боевой группы внутри союза из которой берётся аккаунт
      */
     public void resetButton(int allianceNumber, int groupNumber) {
-        ((PPlayerButton) active.get(allianceNumber + groupNumber))
+        int size = battle.getBattleType().getGroupSize();
+        ((PPlayerButton) activeBattles.get(allianceNumber*size + groupNumber))
                 .setAccount(battle.getAlliances()[allianceNumber].getAllies().get(groupNumber).getAccount());
     }
+
+
 
     private void visibility(ArrayList list, boolean visible) {
         for (int i = 0; i < list.size(); i++) {

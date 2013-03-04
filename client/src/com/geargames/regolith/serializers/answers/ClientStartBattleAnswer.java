@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.BaseConfiguration;
+import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.serializers.BattleDeserializer;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.serializers.MicroByteBuffer;
@@ -30,7 +31,8 @@ public class ClientStartBattleAnswer extends ClientDeSerializedMessage {
     protected void deSerialize(MicroByteBuffer buffer) {
         success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
-            battle = BattleDeserializer.deserializeBattle(buffer, baseConfiguration, account);
+            battle = ObjectManager.getInstance().getClientBattle();
+            BattleDeserializer.deserializeBattle(buffer, baseConfiguration, account, battle);
             host = SimpleDeserializer.deserializeString(buffer);
             port = SimpleDeserializer.deserializeInt(buffer);
         }

@@ -1,5 +1,7 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.map.BattleMapHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -11,6 +13,8 @@ import com.geargames.regolith.units.map.ExitZone;
  * Date: 03.03.12
  */
 public class TestHelper {
+
+
     public static void printViewMap(BattleMap battleMap, BattleAlliance alliance){
         for(int i = 0; i < battleMap.getCells().length; i++){
             System.out.print('|');

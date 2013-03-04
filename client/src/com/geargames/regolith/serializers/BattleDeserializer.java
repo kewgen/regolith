@@ -131,8 +131,7 @@ public class BattleDeserializer {
         }
     }
 
-    public static Battle deserializeBattle(MicroByteBuffer buffer, BaseConfiguration baseConfiguration, Account account) {
-        Battle battle = new Battle();
+    public static void deserializeBattle(MicroByteBuffer buffer, BaseConfiguration baseConfiguration, Account account, Battle battle){
         battle.setId(SimpleDeserializer.deserializeInt(buffer));
         battle.setName(SimpleDeserializer.deserializeString(buffer));
         battle.setBattleType(BaseConfigurationHelper.findBattleTypeById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
@@ -161,6 +160,11 @@ public class BattleDeserializer {
                 exitZones[i] = battle.getAlliances()[i].getExit();
             }
         }
+    }
+
+    public static Battle deserializeBattle(MicroByteBuffer buffer, BaseConfiguration baseConfiguration, Account account) {
+        Battle battle = new Battle();
+        deserializeBattle(buffer, baseConfiguration, account, battle);
         return battle;
     }
 }

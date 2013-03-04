@@ -51,7 +51,23 @@ public class PBattleListItem extends PContentPanel {
         return battleButtons.getBattle();
     }
 
-    public void resetButton(int allianceNumber, int groupNumber) {
+    public void resetState() {
+        int allianceAmount = getBattle().getBattleType().getAllianceAmount();
+        int groupSize = getBattle().getBattleType().getAllianceSize();
+        for (int i = 0; i < allianceAmount; i++) {
+            for (int j = 0; j < groupSize; j++) {
+                battleButtons.resetButton(i, j);
+            }
+        }
+    }
+
+    /**
+     * Измен
+     *
+     * @param allianceNumber
+     * @param groupNumber
+     */
+    public void resetState(int allianceNumber, int groupNumber) {
         battleButtons.resetButton(allianceNumber, groupNumber);
     }
 }
