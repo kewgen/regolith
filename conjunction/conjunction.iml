@@ -22,6 +22,7 @@
     <orderEntry type="module" module-name="client" />
     <orderEntry type="module" module-name="server.main" />
     <orderEntry type="module" module-name="regolith" />
+    <orderEntry type="module" module-name="gg.common" scope="TEST" />
   </component>
 </module>
 

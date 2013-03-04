@@ -340,11 +340,11 @@ public final class Application extends com.geargames.awt.Application {
             Ticker.processTickers();
             eventProcess();
             panels.event(Event.EVENT_TICK, 0, 0, 0);
-            time_delay_ai = (int) (environment.currentTimeMillis() - time_delay_ai_start);
+            int time_delay_ai = (int) (environment.currentTimeMillis() - time_delay_ai_start);
 
             long time_delay_render_start = environment.currentTimeMillis();
             draw(graphicsBuffer);
-            time_delay_render = (int) (environment.currentTimeMillis() - time_delay_render_start);
+            int time_delay_render = (int) (environment.currentTimeMillis() - time_delay_render_start);
 
             if (true/* || this.equals(manager.getDisplay())*/) {
                 is_drawing = true;

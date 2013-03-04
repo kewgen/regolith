@@ -270,8 +270,6 @@ public final class Manager extends com.geargames.Manager implements Runnable {
             if (canvas.isKeyValid(key) || canvas.isTouchSupport) {
                 app.eventAdd(Event.EVENT_KEY_RELEASED, key, null);
                 lastKey = pressedKey = 0;
-                app.killTimer(TIMERID_KEYREPEAT);
-                app.killTimer(TIMERID_KEYDELAY);
             }
         } catch (Exception e) {
             Debug.assertMsg(String.valueOfC("keyReleased [FILELINE]"), false);
