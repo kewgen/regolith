@@ -6,11 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/conjunction/conjunction.iml" filepath="$PROJECT_DIR$/conjunction/conjunction.iml" />
       <module fileurl="file://$PROJECT_DIR$/../awt/awt/gg.awt.console.iml" filepath="$PROJECT_DIR$/../awt/awt/gg.awt.console.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../gg/awt/gg.awt.console.iml" filepath="$PROJECT_DIR$/../gg/awt/gg.awt.console.iml" />
       <module fileurl="file://$PROJECT_DIR$/../awt/common/gg.common.iml" filepath="$PROJECT_DIR$/../awt/common/gg.common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../gg/common/gg.common.iml" filepath="$PROJECT_DIR$/../gg/common/gg.common.iml" />
       <module fileurl="file://$PROJECT_DIR$/../awt/console/gg.console.iml" filepath="$PROJECT_DIR$/../awt/console/gg.console.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../gg/console/gg.console.iml" filepath="$PROJECT_DIR$/../gg/console/gg.console.iml" />
       <module fileurl="file://$PROJECT_DIR$/regolith.iml" filepath="$PROJECT_DIR$/regolith.iml" />
       <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
       <module fileurl="file://$PROJECT_DIR$/server.battle/server.battle.iml" filepath="$PROJECT_DIR$/server.battle/server.battle.iml" />
