@@ -1,14 +1,9 @@
 package com.geargames.regolith.awt.components.battles;
 
-
-import com.geargames.awt.components.PPrototypeElement;
 import com.geargames.awt.components.PVerticalScrollView;
-import com.geargames.awt.components.VerticalScrollView;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
-import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.Region;
 
 import java.util.Vector;
 
@@ -17,6 +12,7 @@ import java.util.Vector;
  * Список текущих боёв.
  */
 public class PBattlesList extends PVerticalScrollView {
+
     private PBattleListItemVector items;
 
     public PBattlesList(PObject listPrototype) {
@@ -33,7 +29,4 @@ public class PBattlesList extends PVerticalScrollView {
         return items;
     }
 
-    public boolean isVisible() {
-        return true;
-    }
 }

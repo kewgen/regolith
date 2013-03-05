@@ -9,6 +9,7 @@ import com.geargames.regolith.awt.components.main.PHeadlinePanel;
 import com.geargames.regolith.awt.components.main.PLeftPanel;
 import com.geargames.regolith.awt.components.main.PMainMenuPanel;
 import com.geargames.regolith.awt.components.main.PMoneyRegolithPanel;
+import com.geargames.regolith.awt.components.battleCreate.PBattleCreatePanel;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.WarriorDrawablePPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.bag.PArmorFromBagPanel;
@@ -45,6 +46,7 @@ public class PRegolithPanelManager extends PPanelManager {
     private DrawablePPanel warrior;
     private DrawablePPanel mainMenu;
     private DrawablePPanel warriorInfo;
+    private DrawablePPanel battleCreate;
 
     private PRegolithPanelManager() {
     }
@@ -62,86 +64,87 @@ public class PRegolithPanelManager extends PPanelManager {
      * @param render
      * @return
      */
-    public boolean initiate(Render render) {
-        if (render != null) {
-            warriorInfo = new DefaultDrawablePPanel();
-            warriorInfo.setElement(new PWarriorInformation(render.getObject(Graph.PAN_FIGHTER_INFO)));
+    public void initiate(Render render) {
+        warriorInfo = new DefaultDrawablePPanel();
+        warriorInfo.setElement(new PWarriorInformation(render.getObject(Graph.PAN_FIGHTER_INFO)));
 
-            left = new DefaultDrawablePPanel();
-            left.setAnchor(Anchors.TOP_LEFT_ANCHOR);
-            left.setElement(new PLeftPanel(render.getObject(Graph.PAN_LEFT)));
+        left = new DefaultDrawablePPanel();
+        left.setAnchor(Anchors.TOP_LEFT_ANCHOR);
+        left.setElement(new PLeftPanel(render.getObject(Graph.PAN_LEFT)));
 
-            headline = new DefaultDrawablePPanel();
-            headline.setAnchor(Anchors.CENTER_ANCHOR);
-            headline.setElement(new PHeadlinePanel(render.getObject(Graph.PAN_CENTER)));
+        headline = new DefaultDrawablePPanel();
+        headline.setAnchor(Anchors.CENTER_ANCHOR);
+        headline.setElement(new PHeadlinePanel(render.getObject(Graph.PAN_CENTER)));
 
-            right = new DefaultDrawablePPanel();
-            right.setAnchor(Anchors.TOP_RIGHT_ANCHOR);
-            right.setElement(new PMoneyRegolithPanel(render.getObject(Graph.PAN_RIGHT)));
+        right = new DefaultDrawablePPanel();
+        right.setAnchor(Anchors.TOP_RIGHT_ANCHOR);
+        right.setElement(new PMoneyRegolithPanel(render.getObject(Graph.PAN_RIGHT)));
 
-            PObject panelWeaponSelect = render.getObject(Graph.PAN_WEAPON_SELECT);
-            PWeaponFromStoreHousePanel weaponFromStoreHousePanel = new PWeaponFromStoreHousePanel(panelWeaponSelect);
-            weaponFromStoreHouse = new DefaultDrawablePPanel();
-            weaponFromStoreHousePanel.setVisible(true);
-            weaponFromStoreHouse.setElement(weaponFromStoreHousePanel);
+        PObject panelWeaponSelect = render.getObject(Graph.PAN_WEAPON_SELECT);
+        PWeaponFromStoreHousePanel weaponFromStoreHousePanel = new PWeaponFromStoreHousePanel(panelWeaponSelect);
+        weaponFromStoreHouse = new DefaultDrawablePPanel();
+        weaponFromStoreHousePanel.setVisible(true);
+        weaponFromStoreHouse.setElement(weaponFromStoreHousePanel);
 
-            PProjectileFromStoreHousePanel projectileFromStoreHousePanel = new PProjectileFromStoreHousePanel(panelWeaponSelect);
-            projectileFromStoreHouse = new DefaultDrawablePPanel();
-            projectileFromStoreHousePanel.setVisible(true);
-            projectileFromStoreHouse.setElement(projectileFromStoreHousePanel);
+        PProjectileFromStoreHousePanel projectileFromStoreHousePanel = new PProjectileFromStoreHousePanel(panelWeaponSelect);
+        projectileFromStoreHouse = new DefaultDrawablePPanel();
+        projectileFromStoreHousePanel.setVisible(true);
+        projectileFromStoreHouse.setElement(projectileFromStoreHousePanel);
 
-            PArmorFromStoreHousePanel armorFromStoreHousePanel = new PArmorFromStoreHousePanel(panelWeaponSelect);
-            armorFromStoreHouse = new DefaultDrawablePPanel();
-            armorFromStoreHousePanel.setVisible(true);
-            armorFromStoreHouse.setElement(armorFromStoreHousePanel);
+        PArmorFromStoreHousePanel armorFromStoreHousePanel = new PArmorFromStoreHousePanel(panelWeaponSelect);
+        armorFromStoreHouse = new DefaultDrawablePPanel();
+        armorFromStoreHousePanel.setVisible(true);
+        armorFromStoreHouse.setElement(armorFromStoreHousePanel);
 
-            PMedikitFromStoreHousePanel medikitFromStoreHousePanel = new PMedikitFromStoreHousePanel(panelWeaponSelect);
-            medikitFromStoreHouse = new DefaultDrawablePPanel();
-            medikitFromStoreHousePanel.setVisible(true);
-            medikitFromStoreHouse.setElement(medikitFromStoreHousePanel);
+        PMedikitFromStoreHousePanel medikitFromStoreHousePanel = new PMedikitFromStoreHousePanel(panelWeaponSelect);
+        medikitFromStoreHouse = new DefaultDrawablePPanel();
+        medikitFromStoreHousePanel.setVisible(true);
+        medikitFromStoreHouse.setElement(medikitFromStoreHousePanel);
 
-            PArmorFromWarriorPanel armorFromWarriorPanel = new PArmorFromWarriorPanel(panelWeaponSelect);
-            armorFromWarrior = new DefaultDrawablePPanel();
-            armorFromWarriorPanel.setVisible(true);
-            armorFromWarrior.setElement(armorFromWarriorPanel);
+        PArmorFromWarriorPanel armorFromWarriorPanel = new PArmorFromWarriorPanel(panelWeaponSelect);
+        armorFromWarrior = new DefaultDrawablePPanel();
+        armorFromWarriorPanel.setVisible(true);
+        armorFromWarrior.setElement(armorFromWarriorPanel);
 
-            PWeaponFromWarriorPanel weaponFromWarriorPanel = new PWeaponFromWarriorPanel(panelWeaponSelect);
-            weaponFromWarrior = new DefaultDrawablePPanel();
-            weaponFromWarriorPanel.setVisible(true);
-            weaponFromWarrior.setElement(weaponFromWarriorPanel);
+        PWeaponFromWarriorPanel weaponFromWarriorPanel = new PWeaponFromWarriorPanel(panelWeaponSelect);
+        weaponFromWarrior = new DefaultDrawablePPanel();
+        weaponFromWarriorPanel.setVisible(true);
+        weaponFromWarrior.setElement(weaponFromWarriorPanel);
 
-            PArmorFromBagPanel armorFromBagPanel = new PArmorFromBagPanel(panelWeaponSelect);
-            armorFromBag = new DefaultDrawablePPanel();
-            armorFromBagPanel.setVisible(true);
-            armorFromBag.setElement(armorFromBagPanel);
+        PArmorFromBagPanel armorFromBagPanel = new PArmorFromBagPanel(panelWeaponSelect);
+        armorFromBag = new DefaultDrawablePPanel();
+        armorFromBagPanel.setVisible(true);
+        armorFromBag.setElement(armorFromBagPanel);
 
-            PProjectileFromBagPanel projectileFromBagPanel = new PProjectileFromBagPanel(panelWeaponSelect);
-            projectileFromBag = new DefaultDrawablePPanel();
-            projectileFromBagPanel.setVisible(true);
-            projectileFromBag.setElement(projectileFromBagPanel);
+        PProjectileFromBagPanel projectileFromBagPanel = new PProjectileFromBagPanel(panelWeaponSelect);
+        projectileFromBag = new DefaultDrawablePPanel();
+        projectileFromBagPanel.setVisible(true);
+        projectileFromBag.setElement(projectileFromBagPanel);
 
-            PWeaponFromBagPanel weaponFromBagPanel = new PWeaponFromBagPanel(panelWeaponSelect);
-            weaponFromBag = new DefaultDrawablePPanel();
-            weaponFromBagPanel.setVisible(true);
-            weaponFromBag.setElement(weaponFromBagPanel);
+        PWeaponFromBagPanel weaponFromBagPanel = new PWeaponFromBagPanel(panelWeaponSelect);
+        weaponFromBag = new DefaultDrawablePPanel();
+        weaponFromBagPanel.setVisible(true);
+        weaponFromBag.setElement(weaponFromBagPanel);
 
-            PMedikitFromBagPanel medikitFromBagPanel = new PMedikitFromBagPanel(panelWeaponSelect);
-            medikitFromBag = new DefaultDrawablePPanel();
-            medikitFromBagPanel.setVisible(true);
-            medikitFromBag.setElement(medikitFromBagPanel);
+        PMedikitFromBagPanel medikitFromBagPanel = new PMedikitFromBagPanel(panelWeaponSelect);
+        medikitFromBag = new DefaultDrawablePPanel();
+        medikitFromBagPanel.setVisible(true);
+        medikitFromBag.setElement(medikitFromBagPanel);
 
-            PWarriorPanel warriorPanel = new PWarriorPanel(render.getObject(Graph.PAN_FIGHTER));
-            warrior = new WarriorDrawablePPanel();
-            warrior.setAnchor(Anchors.CENTER_ANCHOR);
-            warrior.setElement(warriorPanel);
+        PWarriorPanel warriorPanel = new PWarriorPanel(render.getObject(Graph.PAN_FIGHTER));
+        warrior = new WarriorDrawablePPanel();
+        warrior.setAnchor(Anchors.CENTER_ANCHOR);
+        warrior.setElement(warriorPanel);
 
-            PMainMenuPanel mainMenuPanel = new PMainMenuPanel(render.getObject(Graph.PAN_MAIN_MENU));
-            mainMenu = new DefaultDrawablePPanel();
-            mainMenu.setAnchor(Anchors.CENTER_ANCHOR);
-            mainMenu.setElement(mainMenuPanel);
-            return true;
-        }
-        return false;
+        PMainMenuPanel mainMenuPanel = new PMainMenuPanel(render.getObject(Graph.PAN_MAIN_MENU));
+        mainMenu = new DefaultDrawablePPanel();
+        mainMenu.setAnchor(Anchors.CENTER_ANCHOR);
+        mainMenu.setElement(mainMenuPanel);
+
+        PBattleCreatePanel battleCreatePanel = new PBattleCreatePanel(render.getObject(Graph.PAN_BATTLE_CREATE));
+        battleCreate = new DefaultDrawablePPanel();
+        battleCreate.setAnchor(Anchors.CENTER_ANCHOR);
+        battleCreate.setElement(battleCreatePanel);
     }
 
     public DrawablePPanel getWarriorInfo() {
@@ -206,5 +209,9 @@ public class PRegolithPanelManager extends PPanelManager {
 
     public DrawablePPanel getRight() {
         return right;
+    }
+
+    public DrawablePPanel getBattleCreate() {
+        return battleCreate;
     }
 }

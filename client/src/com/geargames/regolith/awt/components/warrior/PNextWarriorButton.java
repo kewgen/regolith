@@ -5,11 +5,10 @@ import com.geargames.common.packer.PObject;
 
 /**
  * User: mikhail v. kutuzov
- * Кнопка привязана к панели состояния бойца. Делает следующего бойца в списке клиента текущим.
+ * Кнопка привязана к панели состояния бойца. Делает следующего бойца текущим в списке клиента.
  */
 public class PNextWarriorButton extends PTouchButton {
     private PWarriorCharacteristics characteristics;
-    private boolean visible;
 
     public PNextWarriorButton(PObject prototype, PWarriorCharacteristics characteristics) {
         super(prototype);
@@ -17,18 +16,11 @@ public class PNextWarriorButton extends PTouchButton {
         setVisible(true);
     }
 
-    public void action() {
+    public void onClick() {
         characteristics.next();
         setVisible(characteristics.hasNext());
         characteristics.getPrevious().setVisible(characteristics.hasPrevious());
     }
 
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
 }
 

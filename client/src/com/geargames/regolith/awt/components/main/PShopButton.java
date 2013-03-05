@@ -13,6 +13,6 @@ public class PShopButton extends PTouchButton {
         super(prototype);
     }
 
-    public void action() {
+    public void onClick() {
     }
 }

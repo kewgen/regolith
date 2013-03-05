@@ -33,10 +33,6 @@ public class HorizontalFaces extends HorizontalScrollView {
         return region;
     }
 
-    public boolean isVisible() {
-        return true;
-    }
-
     public HorizontalFaces(WarriorCollection warriors, PObject face, Render render) {
         setMargin(0);
         setStuck(true);

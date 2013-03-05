@@ -15,7 +15,7 @@ public class PBagButton extends PEntitledRadioButton {
         this.panel = panel;
     }
 
-    public void action() {
+    public void onClick() {
         panel.getBagTacklesElement().setVisible(true);
         panel.getWarriorTacklesElement().setVisible(false);
         panel.getStoreTacklesElement().setVisible(false);

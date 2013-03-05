@@ -20,8 +20,8 @@ public class WarriorVerticalTackleItem extends PAbstractTacklePanel {
         super(prototype);
     }
 
-    public boolean event(int code, int param, int xTouch, int yTouch) {
-        if(code == Event.EVENT_SYNTHETIC_CLICK){
+    public boolean onEvent(int code, int param, int xTouch, int yTouch) {
+        if (code == Event.EVENT_SYNTHETIC_CLICK) {
             click();
         }
         return false;

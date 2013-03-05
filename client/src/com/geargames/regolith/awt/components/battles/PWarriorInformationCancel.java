@@ -13,7 +13,7 @@ public class PWarriorInformationCancel extends PTouchButton {
         super(prototype);
     }
 
-    public void action() {
+    public void onClick() {
         PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
         fabric.hideModal();
     }

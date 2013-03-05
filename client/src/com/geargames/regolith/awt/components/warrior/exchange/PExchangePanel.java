@@ -17,7 +17,6 @@ import com.geargames.regolith.units.tackle.AbstractTackle;
  */
 public abstract class PExchangePanel extends PContentPanel {
     private int number;
-    private boolean visible;
     private boolean initiated;
 
     private AbstractTackle tackle;
@@ -43,11 +42,11 @@ public abstract class PExchangePanel extends PContentPanel {
         super.draw(graphics, x, y);
     }
 
-    public boolean event(int code, int param, int xTouch, int yTouch) {
+    public boolean onEvent(int code, int param, int xTouch, int yTouch) {
         boolean result = false;
         if (code >= Event.EVENT_KEY_PRESSED && code <= Event.EVENT_KEY_DOWN) {
             if (getTouchRegion().isWithIn(xTouch, yTouch)) {
-                result = super.event(code, param, xTouch, yTouch);
+                result = super.onEvent(code, param, xTouch, yTouch);
             } else {
                 if (code == Event.EVENT_TOUCH_RELEASED) {
                     PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
@@ -57,7 +56,7 @@ public abstract class PExchangePanel extends PContentPanel {
                 }
             }
         } else {
-            result = super.event(code, param, xTouch, yTouch);
+            result = super.onEvent(code, param, xTouch, yTouch);
         }
         return result;
     }
@@ -83,14 +82,6 @@ public abstract class PExchangePanel extends PContentPanel {
      */
     public Warrior getWarrior() {
         return ((PWarriorPanel) PRegolithPanelManager.getInstance().getWarrior().getElement()).getCharacteristics().getWarrior();
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 
     /**

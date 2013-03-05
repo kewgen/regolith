@@ -81,7 +81,4 @@ public class PHorizontalAccountWarriors extends HorizontalScrollView {
         return region;
     }
 
-    public boolean isVisible() {
-        return true;
-    }
 }

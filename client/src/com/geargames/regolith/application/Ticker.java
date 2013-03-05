@@ -10,6 +10,7 @@ import java.util.Vector;
 
 
 //прототип Timer только работающий на тиках
+@Deprecated
 public class Ticker {
 
     public static final int TICK_LAST_BUILDING = 10;

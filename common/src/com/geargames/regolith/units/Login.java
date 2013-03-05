@@ -4,7 +4,7 @@ package com.geargames.regolith.units;
  * User: mkutuzov
  * Date: 14.05.12
  */
-public class Login extends Entity{
+public class Login extends Entity {
     private String name;
     private String password;
 

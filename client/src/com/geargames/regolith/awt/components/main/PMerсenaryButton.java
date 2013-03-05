@@ -13,7 +13,7 @@ public class PMerсenaryButton extends PTouchButton {
         super(prototype);
     }
 
-    public void action() {
+    public void onClick() {
         PRegolithPanelManager instance = PRegolithPanelManager.getInstance();
         instance.hide(instance.getMainMenu());
         instance.show(instance.getWarrior());

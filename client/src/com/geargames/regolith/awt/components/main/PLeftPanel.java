@@ -6,7 +6,7 @@ import com.geargames.common.packer.PObject;
 
 /**
  * User: mikhail v. kutuzov
- * Панелька висит в левом верзнем углу, на ней примостилась кнопка перехода "назад".
+ * Панелька висит в левом верхнем углу, на ней примостилась кнопка перехода "назад".
  */
 public class PLeftPanel extends PContentPanel {
     private PBackButton button;

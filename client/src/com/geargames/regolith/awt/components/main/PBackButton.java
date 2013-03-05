@@ -6,7 +6,7 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 /**
  * User: mikhail v. kutuzov
- * Кнопка возврата в предыдущее состояние.
+ * Кнопка возврата в главное меню.
  */
 public class PBackButton extends PTouchButton {
 
@@ -14,7 +14,7 @@ public class PBackButton extends PTouchButton {
         super(prototype);
     }
 
-    public void action() {
+    public void onClick() {
         PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
         fabric.hideAll();
         fabric.show(fabric.getMainMenu());

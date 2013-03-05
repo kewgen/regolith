@@ -7,6 +7,7 @@ import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.ClientHelper;
 import com.geargames.regolith.application.Application;
+import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.menues.HorizontalFaces;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;
@@ -76,45 +77,39 @@ public class PWarriorCharacteristics extends PContentPanel {
                 addPassiveChild(craftiness, index);
                 break;
             case 16:
-                Application application = Application.getInstance();
                 healthLabel = new PHealthLabel();
                 healthLabel.setAnchor((byte) (1 << index.getShift()));
-                healthLabel.setFont(application.getFont10());
+                healthLabel.setFont(PFontCollection.getFont10());
                 addPassiveChild(healthLabel, index);
                 break;
             case 17:
-                application = Application.getInstance();
                 vitalityLabel = new PVitalityLabel();
                 vitalityLabel.setAnchor((byte) (1 << index.getShift()));
-                vitalityLabel.setFont(application.getFont10());
+                vitalityLabel.setFont(PFontCollection.getFont10());
                 addPassiveChild(vitalityLabel, index);
                 break;
             case 18:
-                application = Application.getInstance();
                 strengthLabel = new PStrengthLabel();
                 strengthLabel.setAnchor((byte) (1 << index.getShift()));
-                strengthLabel.setFont(application.getFont10());
+                strengthLabel.setFont(PFontCollection.getFont10());
                 addPassiveChild(strengthLabel, index);
                 break;
             case 19:
-                application = Application.getInstance();
                 speedLabel = new PSpeedLabel();
                 speedLabel.setAnchor((byte) (1 << index.getShift()));
-                speedLabel.setFont(application.getFont10());
+                speedLabel.setFont(PFontCollection.getFont10());
                 addPassiveChild(speedLabel, index);
                 break;
             case 20:
-                application = Application.getInstance();
                 marksmanshipLabel = new PMarksmanshipLabel();
                 marksmanshipLabel.setAnchor((byte) (1 << index.getShift()));
-                marksmanshipLabel.setFont(application.getFont10());
+                marksmanshipLabel.setFont(PFontCollection.getFont10());
                 addPassiveChild(marksmanshipLabel, index);
                 break;
             case 21:
-                application = Application.getInstance();
                 craftinessLabel = new PCraftinessLabel();
                 craftinessLabel.setAnchor((byte) (1 << index.getShift()));
-                craftinessLabel.setFont(application.getFont10());
+                craftinessLabel.setFont(PFontCollection.getFont10());
                 addPassiveChild(craftinessLabel, index);
                 break;
             case 26:

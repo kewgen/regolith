@@ -23,6 +23,7 @@
     <orderEntry type="module" module-name="server.main" />
     <orderEntry type="module" module-name="regolith" />
     <orderEntry type="module" module-name="gg.common" scope="TEST" />
+    <orderEntry type="module" module-name="gg.console" />
   </component>
 </module>
 
