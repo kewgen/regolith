@@ -26,6 +26,8 @@ public class PMainMenuPanel extends PContentPanel {
                 element = new PMerсenaryButton((PObject) index.getPrototype());
                 break;
             case 12:
+                element = new PBattleCreateButton((PObject) index.getPrototype());
+                break;
             case 13:
             case 14:
             case 15:

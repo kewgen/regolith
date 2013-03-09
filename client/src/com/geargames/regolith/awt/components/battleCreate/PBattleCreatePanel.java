@@ -1,15 +1,15 @@
 package com.geargames.regolith.awt.components.battleCreate;
 
+import com.geargames.Debug;
 import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PRadioButton;
 import com.geargames.awt.components.PRadioGroup;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.localization.LocalizedStrings;
-import com.geargames.regolith.units.Account;
+import com.geargames.common.String;
 
 /**
  * User: abarakov
@@ -22,10 +22,20 @@ public class PBattleCreatePanel extends PContentPanel {
     private PRadioGroup groupPlayer;
     private PRadioGroup groupFighter;
 
+    private PRadioButton buttonSide1;
+    private PRadioButton buttonSide2;
+    private PRadioButton buttonSide3;
+    private PRadioButton buttonSide4;
+
     private PRadioButton buttonPlayer1;
     private PRadioButton buttonPlayer2;
     private PRadioButton buttonPlayer3;
     private PRadioButton buttonPlayer4;
+
+    private PRadioButton buttonFighter1;
+    private PRadioButton buttonFighter2;
+    private PRadioButton buttonFighter3;
+    private PRadioButton buttonFighter4;
 
     public PBattleCreatePanel(PObject prototype) {
         super(prototype);
@@ -49,7 +59,7 @@ public class PBattleCreatePanel extends PContentPanel {
                     groupSide = new PRadioGroup(4);
                 }
                 //todo: Число команд должно быть минимум две
-                PButtonSide buttonSide1 = new PButtonSide((PObject) index.getPrototype(), (byte)1);
+                buttonSide1 = new PButtonSide((PObject) index.getPrototype(), (byte)1);
                 addActiveChild(buttonSide1, index);
                 groupSide.addButton(buttonSide1);
                 break;
@@ -58,7 +68,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 if (groupSide == null) {
                     groupSide = new PRadioGroup(4);
                 }
-                PButtonSide buttonSide2 = new PButtonSide((PObject) index.getPrototype(), (byte)2);
+                buttonSide2 = new PButtonSide((PObject) index.getPrototype(), (byte)2);
                 buttonSide2.setChecked(true); // По умолчанию в битве учавствуют две команды
                 addActiveChild(buttonSide2, index);
                 groupSide.addButton(buttonSide2);
@@ -68,7 +78,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 if (groupSide == null) {
                     groupSide = new PRadioGroup(4);
                 }
-                PButtonSide buttonSide3 = new PButtonSide((PObject) index.getPrototype(), (byte)3);
+                buttonSide3 = new PButtonSide((PObject) index.getPrototype(), (byte)3);
                 addActiveChild(buttonSide3, index);
                 groupSide.addButton(buttonSide3);
                 break;
@@ -77,7 +87,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 if (groupSide == null) {
                     groupSide = new PRadioGroup(4);
                 }
-                PButtonSide buttonSide4 = new PButtonSide((PObject) index.getPrototype(), (byte)4);
+                buttonSide4 = new PButtonSide((PObject) index.getPrototype(), (byte)4);
                 addActiveChild(buttonSide4, index);
                 groupSide.addButton(buttonSide4);
                 break;
@@ -129,7 +139,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 if (groupFighter == null) {
                     groupFighter = new PRadioGroup(4);
                 }
-                PButtonFighter buttonFighter1 = new PButtonFighter((PObject) index.getPrototype(), (byte)1);
+                buttonFighter1 = new PButtonFighter((PObject) index.getPrototype(), (byte)1);
                 buttonFighter1.setChecked(true); // По умолчанию один игрок в команде
                 addActiveChild(buttonFighter1, index);
                 groupFighter.addButton(buttonFighter1);
@@ -139,7 +149,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 if (groupFighter == null) {
                     groupFighter = new PRadioGroup(4);
                 }
-                PButtonFighter buttonFighter2 = new PButtonFighter((PObject) index.getPrototype(), (byte)2);
+                buttonFighter2 = new PButtonFighter((PObject) index.getPrototype(), (byte)2);
                 addActiveChild(buttonFighter2, index);
                 groupFighter.addButton(buttonFighter2);
                 break;
@@ -148,7 +158,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 if (groupFighter == null) {
                     groupFighter = new PRadioGroup(4);
                 }
-                PButtonFighter buttonFighter3 = new PButtonFighter((PObject) index.getPrototype(), (byte)3);
+                buttonFighter3 = new PButtonFighter((PObject) index.getPrototype(), (byte)3);
                 addActiveChild(buttonFighter3, index);
                 groupFighter.addButton(buttonFighter3);
                 break;
@@ -157,7 +167,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 if (groupFighter == null) {
                     groupFighter = new PRadioGroup(4);
                 }
-                PButtonFighter buttonFighter4 = new PButtonFighter((PObject) index.getPrototype(), (byte)4);
+                buttonFighter4 = new PButtonFighter((PObject) index.getPrototype(), (byte)4);
                 addActiveChild(buttonFighter4, index);
                 groupFighter.addButton(buttonFighter4);
                 break;
@@ -189,6 +199,76 @@ public class PBattleCreatePanel extends PContentPanel {
         buttonPlayer3.setChecked(buttonPlayer3.getChecked() && buttonPlayer3.getEnabled());
         buttonPlayer4.setEnabled(number <= 2);
         buttonPlayer4.setChecked(buttonPlayer4.getChecked() && buttonPlayer4.getEnabled());
+    }
+
+    /**
+     * Вернуть количество команд (союзов) участвующих в битве.
+     * @return
+     */
+    public byte getAllianceAmount() {
+        byte allianceAmount = 0;
+//        if (buttonSide1.getChecked()) {
+//            allianceAmount = 1;
+//        } else
+        if (buttonSide2.getChecked()) {
+            allianceAmount = 2;
+        } else
+        if (buttonSide3.getChecked()) {
+            allianceAmount = 3;
+        } else
+        if (buttonSide4.getChecked()) {
+            allianceAmount = 4;
+        }
+        if (allianceAmount < 2) {
+            Debug.warning(String.valueOfC("allianceAmount is an invalid value (allianceAmount=" + allianceAmount + ")"));
+        }
+        return allianceAmount;
+    }
+
+    /**
+     * Вернуть количество игроков участвующих в каждой команде во время битвы.
+     * @return
+     */
+    public byte getAllianceSize() {
+        byte allianceSize = 0;
+        if (buttonPlayer1.getChecked()) {
+            allianceSize = 1;
+        } else
+        if (buttonPlayer2.getChecked()) {
+            allianceSize = 2;
+        } else
+        if (buttonPlayer3.getChecked()) {
+            allianceSize = 3;
+        } else
+        if (buttonPlayer4.getChecked()) {
+            allianceSize = 4;
+        } else {
+            Debug.warning(String.valueOfC("allianceSize is an invalid value (allianceSize=0)"));
+        }
+        return allianceSize;
+    }
+
+    /**
+     * Вернуть количество бойцов (юнитов) сражающихся за каждого игрока в битве.
+     * @return
+     */
+    public byte getGroupSize() {
+        byte groupSize = 0;
+        if (buttonFighter1.getChecked()) {
+            groupSize = 1;
+        } else
+        if (buttonFighter2.getChecked()) {
+            groupSize = 2;
+        } else
+        if (buttonFighter3.getChecked()) {
+            groupSize = 3;
+        } else
+        if (buttonFighter4.getChecked()) {
+            groupSize = 4;
+        } else {
+            Debug.warning(String.valueOfC("groupSize is an invalid value (groupSize=0)"));
+        }
+        return groupSize;
     }
 
 }

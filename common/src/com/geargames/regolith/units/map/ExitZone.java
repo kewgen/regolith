@@ -3,6 +3,7 @@ package com.geargames.regolith.units.map;
 import com.geargames.regolith.units.Entity;
 
 /**
+ * Класс реализующий зону высадки и зону посадки (эвакуации).
  * User: mkutuzov
  * Date: 07.03.12
  */
@@ -44,7 +45,7 @@ public class ExitZone extends Entity {
         this.yRadius = yRadius;
     }
 
-    public boolean  isWithIn(int xx, int yy){
+    public boolean isWithIn(int xx, int yy){
         return x - xRadius <= xx && y - yRadius <= yy && xx <= x + xRadius && yy <= y + yRadius;
     }
 }

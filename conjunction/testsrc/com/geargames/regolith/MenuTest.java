@@ -51,7 +51,7 @@ public class MenuTest {
 
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         if (confirm.isConfirm()) {
-            System.out.println("trying to createAmmunitionBag the login name");
+            System.out.println("trying to create an account");
             answer = commonManager.create(login);
             if (!waitForAnswer(answer)) {
                 return;
@@ -59,7 +59,7 @@ public class MenuTest {
 
             confirm = (ClientConfirmationAnswer) answer.getAnswer();
             if (!confirm.isConfirm()) {
-                System.out.println("could not createAmmunitionBag an account");
+                System.out.println("could not create an account");
                 return;
             }
         }

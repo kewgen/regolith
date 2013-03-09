@@ -30,7 +30,7 @@ public class SynchronizationTest {
     private Battle battle;
 
     @Before
-    public void befor() {
+    public void before() {
         Account account  = new Account();
         account.setWarriors(new ClientWarriorCollection(new Vector()));
         account.setSecurity(new SecurityOperationManager());

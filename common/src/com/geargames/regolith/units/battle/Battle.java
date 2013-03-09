@@ -25,7 +25,7 @@ public class Battle extends Entity {
     }
 
     /**
-     * Учётка создателя боя.
+     * Вернет ссылку на игрока (его учетную запись) создавшего бой.
      * @return
      */
     public Account getAuthor() {
@@ -37,7 +37,7 @@ public class Battle extends Entity {
     }
 
     /**
-     * Боевые союзы которые принимают участие в битве.
+     * Вернет список боевых союзов, которые принимают участие в битве.
      * @return
      */
     public BattleAlliance[] getAlliances() {

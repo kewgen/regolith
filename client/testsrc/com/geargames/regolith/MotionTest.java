@@ -21,7 +21,7 @@ public class MotionTest {
     private BattleMap battleMap;
 
     @Before
-    public void befor(){
+    public void before(){
         ClientTestConfigurationFactory.getDefaultConfiguration();
         Border border = new ClientBorder();
         border.setAbleToLookThrough(false);

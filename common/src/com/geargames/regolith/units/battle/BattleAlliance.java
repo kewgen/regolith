@@ -5,9 +5,8 @@ import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.ExitZone;
 import com.geargames.regolith.units.Entity;
 
-
 /**
- * Военный союз представляет собой совокупность боевых групп(клиентов) участвующих в битве.
+ * Военный союз представляет собой совокупность боевых групп (клиентов) участвующих в битве (одна из команд игроков).
  * User: mkutuzov
  * Date: 07.03.12
  */
@@ -18,7 +17,7 @@ public class BattleAlliance extends Entity {
     private ExitZone exit;
 
     /**
-     * Зона выхода боевого союза.
+     * Зона выхода любого из бойцов военного союза.
      * @return
      */
     public ExitZone getExit() {
@@ -42,7 +41,7 @@ public class BattleAlliance extends Entity {
     }
 
     /**
-     * Отряды бойцов(пользовательских приложений) участвующих в союзе.
+     * Отряды бойцов (пользовательских приложений) участвующих в союзе.
      * @return
      */
     public BattleGroupCollection getAllies() {

@@ -89,16 +89,22 @@ public class MeNetwork extends Network {
             Manager.paused(100);//даём остановиться сокету
 
             try {
-                if (dos != null) dos.close();
+                if (dos != null) {
+                    dos.close();
+                }
             } catch (Throwable t) {
             }
             try {
-                if (dis != null) dis.close();
+                if (dis != null) {
+                    dis.close();
+                }
             } catch (Throwable t) {
             }
 
             try {
-                if (socket != null) socket.close();
+                if (socket != null) {
+                    socket.close();
+                }
                 Debug.trace("Socket closed");
             } catch (Throwable t) {
                 Debug.trace("Network.disconnect: socket.close: ");

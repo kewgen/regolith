@@ -15,7 +15,7 @@ import com.geargames.regolith.units.map.BattleMap;
 public class ClientTestHelper {
     /**
      * Проверочный метод, только для разработки.
-     * Создать битву с имененм name.
+     * Создать битву с именем name.
      * @param name
      * @param mapName имя карты
      * @return

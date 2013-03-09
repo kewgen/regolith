@@ -5,19 +5,19 @@ import com.geargames.common.packer.PObject;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 /**
- * User: mikhail v. kutuzov
- * Кнопка выхода на панель наёмников.
+ * User: abarakov
+ * Тестовая кнопка для вызова диалогового окна "Создание битвы".
  */
-public class PMerсenaryButton extends PTouchButton {
+public class PBattleCreateButton extends PTouchButton {
 
-    public PMerсenaryButton(PObject prototype) {
+    public PBattleCreateButton(PObject prototype) {
         super(prototype);
     }
 
     public void onClick() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.hide(panelManager.getMainMenu());
-        panelManager.show(panelManager.getWarrior());
+        panelManager.show(panelManager.getBattleCreate());
     }
 
 }

@@ -15,11 +15,9 @@ import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
- * Created with IntelliJ IDEA.
- * User: olga
+ * User: mikhail v. kutuzov
  * Date: 27.06.12
  * Time: 14:42
- * To change this template use File | Settings | File Templates.
  */
 public class ClientBattleCreationManager {
     private ClientConfiguration configuration;
