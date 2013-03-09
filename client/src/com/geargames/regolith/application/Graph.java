@@ -1,25 +1,23 @@
 //../regolith/_port/packer_320_480_full
-//Tue Mar 05 13:34:47 GMT+04:00 2013 , version: 108
+//Wed Mar 06 10:54:58 MSK 2013 , version: 108
 
 package com.geargames.regolith.application;
 
 public class Graph {
 
 
-    final static public short IMG_COUNT = 29;
-    final static public short ELEMENT_LINE = 29;
-    final static public short ELEMENT_RECT = 30;
-    final static public short ELEMENT_FILLRECT = 31;
-    final static public short ELEMENT_FILLRECT_x4 = 32;
-    final static public short ELEMENT_ARC = 33;
+    final static public byte IMG_COUNT = 29;
+    final static public byte ELEMENT_LINE = 29;
+    final static public byte ELEMENT_RECT = 30;
+    final static public byte ELEMENT_FILLRECT = 31;
+    final static public byte ELEMENT_FILLRECT_x4 = 32;
+    final static public byte ELEMENT_ARC = 33;
     final static public int FRAMES_COUNT = 1411;
     final static public int SPR_COUNT = 286;
     final static public int ANIM_COUNT = 1;
     final static public int UNIT_COUNT = 528;
     final static public int UNITS_COUNT = 148;
-    final static public int OBJECTS_COUNT = 79;
     final static public int AFFINES_COUNT = 89;
-    final static public int EMITTERS_COUNT = 0;
 //Image
 //Frame
     final static public byte EL_EMPTY = 0;
@@ -353,9 +351,6 @@ public class Graph {
 //PColor
 //GAI
 //Mission
-//Emitter
-//Affine
-    final static public byte AF_RUN = 36;
      final static int[] COLOR = {0, 65535, };
     static public int getCOLOR(int i){return COLOR[i];};
 
@@ -453,7 +448,7 @@ public class Graph {
     static public int getIMG_INDEX(int i) {
         return IMG_INDEX[i];
     };
-     final static int[] IMG_LEN = {194729,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+     final static int[] IMG_LEN = {194729,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
     public Graph() {
