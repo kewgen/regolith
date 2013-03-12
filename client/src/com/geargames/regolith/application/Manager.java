@@ -37,7 +37,6 @@ public final class Manager extends com.geargames.Manager implements Runnable {
         self_manger = this;
         midlet = midlet_;
         isSuspended = false;
-        /*ObjC uncomment*///return self;
     }
 
     public static Manager getInstance(MIDlet midlet_) {
@@ -71,15 +70,18 @@ public final class Manager extends com.geargames.Manager implements Runnable {
 
     // ------------------ Screen ------------------------
     public void paint(Graphics g) {
-        //Manager.log("Manager.paint");
-        if (Port.IS_CONSOLE) g.onCache(5000);
+        if (Port.IS_CONSOLE) {
+            g.onCache(5000);
+        }
         try {
-            if (app == null) return;//Application еще не создан
-            g.drawImage(app.getBuffer(), Port.SCREEN_DX, Port.SCREEN_DY);
+            if (app == null) {
+                return;
+            } else {
+                g.drawImage(app.getBuffer(), Port.SCREEN_DX, Port.SCREEN_DY);
+            }
         } catch (Exception e) {
             ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
         }
-        //if (Port.OPEN_GL && Port.isAndroid()) game.app.getGraphics().finish();
         app.setIsDrawing(false);
     }
 

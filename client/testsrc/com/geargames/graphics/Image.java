@@ -1,5 +1,7 @@
 package com.geargames.graphics;
 
+import com.geargames.common.resource.Resource;
+
 /**
  * User: abarakov
  * Date: 07.03.13

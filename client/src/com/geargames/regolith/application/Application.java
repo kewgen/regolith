@@ -21,23 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-/*ObjC uncomment*///#import "Map.h"
-/*ObjC uncomment*///#import "Image.h"
-/*ObjC uncomment*///#import "Recorder.h"
-/*ObjC uncomment*///#import "SoundPlayer.h"
-/*ObjC uncomment*///#import "Loader.h"
-/*ObjC uncomment*///#import "Util.h"
-/*ObjC uncomment*///#import "Event.h"
-/*ObjC uncomment*///#import "Etimer.h"
-/*ObjC uncomment*///#import "Exception.h"
-/*ObjC uncomment*///#import "Canvas.h"
-/*ObjC uncomment*///#import "Manager.h"
-/*ObjC uncomment*///#import "Ticker.h"
-/*ObjC uncomment*///#import "pfp2ViewController.h"
-/*ObjC uncomment*///#import "GLView.h"
-
-
-public final class Application extends com.geargames.awt.Application {
+public final class Application extends com.geargames.common.Application {
 
     @Deprecated
     public static final int mult_fps = /*@MULT_FPS@*/2/*END*/;//1 2 4 = 6 12 24
@@ -63,10 +47,8 @@ public final class Application extends com.geargames.awt.Application {
     private PRegolithPanelManager panels;
     private static Application instance;
 
-    // Конструктор
     private Application() {
         drawSplash();
-        /*ObjC uncomment*///return self;
     }
 
     public static Application getInstance() {
@@ -104,7 +86,7 @@ public final class Application extends com.geargames.awt.Application {
             Thread.yield();
             Manager.paused(10);
         } catch (Exception ex) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(ex);
+            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(ex);
         }
     }
 
@@ -116,7 +98,7 @@ public final class Application extends com.geargames.awt.Application {
                 getGraphics().setRender(render);
             }
         } catch (Exception ex) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(ex);
+            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(ex);
         }
     }
 
@@ -218,7 +200,7 @@ public final class Application extends com.geargames.awt.Application {
 
             SystemEnvironment.getInstance().getDebug().log(String.valueOfC("Rms.Prefs saved: vibra:").concatC(vibrationEnabled ? "On" : "Off").concatC(" sound:").concatC(soundEnabled ? "On" : "Off").concatC(" userId:").concatI(userId).concatC(" clientId:").concatI(clientId));
         } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("Save prefs "), e); ;
+            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("Save prefs "), e);
             res = false;
         } finally {
             try {
@@ -229,7 +211,7 @@ public final class Application extends com.geargames.awt.Application {
                     baos.close();
                 }
             } catch (Exception e) {
-                ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
+                ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
             }
             return res;
         }
@@ -257,19 +239,18 @@ public final class Application extends com.geargames.awt.Application {
                         SystemEnvironment.getInstance().getDebug().log(String.valueOfC(" id:").concatI(userId));
                     }
                 } catch (Exception e) {
-                    ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad prefs "), e);
+                    ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad prefs "), e);
                     Recorder.RMSStoreClean(RMS_SETTINGS);
                     return false;
                 }
                 if (dis != null) {
                     dis.close();
                 }
-                /*ObjC uncomment*///[bais release];
-                /*ObjC uncomment*///[dis release];
             }
+            bData.free();
             return res;
         } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad stream "), e);
+            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad stream "), e);
             return false;
         }
     }
@@ -303,7 +284,7 @@ public final class Application extends com.geargames.awt.Application {
             int fps = 8 * mult_fps;
             manageFPS(fps);
         } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
+            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
         }
     }
 

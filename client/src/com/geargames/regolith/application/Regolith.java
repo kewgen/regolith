@@ -4,12 +4,6 @@ import com.geargames.ConsoleDebug;
 import com.geargames.MIDlet;
 import com.geargames.common.env.SystemEnvironment;
 
-/*ObjC interface*///#import "MIDlet.h"
-/*ObjC interface*///#import "Debug.h"
-/*ObjC interface*///@class MIDlet;
-
-/*ObjC uncomment*///#import "Manager.h"
-
 public final class Regolith extends MIDlet {
 
     public void startApp() {
@@ -32,15 +26,6 @@ public final class Regolith extends MIDlet {
         if (manager != null) {
             manager.pauseApp();
         }
-    }
-
-    public void destroyApp(boolean b) {
-        try {
-
-        } catch (Exception e) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
-        }
-
     }
 
     public void facebookShare() {
