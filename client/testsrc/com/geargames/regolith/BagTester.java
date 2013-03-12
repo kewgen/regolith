@@ -18,7 +18,7 @@ public class BagTester {
     private BaseConfiguration baseConfiguration;
 
     @Before
-    public void befor(){
+    public void before(){
         baseConfiguration = new BaseConfiguration();
         baseConfiguration.setPocketsAmount((byte)10);
     }

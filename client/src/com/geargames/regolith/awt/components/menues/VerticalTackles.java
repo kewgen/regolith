@@ -13,7 +13,6 @@ import com.geargames.common.util.Region;
  */
 public abstract class VerticalTackles extends VerticalScrollView {
     private PPrototypeElement prototype;
-    private boolean visible;
     private Region region;
 
     public Region getDrawRegion() {
@@ -22,14 +21,6 @@ public abstract class VerticalTackles extends VerticalScrollView {
 
     public Region getTouchRegion() {
         return region;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 
     public PPrototypeElement getPrototype() {

@@ -57,7 +57,4 @@ public class PFrameProgressIndicator extends PObjectElement {
         this.value = value;
     }
 
-    public boolean event(int code, int param, int x, int y) {
-        return false;
-    }
 }

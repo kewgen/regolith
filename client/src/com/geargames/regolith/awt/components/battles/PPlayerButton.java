@@ -12,11 +12,10 @@ import com.geargames.regolith.units.Account;
 
 /**
  * User: mikhail v. kutuzov
- * Кнопка - слот игрок подсоединённый к бою. Должен быть нарисован в выключенном состоянии если игрок не подключился,
+ * Кнопка - слот игрок подсоединённый к бою. Должен быть нарисован в выключенном состоянии, если игрок не подключился,
  * подключение реализуется после нажатия на кнопку неподсоединённым пользователем.
  */
 public class PPlayerButton extends PRadioButton {
-    private boolean visible;
     private Account account;
     private int number;
     private PPrototypeElement flag;
@@ -54,7 +53,7 @@ public class PPlayerButton extends PRadioButton {
         initiated = true;
     }
 
-    public void action() {
+    public void onClick() {
 
     }
 
@@ -80,11 +79,4 @@ public class PPlayerButton extends PRadioButton {
         initiated = false;
     }
 
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
 }

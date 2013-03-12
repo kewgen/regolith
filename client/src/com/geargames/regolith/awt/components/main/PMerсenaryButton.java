@@ -9,13 +9,15 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
  * Кнопка выхода на панель наёмников.
  */
 public class PMerсenaryButton extends PTouchButton {
+
     public PMerсenaryButton(PObject prototype) {
         super(prototype);
     }
 
-    public void action() {
-        PRegolithPanelManager instance = PRegolithPanelManager.getInstance();
-        instance.hide(instance.getMainMenu());
-        instance.show(instance.getWarrior());
+    public void onClick() {
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.hide(panelManager.getMainMenu());
+        panelManager.show(panelManager.getWarrior());
     }
+
 }

@@ -247,7 +247,7 @@ public class BattleScreen {
         setCenter(pair.getX(), pair.getY());
     }
 
-    public boolean event(int code, int param, int x, int y) {
+    public boolean onEvent(int code, int param, int x, int y) {
         switch (code) {
             case Event.EVENT_KEY_UP:
                 showGrid = false;

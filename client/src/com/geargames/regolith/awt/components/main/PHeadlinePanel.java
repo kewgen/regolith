@@ -25,10 +25,6 @@ public class PHeadlinePanel extends PContentPanel {
 
     }
 
-    public boolean event(int code, int param, int x, int y) {
-        return false;
-    }
-
     public Region getDrawRegion() {
         return NullRegion.instance;
     }
@@ -37,7 +33,4 @@ public class PHeadlinePanel extends PContentPanel {
         return NullRegion.instance;
     }
 
-    public boolean isVisible() {
-        return true;
-    }
 }

@@ -5,7 +5,7 @@ import com.geargames.regolith.units.Entity;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
 /**
- * Боевая группа представляет собой бойцов одного клиентского приложения участвующего в битве.
+ * Боевая группа представляет собой список всех бойцов одного из игроков участвующего в битве.
  * User: mkutuzov
  * Date: 20.02.12
  */
@@ -14,6 +14,10 @@ public class BattleGroup extends Entity {
     private BattleAlliance alliance;
     private WarriorCollection warriors;
 
+    /**
+     * Вернет ссылку на игрока, на стороне которого, сражается данный боец.
+     * @return
+     */
     public Account getAccount() {
         return account;
     }
@@ -22,6 +26,10 @@ public class BattleGroup extends Entity {
         this.account = account;
     }
 
+    /**
+     * Вернет ссылку на команду (союз игроков), в союзе с которой, сражается данная группа бойцов.
+     * @return
+     */
     public BattleAlliance getAlliance() {
         return alliance;
     }
@@ -30,6 +38,10 @@ public class BattleGroup extends Entity {
         this.alliance = alliance;
     }
 
+    /**
+     * Вернет список бойцов, которые входят в данную боевую группу.
+     * @return
+     */
     public WarriorCollection getWarriors() {
         return warriors;
     }
@@ -37,4 +49,5 @@ public class BattleGroup extends Entity {
     public void setWarriors(WarriorCollection warriors) {
         this.warriors = warriors;
     }
+
 }

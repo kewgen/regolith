@@ -8,7 +8,7 @@ import com.geargames.common.packer.PObject;
 import com.geargames.common.util.NullRegion;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.application.Application;
+import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.tackle.WeaponCategory;
@@ -43,12 +43,12 @@ public class PSkillIndicator extends PContentPanel {
                 break;
             case 23:
                 nameLabel = new PSimpleLabel(index);
-                nameLabel.setFont(Application.getInstance().getFont10());
+                nameLabel.setFont(PFontCollection.getFont10());
                 addPassiveChild(nameLabel, index);
                 break;
             case 24:
                 valueLabel = new PSimpleLabel(index);
-                valueLabel.setFont(Application.getInstance().getFont10());
+                valueLabel.setFont(PFontCollection.getFont10());
                 addPassiveChild(valueLabel, index);
                 break;
             case 25:

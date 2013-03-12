@@ -37,7 +37,7 @@ public final class Sender extends Thread {
     }
 
     /**
-     * Запустить потока.
+     * Запустить поток.
      */
     public void startSending() {
         running = true;

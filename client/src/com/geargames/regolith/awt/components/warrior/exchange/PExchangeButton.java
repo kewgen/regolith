@@ -24,7 +24,7 @@ public abstract class PExchangeButton extends PEntitledTouchButton {
         this.panel = panel;
     }
 
-    public void action() {
+    public void onClick() {
         doAction();
         PRegolithPanelManager.getInstance().hideModal();
     }

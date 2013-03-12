@@ -30,11 +30,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 /**
- * Created with IntelliJ IDEA.
- * User: olga
+ * User: mikhail v. kutuzov
  * Date: 27.06.12
  * Time: 14:51
- * To change this template use File | Settings | File Templates.
  */
 public class BattleCreationTest {
     private static SimpleService service;

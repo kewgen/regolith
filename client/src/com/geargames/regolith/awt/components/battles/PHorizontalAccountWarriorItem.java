@@ -48,7 +48,7 @@ public class PHorizontalAccountWarriorItem extends PTouchButton {
         }
     }
 
-    public void action() {
+    public void onClick() {
         PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
         fabric.showModal(fabric.getWarriorInfo());
     }

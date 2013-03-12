@@ -30,7 +30,7 @@ public class SynchronizationTest {
     private Battle battle;
 
     @Before
-    public void befor(){
+    public void before() {
         Account account  = new Account();
         account.setWarriors(new ClientWarriorCollection(new Vector()));
         account.setSecurity(new SecurityOperationManager());
@@ -63,7 +63,7 @@ public class SynchronizationTest {
     }
 
     @Test
-    public void clientServerMotion(){
+    public void clientServerMotion() {
         ExitZone exit = new ExitZone();
         exit.setY((short)1);
         exit.setY((short)1);
@@ -82,7 +82,7 @@ public class SynchronizationTest {
         BattleMapHelper.prepare(battle.getMap());
         BattleConfiguration battleConfiguration = ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
         battleConfiguration.getObserver().observe(warrior);
-        MoveOneStepListener listener = new MoveOneStepListener(){
+        MoveOneStepListener listener = new MoveOneStepListener() {
             @Override
             public void onStep(Warrior warrior, int x, int y) {
 
@@ -116,8 +116,8 @@ public class SynchronizationTest {
         screen.initAllies();
 
         screen.moveUser(10,10);
-        while(warrior.isMoving()){
-            screen.event(Event.EVENT_TICK,0,0,0);
+        while (warrior.isMoving()) {
+            screen.onEvent(Event.EVENT_TICK,0,0,0);
         }
 
         Assert.assertEquals(valO, manager.getObserve());

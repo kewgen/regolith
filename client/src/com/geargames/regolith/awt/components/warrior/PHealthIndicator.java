@@ -46,11 +46,4 @@ public class PHealthIndicator extends PElement {
         initiated = false;
     }
 
-    public boolean event(int code, int param, int x, int y) {
-        return false;
-    }
-
-    public boolean isVisible() {
-        return true;
-    }
 }

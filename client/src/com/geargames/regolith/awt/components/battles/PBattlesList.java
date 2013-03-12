@@ -16,6 +16,7 @@ import java.util.Vector;
  * Список текущих боёв.
  */
 public class PBattlesList extends PVerticalScrollView {
+
     private PBattleListItemVector items;
     private Network network;
 
@@ -38,7 +39,4 @@ public class PBattlesList extends PVerticalScrollView {
         return items;
     }
 
-    public boolean isVisible() {
-        return true;
-    }
 }

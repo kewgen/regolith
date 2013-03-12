@@ -20,8 +20,8 @@ public class BagVerticalTackleItem extends PAbstractTacklePanel {
         super(prototype);
     }
 
-    public boolean event(int code, int param, int xTouch, int yTouch) {
-        if(Event.EVENT_SYNTHETIC_CLICK == code){
+    public boolean onEvent(int code, int param, int xTouch, int yTouch) {
+        if (Event.EVENT_SYNTHETIC_CLICK == code) {
             click(param);
         }
         return false;
@@ -31,7 +31,7 @@ public class BagVerticalTackleItem extends PAbstractTacklePanel {
         AbstractTackle tackle = getTackle();
         PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
         DrawablePElement element;
-        switch (tackle.getType()){
+        switch (tackle.getType()) {
             case TackleType.ARMOR:
                 element = fabric.getArmorFromBag();
                 break;

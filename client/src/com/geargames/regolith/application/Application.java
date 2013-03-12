@@ -1,14 +1,13 @@
 package com.geargames.regolith.application;
 
-
 import com.geargames.ConsoleDebug;
 import com.geargames.Recorder;
+import com.geargames.awt.TextHint;
 import com.geargames.awt.timers.TimerManager;
 import com.geargames.common.String;
 import com.geargames.common.env.Environment;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.packer.PFont;
-import com.geargames.common.packer.PFontComposite;
 import com.geargames.common.packer.PFontManager;
 import com.geargames.common.util.ArrayByte;
 import com.geargames.common.util.ArrayIntegerDual;
@@ -21,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-
 
 /*ObjC uncomment*///#import "Map.h"
 /*ObjC uncomment*///#import "Image.h"
@@ -40,72 +38,32 @@ import java.io.DataOutputStream;
 
 
 public final class Application extends com.geargames.awt.Application {
+
+    @Deprecated
     public static final int mult_fps = /*@MULT_FPS@*/2/*END*/;//1 2 4 = 6 12 24
 
-    // Состояние регистрации
+    private final java.lang.String RMS_SETTINGS = "pfp";
+
     private Loader loader;
     private Render render;
     private PFontManager fontManager;
-
-    private boolean vibrationEnabled;
-    private boolean soundEnabled;
-
-    private int userId, userMidletId;
-    private int clientId;
-
-    private boolean isLoading = true; // true, если данные загружаются
-    private static int globalTick;
+    private Environment environment;
+    private PRegolithPanelManager panels;
 
     protected Graphics graphicsBuffer;
     protected Image i_buf;
-    private boolean is_drawing;
+    private boolean isDrawing;
 
     private java.lang.String loadLog = "";
     private Image splash;
 
-    private PFont font5;
-    private PFont font6;
-    private PFont font7;
-    private PFont font8;
-    private PFont font9;
-    private PFont font10;
-    private PFont font11;
-    private PFont baseFont;
+    private boolean isLoading = true; // true, если данные загружаются
+    private static int globalTick;
 
     private PRegolithPanelManager panels;
 
-
-    public PFont getFont5() {
-        return font5;
-    }
-
-    public PFont getFont6() {
-        return font6;
-    }
-
-    public PFont getFont7() {
-        return font7;
-    }
-
-    public PFont getFont8() {
-        return font8;
-    }
-
-    public PFont getFont9() {
-        return font9;
-    }
-
-    public PFont getFont10() {
-        return font10;
-    }
-
-    public PFont getFont11() {
-        return font11;
-    }
-
-    public PFont getBaseFont() {
-        return baseFont;
-    }
+    private int userId, userMidletId;
+    private int clientId;
 
     private static Application instance;
 
@@ -122,16 +80,15 @@ public final class Application extends com.geargames.awt.Application {
         return instance;
     }
 
-    public void drawSplash(String str) {
-        loadLog = str.toString();
-        drawSplash();
+    // ----- Property management ---------------------------------------------------------------------------------------
+
+    public Render getRender() {
+        return render;
     }
 
-    private void drawSplash() {
-        try {
-            if (graphicsBuffer == null) {
-                createScreenBuffer(Port.getW(), Port.getH());
-            }
+    public PFontManager getFontManager() {
+        return fontManager;
+    }
 
             if (splash == null) {
                 splash = Image.createImage(String.valueOfC("/s1.png"), Manager.getInstance());
@@ -160,6 +117,12 @@ public final class Application extends com.geargames.awt.Application {
         }
     }
 
+    public Graphics getGraphics() {
+        return graphicsBuffer;
+    }
+
+    // ----- Application start, init, stop -----------------------------------------------------------------------------
+
     public void loading() {
         Environment environment = SystemEnvironment.getInstance().getEnvironment();
         tSleep = environment.currentTimeMillis();
@@ -183,15 +146,8 @@ public final class Application extends com.geargames.awt.Application {
 
         fontManager.init(render, fontIndexes);
 
-
-        baseFont = fontManager.getFont(0);
-        font11 = fontManager.createReSizedFont((PFontComposite) baseFont, 11);
-        font10 = fontManager.createReSizedFont((PFontComposite) baseFont, 10);
-        font9 = fontManager.createReSizedFont((PFontComposite) baseFont, 9);
-        font8 = fontManager.createReSizedFont((PFontComposite) baseFont, 8);
-        font7 = fontManager.createReSizedFont((PFontComposite) baseFont, 7);
-        font6 = fontManager.createReSizedFont((PFontComposite) baseFont, 6);
-        font5 = fontManager.createReSizedFont((PFontComposite) baseFont, 5);
+        PFont baseFont = fontManager.getFont(0);
+        PFontCollection.initiate(fontManager, baseFont);
 
         drawSplash(String.valueOfC("Init network..."));
 
@@ -200,6 +156,10 @@ public final class Application extends com.geargames.awt.Application {
 
         Manager.getInstance().setLSK(Manager.SK_OK);
         Manager.getInstance().setRSK(Manager.SK_EXIT);
+
+        TextHint textHint = TextHint.getInstance();
+        textHint.setSkinObject(render.getFrame(Graph.OBJ_HINT), render, 16, 24, 16, 24); //todo: Установить правильный скин и размеры
+//        textHint.setDefaultFont(PFontCollection.getFontHint());
 
         panels = PRegolithPanelManager.getInstance();
         panels.initiate(render);
@@ -313,11 +273,7 @@ public final class Application extends com.geargames.awt.Application {
         }
     }
 
-    public PFontManager getFontManager() {
-        return fontManager;
-    }
-
-    // ---------------MAIN LOOP------------------
+    // --------------- Main loop ---------------------------------------------------------------------------------------
 
     public void mainLoop() {
         try {
@@ -330,19 +286,16 @@ public final class Application extends com.geargames.awt.Application {
             TimerManager.update();
             Ticker.processTickers();
             eventProcess();
-            panels.event(Event.EVENT_TICK, 0, 0, 0);
-            int time_delay_ai = (int) (environment.currentTimeMillis() - time_delay_ai_start);
+            panels.onEvent(Event.EVENT_TICK, 0, 0, 0);
 
-            long time_delay_render_start = environment.currentTimeMillis();
             draw(graphicsBuffer);
-            int time_delay_render = (int) (environment.currentTimeMillis() - time_delay_render_start);
 
             if (true/* || this.equals(manager.getDisplay())*/) {
-                is_drawing = true;
+                isDrawing = true;
                 /*ObjC uncomment*///is_drawing = false;
                 Manager.getInstance().repaintStart();
                 Thread.yield();
-                while (is_drawing) {
+                while (isDrawing) {
                     Manager.paused(5);
                 }
             }
@@ -365,7 +318,9 @@ public final class Application extends com.geargames.awt.Application {
             Environment environment = SystemEnvironment.getInstance().getEnvironment();
             long timeElapsed = environment.currentTimeMillis() - tSleep;//реальная задержка
             long paused = timeFPS - timeElapsed;//делаем затержку для выдерживания фпс
-            if (timeElapsed <= 0) timeElapsed = 1;
+            if (timeElapsed <= 0) {
+                timeElapsed = 1;
+            }
             if (paused > 0) {
                 Manager.paused(paused);
             }
@@ -387,11 +342,16 @@ public final class Application extends com.geargames.awt.Application {
         }
     }
 
-    private void draw(Graphics g) {
-        g.setColor(0xffffff);
-        g.fillRect(0, 0, i_buf.getWidth(), i_buf.getHeight());
-        panels.draw(g);
-        /*ObjC uncomment*///if ([Port isOpenGL]) [gles_view paintEnd];
+    public void createScreenBuffer(int w, int h) {
+        try {
+            i_buf = Image.createImage(w, h);
+            graphicsBuffer = i_buf.getGraphics();
+            if (render != null) {
+                getGraphics().setRender(render);
+            }
+        } catch (Exception ex) {
+            Debug.logEx(ex);
+        }
     }
 
     public Image getBuffer() {
@@ -399,18 +359,53 @@ public final class Application extends com.geargames.awt.Application {
     }
 
     public boolean isDrawing() {
-        return is_drawing;
+        return isDrawing;
     }
 
-    public void setIsDrawing(boolean is_drawing_) {
-        this.is_drawing = is_drawing_;
+    public void setIsDrawing(boolean isDrawing) {
+        this.isDrawing = isDrawing;
     }
 
+    private void drawSplash() {
+        try {
+            if (graphicsBuffer == null) {
+                createScreenBuffer(Port.getW(), Port.getH());
+            }
+
+            if (splash == null) {
+                splash = Image.createImage(String.valueOfC("/s1.png"), Manager.getInstance());
+            }
+            graphicsBuffer.drawImage(splash, splash.getWidth() / 2, splash.getHeight() / 2, Graphics.HCENTER | Graphics.VCENTER);
+            graphicsBuffer.setColor(0);
+            //todo установить фонт!
+            graphicsBuffer.drawString(String.valueOfC(loadLog), 5, Port.getH() - 20, 0);
+            Manager.getInstance().repaintStart();
+            Thread.yield();
+            Manager.paused(10);
+        } catch (Exception ex) {
+            Debug.logEx(ex);
+        }
+    }
+
+    public void drawSplash(String str) {
+        loadLog = str.toString();
+        drawSplash();
+    }
+
+    private void draw(Graphics graphics) {
+        graphics.setColor(0xffffff);
+        graphics.fillRect(0, 0, i_buf.getWidth(), i_buf.getHeight());
+        panels.draw(graphics);
+        /*ObjC uncomment*///if ([Port isOpenGL]) [gles_view paintEnd];
+    }
+
+    // ----- Event handlers --------------------------------------------------------------------------------------------
+
+    /**
+     * Выполнение всех манипуляций на один игровой тик
+     */
     protected void onEvent(com.geargames.common.Event event) {
-        panels.event(event.getUid(), event.getParam(), event.getX(), event.getY());
+        panels.onEvent(event.getUid(), event.getParam(), event.getX(), event.getY());
     }
 
-    public Graphics getGraphics() {
-        return graphicsBuffer;
-    }
 }

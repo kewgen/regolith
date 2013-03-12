@@ -19,7 +19,7 @@ public class PShowingModalLabel extends PLabel {
         this.region = region;
     }
 
-    public boolean event(int code, int param, int x, int y) {
+    public boolean onEvent(int code, int param, int x, int y) {
         if (region.isWithIn(x, y)) {
             if (panel != null) {
                 PRegolithPanelManager.getInstance().showModal(panel);

@@ -7,8 +7,8 @@ import com.geargames.common.packer.PObject;
 import com.geargames.common.packer.PSprite;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.application.Application;
 import com.geargames.common.util.NullRegion;
+import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.units.tackle.AbstractTackle;
 import com.geargames.regolith.units.tackle.TackleType;
 import com.geargames.common.String;
@@ -154,46 +154,45 @@ public abstract class PAbstractTacklePanel extends PContentPanel {
             Render render = graphics.getRender();
             PSprite tackleImage = render.getSprite(tackle.getFrameId());
             image.setPrototype(tackleImage);
-            Application application = Application.getInstance();
             switch (tackle.getType()) {
                 case TackleType.WEAPON:
                     Weapon weapon = (Weapon) tackle;
                     paramName1.setText(String.valueOfC("ТОЧНОСТЬ"));
-                    paramName1.setFont(application.getFont8());
+                    paramName1.setFont(PFontCollection.getFont8());
                     paramName2.setText(String.valueOfC("ДАЛЬНОСТЬ"));
-                    paramName2.setFont(application.getFont8());
+                    paramName2.setFont(PFontCollection.getFont8());
                     paramName3.setText(String.valueOfC("УРОН"));
-                    paramName3.setFont(application.getFont8());
+                    paramName3.setFont(PFontCollection.getFont8());
                     paramName4.setText(String.valueOfC("ВЕС"));
-                    paramName4.setFont(application.getFont8());
+                    paramName4.setFont(PFontCollection.getFont8());
 
                     BaseConfiguration baseConfiguration = ClientConfigurationFactory.getConfiguration().getBaseConfiguration();
 
                     int value = WeaponHelper.getWeaponAccuracy(weapon, baseConfiguration) * indicator1.getCardinality() / 100;
                     indicator1.setValue(value);
                     paramValue1.setText(String.valueOfI(value));
-                    paramValue1.setFont(application.getFont8());
+                    paramValue1.setFont(PFontCollection.getFont8());
                     value = weapon.getWeaponType().getMaxDamage().getMaxDistance() * indicator2.getCardinality() / baseConfiguration.getMaxDistance();
                     indicator2.setValue(value);
                     paramValue2.setText(String.valueOfI(value));
-                    paramValue2.setFont(application.getFont8());
+                    paramValue2.setFont(PFontCollection.getFont8());
                     value = WeaponHelper.getMaxWeaponDamage(weapon, weapon.getWeaponType().getMaxDamage().getOptDistance(), baseConfiguration) * indicator3.getCardinality() / baseConfiguration.getMaxDamage();
                     indicator3.setValue(value);
                     paramValue3.setText(String.valueOfI(value));
-                    paramValue3.setFont(application.getFont8());
+                    paramValue3.setFont(PFontCollection.getFont8());
                     value = weapon.getWeight() * indicator4.getCardinality() / baseConfiguration.getMaxWeight();
                     indicator4.setValue(value);
                     paramValue4.setText(String.valueOfI(value));
-                    paramValue4.setFont(application.getFont8());
+                    paramValue4.setFont(PFontCollection.getFont8());
 
                     label1.setText(String.valueOfC(weapon.getName()));
-                    label1.setFont(application.getFont10());
+                    label1.setFont(PFontCollection.getFont10());
                     label2.setText(String.valueOfI(weapon.getUpgrade()));
-                    label2.setFont(application.getFont8());
+                    label2.setFont(PFontCollection.getFont8());
                     label3.setText(String.valueOfC(weapon.getLoad() + "/" + weapon.getWeaponType().getCapacity()));
-                    label3.setFont(application.getFont8());
+                    label3.setFont(PFontCollection.getFont8());
                     label4.setText(String.valueOfC(weapon.getState() + "/" + weapon.getFirmness()));
-                    label4.setFont(application.getFont8());
+                    label4.setFont(PFontCollection.getFont8());
 
                     break;
                 default:

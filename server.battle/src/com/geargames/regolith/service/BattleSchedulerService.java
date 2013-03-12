@@ -83,7 +83,7 @@ public class BattleSchedulerService {
                         if (type.haveToFinish(battle)) {
                             for (BattleGroup group : ((ServerBattleGroupCollection) winner.getAllies()).getBattleGroups()) {
                                 for (Warrior warrior : ((ServerWarriorCollection) group.getWarriors()).getWarriors()) {
-                                    warrior.setExperience(FightHelper.countExperience(warrior)* type.getScores());
+                                    warrior.setExperience(FightHelper.countExperience(warrior) * type.getScores());
                                     warrior.getVictimsDamages().clear();
                                 }
                             }

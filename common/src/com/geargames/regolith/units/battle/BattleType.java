@@ -17,14 +17,10 @@ public class BattleType extends Entity {
     public BattleType() {
     }
 
-    public byte getScores() {
-        return scores;
-    }
-
-    public void setScores(byte scores) {
-        this.scores = scores;
-    }
-
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
@@ -33,6 +29,22 @@ public class BattleType extends Entity {
         this.name = name;
     }
 
+    /**
+     *
+     * @return
+     */
+    public byte getScores() {
+        return scores;
+    }
+
+    public void setScores(byte scores) {
+        this.scores = scores;
+    }
+
+    /**
+     * Вернуть количество команд (союзов игроков) участвующих в битве.
+     * @return
+     */
     public int getAllianceAmount() {
         return allianceAmount;
     }
@@ -41,6 +53,11 @@ public class BattleType extends Entity {
         this.allianceAmount = allianceAmount;
     }
 
+    /**
+     * Вернуть количество игроков участвующих в каждой команде во время битвы.
+     * @return
+     */
+    //todo: AllianceSize -> PlayersPerAlliance
     public int getAllianceSize() {
         return allianceSize;
     }
@@ -49,6 +66,11 @@ public class BattleType extends Entity {
         this.allianceSize = allianceSize;
     }
 
+    /**
+     * Вернуть количество бойцов (юнитов) сражающихся за каждого игрока в битве.
+     * @return
+     */
+    //todo: GroupSize -> FighterPerPlayer, HumansPerPlayer
     public int getGroupSize() {
         return groupSize;
     }
