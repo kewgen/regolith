@@ -41,14 +41,17 @@ public final class Application extends com.geargames.awt.Application {
 
     @Deprecated
     public static final int mult_fps = /*@MULT_FPS@*/2/*END*/;//1 2 4 = 6 12 24
-
-    private final java.lang.String RMS_SETTINGS = "pfp";
+    private final java.lang.String RMS_SETTINGS = "regolith";
 
     private Loader loader;
     private Render render;
     private PFontManager fontManager;
-    private Environment environment;
-    private PRegolithPanelManager panels;
+    private boolean vibrationEnabled;
+    private boolean soundEnabled;
+
+    private int userId, userMidletId;
+    private int clientId;
+    private boolean isLoading = true; // true, если данные загружаются
 
     protected Graphics graphicsBuffer;
     protected Image i_buf;
@@ -57,14 +60,7 @@ public final class Application extends com.geargames.awt.Application {
     private java.lang.String loadLog = "";
     private Image splash;
 
-    private boolean isLoading = true; // true, если данные загружаются
-    private static int globalTick;
-
     private PRegolithPanelManager panels;
-
-    private int userId, userMidletId;
-    private int clientId;
-
     private static Application instance;
 
     // Конструктор
@@ -89,6 +85,13 @@ public final class Application extends com.geargames.awt.Application {
     public PFontManager getFontManager() {
         return fontManager;
     }
+
+
+    private void drawSplash() {
+        try {
+            if (graphicsBuffer == null) {
+                createScreenBuffer(Port.getW(), Port.getH());
+            }
 
             if (splash == null) {
                 splash = Image.createImage(String.valueOfC("/s1.png"), Manager.getInstance());
@@ -196,8 +199,6 @@ public final class Application extends com.geargames.awt.Application {
         Manager.getInstance().destroy(correct);
     }
 
-    private final java.lang.String RMS_SETTINGS = "regolith";
-
     public boolean saveOptionsRMS() {
         boolean res = false;
         ByteArrayOutputStream baos = null;
@@ -301,7 +302,6 @@ public final class Application extends com.geargames.awt.Application {
             }
             int fps = 8 * mult_fps;
             manageFPS(fps);
-            globalTick++;
         } catch (Exception e) {
             ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
         }
@@ -342,18 +342,6 @@ public final class Application extends com.geargames.awt.Application {
         }
     }
 
-    public void createScreenBuffer(int w, int h) {
-        try {
-            i_buf = Image.createImage(w, h);
-            graphicsBuffer = i_buf.getGraphics();
-            if (render != null) {
-                getGraphics().setRender(render);
-            }
-        } catch (Exception ex) {
-            Debug.logEx(ex);
-        }
-    }
-
     public Image getBuffer() {
         return i_buf;
     }
@@ -364,27 +352,6 @@ public final class Application extends com.geargames.awt.Application {
 
     public void setIsDrawing(boolean isDrawing) {
         this.isDrawing = isDrawing;
-    }
-
-    private void drawSplash() {
-        try {
-            if (graphicsBuffer == null) {
-                createScreenBuffer(Port.getW(), Port.getH());
-            }
-
-            if (splash == null) {
-                splash = Image.createImage(String.valueOfC("/s1.png"), Manager.getInstance());
-            }
-            graphicsBuffer.drawImage(splash, splash.getWidth() / 2, splash.getHeight() / 2, Graphics.HCENTER | Graphics.VCENTER);
-            graphicsBuffer.setColor(0);
-            //todo установить фонт!
-            graphicsBuffer.drawString(String.valueOfC(loadLog), 5, Port.getH() - 20, 0);
-            Manager.getInstance().repaintStart();
-            Thread.yield();
-            Manager.paused(10);
-        } catch (Exception ex) {
-            Debug.logEx(ex);
-        }
     }
 
     public void drawSplash(String str) {
