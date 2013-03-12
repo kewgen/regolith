@@ -43,8 +43,8 @@ public class RemoteFrameLoader extends PUnresolvedFrameManger {
                     answer.setBuffer(buffer);
                     answer.deSerialize();
                     frame = answer.getFrame();
-                    images.put(frame.getBid(), frame);
-                    if (frame.getBid() == frameId) {
+                    images.put(frame.getPID(), frame);
+                    if (frame.getPID() == frameId) {
                         found = frame;
                     }
                 }

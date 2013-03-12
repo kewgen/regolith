@@ -51,23 +51,26 @@ public class PBattleListItem extends PContentPanel {
         return battleButtons.getBattle();
     }
 
-    public void resetState() {
+    /**
+     * Обновить морды игроков на панели битвы, по содержимому getBattle().
+     */
+    public void update() {
         int allianceAmount = getBattle().getBattleType().getAllianceAmount();
         int groupSize = getBattle().getBattleType().getAllianceSize();
         for (int i = 0; i < allianceAmount; i++) {
             for (int j = 0; j < groupSize; j++) {
-                battleButtons.resetButton(i, j);
+                battleButtons.resetButtonAccount(i, j);
             }
         }
     }
 
     /**
-     * Измен
+     * Обновить конкретную морду на панели битв.
      *
-     * @param allianceNumber
-     * @param groupNumber
+     * @param allianceNumber номер боевой стороны морды
+     * @param groupNumber  нормер группы морды
      */
-    public void resetState(int allianceNumber, int groupNumber) {
-        battleButtons.resetButton(allianceNumber, groupNumber);
+    public void update(int allianceNumber, int groupNumber) {
+        battleButtons.resetButtonAccount(allianceNumber, groupNumber);
     }
 }

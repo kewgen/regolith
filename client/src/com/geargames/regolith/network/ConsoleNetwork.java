@@ -1,6 +1,7 @@
 package com.geargames.regolith.network;
 
-import com.geargames.Debug;
+import com.geargames.ConsoleDebug;
+import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.util.Lock;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.application.Application;
@@ -59,7 +60,7 @@ public class ConsoleNetwork extends Network {
 
     public synchronized boolean connect(String address, int port) {
         try {
-            Debug.trace("Network.connect: address:" + address + " port:" + port);
+            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.connect: address:").concatC(address).concatC(" port:").concatI(port));
             SocketAddress socketAddress = new InetSocketAddress(address, port);
             socket = new Socket();
             socket.connect(socketAddress);
@@ -75,12 +76,12 @@ public class ConsoleNetwork extends Network {
             this.port = port;
             this.address = address;
             connected = true;
-            Debug.trace("Network.connect: TCP/IP Session established");
+            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.connect: TCP/IP Session established"));
             return true;
         } catch (UnknownHostException e) {
-            Debug.trace("Connector does not respond! exception: " + e);
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Connector does not respond! exception: "), e);
         } catch (IOException e) {
-            Debug.trace("Network.connect() exception: " + e);
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Network.connect() exception: "), e);
         }
 
         return false;
@@ -98,31 +99,25 @@ public class ConsoleNetwork extends Network {
             Manager.paused(100);//даём остановиться сокету
 
             try {
-                if (dos != null) {
-                    dos.close();
-                }
+                if (dos != null) dos.close();
             } catch (Throwable t) {
             }
             try {
-                if (dis != null) {
-                    dis.close();
-                }
+                if (dis != null) dis.close();
             } catch (Throwable t) {
             }
 
             try {
-                if (socket != null) {
-                    socket.close();
-                }
-                Debug.trace("Socket closed");
+                if (socket != null) socket.close();
+                SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Socket closed"));
             } catch (Throwable t) {
-                Debug.trace("Network.disconnect: socket.close: ");
+                SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.disconnect: socket.close: "));
             }
 
-            Debug.trace("Disconnected");
+            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Disconnected"));
 
         } catch (Exception e) {
-            Debug.trace("Network.disconnect exception " + e);
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Network.disconnect exception "), e);
         }
     }
 
@@ -133,6 +128,7 @@ public class ConsoleNetwork extends Network {
     public String getAddress() {
         return address;
     }
+
 
     protected Receiver getReceiver() {
         return receiver;
@@ -149,5 +145,4 @@ public class ConsoleNetwork extends Network {
     public void setUploading(boolean uploading) {
         this.uploading = uploading;
     }
-
 }

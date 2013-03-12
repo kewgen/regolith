@@ -1,6 +1,5 @@
 package com.geargames.graphics.opengl;
 
-import com.geargames.Debug;
 import com.geargames.Manager;
 import com.geargames.common.Port;
 import com.geargames.common.Render;

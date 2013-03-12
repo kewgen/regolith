@@ -47,9 +47,9 @@ public abstract class Network {
     public DataMessage getAsynchronousMessageByType(short type) {
         getMessageLock().lock();
         DataMessage dataMessage = null;
-        for(int i = 0; i < asynchronousMessages.size(); i++){
-            dataMessage = (DataMessage)asynchronousMessages.get(i);
-            if(dataMessage.getMessageType() == type){
+        for (int i = 0; i < asynchronousMessages.size(); i++) {
+            dataMessage = (DataMessage) asynchronousMessages.get(i);
+            if (dataMessage.getMessageType() == type) {
                 asynchronousMessages.removeElementAt(i);
                 break;
             }
@@ -61,9 +61,9 @@ public abstract class Network {
 
     public void addAsynchronousMessage(DataMessage dataMessage) {
         getMessageLock().lock();
-        for(int i =0; i< asynchronousMessages.size(); i++){
-            DataMessage message = (DataMessage)asynchronousMessages.get(i);
-            if(message.getMessageType() == dataMessage.getMessageType()){
+        for (int i = 0; i < asynchronousMessages.size(); i++) {
+            DataMessage message = (DataMessage) asynchronousMessages.get(i);
+            if (message.getMessageType() == dataMessage.getMessageType()) {
                 asynchronousMessages.setElementAt(dataMessage, i);
                 getMessageLock().release();
                 return;

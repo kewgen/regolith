@@ -418,7 +418,7 @@ public class ServerDBTest {
         battleTypes.setBattleTypes(new LinkedList<BattleType>());
 
         BattleType battleType = new TrainingBattle();
-        battleType.setName("1:1");
+        battleType.setName("1x1");
         battleType.setScores((byte) 5);
         battleType.setAllianceAmount((short)2);
         battleType.setAllianceSize((short)1);
@@ -426,7 +426,7 @@ public class ServerDBTest {
         battleTypes.add(battleType);
 
         battleType = new TrainingBattle();
-        battleType.setName("1:1:1");
+        battleType.setName("1x1x1");
         battleType.setScores((byte) 10);
         battleType.setAllianceAmount((short)3);
         battleType.setAllianceSize((short)1);
@@ -434,7 +434,7 @@ public class ServerDBTest {
         battleTypes.add(battleType);
 
         battleType = new TrainingBattle();
-        battleType.setName("1+1:1+1");
+        battleType.setName("2x2");
         battleType.setScores((byte) 15);
         battleType.setAllianceAmount((short)2);
         battleType.setAllianceSize((short)2);

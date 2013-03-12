@@ -12,44 +12,58 @@
     </option>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53e49276-8e07-4f62-91d8-55d8025a41a5" name="Default" comment="1. Метод onTimer перенесен в новый интерфейс OnTimerListener, добавлены соответствующие исправления в код;&#10;2. Полностью избавились от события Event.EVENT_TICK, теперь все на таймерах;&#10;3. Удалены устаревшие классы Etimer, Ticker;&#10;4. Класс CreateLoginRequest переименован в CreateAccountRequest;&#10;5. Исправлена ошибка в десериализации batch-сообщений;&#10;6. Исправлены и добавлены некоторые комментарии.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../awt/common/com/geargames/common/env/Debug.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../awt/common/com/geargames/common/env/SystemEnvironment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/ConsoleDebug.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/androidTest/androidTest.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/androidTest/gen/com/example/Q1.java" />
-      <change type="DELETED" beforePath="D:\Projects\awt\console\com\geargames\Debug.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/android/gg.android.iml" afterPath="$PROJECT_DIR$/../awt/android/gg.android.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/Application.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/Application.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/PopUp.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/PopUp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/cinematics/MovingObject.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/cinematics/MovingObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PButton.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PButton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PGradualSpinButton.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PGradualSpinButton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/timers/TimerManager.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/timers/TimerManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/LinearVanishingStrategy.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/LinearVanishingStrategy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/TextHelper.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/TextHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/motions/CenteredElasticInertMotionListener.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/motions/CenteredElasticInertMotionListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/motions/ElasticInertMotionListener.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/motions/ElasticInertMotionListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/motions/InertMotionListener.java" afterPath="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/motions/InertMotionListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/common/com/geargames/common/Graphics.java" afterPath="$PROJECT_DIR$/../awt/common/com/geargames/common/Graphics.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/common/com/geargames/common/Render.java" afterPath="$PROJECT_DIR$/../awt/common/com/geargames/common/Render.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/common/com/geargames/common/packer/PFrame.java" afterPath="$PROJECT_DIR$/../awt/common/com/geargames/common/packer/PFrame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/common/com/geargames/common/packer/PManager.java" afterPath="$PROJECT_DIR$/../awt/common/com/geargames/common/packer/PManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/Logger.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/Logger.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/MIDlet.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/MIDlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/Main.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/Recorder.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/Recorder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/forms/Notification.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/forms/Notification.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/forms/SystemDialog.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/forms/SystemDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/media/Pool.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/media/Pool.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/media/SoundPlayer.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/media/SoundPlayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/network/SendHTTP.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/network/SendHTTP.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/packer/Canvas.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/packer/Canvas.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/packer/Emitter.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/packer/Emitter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../awt/console/com/geargames/packer/Graphics.java" afterPath="$PROJECT_DIR$/../awt/console/com/geargames/packer/Graphics.java" />
+    <list default="true" id="53e49276-8e07-4f62-91d8-55d8025a41a5" name="Default" comment="Коммит для исправления ошибки при pull-инге.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_port/images/interface_5.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/packer/PRegolithUnit.java" />
+      <change type="DELETED" beforePath="D:\Projects\regolith\res\loc_fence.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\regolith\res\loc_ground.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\regolith\res\unit_1.png" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\regolith\res\unit_fire.png" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/images/head_1.png" afterPath="$PROJECT_DIR$/_port/images/head_1.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/images/interface_2.png" afterPath="$PROJECT_DIR$/_port/images/interface_2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/images/weapon_1.png" afterPath="$PROJECT_DIR$/_port/images/weapon_1.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/images/weapon_2.png" afterPath="$PROJECT_DIR$/_port/images/weapon_2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/packer_320_480_full/d0" afterPath="$PROJECT_DIR$/_port/packer_320_480_full/d0" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/packer_320_480_full/i0" afterPath="$PROJECT_DIR$/_port/packer_320_480_full/i0" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/sys.pack" afterPath="$PROJECT_DIR$/_port/sys.pack" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/d0" afterPath="$PROJECT_DIR$/res/d0" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/i0" afterPath="$PROJECT_DIR$/res/i0" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/packer_320_480_full/Graph.java" afterPath="$PROJECT_DIR$/_port/packer_320_480_full/Graph.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/client.iml" afterPath="$PROJECT_DIR$/client/client.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/RemoteFrameLoader.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/RemoteFrameLoader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Graph.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Graph.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Loader.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Loader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/TablesLoader.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/TablesLoader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battleCreate/PBattleCreatePanel.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battleCreate/PBattleCreatePanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleButtons.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleButtons.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleListItem.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleListItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleListItemVector.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleListItemVector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattlesList.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattlesList.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PHorizontalAccountWarriorItemVector.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PHorizontalAccountWarriorItemVector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PPlayerButton.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PPlayerButton.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/menues/BagVerticalTackleItemsVector.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/menues/BagVerticalTackleItemsVector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/menues/StoreHouseVerticalTackleItemsVector.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/menues/StoreHouseVerticalTackleItemsVector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/warrior/WarriorDrawablePPanel.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/warrior/WarriorDrawablePPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Network.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Network.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Receiver.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Receiver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Sender.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Sender.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/packer/PUnitStub.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/packer/PUnitStub.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientGetFrameAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientGetFrameAnswer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientShootAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientShootAnswer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/units/battle/ClientBattle.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/units/battle/ClientBattle.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Graphics.java" afterPath="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Graphics.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conjunction/conjunction.iml" afterPath="$PROJECT_DIR$/conjunction/conjunction.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java" afterPath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" afterPath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" afterPath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.main/testsrc/com/geargames/regolith/ServerDBTest.java" afterPath="$PROJECT_DIR$/server.main/testsrc/com/geargames/regolith/ServerDBTest.java" />
     </list>
     <ignored path="regolith.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -124,11 +138,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MenuTest.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MenuTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="48" selection-start="283" selection-end="283" vertical-scroll-proportion="0.18715596">
-              <folding />
+            <state line="6" column="45" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -136,7 +152,7 @@
       <file leaf-file-name="BattleCreationTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="233" column="82" selection-start="9672" selection-end="9672" vertical-scroll-proportion="0.0">
+            <state line="238" column="82" selection-start="9881" selection-end="9881" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -223,11 +239,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Application.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Application.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="195" column="32" selection-start="6091" selection-end="6091" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="258" column="84" selection-start="9038" selection-end="9102" vertical-scroll-proportion="0.6165413">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -242,6 +260,7 @@
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
+        <option value="abarakov &lt;abarakovДемка для андроида.geargames@gmail.com&gt;" />
         <option value="abarakov &lt;abarakov.geargames@gmail.com&gt;" />
         <option value="abarakov &lt;abarakov.geargames@gmail.comе " />
       </list>
@@ -252,7 +271,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/BatchAnswer.java" />
         <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/BatchMessageManager.java" />
         <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" />
         <option value="$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PGradualSpinButton.java" />
@@ -264,10 +282,11 @@
         <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/units/map/BattleScreen.java" />
         <option value="$PROJECT_DIR$/client/testsrc/com/geargames/regolith/SynchronizationTest.java" />
         <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Event.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
         <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Graphics.java" />
         <option value="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/LinearVanishingStrategy.java" />
         <option value="$PROJECT_DIR$/../awt/awt/com/geargames/awt/timers/TimerManager.java" />
+        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" />
+        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
       </list>
     </option>
   </component>
@@ -1581,7 +1600,15 @@
       <created>1363094702361</created>
       <updated>1363094702361</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Коммит для исправления ошибки при pull-инге.">
+      <created>1363094858090</created>
+      <updated>1363094858090</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Демка для андроида">
+      <created>1363095066193</created>
+      <updated>1363095066193</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1671,7 +1698,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Коммит для исправления ошибки при pull-инге." />
+    <option name="LAST_COMMIT_MESSAGE" value="Демка для андроида" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1695,6 +1722,7 @@
     <MESSAGE value="1. Метод onTimer перенесен в новый интерфейс OnTimerListener, добавлены соответствующие исправления в код;&#10;2. Полностью избавились от события Event.EVENT_TICK, теперь все на таймерах;&#10;3. Удалены устаревшие классы Etimer, Ticker;&#10;4. Класс CreateLoginRequest переименован в CreateAccountRequest;&#10;5. Исправлена ошибка в десериализации batch-сообщений;&#10;6. Исправлены и добавлены некоторые коментарии." />
     <MESSAGE value="Пустой коммит" />
     <MESSAGE value="Коммит для исправления ошибки при pull-инге." />
+    <MESSAGE value="Демка для андроида" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1704,13 +1732,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/common/src/com/geargames/regolith/serializers/DeSerializedMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="16" selection-start="265" selection-end="265" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientDeferredAnswer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="31" column="19" selection-start="852" selection-end="852" vertical-scroll-proportion="0.0">
@@ -1760,11 +1781,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="195" column="32" selection-start="6091" selection-end="6091" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PButton.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="20" column="22" selection-start="810" selection-end="810" vertical-scroll-proportion="0.0">
@@ -1811,8 +1827,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="48" selection-start="283" selection-end="283" vertical-scroll-proportion="0.18715596">
+        <state line="6" column="45" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="19" selection-start="334" selection-end="334" vertical-scroll-proportion="0.21834862">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="258" column="84" selection-start="9038" selection-end="9102" vertical-scroll-proportion="0.6165413">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

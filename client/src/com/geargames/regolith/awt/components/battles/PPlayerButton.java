@@ -66,6 +66,10 @@ public class PPlayerButton extends PRadioButton {
         initiated = false;
     }
 
+    /**
+     * Номер боевого союза.
+     * @return
+     */
     public int getNumber() {
         return number;
     }

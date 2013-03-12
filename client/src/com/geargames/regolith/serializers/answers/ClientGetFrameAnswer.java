@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.Debug;
+import com.geargames.ConsoleDebug;
+import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.packer.PFrame;
 import com.geargames.packer.Image;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
@@ -25,13 +26,12 @@ public class ClientGetFrameAnswer extends ClientDeSerializedMessage {
         byte[] data = SimpleDeserializer.deserializeBytes(buffer);
         try {
             Image image = Image.createImage(data,0,data.length);
-            PFrame frame = new PFrame(0,0,image.getWidth(),image.getHeight());
+            frame = new PFrame(0,0,image.getWidth(),image.getHeight());
             frame.setImage(image);
-            frame.setBid(id);
             frame.setPid(id);
         } catch (IOException e) {
-            Debug.log(com.geargames.common.String.valueOfC("Ошибка при считывании серверной картинки"));
-            Debug.logEx(e);
+            SystemEnvironment.getInstance().getDebug().log(com.geargames.common.String.valueOfC("Ошибка при считывании серверной картинки"));
+            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
         }
     }
 }

@@ -1,8 +1,6 @@
 package com.geargames.regolith.packer;
 
 import com.geargames.common.Graphics;
-import com.geargames.common.packer.IndexObject;
-import com.geargames.common.packer.PObject;
 import com.geargames.common.packer.PUnit;
 
 /**
