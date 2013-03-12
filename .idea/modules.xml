@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/androidTest/androidTest.iml" filepath="$PROJECT_DIR$/androidTest/androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/conjunction/conjunction.iml" filepath="$PROJECT_DIR$/conjunction/conjunction.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../awt/android/gg.android.iml" filepath="$PROJECT_DIR$/../awt/android/gg.android.iml" />
       <module fileurl="file://$PROJECT_DIR$/../awt/awt/gg.awt.console.iml" filepath="$PROJECT_DIR$/../awt/awt/gg.awt.console.iml" />
       <module fileurl="file://$PROJECT_DIR$/../awt/common/gg.common.iml" filepath="$PROJECT_DIR$/../awt/common/gg.common.iml" />
       <module fileurl="file://$PROJECT_DIR$/../awt/console/gg.console.iml" filepath="$PROJECT_DIR$/../awt/console/gg.console.iml" />

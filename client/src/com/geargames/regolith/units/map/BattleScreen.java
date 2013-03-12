@@ -1,5 +1,7 @@
 package com.geargames.regolith.units.map;
 
+import com.geargames.awt.Eventable;
+import com.geargames.awt.timers.OnTimerListener;
 import com.geargames.regolith.Port;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
@@ -21,7 +23,7 @@ import java.util.Vector;
  * User: mkutuzov
  * Date: 13.02.12
  */
-public class BattleScreen {
+public class BattleScreen extends Eventable implements OnTimerListener {
     public static final int GROUNR_WIDTH = 348;
     public static final int GROUNR_HEIGHT = 174;
     public static final int HORIZONTAL_DIAGONAL = 116;
@@ -247,6 +249,13 @@ public class BattleScreen {
         setCenter(pair.getX(), pair.getY());
     }
 
+    public void onTimer(int timerId) {
+        //todo: Реализовать функциональноть, стартующую и останавливающую таймер
+        for (int i = 0; i < steps.size(); i++) {
+            ((Step) steps.elementAt(i)).onTick();
+        }
+    }
+
     public boolean onEvent(int code, int param, int x, int y) {
         switch (code) {
             case Event.EVENT_KEY_UP:
@@ -254,11 +263,6 @@ public class BattleScreen {
                 break;
             case Event.EVENT_KEY_DOWN:
                 showGrid = true;
-                break;
-            case Event.EVENT_TICK:
-                for (int i = 0; i < steps.size(); i++) {
-                    ((Step) steps.elementAt(i)).onTick();
-                }
                 break;
             case Event.EVENT_TOUCH_PRESSED:
                 touchedX = x;

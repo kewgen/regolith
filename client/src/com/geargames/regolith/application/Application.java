@@ -23,8 +23,7 @@ import java.io.DataOutputStream;
 
 public final class Application extends com.geargames.common.Application {
 
-    @Deprecated
-    public static final int mult_fps = /*@MULT_FPS@*/2/*END*/;//1 2 4 = 6 12 24
+    public static final int FPS_MAXIMUM = 30;
     private final java.lang.String RMS_SETTINGS = "regolith";
 
     private Loader loader;
@@ -263,12 +262,8 @@ public final class Application extends com.geargames.common.Application {
                 Manager.paused(10);
                 return;
             }
-            Environment environment = SystemEnvironment.getInstance().getEnvironment();
-            long time_delay_ai_start = environment.currentTimeMillis();
-            TimerManager.update();
-            Ticker.processTickers();
             eventProcess();
-            panels.onEvent(Event.EVENT_TICK, 0, 0, 0);
+            TimerManager.update();
 
             draw(graphicsBuffer);
 
@@ -281,8 +276,7 @@ public final class Application extends com.geargames.common.Application {
                     Manager.paused(5);
                 }
             }
-            int fps = 8 * mult_fps;
-            manageFPS(fps);
+            manageFPS(FPS_MAXIMUM);
         } catch (Exception e) {
             ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
         }

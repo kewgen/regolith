@@ -22,7 +22,7 @@ public abstract class SerializedMessage {
     protected abstract MicroByteBuffer getBuffer();
 
     /**
-     * В этом методе сериализуется содердимое сообщения.
+     * В этом методе сериализуется содержимое сообщения.
      * @param buffer
      */
     public abstract void serialize(MicroByteBuffer buffer);

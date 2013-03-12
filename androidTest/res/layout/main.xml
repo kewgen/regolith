@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:stretchColumns="1"
+        android:padding="10dip"
+        >
+<TableRow android:paddingBottom="5dip">
+<TextView
+        android:text="@string/rows_title"
+        android:paddingRight="10dip"
+        android:gravity="right"
+        android:textStyle="bold"
+        />
+<EditText
+        android:id="@+id/RowsEditor"
+        android:text="35"
+        android:singleLine="true"
+        android:numeric="integer"
+        />
+</TableRow>
+<TableRow android:paddingBottom="5dip">
+<TextView
+        android:text="@string/columns_title"
+        android:paddingRight="10dip"
+        android:gravity="right"
+        android:textStyle="bold"
+        />
+<EditText
+        android:id="@+id/ColumnsEditor"
+        android:text="25"
+        android:singleLine="true"
+        android:numeric="integer"
+        />
+</TableRow>
+<TableRow android:paddingBottom="5dip">
+<TextView
+        android:text="@string/cells_title"
+        android:paddingRight="10dip"
+        android:gravity="right"
+        android:textStyle="bold"
+        />
+<EditText
+        android:id="@+id/CellsEditor"
+        android:text="100"
+        android:singleLine="true"
+        android:numeric="integer"
+        />
+</TableRow>
+<TableRow>
+<Button
+        android:id="@+id/RunButton"
+        android:text="@string/run_title"
+        android:textStyle="bold"
+        android:layout_span="2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+</TableRow>
+
+</TableLayout>

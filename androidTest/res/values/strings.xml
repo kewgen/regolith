@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">androidTest</string>
+    <string name="run_title">Run!</string>
+    <string name="columns_title">Columns:</string>
+    <string name="rows_title">Rows:</string>
+    <string name="cells_title">Cells:</string>
+</resources>

@@ -58,7 +58,7 @@ public final class Receiver extends Thread {
     public void run() {
         init();
 
-        short type = 0;    // ID сообщения
+        short type = 0;  // ID сообщения
         int length = 0;  // Длина данных сообщения
 
         try {

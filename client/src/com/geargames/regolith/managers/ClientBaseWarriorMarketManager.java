@@ -10,11 +10,9 @@ import com.geargames.regolith.serializers.requests.ClientJoinBaseWarriorsRequest
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
- * Created with IntelliJ IDEA.
- * User: olga
+ * User: mikhail v. kutuzov
  * Date: 02.07.12
  * Time: 9:45
- * To change this template use File | Settings | File Templates.
  */
 public class ClientBaseWarriorMarketManager {
     private ClientConfiguration configuration;
@@ -23,6 +21,9 @@ public class ClientBaseWarriorMarketManager {
         this.configuration = configuration;
     }
 
+    /**
+     * Послать сообщение о найме текущим аккаунтом списка бойцов.
+     */
     public ClientDeferredAnswer hireWarrior(Warrior[] warriors) {
         MessageLock messageLock = configuration.getMessageLock();
         messageLock.setMessageType(Packets.JOIN_BASE_WARRIORS_TO_ACCOUNT);
