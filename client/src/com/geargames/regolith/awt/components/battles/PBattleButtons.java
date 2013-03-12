@@ -4,6 +4,7 @@ import com.geargames.awt.components.PContentPanel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
+import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
@@ -16,7 +17,7 @@ import java.util.Hashtable;
  */
 public class PBattleButtons {
     private Battle battle;
-    private ArrayList activeBattles;
+    private ArrayList activeBattleButtons;
 
     private ArrayList type1x1x1;
     private ArrayList type1x1;
@@ -116,12 +117,12 @@ public class PBattleButtons {
      * @param battle
      */
     public void setBattle(Battle battle) {
-        if (activeBattles != null) {
-            visibility(activeBattles, false);
+        if (activeBattleButtons != null) {
+            visibility(activeBattleButtons, false);
         }
         ArrayList list = (ArrayList) table.get(battle.getBattleType().getName());
         visibility(list, true);
-        activeBattles = list;
+        activeBattleButtons = list;
 
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
@@ -129,7 +130,7 @@ public class PBattleButtons {
                 BattleGroupCollection groups = alliances[i].getAllies();
                 for (int j = 0; j < groups.size(); j++) {
                     if (groups.get(j) != null) {
-                        ((PPlayerButton) activeBattles.get(i + j)).setAccount(groups.get(j).getAccount());
+                        ((PPlayerButton) activeBattleButtons.get(i + j)).setAccount(groups.get(j).getAccount());
                     }
                 }
             }
@@ -146,12 +147,15 @@ public class PBattleButtons {
      * @param allianceNumber номер союза из которого берётся аккаунт
      * @param groupNumber номер боевой группы внутри союза из которой берётся аккаунт
      */
-    public void resetButton(int allianceNumber, int groupNumber) {
-        int size = battle.getBattleType().getGroupSize();
-        ((PPlayerButton) activeBattles.get(allianceNumber*size + groupNumber))
+    public void resetButtonAccount(int allianceNumber, int groupNumber) {
+        ((PPlayerButton) activeBattleButtons.get(allianceNumber*battle.getBattleType().getGroupSize() + groupNumber))
                 .setAccount(battle.getAlliances()[allianceNumber].getAllies().get(groupNumber).getAccount());
     }
 
+
+    public Account getButtonAccount(int allianceNumber, int groupNumber){
+        return ((PPlayerButton) activeBattleButtons.get(allianceNumber*battle.getBattleType().getGroupSize() + groupNumber)).getAccount();
+    }
 
 
     private void visibility(ArrayList list, boolean visible) {

@@ -6,5 +6,13 @@ package com.geargames.regolith.units.battle;
  * Time: 11:38
  */
 public class ClientBattle extends Battle {
+    private boolean updated;
 
+    public boolean isUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(boolean updated) {
+        this.updated = updated;
+    }
 }

@@ -1,17 +1,17 @@
 package com.geargames.regolith.application;
 
 
-import com.geargames.Debug;
+import com.geargames.ConsoleDebug;
 import com.geargames.Recorder;
 import com.geargames.awt.timers.TimerManager;
 import com.geargames.common.String;
 import com.geargames.common.env.Environment;
+import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.packer.PFont;
 import com.geargames.common.packer.PFontComposite;
 import com.geargames.common.packer.PFontManager;
 import com.geargames.common.util.ArrayByte;
 import com.geargames.common.util.ArrayIntegerDual;
-import com.geargames.env.ConsoleEnvironment;
 import com.geargames.packer.Graphics;
 import com.geargames.packer.Image;
 import com.geargames.regolith.Port;
@@ -21,8 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.util.Enumeration;
-import java.util.Vector;
 
 
 /*ObjC uncomment*///#import "Map.h"
@@ -74,16 +72,8 @@ public final class Application extends com.geargames.awt.Application {
     private PFont font11;
     private PFont baseFont;
 
-    private Environment environment;
     private PRegolithPanelManager panels;
 
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
-    public Environment getEnvironment() {
-        return environment;
-    }
 
     public PFont getFont5() {
         return font5;
@@ -128,7 +118,6 @@ public final class Application extends com.geargames.awt.Application {
     public static Application getInstance() {
         if (instance == null) {
             instance = new Application();
-            instance.setEnvironment(ConsoleEnvironment.getInstance());
         }
         return instance;
     }
@@ -147,7 +136,7 @@ public final class Application extends com.geargames.awt.Application {
             if (splash == null) {
                 splash = Image.createImage(String.valueOfC("/s1.png"), Manager.getInstance());
             }
-            graphicsBuffer.drawImage(splash, splash.getWidth() / 2, splash.getHeight() / 2, Graphics.HCENTER | Graphics.VCENTER);
+            graphicsBuffer.drawImage(splash, splash.getWidth() / 2, splash.getHeight() / 2);
             graphicsBuffer.setColor(0);
             //todo установить фонт!
             graphicsBuffer.drawString(String.valueOfC(loadLog), 5, Port.getH() - 20, 0);
@@ -155,26 +144,27 @@ public final class Application extends com.geargames.awt.Application {
             Thread.yield();
             Manager.paused(10);
         } catch (Exception ex) {
-            Debug.logEx(ex);
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(ex);
         }
     }
 
     public void createScreenBuffer(int w, int h) {
         try {
             i_buf = Image.createImage(w, h);
-            graphicsBuffer = i_buf.getGraphics();
+            graphicsBuffer = new Graphics(i_buf.getImage());
             if (render != null) {
                 getGraphics().setRender(render);
             }
         } catch (Exception ex) {
-            Debug.logEx(ex);
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(ex);
         }
     }
 
     public void loading() {
+        Environment environment = SystemEnvironment.getInstance().getEnvironment();
         tSleep = environment.currentTimeMillis();
 
-        Debug.log(String.valueOfC("Memory total,free:").concatL(environment.totalMemory()).concatC(",").concatL(environment.freeMemory()));
+        SystemEnvironment.getInstance().getDebug().log(String.valueOfC("Memory total,free:").concatL(environment.totalMemory()).concatC(",").concatL(environment.freeMemory()));
 
         loader = new Loader(Manager.getInstance());
         render = new Render();
@@ -234,19 +224,19 @@ public final class Application extends com.geargames.awt.Application {
     }
 
     protected void onStop(boolean correct) {
-        Debug.log(String.valueOfC("onStop.disconnect"));
+        SystemEnvironment.getInstance().getDebug().log(String.valueOfC("onStop.disconnect"));
         if (correct) {
             saveOptionsRMS();
         }
-        Debug.trace("Application.onStop");
+        SystemEnvironment.getInstance().getDebug().trace(String.valueOfC("Application.onStop"));
     }
 
     public void destroy(boolean correct) {
-        Debug.log(String.valueOfC("destroy ").concatC(correct ? "correct" : "uncorrect"));
+        SystemEnvironment.getInstance().getDebug().log(String.valueOfC("destroy ").concatC(correct ? "correct" : "uncorrect"));
         Manager.getInstance().destroy(correct);
     }
 
-    private final java.lang.String RMS_SETTINGS = "pfp";
+    private final java.lang.String RMS_SETTINGS = "regolith";
 
     public boolean saveOptionsRMS() {
         boolean res = false;
@@ -265,9 +255,9 @@ public final class Application extends com.geargames.awt.Application {
 
             res = Recorder.RMSStoreSave(RMS_SETTINGS, baos, false);
 
-            Debug.log(String.valueOfC("Rms.Prefs saved: vibra:").concatC(vibrationEnabled ? "On" : "Off").concatC(" sound:").concatC(soundEnabled ? "On" : "Off").concatC(" userId:").concatI(userId).concatC(" clientId:").concatI(clientId));
+            SystemEnvironment.getInstance().getDebug().log(String.valueOfC("Rms.Prefs saved: vibra:").concatC(vibrationEnabled ? "On" : "Off").concatC(" sound:").concatC(soundEnabled ? "On" : "Off").concatC(" userId:").concatI(userId).concatC(" clientId:").concatI(clientId));
         } catch (Exception e) {
-            Debug.trace(String.valueOfC("Save prefs "), e);
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("Save prefs "), e); ;
             res = false;
         } finally {
             try {
@@ -278,7 +268,7 @@ public final class Application extends com.geargames.awt.Application {
                     baos.close();
                 }
             } catch (Exception e) {
-                Debug.logEx(e);
+                ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
             }
             return res;
         }
@@ -302,11 +292,11 @@ public final class Application extends com.geargames.awt.Application {
                         userMidletId = dis.readInt();
                         res = true;
 
-                        Debug.log(String.valueOfC("Rms.Prefs load:"));
-                        Debug.log(String.valueOfC(" id:").concatI(userId));
+                        SystemEnvironment.getInstance().getDebug().log(String.valueOfC("Rms.Prefs load:"));
+                        SystemEnvironment.getInstance().getDebug().log(String.valueOfC(" id:").concatI(userId));
                     }
                 } catch (Exception e) {
-                    Debug.trace(String.valueOfC("RMSLoad prefs "), e);
+                    ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad prefs "), e);
                     Recorder.RMSStoreClean(RMS_SETTINGS);
                     return false;
                 }
@@ -318,7 +308,7 @@ public final class Application extends com.geargames.awt.Application {
             }
             return res;
         } catch (Exception e) {
-            Debug.trace(String.valueOfC("RMSLoad stream "), e);
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad stream "), e);
             return false;
         }
     }
@@ -335,6 +325,7 @@ public final class Application extends com.geargames.awt.Application {
                 Manager.paused(10);
                 return;
             }
+            Environment environment = SystemEnvironment.getInstance().getEnvironment();
             long time_delay_ai_start = environment.currentTimeMillis();
             TimerManager.update();
             Ticker.processTickers();
@@ -352,7 +343,6 @@ public final class Application extends com.geargames.awt.Application {
                 Manager.getInstance().repaintStart();
                 Thread.yield();
                 while (is_drawing) {
-                    Thread.yield();
                     Manager.paused(5);
                 }
             }
@@ -360,7 +350,7 @@ public final class Application extends com.geargames.awt.Application {
             manageFPS(fps);
             globalTick++;
         } catch (Exception e) {
-            Debug.logEx(e);
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
         }
     }
 
@@ -372,6 +362,7 @@ public final class Application extends com.geargames.awt.Application {
     public void manageFPS(int fps) {
         if (fps != 0) {
             int timeFPS = (1000 / fps);//задержка для установленного фпс
+            Environment environment = SystemEnvironment.getInstance().getEnvironment();
             long timeElapsed = environment.currentTimeMillis() - tSleep;//реальная задержка
             long paused = timeFPS - timeElapsed;//делаем затержку для выдерживания фпс
             if (timeElapsed <= 0) timeElapsed = 1;
@@ -395,15 +386,6 @@ public final class Application extends com.geargames.awt.Application {
             arr_side = true;
         }
     }
-
-//    public static boolean isTick() {
-//        return (globalTick % mult_fps == 0) ? true : false;
-//    }
-//
-//    public static int getTick() {
-//        return globalTick;
-//    }
-
 
     private void draw(Graphics g) {
         g.setColor(0xffffff);

@@ -1,6 +1,6 @@
 package com.geargames.regolith.application;
 
-import com.geargames.Debug;
+import com.geargames.common.env.SystemEnvironment;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -31,7 +31,7 @@ public class Ticker {
                     ticker.setTickCur(0);
                 } else {
                     if (DEBUG_T) {
-                        Debug.log(com.geargames.common.String.valueOfC("Ticker.Remove.").concatC(toString(ticker)));
+                        SystemEnvironment.getInstance().getDebug().log(com.geargames.common.String.valueOfC("Ticker.Remove.").concatC(toString(ticker)));
                     }
                     tickers.removeElement(ticker);
                 }
@@ -60,7 +60,7 @@ public class Ticker {
             Ticker.resetTicker(id);
         }
         if (DEBUG_T) {
-            Debug.log(com.geargames.common.String.valueOfC("Ticker.Set.").concatC(toString(ticker)));
+            SystemEnvironment.getInstance().getDebug().log(com.geargames.common.String.valueOfC("Ticker.Set.").concatC(toString(ticker)));
         }
     }
 

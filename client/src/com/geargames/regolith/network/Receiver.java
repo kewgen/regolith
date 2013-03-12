@@ -1,6 +1,9 @@
 package com.geargames.regolith.network;
 
-import com.geargames.Debug;
+import com.geargames.ConsoleDebug;
+import com.geargames.common.*;
+import com.geargames.common.String;
+import com.geargames.common.env.SystemEnvironment;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
@@ -99,12 +102,12 @@ public final class Receiver extends Thread {
                     dataMessage.setMessageType(type);
                     network.addAsynchronousMessage(dataMessage);
                 }
-                Debug.trace("Receiver: received message, type:" + type + "(" + (type & 0xff) + "), len:" + length + ", res:" + res);
+                SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Receiver: received message, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length).concatC(", res:").concatI(res));
                 if (length != res) {//считанное колво байт не равно заявленной длине!
-                    Debug.trace("Error received len, type:" + type + "(" + (type & 0xff) + "), len:" + length + " != res:" + res);
+                    SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Error received len, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length).concatC(" != res:").concatI(res));
                     continue;
                 } else if (res == -1) {//Receiver: received message, type:-19(237), len:42309
-                    Debug.trace("Error received, type:" + type + "(" + (type & 0xff) + "), len:" + length);
+                    SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Error received, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length));
                     continue;
                 }
 
@@ -116,9 +119,10 @@ public final class Receiver extends Thread {
                 Manager.paused(2000);
             }
             e.printStackTrace();
-            Debug.trace("Receiver Exception: " + " " + e);
-            if (checkErrors())
+            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("Receiver Exception: "), e);
+            if (checkErrors()){
                 return;
+            }
         }
     }
 
@@ -129,7 +133,7 @@ public final class Receiver extends Thread {
 
     private boolean checkErrors() {
         if (errors > NETWORK_ERRORS_THRESHOLD) {
-            Debug.trace("Receiver: too many errors, disconnecting");
+            SystemEnvironment.getInstance().getDebug().trace(String.valueOfC("Receiver: too many errors, disconnecting"));
             network.disconnect();
             return true;
         }
@@ -156,7 +160,7 @@ public final class Receiver extends Thread {
             for (; i < len; i++) {
                 c = dis.read();
                 if (c == -1) {
-                    Debug.trace("    read, c:" + c + "(" + i + ")");
+                    SystemEnvironment.getInstance().getDebug().trace(String.valueOfC(" read, c:").concatI(c).concatC("(").concatI(i).concatC(")"));
                 }
                 bytes[off + i] = (byte) c;
             }
