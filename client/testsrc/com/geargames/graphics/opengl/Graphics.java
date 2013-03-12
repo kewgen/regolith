@@ -1,4 +1,4 @@
-package com.geargames.opengl;
+package com.geargames.graphics.opengl;
 
 import com.geargames.Debug;
 import com.geargames.Manager;

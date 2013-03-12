@@ -55,12 +55,7 @@ public class BatchMessageManager {
      * @return если ответ пришёл вернуть true
      */
     public boolean retrieve(int count) {
-        if (deferredAnswer.retrieve(count)) {
-            answer.deSerialize();
-            return true;
-        } else {
-            return false;
-        }
+        return deferredAnswer.retrieve(count);
     }
 
     public BatchAnswer getAnswer() {

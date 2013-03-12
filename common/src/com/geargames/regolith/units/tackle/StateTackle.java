@@ -1,7 +1,5 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.tackle.AbstractTackle;
-
 /**
  * Любые предметы реального мира.
  * User: mkutuzov
@@ -25,7 +23,7 @@ public abstract class StateTackle extends AbstractTackle {
     }
 
     /**
-     * Состояние прдмета, если это зхначение равно 0 с предметом в бою будут происходить разные неприятности.
+     * Состояние предмета. Если равно 0, то с предметом в бою будут происходить разные неприятности.
      * @return
      */
     public short getState() {
@@ -37,7 +35,7 @@ public abstract class StateTackle extends AbstractTackle {
     }
 
     /**
-     * Крепкость предмета, состояние предмета не может превосходить крепкость.
+     * Прочность предмета. Состояние предмета не может превосходить прочность.
      * @return
      */
     public short getFirmness() {

@@ -98,14 +98,22 @@ public interface Graphics {
     int getScale();
 
     void setScale(int scale);
+    void setScale(int scaleX, int scaleY);
 
     void dropScale();
 
-    void onCache(int len);//включить кеширование картинок
+    void setTranslate(int x, int y);
+
+    void pushState();
+
+    void popState();
+
+//    void onCache(int len);//включить кеширование картинок
 
     void addTexture(Image image);
 
     Image createImage(byte[] array, int i, int data_len) throws IOException;
 
     Image createImage();
+
 }

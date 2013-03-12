@@ -64,10 +64,12 @@ public class BattleCreationTest {
         Login login = new Login();
         login.setName("автор");
         login.setPassword("секрет");
+
         System.out.println("is checking for a login name");
         ClientDeferredAnswer answer = commonManager.checkForName(login.getName());
 
         if (!waitForAnswer(answer)) {
+            System.err.println("Waiting time answer has expired");
             return;
         }
 
@@ -76,12 +78,13 @@ public class BattleCreationTest {
             System.out.println("trying to create an account");
             answer = commonManager.create(login);
             if (!waitForAnswer(answer)) {
+                System.err.println("Waiting time answer has expired");
                 return;
             }
 
             confirm = (ClientConfirmationAnswer) answer.getAnswer();
             if (!confirm.isConfirm()) {
-                System.out.println("could not create the account");
+                System.err.println("could not create the account");
                 return;
             }
         }
@@ -90,6 +93,7 @@ public class BattleCreationTest {
 
         answer = commonManager.login(login);
         if (!waitForAnswer(answer)) {
+            System.err.println("Waiting time answer has expired");
             return;
         }
 
@@ -98,6 +102,8 @@ public class BattleCreationTest {
             System.err.println(loginAnswer.getError());
             return;
         }
+
+        System.out.println("...");
 
         Account account = loginAnswer.getAccount();
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());
@@ -113,7 +119,7 @@ public class BattleCreationTest {
                 Warrior[] warriors = clientConfiguration.getBaseWarriors();
                 byte amount = clientConfiguration.getBaseConfiguration().getInitWarriorsAmount();
                 if (warriors.length < amount) {
-                    System.out.println("An amount of available warriors is not enough");
+                    System.err.println("An amount of available warriors is not enough");
                     return;
                 }
                 Warrior[] initWarriors = new Warrior[amount];
@@ -124,18 +130,19 @@ public class BattleCreationTest {
                 System.out.println("We are trying to hire warriors");
                 answer = baseWarriorMarketManager.hireWarrior(initWarriors);
                 if (!waitForAnswer(answer)) {
+                    System.err.println("Waiting time answer has expired");
                     return;
                 }
 
                 ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();
-                ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
                 if (clientJoinBaseWarriorsAnswer.isSuccess()) {
+                    ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
                     for (Warrior warrior : clientJoinBaseWarriorsAnswer.getWarriors()) {
                         clientWarriorCollection.add(warrior);
                     }
                     account.setWarriors(clientWarriorCollection);
                 } else {
-                    System.out.println("could not get a set base warriors");
+                    System.err.println("could not get a set base warriors");
                     return;
                 }
             }
@@ -161,7 +168,7 @@ public class BattleCreationTest {
 
         messanger.commitMessages();
 
-        Assert.assertTrue(!messanger.retrieve(1000));
+        Assert.assertTrue(messanger.retrieve(1000));
 
         ArrayList answers = messanger.getAnswer().getAnswers();
 
@@ -229,6 +236,7 @@ public class BattleCreationTest {
         while (true) {
             answer = battleCreationManager.startBattle(account);
             if (!waitForAnswer(answer)) {
+                System.err.println("Waiting time answer has expired");
                 return;
             }
 
@@ -238,10 +246,10 @@ public class BattleCreationTest {
             }
 
             try {
-                System.out.print("the battle could not be started.");
+                System.out.println("the battle could not be started.");
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                System.err.print("could not start a battle and was interrupted.");
+                System.err.println("could not start a battle and was interrupted.");
                 return;
             }
         }
@@ -257,6 +265,7 @@ public class BattleCreationTest {
         answer = battleServiceManager.login(battle, alliance);
 
         if (!waitForAnswer(answer)) {
+            System.err.println("Waiting time answer has expired");
             return;
         }
 
@@ -276,9 +285,12 @@ public class BattleCreationTest {
             }
         }
 
+        System.out.println("...");
+
         answer = battleServiceManager.move(warriors[0], (short) 10, (short) 10);
 
         if (!waitForAnswer(answer)) {
+            System.err.println("Waiting time answer has expired");
             return;
         }
 

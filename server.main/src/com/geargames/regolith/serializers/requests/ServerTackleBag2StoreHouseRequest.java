@@ -28,9 +28,9 @@ public class ServerTackleBag2StoreHouseRequest extends MainOneToClientRequest {
 
             StateTackle tackle = TackleTransitionHelper.moveStateTackleBag2StoreHouse(warrior, number, client.getAccount().getBase().getStoreHouse());
             if (tackle != null && tackle.getId() == tackleId) {
-                return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.TAKE_AMMUNITION_FROM_BAG_PUT_INTO_STORE_HOUSE);
+                return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.TAKE_TACKLE_FROM_BAG_PUT_INTO_STORE_HOUSE);
             } else {
-                return ServerConfirmationAnswer.answerFailure(writeBuffer, Packets.TAKE_AMMUNITION_FROM_BAG_PUT_INTO_STORE_HOUSE);
+                return ServerConfirmationAnswer.answerFailure(writeBuffer, Packets.TAKE_TACKLE_FROM_BAG_PUT_INTO_STORE_HOUSE);
             }
         } else {
             throw new RegolithException();

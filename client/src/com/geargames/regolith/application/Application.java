@@ -265,10 +265,8 @@ public final class Application extends com.geargames.awt.Application {
                 Manager.paused(10);
                 return;
             }
-            TimerManager.update();
-            Ticker.processTickers();
             eventProcess();
-            panels.onEvent(Event.EVENT_TICK, 0, 0, 0);
+            TimerManager.update();
 
             draw(graphicsBuffer);
 

@@ -8,7 +8,7 @@ import com.geargames.regolith.serializers.SimpleDeserializer;
 /**
  * User: mkutuzov
  * Date: 04.07.12
- * Ответ подтверждение успешности выполнения запроса.
+ * Ответное сообщение на запрос. Подтверждение успешности выполнения запроса.
  */
 public class ClientConfirmationAnswer extends ClientDeSerializedMessage {
     private boolean confirm;

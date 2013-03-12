@@ -7,7 +7,7 @@ import com.geargames.regolith.units.tackle.WeaponCategory;
  * Date: 06.02.12
  * Все сущности располагающиеся на клетках сетки карты, должны наследовать этот класс.
   */
-public abstract class Element extends  Entity{
+public abstract class Element extends Entity {
     /**
      * Вернуть идентификатор фрейма для даного объекта карты.
      * @return

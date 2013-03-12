@@ -8,8 +8,9 @@ import com.geargames.regolith.units.tackle.StateTackle;
  *
  */
 public class BagHelper {
+
     /**
-     * Положить в сумку снаряжение.
+     * Положить снаряжение в сумку.
      *
      * @param bag
      * @param tackle
@@ -27,7 +28,7 @@ public class BagHelper {
      * @param number
      * @return
      */
-    public static StateTackle putOut(Bag bag,int number){
+    public static StateTackle putOut(Bag bag, int number){
         StateTackleCollection tackles = bag.getTackles();
         StateTackle tackle = tackles.get(number);
         tackles.remove(number);

@@ -5,11 +5,9 @@ import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
- * Created with IntelliJ IDEA.
- * User: olga
+ * User: mikhail v. kutuzov
  * Date: 09.07.12
  * Time: 17:37
- * To change this template use File | Settings | File Templates.
  */
 public class ClientJoinBaseWarriorsAnswer extends ClientDeSerializedMessage {
     private Warrior[] warriors;

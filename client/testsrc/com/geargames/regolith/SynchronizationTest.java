@@ -117,7 +117,7 @@ public class SynchronizationTest {
 
         screen.moveUser(10,10);
         while (warrior.isMoving()) {
-            screen.onEvent(Event.EVENT_TICK,0,0,0);
+            screen.onTimer(0); //todo: Должен быть запущен таймер штатными средствами
         }
 
         Assert.assertEquals(valO, manager.getObserve());

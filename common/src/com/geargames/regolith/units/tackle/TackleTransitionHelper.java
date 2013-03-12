@@ -101,7 +101,7 @@ public class TackleTransitionHelper {
     }
 
     /**
-     * Переместить кладь из сумки боца warrior на склад
+     * Переместить кладь из сумки бойца warrior на склад
      *
      * @param warrior боец
      * @param number  позиция в сумке

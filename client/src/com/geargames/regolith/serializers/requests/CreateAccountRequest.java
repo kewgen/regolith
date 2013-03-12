@@ -11,10 +11,10 @@ import com.geargames.regolith.units.Login;
  * User: mkutuzov
  * Date: 20.06.12
  */
-public class CreateLoginRequest extends ClientSerializedMessage {
+public class CreateAccountRequest extends ClientSerializedMessage {
     private Login login;
 
-    public CreateLoginRequest(ClientConfiguration configuration, Login login) {
+    public CreateAccountRequest(ClientConfiguration configuration, Login login) {
         super(configuration);
         this.login = login;
     }

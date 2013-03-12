@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers;
 
 import com.geargames.common.util.ArrayList;
+import com.geargames.regolith.Packets;
 
 /**
  * User: mikhail v. kutuzov
@@ -23,7 +24,19 @@ public class BatchAnswer extends ClientDeSerializedMessage {
     protected void deSerialize(MicroByteBuffer buffer) {
         if (answers != null) {
             for (int i = 0; i < answers.size(); i++) {
-                ((ClientDeSerializedMessage) answers.get(i)).deSerialize(buffer);
+                ClientDeSerializedMessage answer = (ClientDeSerializedMessage) answers.get(i);
+//                answer.deSerializeAndCheckHead(buffer) {
+//                    buffer.skip(Packets.HEAD_SIZE);
+                    /*short length = */SimpleDeserializer.deserializeShort(buffer);
+//                    if (length != answer.getRequiredLength()) {
+//                        // error
+//                    }
+                    /*short type = */SimpleDeserializer.deserializeShort(buffer);
+//                    if (type != answer.getRequiredType()) {
+//                        // error
+//                    }
+//                }
+                answer.deSerialize(buffer);
             }
         }
     }
