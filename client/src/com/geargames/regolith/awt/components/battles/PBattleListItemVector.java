@@ -1,6 +1,5 @@
 package com.geargames.regolith.awt.components.battles;
 
-import com.geargames.ConsoleDebug;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;

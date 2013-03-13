@@ -4,22 +4,17 @@ import com.geargames.ConsoleDebug;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.env.ConsoleEnvironment;
 import com.geargames.regolith.managers.*;
-import com.geargames.regolith.network.DataMessage;
-import com.geargames.regolith.network.Network;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.BattleMapHelper;
 import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 /**

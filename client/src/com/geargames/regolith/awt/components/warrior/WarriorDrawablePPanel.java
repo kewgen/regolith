@@ -1,6 +1,5 @@
 package com.geargames.regolith.awt.components.warrior;
 
-import com.geargames.ConsoleDebug;
 import com.geargames.awt.DrawablePPanel;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.util.ArrayList;

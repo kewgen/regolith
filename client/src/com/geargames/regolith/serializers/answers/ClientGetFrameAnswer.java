@@ -1,14 +1,11 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.ConsoleDebug;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.packer.PFrame;
 import com.geargames.packer.Image;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.serializers.MicroByteBuffer;
 import com.geargames.regolith.serializers.SimpleDeserializer;
-
-import java.io.IOException;
 
 /**
  * User: mikhail v. kutuzov
@@ -29,9 +26,8 @@ public class ClientGetFrameAnswer extends ClientDeSerializedMessage {
             frame = new PFrame(0,0,image.getWidth(),image.getHeight());
             frame.setImage(image);
             frame.setPid(id);
-        } catch (IOException e) {
-            SystemEnvironment.getInstance().getDebug().log(com.geargames.common.String.valueOfC("Ошибка при считывании серверной картинки"));
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+        } catch (Exception e) {
+            SystemEnvironment.getInstance().getDebug().exception(com.geargames.common.String.valueOfC("Could not read a server frame"), e);
         }
     }
 }

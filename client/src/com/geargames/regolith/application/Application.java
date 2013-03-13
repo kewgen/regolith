@@ -85,7 +85,7 @@ public final class Application extends com.geargames.common.Application {
             Thread.yield();
             Manager.paused(10);
         } catch (Exception ex) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(ex);
+            SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("A splash drawing problems"), ex);
         }
     }
 
@@ -97,7 +97,7 @@ public final class Application extends com.geargames.common.Application {
                 getGraphics().setRender(render);
             }
         } catch (Exception ex) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(ex);
+            SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("A screen buffer creation"), ex);
         }
     }
 
@@ -199,7 +199,7 @@ public final class Application extends com.geargames.common.Application {
 
             SystemEnvironment.getInstance().getDebug().log(String.valueOfC("Rms.Prefs saved: vibra:").concatC(vibrationEnabled ? "On" : "Off").concatC(" sound:").concatC(soundEnabled ? "On" : "Off").concatC(" userId:").concatI(userId).concatC(" clientId:").concatI(clientId));
         } catch (Exception e) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("Save prefs "), e);
+            SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("Save prefs "), e);
             res = false;
         } finally {
             try {
@@ -210,7 +210,7 @@ public final class Application extends com.geargames.common.Application {
                     baos.close();
                 }
             } catch (Exception e) {
-                ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+                SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("Could not close RMS resources"), e);
             }
             return res;
         }
@@ -238,7 +238,7 @@ public final class Application extends com.geargames.common.Application {
                         SystemEnvironment.getInstance().getDebug().log(String.valueOfC(" id:").concatI(userId));
                     }
                 } catch (Exception e) {
-                    ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad prefs "), e);
+                    SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("RMSLoad prefs "), e);
                     Recorder.RMSStoreClean(RMS_SETTINGS);
                     return false;
                 }
@@ -249,7 +249,7 @@ public final class Application extends com.geargames.common.Application {
             bData.free();
             return res;
         } catch (Exception e) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad stream "), e);
+            SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("RMSLoad stream "), e);
             return false;
         }
     }
@@ -257,29 +257,25 @@ public final class Application extends com.geargames.common.Application {
     // --------------- Main loop ---------------------------------------------------------------------------------------
 
     public void mainLoop() {
-        try {
-            if (Manager.getInstance().isSuspended() || isLoading) {
-                Manager.paused(10);
-                return;
-            }
-            eventProcess();
-            TimerManager.update();
-
-            draw(graphicsBuffer);
-
-            if (true/* || this.equals(manager.getDisplay())*/) {
-                isDrawing = true;
-                /*ObjC uncomment*///is_drawing = false;
-                Manager.getInstance().repaintStart();
-                Thread.yield();
-                while (isDrawing) {
-                    Manager.paused(5);
-                }
-            }
-            manageFPS(FPS_MAXIMUM);
-        } catch (Exception e) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+        if (Manager.getInstance().isSuspended() || isLoading) {
+            Manager.paused(10);
+            return;
         }
+        eventProcess();
+        TimerManager.update();
+
+        draw(graphicsBuffer);
+
+        if (true/* || this.equals(manager.getDisplay())*/) {
+            isDrawing = true;
+                /*ObjC uncomment*///is_drawing = false;
+            Manager.getInstance().repaintStart();
+            Thread.yield();
+            while (isDrawing) {
+                Manager.paused(5);
+            }
+        }
+        manageFPS(FPS_MAXIMUM);
     }
 
     private int arr_tick = 0;

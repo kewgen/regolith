@@ -1,13 +1,11 @@
 package com.geargames.regolith.application;
 
-import com.geargames.ConsoleDebug;
 import com.geargames.common.Port;
 import com.geargames.common.String;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.packer.PManager;
 import com.geargames.common.Graphics;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 
@@ -47,8 +45,8 @@ public class Loader {
             packer.loadImages(g, is);
             is.close();
 
-        } catch (IOException e) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+        } catch (Exception e) {
+            SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("Could not load packer resources"), e);
         }
     }
 }

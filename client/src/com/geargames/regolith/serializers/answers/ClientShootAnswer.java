@@ -1,9 +1,8 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.ConsoleDebug;
+import com.geargames.common.String;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.serializers.MicroByteBuffer;
 import com.geargames.regolith.serializers.SimpleDeserializer;
@@ -45,8 +44,8 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
                 hunter.getTorsoArmor().setState(SimpleDeserializer.deserializeShort(buffer));
                 hunter.getLegsArmor().setState(SimpleDeserializer.deserializeShort(buffer));
                 hunter.getWeapon().setLoad(SimpleDeserializer.deserializeShort(buffer));
-            } catch (RegolithException e) {
-                ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+            } catch (Exception e) {
+                SystemEnvironment.getInstance().getDebug().exception(com.geargames.common.String.valueOfC("A shooter damage serialization problem"),e);
             }
         }
         refId = SimpleDeserializer.deserializeInt(buffer);
@@ -58,8 +57,8 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
                 victim.getHeadArmor().setState(SimpleDeserializer.deserializeShort(buffer));
                 victim.getTorsoArmor().setState(SimpleDeserializer.deserializeShort(buffer));
                 victim.getLegsArmor().setState(SimpleDeserializer.deserializeShort(buffer));
-            } catch (RegolithException e) {
-                ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+            } catch (Exception e) {
+                SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("A victim damage serialization problem"),e);
             }
         }
     }

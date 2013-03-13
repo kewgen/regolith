@@ -1,7 +1,5 @@
 package com.geargames.regolith.network;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.*;
 import com.geargames.common.String;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.regolith.ClientConfiguration;
@@ -119,7 +117,7 @@ public final class Receiver extends Thread {
                 Manager.paused(2000);
             }
             e.printStackTrace();
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("Receiver Exception: "), e);
+            SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("Receiver Exception: "), e);
             if (checkErrors()){
                 return;
             }

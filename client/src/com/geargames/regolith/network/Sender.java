@@ -1,7 +1,6 @@
 package com.geargames.regolith.network;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.*;
+import com.geargames.common.String;
 import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.util.Lock;
 import com.geargames.regolith.ClientConfiguration;
@@ -79,11 +78,11 @@ public final class Sender extends Thread {
             } catch (Exception e) {
                 errorCounter++;
                 if (errorCounter > configuration.getMaxErrorsAmount()) {
-                    ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Sender: too many errors, disconnecting"), e);
+                    SystemEnvironment.getInstance().getDebug().exception(com.geargames.common.String.valueOfC("Sender: too many errors, disconnecting"), e);
                     network.disconnect();
                     return;
                 }
-                ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
+                SystemEnvironment.getInstance().getDebug().exception(String.valueOfC("Sender exception"),e);
             }
         }
     }
