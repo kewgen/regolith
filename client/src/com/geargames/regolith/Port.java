@@ -1,6 +1,6 @@
 package com.geargames.regolith;
 
-import com.geargames.PortPlatform;
+import com.geargames.platform.PortPlatform;
 
 /**
  * Порт проекта

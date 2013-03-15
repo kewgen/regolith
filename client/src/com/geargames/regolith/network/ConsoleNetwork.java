@@ -1,7 +1,6 @@
 package com.geargames.regolith.network;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.env.SystemEnvironment;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.util.Lock;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.application.Application;
@@ -60,7 +59,7 @@ public class ConsoleNetwork extends Network {
 
     public synchronized boolean connect(String address, int port) {
         try {
-            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.connect: address:").concatC(address).concatC(" port:").concatI(port));
+            Debug.info(com.geargames.common.String.valueOfC("Network.connect: address:").concatC(address).concatC(" port:").concatI(port));
             SocketAddress socketAddress = new InetSocketAddress(address, port);
             socket = new Socket();
             socket.connect(socketAddress);
@@ -76,12 +75,12 @@ public class ConsoleNetwork extends Network {
             this.port = port;
             this.address = address;
             connected = true;
-            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.connect: TCP/IP Session established"));
+            Debug.info(com.geargames.common.String.valueOfC("Network.connect: TCP/IP Session established"));
             return true;
         } catch (UnknownHostException e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Connector does not respond! exception: "), e);
+            Debug.error(com.geargames.common.String.valueOfC("Connector does not respond! exception: "), e);
         } catch (IOException e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Network.connect() exception: "), e);
+            Debug.error(com.geargames.common.String.valueOfC("Network.connect() exception: "), e);
         }
 
         return false;
@@ -109,15 +108,15 @@ public class ConsoleNetwork extends Network {
 
             try {
                 if (socket != null) socket.close();
-                SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Socket closed"));
+                Debug.info(com.geargames.common.String.valueOfC("Socket closed"));
             } catch (Throwable t) {
-                SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.disconnect: socket.close: "));
+                Debug.error(com.geargames.common.String.valueOfC("Network.disconnect: socket.close: "));
             }
 
-            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Disconnected"));
+            Debug.info(com.geargames.common.String.valueOfC("Disconnected"));
 
         } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Network.disconnect exception "), e);
+            Debug.error(com.geargames.common.String.valueOfC("Network.disconnect exception "), e);
         }
     }
 

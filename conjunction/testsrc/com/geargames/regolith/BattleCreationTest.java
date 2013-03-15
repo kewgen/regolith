@@ -1,14 +1,11 @@
 package com.geargames.regolith;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.env.SystemEnvironment;
 import com.geargames.common.util.ArrayList;
-import com.geargames.env.ConsoleEnvironment;
+import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.network.DataMessage;
 import com.geargames.regolith.network.Network;
 import com.geargames.regolith.serializers.BatchMessageManager;
-import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;
 import com.geargames.regolith.service.MainServiceManager;
@@ -16,7 +13,6 @@ import com.geargames.regolith.service.SimpleService;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.map.BattleMapHelper;
@@ -29,7 +25,6 @@ import org.junit.Test;
 
 import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 /**
@@ -61,8 +56,7 @@ public class BattleCreationTest {
 
     @Test
     public void client() throws com.geargames.regolith.RegolithException, BrokenBarrierException, InterruptedException {
-        SystemEnvironment.getInstance().setDebug(new ConsoleDebug());
-        SystemEnvironment.getInstance().setEnvironment(ConsoleEnvironment.getInstance());
+        ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         ClientCommonManager commonManager = clientConfiguration.getCommonManager();
@@ -71,43 +65,28 @@ public class BattleCreationTest {
         login.setName("автор");
         login.setPassword("секрет");
 
-        System.out.println("is checking for a login name");
+        System.out.println("Is checking for a login name");
         ClientDeferredAnswer answer = commonManager.checkForName(login.getName());
 
-        if (!waitForAnswer(answer)) {
-            System.err.println("Waiting time answer has expired");
-            return;
-        }
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         if (confirm.isConfirm()) {
-            System.out.println("trying to create an account");
+            System.out.println("Trying to create an account");
             answer = commonManager.create(login);
-            if (!waitForAnswer(answer)) {
-                System.err.println("Waiting time answer has expired");
-                return;
-            }
+            Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
             confirm = (ClientConfirmationAnswer) answer.getAnswer();
-            if (!confirm.isConfirm()) {
-                System.err.println("could not create the account");
-                return;
-            }
+            Assert.assertTrue("Could not create the account", confirm.isConfirm());
         }
 
-        System.out.println("going to log in");
+        System.out.println("Going to log in");
 
         answer = commonManager.login(login);
-        if (!waitForAnswer(answer)) {
-            System.err.println("Waiting time answer has expired");
-            return;
-        }
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         ClientLoginAnswer loginAnswer = (ClientLoginAnswer) answer.getAnswer();
-        if (loginAnswer.getError() != null) {
-            System.err.println(loginAnswer.getError());
-            return;
-        }
+        Assert.assertNull(loginAnswer.getError(), loginAnswer.getError());
 
         System.out.println("...");
 
@@ -124,10 +103,8 @@ public class BattleCreationTest {
             if (clientConfiguration.getBaseWarriors() != null) {
                 Warrior[] warriors = clientConfiguration.getBaseWarriors();
                 byte amount = clientConfiguration.getBaseConfiguration().getInitWarriorsAmount();
-                if (warriors.length < amount) {
-                    System.err.println("An amount of available warriors is not enough");
-                    return;
-                }
+                Assert.assertTrue("An amount of available warriors is not enough", warriors.length >= amount);
+
                 Warrior[] initWarriors = new Warrior[amount];
                 for (int i = 0; i < amount; i++) {
                     warriors[i].setName(warriors[i].getName() + "i");
@@ -135,26 +112,20 @@ public class BattleCreationTest {
                 }
                 System.out.println("We are trying to hire warriors");
                 answer = baseWarriorMarketManager.hireWarrior(initWarriors);
-                if (!waitForAnswer(answer)) {
-                    System.err.println("Waiting time answer has expired");
-                    return;
-                }
+                Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
                 ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();
-                if (clientJoinBaseWarriorsAnswer.isSuccess()) {
-                    ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
-                    for (Warrior warrior : clientJoinBaseWarriorsAnswer.getWarriors()) {
-                        clientWarriorCollection.add(warrior);
-                    }
-                    account.setWarriors(clientWarriorCollection);
-                } else {
-                    System.err.println("could not get a set base warriors");
-                    return;
+                Assert.assertTrue("Could not get a set base warriors", clientJoinBaseWarriorsAnswer.isSuccess());
+
+                ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
+                for (Warrior warrior : clientJoinBaseWarriorsAnswer.getWarriors()) {
+                    clientWarriorCollection.add(warrior);
                 }
+                account.setWarriors(clientWarriorCollection);
             }
         }
 
-        System.out.println("lets try to move a tackle");
+        System.out.println("Lets try to move a tackle");
 
         Warrior warrior = account.getWarriors().get(1);
         StateTackle tackle = TackleTransitionHelper.moveStateTackleBag2StoreHouse(warrior, 0, account.getBase().getStoreHouse());
@@ -174,7 +145,7 @@ public class BattleCreationTest {
 
         messanger.commitMessages();
 
-        Assert.assertTrue(messanger.retrieve(1000));
+        Assert.assertTrue("Waiting time answer has expired", messanger.retrieve(1000));
 
         ArrayList answers = messanger.getAnswer().getAnswers();
 
@@ -183,10 +154,10 @@ public class BattleCreationTest {
             Assert.assertTrue(confirm.isConfirm());
         }
 
-        System.out.println("lets go to the battle market");
+        System.out.println("Lets go to the battle market");
 
         answer = baseManager.goBattleManager();
-        Assert.assertTrue(waitForAnswer(answer));
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
 
@@ -195,7 +166,7 @@ public class BattleCreationTest {
         System.out.println("browsing maps");
 
         answer = battleMarketManager.browseBattleMaps();
-        Assert.assertTrue(waitForAnswer(answer));
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
 
@@ -203,21 +174,20 @@ public class BattleCreationTest {
 
         Assert.assertTrue("there are no maps", maps.length > 0);
 
-
         answer = battleMarketManager.createBattle(maps[0], 0);
-        Assert.assertTrue(waitForAnswer(answer));
-        ClientCreateBattleAnswer createBattle = (ClientCreateBattleAnswer) answer.getAnswer();
-        Battle battle = createBattle.getBattle();
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+        ClientCreateBattleAnswer createBattleAnswer = (ClientCreateBattleAnswer) answer.getAnswer();
+        Battle battle = createBattleAnswer.getBattle();
 
-        Assert.assertNotNull("could not create his own battle.", battle);
+        Assert.assertNotNull("Could not create his own battle.", battle);
 
         BattleGroup group;
         BattleAlliance alliance = battle.getAlliances()[0];
         answer = battleCreationManager.joinToAlliance(alliance, account);
-        Assert.assertTrue(waitForAnswer(answer));
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         group = ((ClientJoinBattleAnswer) answer.getAnswer()).getBattleGroup();
-        Assert.assertNotNull("could not joint to his own battle.", group);
+        Assert.assertNotNull("Could not joint to his own battle.", group);
 
         Assert.assertTrue(account.getName() + " has no enough warriors for this battle", battle.getBattleType().getGroupSize() <= account.getWarriors().size());
 
@@ -227,36 +197,33 @@ public class BattleCreationTest {
         }
 
         answer = battleCreationManager.completeGroup(group, warriors);
-        Assert.assertTrue(waitForAnswer(answer));
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
 
-        Assert.assertTrue("could not put a group into his own battle.", confirm.isConfirm());
+        Assert.assertTrue("Could not put a group into his own battle.", confirm.isConfirm());
 
         answer = battleCreationManager.isReady(group);
-        Assert.assertTrue(waitForAnswer(answer));
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        Assert.assertTrue("have not be able to be ready for his own battle.", confirm.isConfirm());
+        Assert.assertTrue("Have not be able to be ready for his own battle.", confirm.isConfirm());
+
         ClientStartBattleAnswer clientStartBattleAnswer;
         while (true) {
             answer = battleCreationManager.startBattle(account);
-            if (!waitForAnswer(answer)) {
-                System.err.println("Waiting time answer has expired");
-                return;
-            }
+            Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
             clientStartBattleAnswer = (ClientStartBattleAnswer) answer.getAnswer();
             if (clientStartBattleAnswer.isSuccess()) {
                 break;
-            }
-
-            try {
-                System.out.println("the battle could not be started.");
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                System.err.println("could not start a battle and was interrupted.");
-                return;
+            } else {
+                try {
+                    System.out.println("The battle could not be started.");
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Assert.fail("Could not start a battle and was interrupted.");
+                }
             }
         }
         System.out.println("The battle has begun");
@@ -270,15 +237,10 @@ public class BattleCreationTest {
         ClientBattleServiceManager battleServiceManager = clientConfiguration.getBattleServiceManager();
         answer = battleServiceManager.login(battle, alliance);
 
-        if (!waitForAnswer(answer)) {
-            System.err.println("Waiting time answer has expired");
-            return;
-        }
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         ClientBattleLoginAnswer battleLoginAnswer = (ClientBattleLoginAnswer) answer.getAnswer();
-        if (!battleLoginAnswer.isSuccess()) {
-            System.err.println("Could not login into the battle");
-        }
+        Assert.assertTrue("Could not login into the battle", battleLoginAnswer.isSuccess());
 
         DataMessage dataMessage;
         boolean active = false;
@@ -295,10 +257,7 @@ public class BattleCreationTest {
 
         answer = battleServiceManager.move(warriors[0], (short) 10, (short) 10);
 
-        if (!waitForAnswer(answer)) {
-            System.err.println("Waiting time answer has expired");
-            return;
-        }
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         ClientAllyMoveAnswer clientAllyMoveAnswer = (ClientAllyMoveAnswer) answer.getAnswer();
 

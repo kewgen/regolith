@@ -1,7 +1,7 @@
 package com.geargames.regolith.awt.components.battles;
 
-
 import com.geargames.awt.components.PVerticalScrollView;
+import com.geargames.awt.timers.OnTimerListener;
 import com.geargames.awt.timers.TimerManager;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
@@ -15,7 +15,7 @@ import java.util.Vector;
  * User: mikhail v. kutuzov
  * Список текущих боёв.
  */
-public class PBattlesList extends PVerticalScrollView {
+public class PBattlesList extends PVerticalScrollView implements OnTimerListener {
 
     private PBattleListItemVector items;
     private Network network;

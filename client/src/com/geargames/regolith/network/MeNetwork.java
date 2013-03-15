@@ -1,7 +1,6 @@
 package com.geargames.regolith.network;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.env.SystemEnvironment;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.util.Lock;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.application.Application;
@@ -50,7 +49,7 @@ public class MeNetwork extends Network {
 
     public synchronized boolean connect(String address, int port) {
         try {
-            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.connect: address:").concatC(address).concatC(" port:").concatI(port));
+            Debug.info(com.geargames.common.String.valueOfC("Network.connect: address:").concatC(address).concatC(" port:").concatI(port));
 
             socket = (SocketConnection) Connector.open("socket://" + address + ":" + port);
 
@@ -68,12 +67,12 @@ public class MeNetwork extends Network {
             this.port = port;
             this.address = address;
             connected = true;
-            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.connect: TCP/IP Session established"));
+            Debug.info(com.geargames.common.String.valueOfC("Network.connect: TCP/IP Session established"));
             return true;
         } catch (ConnectionNotFoundException e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Connector not respond! exception: "), e);
+            Debug.error(com.geargames.common.String.valueOfC("Connector not respond! exception: "), e);
         } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Network.connect() exception: "), e);
+            Debug.error(com.geargames.common.String.valueOfC("Network.connect() exception: "), e);
         }
         return false;
     }
@@ -100,15 +99,15 @@ public class MeNetwork extends Network {
 
             try {
                 if (socket != null) socket.close();
-                SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Socket closed"));
+                Debug.info(com.geargames.common.String.valueOfC("Socket closed"));
             } catch (Throwable t) {
-                SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Network.disconnect: socket.close: "));
+                Debug.error(com.geargames.common.String.valueOfC("Network.disconnect: socket.close: "));
             }
 
-            SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Disconnected"));
+            Debug.info(com.geargames.common.String.valueOfC("Disconnected"));
 
         } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(com.geargames.common.String.valueOfC("Network.disconnect exception "), e);
+            Debug.error(com.geargames.common.String.valueOfC("Network.disconnect exception "), e);
         }
     }
 

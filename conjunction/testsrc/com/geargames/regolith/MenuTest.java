@@ -1,8 +1,6 @@
 package com.geargames.regolith;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.env.SystemEnvironment;
-import com.geargames.env.ConsoleEnvironment;
+import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.service.MainServiceManager;
@@ -39,8 +37,7 @@ public class MenuTest {
     }
 
     public static void client() throws Exception {
-        SystemEnvironment.getInstance().setDebug(new ConsoleDebug());
-        SystemEnvironment.getInstance().setEnvironment(ConsoleEnvironment.getInstance());
+        ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         ClientCommonManager commonManager = clientConfiguration.getCommonManager();

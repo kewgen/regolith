@@ -57,7 +57,7 @@ public abstract class PProjectileExchangePanel extends PExchangePanel {
                 addPassiveChild(amount, index);
                 break;
             case 15:
-                box = new PGradualSpinBox((PObject)index.getPrototype(), 0);
+                box = new PGradualSpinBox((PObject)index.getPrototype());
                 addActiveChild(box, index);
                 break;
         }

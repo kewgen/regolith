@@ -1,9 +1,9 @@
 package com.geargames.regolith.application;
 
 
-import com.geargames.ConsoleDebug;
-import com.geargames.MIDlet;
-import com.geargames.common.env.SystemEnvironment;
+import com.geargames.common.String;
+import com.geargames.common.logging.Debug;
+import com.geargames.platform.MIDlet;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class TablesLoader extends com.geargames.common.TablesLoader {
                     break;
             }
         } catch (IOException ex) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(ex);
+            Debug.error(String.valueOfC(""), ex);
         }
     }
 

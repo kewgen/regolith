@@ -1,7 +1,7 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.env.SystemEnvironment;
+import com.geargames.common.String;
+import com.geargames.common.logging.Debug;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
@@ -46,7 +46,7 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
                 hunter.getLegsArmor().setState(SimpleDeserializer.deserializeShort(buffer));
                 hunter.getWeapon().setLoad(SimpleDeserializer.deserializeShort(buffer));
             } catch (RegolithException e) {
-                ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+                Debug.error(String.valueOfC(""), e);
             }
         }
         refId = SimpleDeserializer.deserializeInt(buffer);
@@ -59,7 +59,7 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
                 victim.getTorsoArmor().setState(SimpleDeserializer.deserializeShort(buffer));
                 victim.getLegsArmor().setState(SimpleDeserializer.deserializeShort(buffer));
             } catch (RegolithException e) {
-                ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+                Debug.error(String.valueOfC(""), e);
             }
         }
     }

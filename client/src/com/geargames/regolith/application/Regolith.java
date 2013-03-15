@@ -1,14 +1,8 @@
 package com.geargames.regolith.application;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.MIDlet;
-import com.geargames.common.env.SystemEnvironment;
-
-/*ObjC interface*///#import "MIDlet.h"
-/*ObjC interface*///#import "Debug.h"
-/*ObjC interface*///@class MIDlet;
-
-/*ObjC uncomment*///#import "Manager.h"
+import com.geargames.common.logging.Debug;
+import com.geargames.common.String;
+import com.geargames.platform.MIDlet;
 
 public final class Regolith extends MIDlet {
 
@@ -20,7 +14,7 @@ public final class Regolith extends MIDlet {
             }
             manager.startApp();
         } catch (Exception e) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+            Debug.error(String.valueOfC(""), e);
         }
     }
 
@@ -38,7 +32,7 @@ public final class Regolith extends MIDlet {
         try {
 
         } catch (Exception e) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+            Debug.error(String.valueOfC(""), e);
         }
 
     }
@@ -50,7 +44,7 @@ public final class Regolith extends MIDlet {
     }
 
     @Override
-    protected com.geargames.Manager getManager() {
+    protected com.geargames.platform.Manager getManager() {
         return Manager.getInstance();
     }
 }

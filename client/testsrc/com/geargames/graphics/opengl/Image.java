@@ -1,6 +1,6 @@
 package com.geargames.graphics.opengl;
 
-import com.geargames.Manager;
+import com.geargames.platform.Manager;
 import com.geargames.common.String;
 
 import javax.imageio.ImageIO;

@@ -1,7 +1,7 @@
 package com.geargames.regolith.serializers;
 
 /**
- * Класс наподобие nio ByteBuffer, чтоб работать с массивами байтов разной длинны из одного массива.
+ * Класс наподобие nio.ByteBuffer, чтоб работать с массивами байтов разной длинны из одного массива.
  * User: mkutuzov
  * Date: 27.03.12
  */
@@ -21,7 +21,6 @@ public class MicroByteBuffer {
         position(0);
         return this;
     }
-
 
     public MicroByteBuffer initiate(byte[] buffer) {
         this.buffer = buffer;
@@ -47,14 +46,14 @@ public class MicroByteBuffer {
     }
 
     private void check(int position) {
-        if (position > limit) {
+        if (position < 0 || position > limit) {
             throw new IndexOutOfBoundsException();
         }
     }
 
     /**
      * Считать байт из массива по индексу position.
-     * Если position >= limit будет вызвано исключение.
+     * Если position > limit будет вызвано исключение.
      * @param position
      * @return
      */
@@ -64,8 +63,8 @@ public class MicroByteBuffer {
     }
 
     /**
-     * Считать байт текущий из массива. Нарастить счётчик массиваю
-     * Если этот счётчик >= limit будет вызвано исключение.
+     * Считать текущий байт из массива. Нарастить счётчик массива.
+     * Если этот счётчик > limit будет вызвано исключение.
      * @return
      */
     public byte get() {
@@ -110,7 +109,7 @@ public class MicroByteBuffer {
     }
 
     public MicroByteBuffer limit(int limit) {
-        if (limit >= size()) {
+        if (limit < 0 || limit >= size()) {
             throw new IndexOutOfBoundsException();
         }
         this.limit = limit;
@@ -124,4 +123,5 @@ public class MicroByteBuffer {
     public byte[] getBytes(){
         return buffer;
     }
+
 }

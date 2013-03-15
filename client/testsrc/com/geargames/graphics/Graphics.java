@@ -24,7 +24,13 @@ public interface Graphics {
     int DOTTED   = 8;
 
     // Нарисовать изображение в соответствующих координатах и с заданным выравниванием
-    void drawImage(Image image, int x, int y, int anchor);
+    void drawImage(Image image, int x, int y);
+
+    // Нарисовать часть изображения image ограниченную прямоугольником (srcX1, srcY1), (srcX2, srcY2) в пределах
+    // целевого прямоугольника (destX1, destY1), (destX2, destY2)
+    boolean drawImage(Image image,
+            int srcX1,  int srcY1,  int srcX2,  int srcY2,
+            int destX1, int destY1, int destX2, int destY2);
 
     // Нарисовать часть изображения
     // drawRegion
@@ -94,6 +100,8 @@ public interface Graphics {
 
     int setTransparency(int transparency);
 
+    void translate(int x, int y);
+
     // Вернуть и установить масштабирование
     int getScale();
 
@@ -101,8 +109,6 @@ public interface Graphics {
     void setScale(int scaleX, int scaleY);
 
     void dropScale();
-
-    void setTranslate(int x, int y);
 
     void pushState();
 

@@ -1,9 +1,8 @@
 package com.geargames.regolith.application;
 
-import com.geargames.ConsoleDebug;
 import com.geargames.common.Port;
 import com.geargames.common.String;
-import com.geargames.common.env.SystemEnvironment;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PManager;
 import com.geargames.common.Graphics;
 
@@ -48,7 +47,7 @@ public class Loader {
             is.close();
 
         } catch (IOException e) {
-            ((ConsoleDebug) SystemEnvironment.getInstance().getDebug()).logEx(e);
+            Debug.error(String.valueOfC(""), e);
         }
     }
 }

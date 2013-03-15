@@ -4,7 +4,7 @@ import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PRadioButton;
 import com.geargames.awt.components.PRadioGroup;
 import com.geargames.awt.components.PSimpleLabel;
-import com.geargames.common.env.SystemEnvironment;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.PFontCollection;
@@ -220,7 +220,7 @@ public class PBattleCreatePanel extends PContentPanel {
             allianceAmount = 4;
         }
         if (allianceAmount < 2) {
-            SystemEnvironment.getInstance().getDebug().warning(String.valueOfC("allianceAmount is an invalid value (allianceAmount=").concatI(allianceAmount).concatC(")"));
+            Debug.warning(String.valueOfC("allianceAmount is an invalid value (allianceAmount=").concatI(allianceAmount).concatC(")"));
         }
         return allianceAmount;
     }
@@ -243,7 +243,7 @@ public class PBattleCreatePanel extends PContentPanel {
         if (buttonPlayer4.getChecked()) {
             allianceSize = 4;
         } else {
-            SystemEnvironment.getInstance().getDebug().warning(String.valueOfC("allianceSize is an invalid value (allianceSize=0)"));
+            Debug.warning(String.valueOfC("allianceSize is an invalid value (allianceSize=0)"));
         }
         return allianceSize;
     }
@@ -266,7 +266,7 @@ public class PBattleCreatePanel extends PContentPanel {
         if (buttonFighter4.getChecked()) {
             groupSize = 4;
         } else {
-            SystemEnvironment.getInstance().getDebug().warning(String.valueOfC("groupSize is an invalid value (groupSize=0)"));
+            Debug.warning(String.valueOfC("groupSize is an invalid value (groupSize=0)"));
         }
         return groupSize;
     }

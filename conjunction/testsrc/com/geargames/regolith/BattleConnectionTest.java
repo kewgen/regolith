@@ -1,25 +1,19 @@
 package com.geargames.regolith;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.env.SystemEnvironment;
-import com.geargames.env.ConsoleEnvironment;
+import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.*;
-import com.geargames.regolith.network.DataMessage;
-import com.geargames.regolith.network.Network;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.BattleMapHelper;
+
 import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 /**
@@ -44,8 +38,7 @@ public class BattleConnectionTest {
 
     @Test
     public void client() throws com.geargames.regolith.RegolithException, BrokenBarrierException, InterruptedException {
-        SystemEnvironment.getInstance().setDebug(new ConsoleDebug());
-        SystemEnvironment.getInstance().setEnvironment(ConsoleEnvironment.getInstance());
+        ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         ClientCommonManager commonManager = clientConfiguration.getCommonManager();

@@ -1,19 +1,19 @@
 package com.geargames.graphics.opengl;
 
-import com.geargames.Manager;
-import com.geargames.common.Port;
-import com.geargames.common.Render;
-import com.geargames.common.String;
-import com.geargames.common.packer.PAffine;
-import com.geargames.common.packer.PFont;
-import com.geargames.common.packer.PFrame;
-import com.geargames.common.packer.PSprite;
-import com.geargames.common.util.ArrayChar;
-
-import java.awt.*;
-import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.io.IOException;
+//import com.geargames.platform.Manager;
+//import com.geargames.common.Port;
+//import com.geargames.common.Render;
+//import com.geargames.common.String;
+//import com.geargames.common.packer.PAffine;
+//import com.geargames.common.packer.PFont;
+//import com.geargames.common.packer.PFrame;
+//import com.geargames.common.packer.PSprite;
+//import com.geargames.common.util.ArrayChar;
+//
+//import java.awt.*;
+//import java.awt.Image;
+//import java.awt.geom.AffineTransform;
+//import java.io.IOException;
 
 /**
  * Порт-wrapper класса Graphics для microedition

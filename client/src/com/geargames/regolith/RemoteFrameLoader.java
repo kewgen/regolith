@@ -2,7 +2,7 @@ package com.geargames.regolith;
 
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PUnresolvedFrameManger;
-import com.geargames.packer.Image;
+import com.geargames.platform.packer.Image;
 import com.geargames.regolith.network.DataMessage;
 import com.geargames.regolith.network.Network;
 import com.geargames.regolith.serializers.MicroByteBuffer;

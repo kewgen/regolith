@@ -1,18 +1,17 @@
 package com.geargames.regolith.application;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.Recorder;
 import com.geargames.awt.TextHint;
 import com.geargames.awt.timers.TimerManager;
 import com.geargames.common.String;
 import com.geargames.common.env.Environment;
-import com.geargames.common.env.SystemEnvironment;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PFont;
 import com.geargames.common.packer.PFontManager;
 import com.geargames.common.util.ArrayByte;
 import com.geargames.common.util.ArrayIntegerDual;
-import com.geargames.packer.Graphics;
-import com.geargames.packer.Image;
+import com.geargames.common.util.Recorder;
+import com.geargames.platform.packer.Graphics;
+import com.geargames.platform.packer.Image;
 import com.geargames.regolith.Port;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
@@ -37,7 +36,7 @@ import java.io.DataOutputStream;
 /*ObjC uncomment*///#import "GLView.h"
 
 
-public final class Application extends com.geargames.awt.Application {
+public final class Application extends com.geargames.common.Application {
 
     public static final int FPS_MAXIMUM = 30;
     private final java.lang.String RMS_SETTINGS = "regolith";
@@ -103,7 +102,7 @@ public final class Application extends com.geargames.awt.Application {
             Thread.yield();
             Manager.paused(10);
         } catch (Exception ex) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(ex);
+            Debug.error(String.valueOfC("Exception during splash drawing"), ex);
         }
     }
 
@@ -115,7 +114,7 @@ public final class Application extends com.geargames.awt.Application {
                 getGraphics().setRender(render);
             }
         } catch (Exception ex) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(ex);
+            Debug.critical(String.valueOfC("Exception during the creation of screen buffer"), ex);
         }
     }
 
@@ -126,10 +125,9 @@ public final class Application extends com.geargames.awt.Application {
     // ----- Application start, init, stop -----------------------------------------------------------------------------
 
     public void loading() {
-        Environment environment = SystemEnvironment.getInstance().getEnvironment();
-        tSleep = environment.currentTimeMillis();
+        tSleep = Environment.currentTimeMillis();
 
-        SystemEnvironment.getInstance().getDebug().log(String.valueOfC("Memory total,free:").concatL(environment.totalMemory()).concatC(",").concatL(environment.freeMemory()));
+        Debug.config(String.valueOfC("Memory total, free: ").concatL(Environment.totalMemory()).concatC(", ").concatL(Environment.freeMemory()));
 
         loader = new Loader(Manager.getInstance());
         render = new Render();
@@ -179,99 +177,99 @@ public final class Application extends com.geargames.awt.Application {
     }
 
     private void initPreferenceOnStart() {
-        if (!loadOptionsRMS()) {
-            resetPreference();
-            saveOptionsRMS();
-        }
+//        if (!loadOptionsRMS()) {
+//            resetPreference();
+//            saveOptionsRMS();
+//        }
     }
 
     protected void onStop(boolean correct) {
-        SystemEnvironment.getInstance().getDebug().log(String.valueOfC("onStop.disconnect"));
-        if (correct) {
-            saveOptionsRMS();
-        }
-        SystemEnvironment.getInstance().getDebug().trace(String.valueOfC("Application.onStop"));
+//        Debug.debug(String.valueOfC("onStop.disconnect"));
+//        if (correct) {
+//            saveOptionsRMS();
+//        }
+        Debug.debug(String.valueOfC("Application.onStop"));
     }
 
     public void destroy(boolean correct) {
-        SystemEnvironment.getInstance().getDebug().log(String.valueOfC("destroy ").concatC(correct ? "correct" : "uncorrect"));
+        Debug.debug(String.valueOfC("destroy ").concatC(correct ? "correct" : "uncorrect"));
         Manager.getInstance().destroy(correct);
     }
 
-    public boolean saveOptionsRMS() {
-        boolean res = false;
-        ByteArrayOutputStream baos = null;
-        DataOutputStream dos = null;
-        try {
-            baos = new ByteArrayOutputStream();
-            dos = new DataOutputStream(baos);
-
-            dos.writeByte(1);
-            dos.writeBoolean(vibrationEnabled);
-            dos.writeBoolean(soundEnabled);
-            dos.writeInt(userId);
-            dos.writeInt(clientId);
-            dos.writeInt(userMidletId);
-
-            res = Recorder.RMSStoreSave(RMS_SETTINGS, baos, false);
-
-            SystemEnvironment.getInstance().getDebug().log(String.valueOfC("Rms.Prefs saved: vibra:").concatC(vibrationEnabled ? "On" : "Off").concatC(" sound:").concatC(soundEnabled ? "On" : "Off").concatC(" userId:").concatI(userId).concatC(" clientId:").concatI(clientId));
-        } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("Save prefs "), e); ;
-            res = false;
-        } finally {
-            try {
-                if (dos != null) {
-                    dos.close();
-                }
-                if (baos != null) {
-                    baos.close();
-                }
-            } catch (Exception e) {
-                ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
-            }
-            return res;
-        }
-    }
-
-    public boolean loadOptionsRMS() {
-        boolean res = false;
-
-        try {
-            ArrayByte bData = Recorder.RMSStoreRead(RMS_SETTINGS, false);
-            if (bData != null) {
-                ByteArrayInputStream bais = new ByteArrayInputStream(bData.getArray());
-                DataInputStream dis = new DataInputStream(bais);
-                try {
-                    byte version = dis.readByte();
-                    if (version == 1) {
-                        vibrationEnabled = dis.readBoolean();
-                        soundEnabled = dis.readBoolean();
-                        userId = dis.readInt();
-                        clientId = dis.readInt();
-                        userMidletId = dis.readInt();
-                        res = true;
-
-                        SystemEnvironment.getInstance().getDebug().log(String.valueOfC("Rms.Prefs load:"));
-                        SystemEnvironment.getInstance().getDebug().log(String.valueOfC(" id:").concatI(userId));
-                    }
-                } catch (Exception e) {
-                    ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad prefs "), e);
-                    Recorder.RMSStoreClean(RMS_SETTINGS);
-                    return false;
-                }
-                if (dis != null) {
-                    dis.close();
-                }
-                /*ObjC uncomment*///[bais release];
-                /*ObjC uncomment*///[dis release];
-            }
-            return res;
-        } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("RMSLoad stream "), e);
-            return false;
-        }
-    }
+//    public boolean saveOptionsRMS() {
+//        boolean res = false;
+//        ByteArrayOutputStream baos = null;
+//        DataOutputStream dos = null;
+//        try {
+//            baos = new ByteArrayOutputStream();
+//            dos = new DataOutputStream(baos);
+//
+//            dos.writeByte(1);
+//            dos.writeBoolean(vibrationEnabled);
+//            dos.writeBoolean(soundEnabled);
+//            dos.writeInt(userId);
+//            dos.writeInt(clientId);
+//            dos.writeInt(userMidletId);
+//
+////            res = Recorder.RMSStoreSave(RMS_SETTINGS, baos, false);
+//
+//            Debug.debug(String.valueOfC("Rms.Prefs saved: vibra:").concatC(vibrationEnabled ? "On" : "Off").concatC(" sound:").concatC(soundEnabled ? "On" : "Off").concatC(" userId:").concatI(userId).concatC(" clientId:").concatI(clientId));
+//        } catch (Exception e) {
+//            Debug.error(String.valueOfC("Save prefs "), e);
+//            res = false;
+//        } finally {
+//            try {
+//                if (dos != null) {
+//                    dos.close();
+//                }
+//                if (baos != null) {
+//                    baos.close();
+//                }
+//            } catch (Exception e) {
+//                Debug.error(String.valueOfC(""), e);
+//            }
+//            return res;
+//        }
+//    }
+//
+//    public boolean loadOptionsRMS() {
+//        boolean res = false;
+//
+//        try {
+//            ArrayByte bData = Recorder.RMSStoreRead(RMS_SETTINGS, false);
+//            if (bData != null) {
+//                ByteArrayInputStream bais = new ByteArrayInputStream(bData.getArray());
+//                DataInputStream dis = new DataInputStream(bais);
+//                try {
+//                    byte version = dis.readByte();
+//                    if (version == 1) {
+//                        vibrationEnabled = dis.readBoolean();
+//                        soundEnabled = dis.readBoolean();
+//                        userId = dis.readInt();
+//                        clientId = dis.readInt();
+//                        userMidletId = dis.readInt();
+//                        res = true;
+//
+//                        Debug.debug(String.valueOfC("Rms.Prefs load:"));
+//                        Debug.debug(String.valueOfC(" id:").concatI(userId));
+//                    }
+//                } catch (Exception e) {
+//                    Debug.error(String.valueOfC("RMSLoad prefs "), e);
+//                    Recorder.RMSStoreClean(RMS_SETTINGS);
+//                    return false;
+//                }
+//                if (dis != null) {
+//                    dis.close();
+//                }
+//                /*ObjC uncomment*///[bais release];
+//                /*ObjC uncomment*///[dis release];
+//            }
+//            return res;
+//        } catch (Exception e) {
+//            Debug.error(String.valueOfC("RMSLoad stream "), e);
+//            return false;
+//        }
+//    }
 
     // --------------- Main loop ---------------------------------------------------------------------------------------
 
@@ -297,7 +295,7 @@ public final class Application extends com.geargames.awt.Application {
             }
             manageFPS(FPS_MAXIMUM);
         } catch (Exception e) {
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).logEx(e);
+            Debug.error(String.valueOfC("Exeption in mainLoop"), e);
         }
     }
 
@@ -309,8 +307,7 @@ public final class Application extends com.geargames.awt.Application {
     public void manageFPS(int fps) {
         if (fps != 0) {
             int timeFPS = (1000 / fps);//задержка для установленного фпс
-            Environment environment = SystemEnvironment.getInstance().getEnvironment();
-            long timeElapsed = environment.currentTimeMillis() - tSleep;//реальная задержка
+            long timeElapsed = Environment.currentTimeMillis() - tSleep;//реальная задержка
             long paused = timeFPS - timeElapsed;//делаем затержку для выдерживания фпс
             if (timeElapsed <= 0) {
                 timeElapsed = 1;
@@ -319,7 +316,7 @@ public final class Application extends com.geargames.awt.Application {
                 Manager.paused(paused);
             }
             fps_cur = (fps_cur + 1000 / (timeElapsed/* - (paused > 0 ? paused : 0)*/)) / 2;
-            tSleep = environment.currentTimeMillis();
+            tSleep = Environment.currentTimeMillis();
         } else {
             Manager.paused(1);
         }

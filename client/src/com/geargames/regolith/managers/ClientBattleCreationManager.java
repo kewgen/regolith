@@ -3,7 +3,6 @@ package com.geargames.regolith.managers;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.network.MessageLock;
-import com.geargames.regolith.serializers.MicroByteBuffer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinBattleAnswer;
 import com.geargames.regolith.serializers.answers.ClientStartBattleAnswer;
@@ -26,11 +25,20 @@ public class ClientBattleCreationManager {
         this.configuration = configuration;
     }
 
-
+    /**
+     * ??? Послать сообщение-уведомление об исключении пользователя account входящего в военный союз alliance из
+     * создаваемой битвы.
+     * @param alliance
+     * @param account
+     */
     public void evictAccount(BattleAlliance alliance, Account account) {
         configuration.getNetwork().sendMessage(new EvictAccountRequest(configuration, account, alliance));
     }
 
+    /**
+     * Послать сообщение-запрос о начале битвы.
+     * @param author ссылка на аккаунт пользователя - инициатора начала битвы.
+     */
     public ClientDeferredAnswer startBattle(Account author) {
         MessageLock messageLock = configuration.getMessageLock();
         messageLock.setMessageType(Packets.START_BATTLE);
@@ -41,10 +49,16 @@ public class ClientBattleCreationManager {
         return new ClientDeferredAnswer(clientStartBattleAnswer);
     }
 
+    /**
+     * ??? Послать сообщение-уведомление о том, что пользователь отменил начало битвы.
+     */
     public void cancelBattle() {
         configuration.getNetwork().sendMessage(new CancelBattleRequest(configuration));
     }
 
+    /**
+     * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
+     */
     public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance, Account participant) {
         MessageLock messageLock = configuration.getMessageLock();
         messageLock.setMessageType(Packets.JOIN_TO_BATTLE_ALLIANCE);

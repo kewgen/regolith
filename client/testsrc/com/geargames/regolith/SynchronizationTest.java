@@ -1,9 +1,7 @@
 package com.geargames.regolith;
 
-import com.geargames.common.Event;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.ClientBorder;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;

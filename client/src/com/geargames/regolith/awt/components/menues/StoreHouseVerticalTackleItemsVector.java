@@ -1,9 +1,9 @@
 package com.geargames.regolith.awt.components.menues;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.env.SystemEnvironment;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
+import com.geargames.common.String;
 import com.geargames.regolith.awt.components.warrior.PAbstractTacklePanel;
 import com.geargames.regolith.units.AmmunitionPacket;
 import com.geargames.regolith.units.base.StoreHouse;
@@ -53,7 +53,7 @@ public class StoreHouseVerticalTackleItemsVector extends Vector {
                     panel.setTackle(ammunition, amount);
                 }
             } else {
-                SystemEnvironment.getInstance().getDebug().log(com.geargames.common.String.valueOfC("A NOT EXISTED REQUISITE HAS BEEN RETRIEVED"));
+                Debug.error(String.valueOfC("A NOT EXISTED REQUISITE HAS BEEN RETRIEVED"));
             }
         }
     }

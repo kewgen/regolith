@@ -40,10 +40,11 @@ public class BatchAnswer extends SerializedMessage {
                 message.serialize(buffer);
                 int newPosition = buffer.position();
                 buffer.position(position);
-                SimpleSerializer.serialize((short) (buffer.limit() - Packets.HEAD_SIZE - position), buffer);
+                SimpleSerializer.serialize((short) (newPosition - position - Packets.HEAD_SIZE), buffer);
                 SimpleSerializer.serialize(message.getType(), buffer);
                 buffer.position(newPosition);
             }
         }
     }
+
 }

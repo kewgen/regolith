@@ -1,9 +1,7 @@
 package com.geargames.regolith.network;
 
-import com.geargames.ConsoleDebug;
-import com.geargames.common.*;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.String;
-import com.geargames.common.env.SystemEnvironment;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
@@ -15,9 +13,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
- * Функциональность Daemon-потока, читающего Socket
- * и выделяющего сообщения.
- * Сообщения записываются в порядке поступления в очередь сообщений
+ * Функциональность Daemon-потока, читающего Socket и выделяющего сообщения.
+ * Сообщения записываются в порядке поступления в очередь сообщений.
  * Очередь сообщений доступна - см. getMsgQueue()
  */
 public final class Receiver extends Thread {
@@ -81,6 +78,7 @@ public final class Receiver extends Thread {
 
                 MessageLock messageLock = getMessageLockIfItExists(type);
                 if (messageLock != null) {
+                    // Зачитывание синхронного сообщения
                     res = read(dis, configuration.getIncomingMessage(), 0, length);
                     if (res != length) {
                         throw new RegolithException();
@@ -88,9 +86,10 @@ public final class Receiver extends Thread {
                     MicroByteBuffer buffer = configuration.getAnswersBuffer();
                     buffer.initiate(configuration.getIncomingMessage(), length);
                     messageLock.getMessage().setBuffer(buffer);
-                    messageLock.setMessageType(Packets.MESSAGE_TYPE_NULL);
+                    messageLock.setMessageType(Packets.MESSAGE_TYPE_NULL); // Указание на то, что месседж обработан
                     messageLock.getLock().release();
                 } else {
+                    // Зачитывание асинхронного сообщения
                     byte[] data = new byte[length];
                     res = read(dis, data, 0, length);
                     if (res != length) {
@@ -102,12 +101,12 @@ public final class Receiver extends Thread {
                     dataMessage.setMessageType(type);
                     network.addAsynchronousMessage(dataMessage);
                 }
-                SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Receiver: received message, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length).concatC(", res:").concatI(res));
+                Debug.debug(String.valueOfC("Receiver: received message, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length).concatC(", res:").concatI(res));
                 if (length != res) {//считанное колво байт не равно заявленной длине!
-                    SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Error received len, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length).concatC(" != res:").concatI(res));
+                    Debug.error(String.valueOfC("Error received len, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length).concatC(" != res:").concatI(res));
                     continue;
                 } else if (res == -1) {//Receiver: received message, type:-19(237), len:42309
-                    SystemEnvironment.getInstance().getDebug().trace(com.geargames.common.String.valueOfC("Error received, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length));
+                    Debug.error(String.valueOfC("Error received, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length));
                     continue;
                 }
 
@@ -119,7 +118,7 @@ public final class Receiver extends Thread {
                 Manager.paused(2000);
             }
             e.printStackTrace();
-            ((ConsoleDebug)SystemEnvironment.getInstance().getDebug()).trace(String.valueOfC("Receiver Exception: "), e);
+            Debug.error(String.valueOfC("Receiver Exception: "), e);
             if (checkErrors()){
                 return;
             }
@@ -133,7 +132,7 @@ public final class Receiver extends Thread {
 
     private boolean checkErrors() {
         if (errors > NETWORK_ERRORS_THRESHOLD) {
-            SystemEnvironment.getInstance().getDebug().trace(String.valueOfC("Receiver: too many errors, disconnecting"));
+            Debug.error(String.valueOfC("Receiver: too many errors, disconnecting"));
             network.disconnect();
             return true;
         }
@@ -160,7 +159,7 @@ public final class Receiver extends Thread {
             for (; i < len; i++) {
                 c = dis.read();
                 if (c == -1) {
-                    SystemEnvironment.getInstance().getDebug().trace(String.valueOfC(" read, c:").concatI(c).concatC("(").concatI(i).concatC(")"));
+                    Debug.error(String.valueOfC(" read, c:").concatI(c).concatC(" (").concatI(i).concatC(")"));
                 }
                 bytes[off + i] = (byte) c;
             }

@@ -28,7 +28,7 @@ public abstract class SerializedMessage {
     public abstract void serialize(MicroByteBuffer buffer);
 
     /**
-     * Метод сериализации сообщения, опирается на то что все сообщения имеют общую
+     * Метод сериализации сообщения, опирается на то, что все сообщения имеют общую
      * структуру заголовка, но разное содержимое.
      * @return
      */
