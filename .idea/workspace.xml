@@ -12,58 +12,9 @@
     </option>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53e49276-8e07-4f62-91d8-55d8025a41a5" name="Default" comment="Коммит для исправления ошибки при pull-инге.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/_port/images/interface_5.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/packer/PRegolithUnit.java" />
-      <change type="DELETED" beforePath="D:\Projects\regolith\res\loc_fence.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\regolith\res\loc_ground.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\regolith\res\unit_1.png" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\regolith\res\unit_fire.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/images/head_1.png" afterPath="$PROJECT_DIR$/_port/images/head_1.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/images/interface_2.png" afterPath="$PROJECT_DIR$/_port/images/interface_2.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/images/weapon_1.png" afterPath="$PROJECT_DIR$/_port/images/weapon_1.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/images/weapon_2.png" afterPath="$PROJECT_DIR$/_port/images/weapon_2.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/packer_320_480_full/d0" afterPath="$PROJECT_DIR$/_port/packer_320_480_full/d0" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/packer_320_480_full/i0" afterPath="$PROJECT_DIR$/_port/packer_320_480_full/i0" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/sys.pack" afterPath="$PROJECT_DIR$/_port/sys.pack" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/d0" afterPath="$PROJECT_DIR$/res/d0" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/i0" afterPath="$PROJECT_DIR$/res/i0" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+    <list default="true" id="53e49276-8e07-4f62-91d8-55d8025a41a5" name="Default" comment="Результат мержа.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_port/packer_320_480_full/Graph.java" afterPath="$PROJECT_DIR$/_port/packer_320_480_full/Graph.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/client.iml" afterPath="$PROJECT_DIR$/client/client.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/RemoteFrameLoader.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/RemoteFrameLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Graph.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Graph.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Loader.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Loader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/TablesLoader.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/TablesLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battleCreate/PBattleCreatePanel.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battleCreate/PBattleCreatePanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleButtons.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleButtons.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleListItem.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleListItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleListItemVector.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattleListItemVector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattlesList.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PBattlesList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PHorizontalAccountWarriorItemVector.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PHorizontalAccountWarriorItemVector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PPlayerButton.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/battles/PPlayerButton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/menues/BagVerticalTackleItemsVector.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/menues/BagVerticalTackleItemsVector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/menues/StoreHouseVerticalTackleItemsVector.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/menues/StoreHouseVerticalTackleItemsVector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/warrior/WarriorDrawablePPanel.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/warrior/WarriorDrawablePPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Network.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Network.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Receiver.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Receiver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Sender.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Sender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/packer/PUnitStub.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/packer/PUnitStub.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientGetFrameAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientGetFrameAnswer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientShootAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientShootAnswer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/units/battle/ClientBattle.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/units/battle/ClientBattle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Graphics.java" afterPath="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Graphics.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conjunction/conjunction.iml" afterPath="$PROJECT_DIR$/conjunction/conjunction.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java" afterPath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" afterPath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" afterPath="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.main/testsrc/com/geargames/regolith/ServerDBTest.java" afterPath="$PROJECT_DIR$/server.main/testsrc/com/geargames/regolith/ServerDBTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/androidTest/gen/com/example/BuildConfig.java" afterPath="$PROJECT_DIR$/androidTest/gen/com/example/BuildConfig.java" />
     </list>
     <ignored path="regolith.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -138,111 +89,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MenuTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java">
+      <file leaf-file-name="MyActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="45" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BattleCreationTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="238" column="82" selection-start="9881" selection-end="9881" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BatchMessageManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/BatchMessageManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="46" selection-start="1948" selection-end="1948" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeSerializedMessage.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/common/src/com/geargames/regolith/serializers/DeSerializedMessage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="16" selection-start="265" selection-end="265" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientDeferredAnswer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientDeferredAnswer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="19" selection-start="852" selection-end="852" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientSerializationTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/testsrc/com/geargames/regolith/ClientSerializationTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="21" selection-start="1337" selection-end="1351" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerTackleBag2StoreHouseRequest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server.main/src/com/geargames/regolith/serializers/requests/ServerTackleBag2StoreHouseRequest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="0" selection-start="1535" selection-end="1535" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BatchAnswer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/BatchAnswer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="1330" selection-end="1330" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Packets.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/common/src/com/geargames/regolith/Packets.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="35" selection-start="390" selection-end="412" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SerializerTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/SerializerTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="13" selection-start="610" selection-end="610" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SynchronizationTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/testsrc/com/geargames/regolith/SynchronizationTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="119" column="85" selection-start="4620" selection-end="4620" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Application.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="258" column="84" selection-start="9038" selection-end="9102" vertical-scroll-proportion="0.6165413">
+            <state line="10" column="13" selection-start="246" selection-end="246" vertical-scroll-proportion="0.29982364">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -260,33 +110,41 @@
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
-        <option value="abarakov &lt;abarakovДемка для андроида.geargames@gmail.com&gt;" />
         <option value="abarakov &lt;abarakov.geargames@gmail.com&gt;" />
-        <option value="abarakov &lt;abarakov.geargames@gmail.comе " />
       </list>
     </option>
     <option name="SYNC_SETTING" value="DONT" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitLogSettings">
+    <option name="myStructureFilterPaths" />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="expandStates">
+      <map>
+        <entry key="regolith" value="true" />
+      </map>
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/BatchMessageManager.java" />
-        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" />
-        <option value="$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PGradualSpinButton.java" />
-        <option value="$PROJECT_DIR$/../awt/awt/com/geargames/awt/timers/Timer.java" />
-        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/Graphics.java" />
-        <option value="$PROJECT_DIR$/common/src/com/geargames/regolith/units/Element.java" />
-        <option value="$PROJECT_DIR$/common/src/com/geargames/regolith/units/Entity.java" />
-        <option value="$PROJECT_DIR$/../awt/common/com/geargames/common/Event.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/units/map/BattleScreen.java" />
-        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/regolith/SynchronizationTest.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Event.java" />
+        <option value="$PROJECT_DIR$/common/src/com/geargames/regolith/serializers/DeSerializedMessage.java" />
+        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/RemoteFrameLoader.java" />
+        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/Port.java" />
+        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Receiver.java" />
+        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/warrior/exchange/PProjectileExchangePanel.java" />
         <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Graphics.java" />
-        <option value="$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/LinearVanishingStrategy.java" />
-        <option value="$PROJECT_DIR$/../awt/awt/com/geargames/awt/timers/TimerManager.java" />
-        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" />
+        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Image.java" />
+        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/regolith/SynchronizationTest.java" />
         <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
+        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" />
+        <option value="$PROJECT_DIR$/../awt/console/com/geargames/platform/MainHelper.java" />
+        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" />
+        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java" />
+        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java" />
       </list>
     </option>
   </component>
@@ -341,6 +199,16 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -507,7 +375,25 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="testsrc" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -532,26 +418,12 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="regolith" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
+              <option name="myItemId" value="units" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -591,7 +463,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="service" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="clientstates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -664,6 +552,58 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serializers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -803,37 +743,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="testsrc" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
+              <option name="myItemId" value="geargames" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="serializers" />
+              <option name="myItemId" value="concept" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -856,36 +774,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="network" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="components" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1023,108 +911,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="utils" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="timers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="awt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="components" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="android" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -1181,12 +967,11 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
@@ -1210,6 +995,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\regolith\client\testsrc\com\geargames\regolith\graphics\opengl" />
       <recent name="D:\Projects\regolith\client\testsrc\com\geargames\regolith\graphics" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.geargames.concept" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Projects\regolith\client\testsrc\com\geargames\regolith\graphics" />
@@ -1608,7 +1396,15 @@
       <created>1363095066193</created>
       <updated>1363095066193</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Результат мержа.">
+      <created>1363099073651</created>
+      <updated>1363099073651</updated>
+    </task>
+    <task id="LOCAL-00016" summary="1. Внесены изменения под новые классы дебага и логгирования;&#10;2. Внесены изменения из-за переноса консольных классов в пакет com.geargames.platform;&#10;3. Добавлена проверка десериализации для batch-сообщений;&#10;4. Исправлен баг с сериализацией batch-сообщений;">
+      <created>1363361603573</created>
+      <updated>1363361603573</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1635,30 +1431,30 @@
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.66161615" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5673401" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.6700337" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7626263" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.63804716" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.38215488" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33670035" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.4781145" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19575115" sideWeight="0.6700337" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19423369" sideWeight="0.43265992" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.6700337" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.56565654" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5117845" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34848484" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26262626" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -1698,7 +1494,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Демка для андроида" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. Внесены изменения под новые классы дебага и логгирования;&#10;2. Внесены изменения из-за переноса консольных классов в пакет com.geargames.platform;&#10;3. Добавлена проверка десериализации для batch-сообщений;&#10;4. Исправлен баг с сериализацией batch-сообщений;" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1723,6 +1519,8 @@
     <MESSAGE value="Пустой коммит" />
     <MESSAGE value="Коммит для исправления ошибки при pull-инге." />
     <MESSAGE value="Демка для андроида" />
+    <MESSAGE value="Результат мержа." />
+    <MESSAGE value="1. Внесены изменения под новые классы дебага и логгирования;&#10;2. Внесены изменения из-за переноса консольных классов в пакет com.geargames.platform;&#10;3. Добавлена проверка десериализации для batch-сообщений;&#10;4. Исправлен баг с сериализацией batch-сообщений;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1732,118 +1530,124 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientDeferredAnswer.java">
+    <entry file="file://$PROJECT_DIR$/../awt/console/com/geargames/platform/logging/ConsoleLogger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="19" selection-start="852" selection-end="852" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="19" column="11" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/testsrc/com/geargames/regolith/ClientSerializationTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="21" selection-start="1337" selection-end="1351" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server.main/src/com/geargames/regolith/serializers/requests/ServerTackleBag2StoreHouseRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="0" selection-start="1535" selection-end="1535" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/BatchAnswer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1330" selection-end="1330" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/com/geargames/regolith/Packets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="35" selection-start="390" selection-end="412" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/SerializerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="13" selection-start="610" selection-end="610" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/testsrc/com/geargames/regolith/SynchronizationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="85" selection-start="4620" selection-end="4620" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="22" selection-start="810" selection-end="810" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PTouchButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="37" selection-start="1413" selection-end="1413" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/awt/com/geargames/awt/utils/LinearVanishingStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="60" selection-start="390" selection-end="390" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/awt/com/geargames/awt/timers/TimerManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="464" column="50" selection-start="22886" selection-end="22886" vertical-scroll-proportion="-0.36666667">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/awt/com/geargames/awt/timers/Timer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="49" selection-start="871" selection-end="871" vertical-scroll-proportion="0.3575526">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/awt/com/geargames/awt/components/PGradualSpinButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="22" selection-start="110" selection-end="110" vertical-scroll-proportion="-1.7724551">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="45" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="19" selection-start="334" selection-end="334" vertical-scroll-proportion="0.21834862">
+        <state line="5" column="38" selection-start="237" selection-end="237" vertical-scroll-proportion="0.1559633">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="258" column="84" selection-start="9038" selection-end="9102" vertical-scroll-proportion="0.6165413">
+        <state line="183" column="11" selection-start="5941" selection-end="5941" vertical-scroll-proportion="0.45306858">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/RegolithMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="60" selection-start="243" selection-end="243" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../awt/console/com/geargames/platform/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="56" selection-start="525" selection-end="685" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../awt/console/com/geargames/platform/ConsoleMainHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="30" selection-start="301" selection-end="311" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="42" selection-start="1303" selection-end="1303" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files (x86)/Java/jdk1.6.0_21/jre/lib/rt.jar!/sun/nio/ch/WindowsSelectorImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="128" column="27" selection-start="5106" selection-end="5106" vertical-scroll-proportion="0.6256881" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server.main/src/com/geargames/regolith/serializers/requests/ServerStartBattleRequest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="0" selection-start="2078" selection-end="2078" vertical-scroll-proportion="0.18609023" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/facebook/BaseRequestListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="47" selection-start="105" selection-end="105" vertical-scroll-proportion="0.09586466">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="14" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.38977072">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="43" selection-start="2050" selection-end="2084" vertical-scroll-proportion="0.39891696">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../awt/common/com/geargames/common/logging/Level.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="29" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/androidTest/gen/com/example/BuildConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="46" selection-start="1056" selection-end="1056" vertical-scroll-proportion="-29.366426">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="13" selection-start="246" selection-end="246" vertical-scroll-proportion="0.29982364">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1878,7 +1682,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>No facets are configured</last-edited>
+          <last-edited>Android</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1913,12 +1717,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>gg.android</last-edited>
+          <last-edited>common</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
