@@ -3,12 +3,11 @@ package com.geargames.regolith.network;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.util.Lock;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.application.Application;
 import com.geargames.regolith.application.Manager;
 
-import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.io.Connector;
 import javax.microedition.io.SocketConnection;
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
@@ -23,7 +22,6 @@ public class MeNetwork extends Network {
     private DataOutputStream dos;
     private Receiver receiver;
     private Sender sender;
-    private Application application;
     public boolean downloading, uploading;
     private ClientConfiguration configuration;
 
@@ -39,14 +37,6 @@ public class MeNetwork extends Network {
     private int port;
     private String address;
 
-    public Application getApplication() {
-        return application;
-    }
-
-    public void setApplication(Application application) {
-        this.application = application;
-    }
-
     public synchronized boolean connect(String address, int port) {
         try {
             Debug.info(com.geargames.common.String.valueOfC("Network.connect: address:").concatC(address).concatC(" port:").concatI(port));
@@ -55,7 +45,7 @@ public class MeNetwork extends Network {
 
             socket.setSocketOption(SocketConnection.KEEPALIVE, 1);
 
-            dis = socket.openDataInputStream();
+            dis = new DataInputStream(new BufferedInputStream(socket.openInputStream()));
             dos = socket.openDataOutputStream();
 
             receiver = new Receiver(this, configuration);
@@ -69,8 +59,6 @@ public class MeNetwork extends Network {
             connected = true;
             Debug.info(com.geargames.common.String.valueOfC("Network.connect: TCP/IP Session established"));
             return true;
-        } catch (ConnectionNotFoundException e) {
-            Debug.error(com.geargames.common.String.valueOfC("Connector not respond! exception: "), e);
         } catch (Exception e) {
             Debug.error(com.geargames.common.String.valueOfC("Network.connect() exception: "), e);
         }

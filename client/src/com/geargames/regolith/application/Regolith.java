@@ -14,7 +14,7 @@ public final class Regolith extends MIDlet {
             }
             manager.startApp();
         } catch (Exception e) {
-            Debug.error(String.valueOfC(""), e);
+            Debug.error(String.valueOfC("Start application problem"), e);
         }
     }
 
@@ -26,15 +26,6 @@ public final class Regolith extends MIDlet {
         if (manager != null) {
             manager.pauseApp();
         }
-    }
-
-    public void destroyApp(boolean b) {
-        try {
-
-        } catch (Exception e) {
-            Debug.error(String.valueOfC(""), e);
-        }
-
     }
 
     public void facebookShare() {

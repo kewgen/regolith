@@ -12,9 +12,7 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 public final class Manager extends com.geargames.platform.Manager implements Runnable {
 
-    public final static boolean DEBUG = true;//главный дебаг, если false отключает все остальные дебаги
     // ****************************** Settings ******************************
-
     private Application app;
     private MIDlet midlet;
     private volatile boolean running;
@@ -36,7 +34,6 @@ public final class Manager extends com.geargames.platform.Manager implements Run
         self_manger = this;
         midlet = midlet_;
         isSuspended = false;
-        /*ObjC uncomment*///return self;
     }
 
     public static Manager getInstance(MIDlet midlet_) {
@@ -70,15 +67,18 @@ public final class Manager extends com.geargames.platform.Manager implements Run
 
     // ------------------ Screen ------------------------
     public void paint(Graphics g) {
-        //Manager.log("Manager.paint");
-        if (Port.IS_CONSOLE) g.onCache(5000);
-        try {
-            if (app == null) return;//Application еще не создан
-            g.drawImage(app.getBuffer(), Port.SCREEN_DX, Port.SCREEN_DY);
-        } catch (Exception e) {
-            Debug.error(String.valueOfC(""), e);
+        if (Port.IS_CONSOLE) {
+            g.onCache(5000);
         }
-        //if (Port.OPEN_GL && Port.isAndroid()) game.app.getGraphics().finish();
+        try {
+            if (app == null) {
+                return;
+            } else {
+                g.drawImage(app.getBuffer(), Port.SCREEN_DX, Port.SCREEN_DY);
+            }
+        } catch (Exception e) {
+            Debug.error(String.valueOfC("Could not draw an image"), e);
+        }
         app.setIsDrawing(false);
     }
 
@@ -123,10 +123,8 @@ public final class Manager extends com.geargames.platform.Manager implements Run
 
     public void destroy(boolean correct) {
         stopMainThread();
-        //if (game.Port.isAndroid()) midlet.onDestroy();
         if (Port.OPEN_GL && Port.IS_ANDROID) runStop();
         midlet.notifyDestroyed();
-        //setCanvasDisplay(null);
     }
 
 
@@ -145,11 +143,9 @@ public final class Manager extends com.geargames.platform.Manager implements Run
     }
 
     public void run_() {
-        /*ObjC uncomment*///NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
         Debug.debug(String.valueOfC("Manager.run_"));
         running = true;
         runStart();
-        /*ObjC uncomment*///[pool release];
     }
 
     public void run() {
@@ -163,7 +159,7 @@ public final class Manager extends com.geargames.platform.Manager implements Run
             runStop();
         } catch (Exception e) {
             stopMainThread();
-            Debug.error(String.valueOfC("Application.run"), e);
+            Debug.error(String.valueOfC("Main loop problems"), e);
         }
     }
 
@@ -194,8 +190,8 @@ public final class Manager extends com.geargames.platform.Manager implements Run
             app.onStop(true);
             //midlet.notifyDestroyed();
         } catch (Exception e) {
-            e.printStackTrace();
-            Debug.debug(String.valueOfC("Error during stop [FILELINE]"));
+
+            Debug.error(String.valueOfC("Error during stop [FILELINE]"), e);
         }
     }
 

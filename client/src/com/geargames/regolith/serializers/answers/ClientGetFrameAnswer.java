@@ -7,8 +7,6 @@ import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.serializers.MicroByteBuffer;
 import com.geargames.regolith.serializers.SimpleDeserializer;
 
-import java.io.IOException;
-
 /**
  * User: mikhail v. kutuzov
  *
@@ -28,8 +26,8 @@ public class ClientGetFrameAnswer extends ClientDeSerializedMessage {
             frame = new PFrame(0,0,image.getWidth(),image.getHeight());
             frame.setImage(image);
             frame.setPid(id);
-        } catch (IOException e) {
-            Debug.error(com.geargames.common.String.valueOfC("Ошибка при считывании серверной картинки"), e);
+        } catch (Exception e) {
+            Debug.error(com.geargames.common.String.valueOfC("Could not read a server frame"), e);
         }
     }
 }

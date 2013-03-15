@@ -13,8 +13,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53e49276-8e07-4f62-91d8-55d8025a41a5" name="Default" comment="Результат мержа.">
+      <change type="DELETED" beforePath="D:\Projects\regolith\client\testsrc\com\geargames\graphics\Resource.java" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\regolith\client\testsrc\com\geargames\graphics\ResourcePriority.java" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\regolith\pfp.storage" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/androidTest/gen/com/example/BuildConfig.java" afterPath="$PROJECT_DIR$/androidTest/gen/com/example/BuildConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Loader.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Loader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Sender.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Sender.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientGetFrameAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientGetFrameAnswer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientShootAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientShootAnswer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/Image.java" afterPath="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/Image.java" />
     </list>
     <ignored path="regolith.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,8 +91,8 @@
       <property name="field_breakpoints_groupByClasses" value="true" />
       <property name="method_breakpoints_groupByClasses" value="true" />
       <property name="exception_breakpoints_viewId" value="TABLE" />
-      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="exception_breakpoints_groupByClasses" value="true" />
+      <property name="field_breakpoints_viewId" value="TABLE" />
       <property name="method_breakpoints_groupByMethods" value="false" />
     </ui_properties>
   </component>
@@ -92,7 +104,7 @@
       <file leaf-file-name="MyActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="13" selection-start="246" selection-end="246" vertical-scroll-proportion="0.29982364">
+            <state line="14" column="40" selection-start="337" selection-end="337" vertical-scroll-proportion="0.41975307">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -137,14 +149,14 @@
         <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Graphics.java" />
         <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Image.java" />
         <option value="$PROJECT_DIR$/client/testsrc/com/geargames/regolith/SynchronizationTest.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" />
         <option value="$PROJECT_DIR$/../awt/console/com/geargames/platform/MainHelper.java" />
         <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" />
         <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java" />
         <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java" />
+        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
+        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" />
       </list>
     </option>
   </component>
@@ -199,26 +211,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -967,6 +959,26 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -982,9 +994,9 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -1169,24 +1181,6 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -1212,6 +1206,24 @@
       <envs />
       <properties />
       <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -1439,19 +1451,19 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.38215488" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26262626" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.4781145" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19423369" sideWeight="0.43265992" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19347496" sideWeight="0.43265992" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.6700337" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.56565654" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34848484" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26262626" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -1494,7 +1506,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. Внесены изменения под новые классы дебага и логгирования;&#10;2. Внесены изменения из-за переноса консольных классов в пакет com.geargames.platform;&#10;3. Добавлена проверка десериализации для batch-сообщений;&#10;4. Исправлен баг с сериализацией batch-сообщений;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Результат мержа." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1519,8 +1531,8 @@
     <MESSAGE value="Пустой коммит" />
     <MESSAGE value="Коммит для исправления ошибки при pull-инге." />
     <MESSAGE value="Демка для андроида" />
-    <MESSAGE value="Результат мержа." />
     <MESSAGE value="1. Внесены изменения под новые классы дебага и логгирования;&#10;2. Внесены изменения из-за переноса консольных классов в пакет com.geargames.platform;&#10;3. Добавлена проверка десериализации для batch-сообщений;&#10;4. Исправлен баг с сериализацией batch-сообщений;" />
+    <MESSAGE value="Результат мержа." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1530,31 +1542,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../awt/console/com/geargames/platform/logging/ConsoleLogger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="11" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/testsrc/com/geargames/regolith/ClientSerializationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="38" selection-start="237" selection-end="237" vertical-scroll-proportion="0.1559633">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="183" column="11" selection-start="5941" selection-end="5941" vertical-scroll-proportion="0.45306858">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/RegolithMain.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="60" selection-start="243" selection-end="243" vertical-scroll-proportion="0.0">
@@ -1645,9 +1632,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/testsrc/com/geargames/regolith/ClientTestConfigurationFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="48" selection-start="211" selection-end="211" vertical-scroll-proportion="0.16545013">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="49" selection-start="1588" selection-end="1588" vertical-scroll-proportion="0.09171076">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="219" column="44" selection-start="7159" selection-end="7159" vertical-scroll-proportion="-0.4061372">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="13" selection-start="246" selection-end="246" vertical-scroll-proportion="0.29982364">
+        <state line="14" column="40" selection-start="337" selection-end="337" vertical-scroll-proportion="0.41975307">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

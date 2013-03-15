@@ -6,7 +6,6 @@ import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PManager;
 import com.geargames.common.Graphics;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 
@@ -46,8 +45,8 @@ public class Loader {
             packer.loadImages(g, is);
             is.close();
 
-        } catch (IOException e) {
-            Debug.error(String.valueOfC(""), e);
+        } catch (Exception e) {
+            Debug.error(String.valueOfC("Could not load packer resources"), e);
         }
     }
 }

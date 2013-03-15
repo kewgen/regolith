@@ -82,7 +82,7 @@ public final class Sender extends Thread {
                     network.disconnect();
                     return;
                 }
-                Debug.error(String.valueOfC(""), e);
+                Debug.error(String.valueOfC("Sender exception"), e);
             }
         }
     }
