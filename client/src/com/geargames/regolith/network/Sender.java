@@ -3,8 +3,8 @@ package com.geargames.regolith.network;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.String;
 import com.geargames.common.util.Lock;
+import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.application.MELock;
 import com.geargames.regolith.serializers.SerializedMessage;
 
 import java.io.DataOutputStream;
@@ -27,7 +27,7 @@ public final class Sender extends Thread {
         messageQueue = new Vector();
         errorCounter = 0;
         configuration = clientConfiguration;
-        workLock = new MELock();
+        workLock = new JavaLock();
         workLock.lock();
     }
 

@@ -74,7 +74,7 @@ public class MeNetwork extends Network {
 
             sender.stopSending();
             receiver.stopReceiving();
-            Manager.paused(100);//даём остановиться сокету
+            Manager.pause(100);//даём остановиться сокету
 
             try {
                 if (dos != null) dos.close();

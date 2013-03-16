@@ -1,7 +1,6 @@
 package com.geargames.regolith.application;
 
 import com.geargames.common.logging.Debug;
-import com.geargames.common.util.Recorder;
 import com.geargames.platform.MIDlet;
 import com.geargames.common.String;
 import com.geargames.platform.packer.Canvas;
@@ -198,12 +197,7 @@ public final class Manager extends com.geargames.platform.Manager implements Run
 
     // ------------KEYS CONTROL----------------
 
-    private int lastKey = 0;
     private int pressedKey = 0;
-    public final static int KEYDELAY = 10 * 1000;
-    public final static int TIMERID_KEYDELAY = 0xDEDAAE77;
-    public final static int KEYREPEAT = 200;
-    public final static int TIMERID_KEYREPEAT = 0xEBEA888;
 
     final public static byte SK_OK = 0;
     final public static byte SK_EXIT = 3;
@@ -215,29 +209,9 @@ public final class Manager extends com.geargames.platform.Manager implements Run
         enabledOkKey = okLabelN != SK_NONE;
     }
 
-    public final boolean isLSKEnabled() {
-        return enabledOkKey;
-    }
-
-    public final byte getLSK() {
-        return okLabelN;
-    }
-
     public final void setRSK(byte label) {
         cancelLabelN = label;
         enabledCancelKey = cancelLabelN != SK_NONE;
-    }
-
-    public final boolean isRSKEnabled() {
-        return enabledCancelKey;
-    }
-
-    public final byte getRSK() {
-        return cancelLabelN;
-    }
-
-    public int getPressedKey() {
-        return pressedKey;
     }
 
     public void keyPressed(int key) {
@@ -260,7 +234,7 @@ public final class Manager extends com.geargames.platform.Manager implements Run
         try {
             if (canvas.isKeyValid(key) || canvas.isTouchSupport) {
                 app.eventAdd(Event.EVENT_KEY_RELEASED, key, null);
-                lastKey = pressedKey = 0;
+                pressedKey = 0;
             }
         } catch (Exception e) {
             Debug.error(String.valueOfC("keyReleased [FILELINE]"), e);
@@ -326,9 +300,9 @@ public final class Manager extends com.geargames.platform.Manager implements Run
         Display.getDisplay(midlet).vibrate(300);
     }
 
-    public static void paused(long pause) {
+    public static void pause(long pause) {
         try {
-            Thread.sleep(1);//иногда пролетает мгновенно и получаем ArithmeticException: / by zero
+            Thread.sleep(1);
             Thread.sleep(pause);
             Thread.yield();
         } catch (Exception e) {
@@ -336,25 +310,6 @@ public final class Manager extends com.geargames.platform.Manager implements Run
         }
     }
 
-    void platformRequest(String str) {
-        boolean is_close = false;
-        try {
-            is_close = midlet.platformRequest(str, true);
-        } catch (Exception e) {
-        }
-        Manager.paused(100);
-        if (is_close) {
-            runStop();
-        }
-    }
-
-    public static long getTotalMemory() {
-        return Runtime.getRuntime().totalMemory();
-    }
-
-    public static long getFreeMemory() {
-        return Runtime.getRuntime().freeMemory();
-    }
 
     public MIDlet getMidlet() {
         return midlet;
