@@ -8,9 +8,9 @@ package com.geargames.regolith.service;
 public class BattleConsoleServiceManager {
     public static void main(String[] args) throws Exception {
         if (args[0].equals("START")) {
-            BattleServiceManager.runBattleService(args[2], args[3], args[4], Integer.valueOf(args[5]));
+            BattleServiceManager.runBattleService(args[1], args[2], args[3], Integer.valueOf(args[4]));
         } else if(args[0].equals("UNREGISTER")) {
-            BattleServiceManager.unRegisterBattleService(args[2], args[3]);
+            BattleServiceManager.unRegisterBattleService(args[1], args[2]);
         }
     }
 }
