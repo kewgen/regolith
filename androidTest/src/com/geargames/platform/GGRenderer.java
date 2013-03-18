@@ -39,7 +39,6 @@ public class GGRenderer implements android.opengl.GLSurfaceView.Renderer {
         System.out.println("OpenGL version = "       + graphics.getVersionString());
         System.out.println("Maximum texture size = " + graphics.getMaxTextureSize());
 
-
         graphics.setBackgroundColorARGB(0xffffffff); // белый
 //        graphics.setBackgroundColorARGB(0xff6cb6ff); // голубоватый цвет фона
 	}
@@ -97,6 +96,20 @@ public class GGRenderer implements android.opengl.GLSurfaceView.Renderer {
                 0xff0000ff,
                 0xffffffff
         });
+
+        for (int i = 0; i <= 100; i++) {
+            gl.glColor4f(i * 0.01f, 0f, 0f, 1f);
+            graphics.drawLine(20, 40+i, 80, 40+i);
+
+            gl.glColor4f(0f, i * 0.01f, 0f, 1f);
+            graphics.drawLine(80, 40+i, 140, 40+i);
+
+            gl.glColor4f(0f, 0f, i * 0.01f, 1f);
+            graphics.drawLine(140, 40+i, 200, 40+i);
+
+            gl.glColor4f(0.5f, 0.5f, 0.5f, i * 0.01f);
+            graphics.drawLine(200, 40+i, 260, 40+i);
+        }
 
 //        gl.glMatrixMode(GL10.GL_MODELVIEW);
 //        gl.glLoadIdentity();

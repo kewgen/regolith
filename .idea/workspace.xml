@@ -13,20 +13,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53e49276-8e07-4f62-91d8-55d8025a41a5" name="Default" comment="Результат мержа.">
-      <change type="DELETED" beforePath="D:\Projects\regolith\client\testsrc\com\geargames\graphics\Resource.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\regolith\client\testsrc\com\geargames\graphics\ResourcePriority.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\regolith\pfp.storage" afterPath="" />
+      <change type="DELETED" beforePath="D:\Projects\regolith\client\src\com\geargames\regolith\application\MELock.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/androidTest/src/com/geargames/platform/AndroidGraphics.java" afterPath="$PROJECT_DIR$/androidTest/src/com/geargames/platform/AndroidGraphics.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGRenderer.java" afterPath="$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGRenderer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/ClientConfigurationFactory.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/ClientConfigurationFactory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Loader.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Loader.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Regolith.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientDeferredAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientDeferredAnswer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Receiver.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Receiver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Sender.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Sender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientGetFrameAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientGetFrameAnswer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientShootAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientShootAnswer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/Image.java" afterPath="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/Image.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/testsrc/com/geargames/regolith/ThreadTester.java" afterPath="$PROJECT_DIR$/client/testsrc/com/geargames/regolith/ThreadTester.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.battle/src/com/geargames/regolith/service/BattleConsoleServiceManager.java" afterPath="$PROJECT_DIR$/server.battle/src/com/geargames/regolith/service/BattleConsoleServiceManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.main/src/com/geargames/regolith/service/MainServiceManager.java" afterPath="$PROJECT_DIR$/server.main/src/com/geargames/regolith/service/MainServiceManager.java" />
     </list>
     <ignored path="regolith.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -101,13 +103,171 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MyActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java">
+      <file leaf-file-name="GGActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="40" selection-start="337" selection-end="337" vertical-scroll-proportion="0.41975307">
+            <state line="11" column="40" selection-start="276" selection-end="276" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GLFrame.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/opengl/GLFrame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="176" column="38" selection-start="6083" selection-end="6083" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BattleConnectionTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="160" column="56" selection-start="7460" selection-end="7460" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BattleCreationTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="208" column="44" selection-start="9189" selection-end="9189" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Manager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="297" column="69" selection-start="8351" selection-end="8351" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="rmiregistryserver.bat" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rmiregistryserver.bat">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GGRenderer.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGRenderer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="99" column="27" selection-start="3234" selection-end="3234" vertical-scroll-proportion="0.35897437">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidGraphics.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/androidTest/src/com/geargames/platform/AndroidGraphics.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="592" column="4" selection-start="21542" selection-end="21542" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GLES20.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/android/opengl/GLES20.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="162" column="41" selection-start="8695" selection-end="8722" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UseOfClasses.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/androidTest/src/com/geargames/platform/UseOfClasses.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="76" column="8" selection-start="2115" selection-end="2115" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Graphics.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/packer/Graphics.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="246" column="30" selection-start="8718" selection-end="8718" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Canvas.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/packer/Canvas.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="21" selection-start="1847" selection-end="1847" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GLRenderer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/opengl/GLRenderer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="28" selection-start="403" selection-end="403" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GLCanvas__.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/opengl/GLCanvas__.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="37" selection-start="298" selection-end="298" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GL11.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/javax/microedition/khronos/opengles/GL11.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GL10.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/javax/microedition/khronos/opengles/GL10.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="338" column="22" selection-start="10245" selection-end="10258" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Canvas.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/android/graphics/Canvas.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="37" column="96" selection-start="1328" selection-end="1328" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -141,22 +301,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/common/src/com/geargames/regolith/serializers/DeSerializedMessage.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/RemoteFrameLoader.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/Port.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Receiver.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/awt/components/warrior/exchange/PProjectileExchangePanel.java" />
-        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Graphics.java" />
-        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/opengl/Image.java" />
-        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/regolith/SynchronizationTest.java" />
-        <option value="$PROJECT_DIR$/../awt/console/com/geargames/platform/MainHelper.java" />
-        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java" />
-        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java" />
-        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java" />
-        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
-        <option value="$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java" />
-        <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java" />
+        <option value="$PROJECT_DIR$/../awt/console/com/geargames/platform/logging/ConsoleDebug.java" />
+        <option value="$PROJECT_DIR$/../awt/common/com/geargames/common/logging/AbstractDebug.java" />
+        <option value="$PROJECT_DIR$/../awt/common/com/geargames/common/logging/Debug.java" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/example/GGActivity.java" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGActivity.java" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGSurfaceView.java" />
+        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/graphics/Graphics.java" />
+        <option value="$PROJECT_DIR$/client/testsrc/com/geargames/concept/UseOfClasses.java" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/geargames/platform/UseOfClasses.java" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/geargames/platform/Graphics.java" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/geargames/platform/GLGraphics.java" />
+        <option value="$PROJECT_DIR$/../awt/android/com/geargames/opengl/GLFrame.java" />
         <option value="$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java" />
+        <option value="$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/geargames/platform/AndroidGraphics.java" />
+        <option value="$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGRenderer.java" />
       </list>
     </option>
   </component>
@@ -218,15 +378,9 @@
               <option name="myItemId" value="regolith" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -235,30 +389,12 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server.main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server.main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="&lt; Android 3.0 Platform &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -267,19 +403,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server.main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="&lt; Android 3.0 Platform &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
+              <option name="myItemId" value="android.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -289,23 +421,19 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Android 3.0 Platform &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server.main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="service" />
+              <option name="myItemId" value="javax" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -315,41 +443,27 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Android 3.0 Platform &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server.main" />
+              <option name="myItemId" value="javax" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
+              <option name="myItemId" value="khronos" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="states" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
+              <option name="myItemId" value="opengles" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -359,37 +473,27 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Android 3.0 Platform &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
+              <option name="myItemId" value="javax" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
+              <option name="myItemId" value="khronos" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
+              <option name="myItemId" value="egl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -399,23 +503,45 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Android 3.0 Platform &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
               <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Android 3.0 Platform &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
+              <option name="myItemId" value="android" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="units" />
+              <option name="myItemId" value="opengl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -426,52 +552,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="service" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clientstates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -508,94 +588,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="serializers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="regolith" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -791,7 +783,37 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
+              <option name="myItemId" value="serializers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serializers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="requests" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -827,7 +849,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="example" />
+              <option name="myItemId" value="platform" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -895,6 +917,12 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="example" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -984,6 +1012,7 @@
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.last.edited" value="Modules" />
+    <property name="OverrideImplement.combined" value="true" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
@@ -1000,11 +1029,14 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.geargames.platform" />
+      <recent name="com.example" />
       <recent name="com.geargames.regolith.awt.components.main" />
       <recent name="com.geargames.regolith.awt.components.battleCreate" />
       <recent name="com.geargames.regolith.application" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Projects\regolith\androidTest\src\com\example" />
       <recent name="D:\Projects\regolith\client\testsrc\com\geargames\regolith\graphics\opengl" />
       <recent name="D:\Projects\regolith\client\testsrc\com\geargames\regolith\graphics" />
     </key>
@@ -1015,27 +1047,7 @@
       <recent name="D:\Projects\regolith\client\testsrc\com\geargames\regolith\graphics" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MenuTest">
-    <configuration default="false" name="MenuTest" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.geargames.regolith.MenuTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="conjunction" />
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Android Application.androidTest">
     <configuration default="false" name="Application" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.geargames.regolith.graphics.demo.Application" />
       <option name="VM_PARAMETERS" />
@@ -1116,6 +1128,32 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="com.geargames.regolith" />
       <option name="MAIN_CLASS_NAME" value="com.geargames.regolith.SynchronizationTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="BattleConnectionTest" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="conjunction" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.geargames.regolith" />
+      <option name="MAIN_CLASS_NAME" value="com.geargames.regolith.BattleConnectionTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -1297,7 +1335,7 @@
     </configuration>
     <configuration default="false" name="androidTest" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="androidTest" />
-      <option name="ACTIVITY_CLASS" value="com.example.MyActivity" />
+      <option name="ACTIVITY_CLASS" value="com.geargames.platform.GGActivity" />
       <option name="MODE" value="specific_activity" />
       <option name="DEPLOY" value="true" />
       <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
@@ -1315,12 +1353,12 @@
       <method />
     </configuration>
     <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="Application.MenuTest" />
-      <item index="1" class="java.lang.String" itemvalue="Application.Application" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.ServerDBTest" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.BattleCreationTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.SynchronizationTest" />
-      <item index="5" class="java.lang.String" itemvalue="Android Application.androidTest" />
+      <item index="0" class="java.lang.String" itemvalue="Application.Application" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.ServerDBTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.BattleCreationTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.SynchronizationTest" />
+      <item index="4" class="java.lang.String" itemvalue="Android Application.androidTest" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.BattleConnectionTest" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1416,7 +1454,19 @@
       <created>1363361603573</created>
       <updated>1363361603573</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Результат мержа.">
+      <created>1363364618849</created>
+      <updated>1363364618849</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Инстанцы экземпляров Environment и Debug перенесены в статические классы.">
+      <created>1363609721814</created>
+      <updated>1363609721814</updated>
+    </task>
+    <task id="LOCAL-00019" summary="1. Добавлен класс AndroidGraphics в testsrc и начат процесс его реализации;&#10;2. Чуток поправлен класс BattleConnectionTest.">
+      <created>1363609938611</created>
+      <updated>1363609938611</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1445,27 +1495,27 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5673401" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.5151515" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.6700337" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.63804716" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34848484" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28956228" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.38215488" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26262626" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5185185" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43939394" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.4781145" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19347496" sideWeight="0.43265992" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19347496" sideWeight="0.7104377" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43265992" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.6700337" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.56565654" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34848484" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Android Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1506,7 +1556,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Результат мержа." />
+    <option name="LAST_COMMIT_MESSAGE" value="1. Добавлен класс AndroidGraphics в testsrc и начат процесс его реализации;&#10;2. Чуток поправлен класс BattleConnectionTest." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1533,6 +1583,8 @@
     <MESSAGE value="Демка для андроида" />
     <MESSAGE value="1. Внесены изменения под новые классы дебага и логгирования;&#10;2. Внесены изменения из-за переноса консольных классов в пакет com.geargames.platform;&#10;3. Добавлена проверка десериализации для batch-сообщений;&#10;4. Исправлен баг с сериализацией batch-сообщений;" />
     <MESSAGE value="Результат мержа." />
+    <MESSAGE value="Инстанцы экземпляров Environment и Debug перенесены в статические классы." />
+    <MESSAGE value="1. Добавлен класс AndroidGraphics в testsrc и начат процесс его реализации;&#10;2. Чуток поправлен класс BattleConnectionTest." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1542,60 +1594,53 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/RegolithMain.java">
+    <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/android/view/View.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="60" selection-start="243" selection-end="243" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/console/com/geargames/platform/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="56" selection-start="525" selection-end="685" vertical-scroll-proportion="0.0">
+        <state line="342" column="19" selection-start="16439" selection-end="16439" vertical-scroll-proportion="0.42857143">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/console/com/geargames/platform/ConsoleMainHelper.java">
+    <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/packer/Graphics.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="30" selection-start="301" selection-end="311" vertical-scroll-proportion="0.0">
+        <state line="246" column="30" selection-start="8718" selection-end="8718" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGSurfaceView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="41" selection-start="114" selection-end="114" vertical-scroll-proportion="0.21834862">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/androidTest/src/com/geargames/platform/UseOfClasses.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="76" column="8" selection-start="2115" selection-end="2115" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="297" column="69" selection-start="8351" selection-end="8351" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rmiregistryserver.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleConnectionTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="42" selection-start="1303" selection-end="1303" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files (x86)/Java/jdk1.6.0_21/jre/lib/rt.jar!/sun/nio/ch/WindowsSelectorImpl.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="128" column="27" selection-start="5106" selection-end="5106" vertical-scroll-proportion="0.6256881" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server.main/src/com/geargames/regolith/serializers/requests/ServerStartBattleRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="0" selection-start="2078" selection-end="2078" vertical-scroll-proportion="0.18609023" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/facebook/BaseRequestListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="47" selection-start="105" selection-end="105" vertical-scroll-proportion="0.09586466">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/MenuTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="14" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.38977072">
+        <state line="160" column="56" selection-start="7460" selection-end="7460" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1604,60 +1649,71 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/conjunction/testsrc/com/geargames/regolith/BattleCreationTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="43" selection-start="2050" selection-end="2084" vertical-scroll-proportion="0.39891696">
+        <state line="208" column="44" selection-start="9189" selection-end="9189" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../awt/common/com/geargames/common/logging/Level.java">
+    <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/opengl/GLRenderer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="29" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/androidTest/gen/com/example/BuildConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="46" selection-start="1056" selection-end="1056" vertical-scroll-proportion="-29.366426">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/testsrc/com/geargames/regolith/ClientTestConfigurationFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="48" selection-start="211" selection-end="211" vertical-scroll-proportion="0.16545013">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Manager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="49" selection-start="1588" selection-end="1588" vertical-scroll-proportion="0.09171076">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/com/geargames/regolith/application/Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="219" column="44" selection-start="7159" selection-end="7159" vertical-scroll-proportion="-0.4061372">
+        <state line="14" column="28" selection-start="403" selection-end="403" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/androidTest/src/com/example/MyActivity.java">
+    <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/android/opengl/GLUtils.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="40" selection-start="337" selection-end="337" vertical-scroll-proportion="0.41975307">
+        <state line="5" column="19" selection-start="158" selection-end="158" vertical-scroll-proportion="0.13333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/android/opengl/GLU.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="152" selection-end="152" vertical-scroll-proportion="0.12781955">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/javax/microedition/khronos/opengles/GL10.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="338" column="22" selection-start="10245" selection-end="10258" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../Libraries/adt-bundle-windows-x86_64-20130219/sdk/platforms/android-11/android.jar!/android/opengl/GLES20.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="162" column="41" selection-start="8695" selection-end="8722" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../awt/android/com/geargames/opengl/GLFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="176" column="38" selection-start="6083" selection-end="6083" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/androidTest/src/com/geargames/platform/AndroidGraphics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="592" column="4" selection-start="21542" selection-end="21542" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/androidTest/src/com/geargames/platform/GGRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="99" column="27" selection-start="3234" selection-end="3234" vertical-scroll-proportion="0.35897437">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1692,7 +1748,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Android</last-edited>
+          <last-edited>Detection</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1715,7 +1771,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>Android 3.0 Platform</last-edited>
+          <last-edited>1.6</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1727,7 +1783,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>common</last-edited>
+          <last-edited>client</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

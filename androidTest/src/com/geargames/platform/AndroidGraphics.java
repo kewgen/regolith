@@ -586,6 +586,10 @@ public class AndroidGraphics {
 
 
 
+    public boolean isOpenGL() {
+        return true;
+    }
+
     public String getVendorString() {
         String value = gl.glGetString(gl.GL_VENDOR);
         checkGLError("glGetString");
@@ -609,10 +613,6 @@ public class AndroidGraphics {
         gl.glGetIntegerv(gl.GL_MAX_TEXTURE_SIZE, params, 0);
         checkGLError("glGetIntegerv");
         return params[0];
-    }
-
-    public boolean isOpenGL() {
-        return true;
     }
 
     public boolean isShaderSupported() {

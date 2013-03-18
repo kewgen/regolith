@@ -35,7 +35,7 @@ public class ClientDeferredAnswer {
             if (i++ >= attempt) {
                 return false;
             }
-            Manager.paused(100);
+            Manager.pause(100);
         }
         getAnswer().deSerialize();
         return true;

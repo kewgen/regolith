@@ -1,7 +1,7 @@
 package com.geargames.regolith;
 
 import com.geargames.common.util.Lock;
-import com.geargames.regolith.application.MELock;
+import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.network.ConsoleNetwork;
 import com.geargames.regolith.network.MessageLock;
@@ -13,7 +13,7 @@ import com.geargames.regolith.serializers.MicroByteBuffer;
  */
 public class ClientConfigurationFactory {
     private static ClientConfiguration configuration;
-    private static Lock lock = new MELock();
+    private static Lock lock = new JavaLock();
 
     public static ClientConfiguration getConfiguration() {
         if (configuration == null) {
@@ -36,7 +36,7 @@ public class ClientConfigurationFactory {
         int SIZE = 4096;
         configuration.setIncomingMessage(new byte[SIZE]);
         configuration.setOutgoingMessageSize(256);
-        Lock lock = new MELock();
+        Lock lock = new JavaLock();
         MessageLock messageLock = new MessageLock();
         messageLock.setLock(lock);
         lock.lock();

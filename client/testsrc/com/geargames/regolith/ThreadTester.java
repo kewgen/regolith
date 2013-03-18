@@ -1,7 +1,7 @@
 package com.geargames.regolith;
 
 import com.geargames.common.util.Lock;
-import com.geargames.regolith.application.MELock;
+import com.geargames.platform.util.JavaLock;
 
 /**
  * @author Mikhail_Kutuzov
@@ -14,7 +14,7 @@ public class ThreadTester {
     }
 
     public static void test() throws InterruptedException {
-        final Lock lock = new MELock();
+        final Lock lock = new JavaLock();
 
         Thread thread1 = new Thread(new Runnable() {
             public void run() {

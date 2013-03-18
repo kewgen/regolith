@@ -8,7 +8,6 @@ import com.geargames.regolith.application.Manager;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.*;
 
 /**
@@ -84,7 +83,7 @@ public class ConsoleNetwork extends Network {
 
             sender.stopSending();
             receiver.stopReceiving();
-            Manager.paused(100);//даём остановиться сокету
+            Manager.pause(100);//даём остановиться сокету
 
             try {
                 if (dos != null) dos.close();

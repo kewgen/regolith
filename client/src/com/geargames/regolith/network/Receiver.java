@@ -65,7 +65,7 @@ public final class Receiver extends Thread {
                     if (!running) {
                         break;
                     }
-                    Manager.paused(50);
+                    Manager.pause(50);
                 }
                 if (!running || dis == null) {
                     break;
@@ -110,12 +110,12 @@ public final class Receiver extends Thread {
                     continue;
                 }
 
-                Manager.paused(10);
+                Manager.pause(10);
             }
         } catch (Exception e) {
             errors++;
             if (running) {
-                Manager.paused(2000);
+                Manager.pause(2000);
             }
             e.printStackTrace();
             Debug.error(String.valueOfC("Receiver Exception: "), e);
