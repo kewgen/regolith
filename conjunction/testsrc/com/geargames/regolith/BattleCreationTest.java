@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
 
 /**
  * User: mikhail v. kutuzov
@@ -34,16 +33,6 @@ import java.util.concurrent.CyclicBarrier;
  */
 public class BattleCreationTest {
     private static SimpleService service;
-
-    private static void await(CyclicBarrier barrier) {
-        try {
-            barrier.await();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (BrokenBarrierException e1) {
-            e1.printStackTrace();
-        }
-    }
 
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
         return answer.retrieve(1000);
@@ -127,8 +116,9 @@ public class BattleCreationTest {
 
         System.out.println("Lets try to move a tackle");
 
+
         Warrior warrior = account.getWarriors().get(1);
-        StateTackle tackle = TackleTransitionHelper.moveStateTackleBag2StoreHouse(warrior, 0, account.getBase().getStoreHouse());
+/*      StateTackle tackle = TackleTransitionHelper.moveStateTackleBag2StoreHouse(warrior, 0, account.getBase().getStoreHouse());
 
         confirm = new ClientConfirmationAnswer();
         ClientMoveTackleByNumber move = new ClientMoveTackleByNumber(clientConfiguration);
@@ -153,6 +143,7 @@ public class BattleCreationTest {
             confirm = (ClientConfirmationAnswer) answers.get(i);
             Assert.assertTrue(confirm.isConfirm());
         }
+*/
 
         System.out.println("Lets go to the battle market");
 

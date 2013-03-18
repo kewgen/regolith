@@ -39,8 +39,12 @@ public class Loader {
             is.close();
 
             String pack_name = String.valueOfC("/i0");
-            if (Port.IS_DOUBLE_GRAPHIC) pack_name = pack_name.concatC("_x2");
-            else if (Port.IS_FOURTHIRDS_GRAPHIC) pack_name = pack_name.concatC("_x4_3");
+            if (Port.IS_DOUBLE_GRAPHIC) {
+                pack_name = pack_name.concatC("_x2");
+            }
+            else if (Port.IS_FOURTHIRDS_GRAPHIC) {
+                pack_name = pack_name.concatC("_x4_3");
+            }
             is = manager.getMidlet().getResourceAsStream(pack_name);
             packer.loadImages(g, is);
             is.close();
