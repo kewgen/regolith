@@ -339,7 +339,7 @@ public final class Manager extends com.geargames.platform.Manager implements Run
     void platformRequest(String str) {
         boolean is_close = false;
         try {
-            is_close = midlet.platformRequest(str, true);
+            is_close = midlet.platformRequest(str);
         } catch (Exception e) {
         }
         Manager.paused(100);

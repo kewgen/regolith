@@ -44,31 +44,33 @@ public class BattleConnectionTest {
         ClientCommonManager commonManager = clientConfiguration.getCommonManager();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
         Login login = new Login();
-        login.setName("автор1");
+        login.setName("автор");
         login.setPassword("секрет");
 
+        System.out.println("Is checking for a login name");
         ClientDeferredAnswer answer = commonManager.checkForName(login.getName());
-        Assert.assertTrue(waitForAnswer(answer));
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        Assert.assertTrue("a name " + login.getName() + "already exists",confirm.isConfirm());
+        if (confirm.isConfirm()) {
+            System.out.println("Trying to create an account");
 
-            System.out.println();
             answer = commonManager.create(login);
-            Assert.assertTrue("The client could not create the login name",waitForAnswer(answer));
+            Assert.assertTrue("The client could not create the login name", waitForAnswer(answer));
 
             confirm = (ClientConfirmationAnswer) answer.getAnswer();
-            Assert.assertTrue("The client could not createAmmunitionBag an account",!confirm.isConfirm());
+            Assert.assertTrue("The client could not create an account", confirm.isConfirm());
+        }
 
+        System.out.println("Going to log in");
 
         answer = commonManager.login(login);
-        Assert.assertTrue(!waitForAnswer(answer));
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         ClientLoginAnswer loginAnswer = (ClientLoginAnswer) answer.getAnswer();
-        if (loginAnswer.getError() != null) {
-            System.err.println(loginAnswer.getError());
-            return;
-        }
+        Assert.assertNull(loginAnswer.getError(), loginAnswer.getError());
+
+        System.out.println("...");
 
         Account account = loginAnswer.getAccount();
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());
@@ -82,136 +84,95 @@ public class BattleConnectionTest {
         if (clientConfiguration.getBaseWarriors() != null) {
             Warrior[] warriors = clientConfiguration.getBaseWarriors();
             byte amount = clientConfiguration.getBaseConfiguration().getInitWarriorsAmount();
-            if (warriors.length < amount) {
-                System.out.println("An amount of available warriors is not enough for the client");
-                return;
-            }
+            Assert.assertTrue("An amount of available warriors is not enough for the client", warriors.length >= amount);
+
             Warrior[] initWarriors = new Warrior[amount];
             for (int i = 0; i < amount; i++) {
                 warriors[i].setName(warriors[i].getName() + "i");
                 initWarriors[i] = warriors[i];
             }
+
             System.out.println("The client is trying to hire warriors");
             answer = baseWarriorMarketManager.hireWarrior(initWarriors);
-            if (!waitForAnswer(answer)) {
-                return;
-            }
+            Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
             ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();
             ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
-            if (clientJoinBaseWarriorsAnswer.isSuccess()) {
-                for (Warrior warrior : clientJoinBaseWarriorsAnswer.getWarriors()) {
-                    clientWarriorCollection.add(warrior);
-                }
-                account.setWarriors(clientWarriorCollection);
-            } else {
-                System.out.println("The client could not get a set of base warriors");
-                return;
+            Assert.assertTrue("The client could not get a set of base warriors", clientJoinBaseWarriorsAnswer.isSuccess());
+
+            for (Warrior warrior : clientJoinBaseWarriorsAnswer.getWarriors()) {
+                clientWarriorCollection.add(warrior);
             }
+            account.setWarriors(clientWarriorCollection);
         }
 
         System.out.println("The client go to the battle market");
 
         answer = baseManager.goBattleManager();
-        if (!waitForAnswer(answer)) {
-            return;
-        }
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        if (!confirm.isConfirm()) {
-            System.err.println("The client could not go to the battle market");
-            return;
-        }
+        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         answer = battleMarketManager.battlesJoinTo();
-        if (!waitForAnswer(answer)) {
-            return;
-        }
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattlesAnswer clientBrowseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         ClientBattleCollection battles = clientBrowseBattlesAnswer.getBattles();
 
-        if (battles.size() == 1) {
-            Battle battle = battles.get(0);
-            answer = battleMarketManager.listenToBattle(battle, account);
-            if (!waitForAnswer(answer)) {
-                return;
-            }
-            ClientCreateBattleAnswer listen = (ClientCreateBattleAnswer) answer.getAnswer();
-            battle = listen.getBattle();
-            if (battle != null) {
-                int groupSize = battle.getBattleType().getGroupSize();
-                if (groupSize <= account.getWarriors().size()) {
-                    Warrior[] warriors = new Warrior[groupSize];
-                    for (int i = 0; i < groupSize; i++) {
-                        warriors[i] = account.getWarriors().get(i);
-                    }
-                    BattleAlliance alliance = null;
-                    for (BattleAlliance battleAlliance : battle.getAlliances()) {
-                        for (int i = 0; i < battleAlliance.getAllies().size(); i++) {
-                            if (battleAlliance.getAllies().get(i).getAccount() == null) {
-                                alliance = battleAlliance;
-                                break;
-                            }
-                        }
-                        if (alliance != null) {
-                            break;
-                        }
-                    }
-                    if (alliance == null) {
-                        System.err.println("There is no empty battle group for the client");
-                        return;
-                    } else {
-                        System.out.print("The client is trying join to an alliance " + alliance.getId() + " " + alliance.getNumber());
-                        answer = battleCreationManager.joinToAlliance(alliance, account);
-                        if (!waitForAnswer(answer)) {
-                            return;
-                        }
-                        ClientJoinBattleAnswer clientJoinBattleAnswer = (ClientJoinBattleAnswer) answer.getAnswer();
-                        BattleGroup battleGroup = clientJoinBattleAnswer.getBattleGroup();
-                        if (battleGroup != null) {
-                            System.out.print("The client is trying to complete group " + battleGroup.getId());
-                            answer = battleCreationManager.completeGroup(battleGroup, warriors);
-                            if (!waitForAnswer(answer)) {
-                                return;
-                            }
-                            ClientConfirmationAnswer clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
-                            if (clientConfirmationAnswer.isConfirm()) {
-                                System.out.println("The client has completed a group.");
+        Assert.assertTrue("There is no battle to play", battles.size() >= 1);
 
-                                System.out.println("The client is trying to confirm a group");
-                                answer = battleCreationManager.isReady(battleGroup);
-                                if (!waitForAnswer(answer)) {
-                                    return;
-                                }
+        Battle battle = battles.get(0);
+        answer = battleMarketManager.listenToBattle(battle, account);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
-                                clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
-                                if (clientConfirmationAnswer.isConfirm()) {
-                                    System.out.println("The client has confirmed the group");
-                                }
+        ClientCreateBattleAnswer listen = (ClientCreateBattleAnswer) answer.getAnswer();
+        battle = listen.getBattle();
 
-                                return;
-                            } else {
-                                System.out.println("The client could not complete the battle group " + battleGroup.getId());
-                                return;
-                            }
-                        } else {
-                            System.out.print("The client could not join to the alliance");
-                            return;
-                        }
-                    }
-                } else {
-                    System.err.println("The account " + account.getName() + " does not have enough warriors");
-                    return;
-                }
-            } else {
-                System.err.println("The client could not listen to the battle");
-                return;
-            }
-        } else {
-            System.out.print("There is no battle to play");
-            return;
+        Assert.assertNotNull("The client could not listen to the battle", battle);
 
+        int groupSize = battle.getBattleType().getGroupSize();
+        Assert.assertTrue("The account " + account.getName() + " does not have enough warriors", groupSize <= account.getWarriors().size());
+
+        Warrior[] warriors = new Warrior[groupSize];
+        for (int i = 0; i < groupSize; i++) {
+            warriors[i] = account.getWarriors().get(i);
         }
+        BattleAlliance alliance = null;
+        for (BattleAlliance battleAlliance : battle.getAlliances()) {
+            for (int i = 0; i < battleAlliance.getAllies().size(); i++) {
+                if (battleAlliance.getAllies().get(i).getAccount() == null) {
+                    alliance = battleAlliance;
+                    break;
+                }
+            }
+            if (alliance != null) {
+                break;
+            }
+        }
+        Assert.assertNotNull("There is no empty battle group for the client", alliance);
 
+        System.out.print("The client is trying join to an alliance " + alliance.getId() + " " + alliance.getNumber());
+        answer = battleCreationManager.joinToAlliance(alliance, account);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+
+        ClientJoinBattleAnswer clientJoinBattleAnswer = (ClientJoinBattleAnswer) answer.getAnswer();
+        BattleGroup battleGroup = clientJoinBattleAnswer.getBattleGroup();
+        Assert.assertNotNull("The client could not join to the alliance", battleGroup);
+
+        System.out.print("The client is trying to complete group " + battleGroup.getId());
+        answer = battleCreationManager.completeGroup(battleGroup, warriors);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+
+        ClientConfirmationAnswer clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
+        Assert.assertTrue("The client could not complete the battle group " + battleGroup.getId(), clientConfirmationAnswer.isConfirm());
+
+        System.out.println("The client has completed a group.");
+
+        System.out.println("The client is trying to confirm a group");
+        answer = battleCreationManager.isReady(battleGroup);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+
+        clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
+        Assert.assertTrue("The client has not confirmed the group", clientConfirmationAnswer.isConfirm());
     }
 }
