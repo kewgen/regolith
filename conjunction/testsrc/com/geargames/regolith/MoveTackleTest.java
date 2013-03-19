@@ -46,7 +46,7 @@ public class MoveTackleTest {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
 
-        ClientLoginAnswer loginAnswer = ClientLoginHelper.clientLogon("автор", "секрет", true);
+        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("автор", "секрет", true);
 
         System.out.println("...");
 

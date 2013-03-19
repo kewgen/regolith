@@ -20,7 +20,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
 
 /**

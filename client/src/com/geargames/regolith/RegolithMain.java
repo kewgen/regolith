@@ -1,17 +1,21 @@
 package com.geargames.regolith;
 
 import com.geargames.common.logging.Logger;
+import com.geargames.common.util.Recorder;
 import com.geargames.regolith.application.Regolith;
 
 import java.io.IOException;
 
 /**
- * User: kewgen
+ * Users: mikhail v. kutuzov, abarakov
  */
 public class RegolithMain extends com.geargames.platform.Main {
 
     public static void main(String[] args) throws IOException {
-        Logger.logFileName = com.geargames.common.String.valueOfC("regolith");
+        Logger.logFileName         = "regolith";
+        Recorder.storageFolder     = "regolith.data.storage";
+        Recorder.storageProperties = "regolith.property.storage";
+
         RegolithMain main = new RegolithMain();
         main.commonMain(args);
         Port.init();
