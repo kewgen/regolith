@@ -20,8 +20,16 @@ import java.util.concurrent.CyclicBarrier;
  * User: mikhail v. kutuzov
  * Date: 22.01.13
  * Time: 22:45
+ *
+ * Preconditions:
+ * 1. запустить батник rmiregistryserver.bat
+ * по очереди запустить следующие тесты:
+ * 2. BattleCreationTest
+ * 3. BattleConsoleServiceManager
+ * 4. BattleConnectionTest
  */
 public class BattleConnectionTest {
+
     private static void await(CyclicBarrier barrier) {
         try {
             barrier.await();
@@ -151,7 +159,7 @@ public class BattleConnectionTest {
         }
         Assert.assertNotNull("There is no empty battle group for the client", alliance);
 
-        System.out.print("The client is trying join to an alliance " + alliance.getId() + " " + alliance.getNumber());
+        System.out.println("The client is trying join to an alliance (id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")");
         answer = battleCreationManager.joinToAlliance(alliance, account);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
@@ -159,14 +167,14 @@ public class BattleConnectionTest {
         BattleGroup battleGroup = clientJoinBattleAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
 
-        System.out.print("The client is trying to complete group " + battleGroup.getId());
+        System.out.println("The client is trying to complete group (id = " + battleGroup.getId() + ")");
         answer = battleCreationManager.completeGroup(battleGroup, warriors);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
         ClientConfirmationAnswer clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
-        Assert.assertTrue("The client could not complete the battle group " + battleGroup.getId(), clientConfirmationAnswer.isConfirm());
+        Assert.assertTrue("The client could not complete the battle group (id = " + battleGroup.getId() + ")", clientConfirmationAnswer.isConfirm());
 
-        System.out.println("The client has completed a group.");
+        System.out.println("The client has completed a group");
 
         System.out.println("The client is trying to confirm a group");
         answer = battleCreationManager.isReady(battleGroup);
@@ -174,5 +182,7 @@ public class BattleConnectionTest {
 
         clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client has not confirmed the group", clientConfirmationAnswer.isConfirm());
+
+        System.out.println("The client has confirmed the group. The test was completed successfully.");
     }
 }

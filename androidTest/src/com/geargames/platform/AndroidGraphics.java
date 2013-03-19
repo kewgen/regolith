@@ -13,7 +13,7 @@ import javax.microedition.khronos.opengles.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 
 /**
  * User: abarakov
@@ -32,10 +32,8 @@ public class AndroidGraphics {
 //    int SOLID    = 7;
 //    int DOTTED   = 8;
 
-//    public static final int GL_INT = 5124;
-    public static final int GL_INT = GL10.GL_FLOAT;
-
-    private GL11 gl;
+    private GL10 gl10;
+    private GL11 gl11;
 
     private boolean perspectiveModeEnabled = false;
     //todo: для координат viewport завести поле типа Rect или Region
@@ -54,8 +52,13 @@ public class AndroidGraphics {
 //    // Стало: 0..255;   0 - полная прозрачность
 //    private byte alpha;
 
-    private GGIntAsFloatBuffer intBuffer; // IntBuffer
-    private FloatBuffer        floatBuffer;
+    private ShortBuffer vertexBuffer;  // буфер вершинных координат
+    private FloatBuffer colorBuffer;   // буфер цвета вершин
+    private FloatBuffer textureBuffer; // буфер текстурных координат
+
+    private static final int VERTEX_TYPE  = GL10.GL_SHORT;
+    private static final int COLOR_TYPE   = GL10.GL_FLOAT; //todo: GL_FLOAT -> GL_UNSIGNED_BYTE ?
+    private static final int TEXTURE_TYPE = GL10.GL_FLOAT;
 
     // Буфер глубины
     private boolean depthTestEnabled = false;
@@ -74,17 +77,18 @@ public class AndroidGraphics {
     private short pointSize;
     private boolean pointSmoothEnabled;
     private short lineWidth;
-    private boolean lineSmoothEnabled;
+    private boolean lineSmoothEnabled = false;
     private short linePattern;
 
     public AndroidGraphics(GL10 gl) {
         if (gl == null) {
             throw new IllegalArgumentException("gl = null");
         }
+        this.gl10 = gl;
         if (gl instanceof GL11) {
-            this.gl = (GL11) gl;
+            this.gl11 = (GL11) gl;
         } else {
-//            throw new Exception(""); //todo: выдать ошибку
+            this.gl11 = null;
         }
 
         // По умолчанию в OpenGL определен белый непрозрачный цвет для рендеринга примитивов и черный как фоновый.
@@ -95,12 +99,24 @@ public class AndroidGraphics {
 //        this.blue  = (byte)255;
 //        this.alpha = (byte)255;
 
-        ByteBuffer bb = ByteBuffer.allocateDirect(32 * 4); //todo: Нужен автоматически расширяющийся буффер
+        final int MAX_VERTICES = 16;
+
+        ByteBuffer bb; //todo: Нужен автоматически расширяющийся буфер
+
+        bb = ByteBuffer.allocateDirect(MAX_VERTICES * 2 * 2); // на каждую вершину по 2 координаты (x,y) типа short (2 байта)
         bb.order(ByteOrder.nativeOrder());
         bb.position(0);
-//      intBuffer   = bb.asIntBuffer();
-        floatBuffer = bb.asFloatBuffer();
-        intBuffer   = new GGIntAsFloatBuffer(floatBuffer);
+        vertexBuffer = bb.asShortBuffer();
+
+        bb = ByteBuffer.allocateDirect(MAX_VERTICES * 4 * 4); // на каждую вершину по 4 цветовых компонента (ARGB) типа float (4 байта)
+        bb.order(ByteOrder.nativeOrder());
+        bb.position(0);
+        colorBuffer = bb.asFloatBuffer();
+
+        bb = ByteBuffer.allocateDirect(MAX_VERTICES * 2 * 4); // на каждую вершину по 2 координаты (s,t) типа float (4 байта)
+        bb.order(ByteOrder.nativeOrder());
+        bb.position(0);
+        textureBuffer = bb.asFloatBuffer();
         configureGraphics();
     }
 
@@ -109,44 +125,46 @@ public class AndroidGraphics {
      */
     public void configureGraphics() {
         //todo: цвет должен задаваться опционально
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);                   checkGLError("glClearColor");
+        gl10.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);                   checkGLError("glClearColor");
         // Настройка альфа-теста
-//        gl.glEnable(GL10.GL_ALPHA_TEST);
-//        gl.glAlphaFunc();
+//        gl10.glEnable(GL10.GL_ALPHA_TEST);
+//        gl10.glAlphaFunc();
         // Тип альфа-теста, здесь он настраивается, но по умолчанию выключен
         //todo: GL_ONE -> GL_SRC_ALPHA
-        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);  checkGLError("glBlendFunc");
+        gl10.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);  checkGLError("glBlendFunc");
 
-        // Тест глубины
-        gl.glClearDepthf(1.0f);                                    checkGLError("glClearDepthf");
-        gl.glDisable(GL10.GL_DEPTH_TEST);                          checkGLError("glDisable");
+        // Тест глубины (выключен)
+        gl10.glClearDepthf(1.0f);                                    checkGLError("glClearDepthf");
+        gl10.glDisable(GL10.GL_DEPTH_TEST);                          checkGLError("glDisable");
 
         // Плавное цветовое сглаживание
-        gl.glShadeModel(GL10.GL_SMOOTH);                           checkGLError("glShadeModel");
+        gl10.glShadeModel(GL10.GL_SMOOTH);                           checkGLError("glShadeModel");
 
         // Сглаживание линий и полигонов
-        gl.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST);       checkGLError("glHint");
-        gl.glEnable(GL10.GL_LINE_SMOOTH);                          checkGLError("glEnable");
+        if (lineSmoothEnabled) {
+            gl10.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST);   checkGLError("glHint");
+            gl10.glEnable(GL10.GL_LINE_SMOOTH);                      checkGLError("glEnable");
+        }
 
-        gl.glEnable(GL10.GL_TEXTURE_2D);                           checkGLError("glEnable");
-        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);       checkGLError("glEnableClientState");
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);              checkGLError("glEnableClientState");
+//        gl10.glEnable(GL10.GL_TEXTURE_2D);                           checkGLError("glEnable");
+//        gl10.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);       checkGLError("glEnableClientState");
+        gl10.glEnableClientState(GL10.GL_VERTEX_ARRAY);              checkGLError("glEnableClientState");
 
         //todo: Правильная константа?
-//      gl.glEnable(GL10.GL_DEPTH_TEST);                           checkGLError("glEnable");
+//      gl10.glEnable(GL10.GL_DEPTH_TEST);                           checkGLError("glEnable");
 
     }
 
-    public GL10 getGl() {
-        return gl;
-    }
+//    public GL10 getGl() {
+//        return gl10;
+//    }
 
     public void setViewport(int x, int y, int width, int height) {
         viewportLeft   = x;
         viewportRight  = x + width;
         viewportTop    = y ;
         viewportBottom = y + height;
-        gl.glViewport(x, y, width, height);
+        gl10.glViewport(x, y, width, height);
         checkGLError("glViewport");
     }
 
@@ -156,9 +174,9 @@ public class AndroidGraphics {
      */
     public void clearBuffers() {
 //        if ((byte) (backgroundColor >>> 24) == (byte) 255) {
-//            gl.glDisable(GL10.GL_BLEND);
+//            gl10.glDisable(GL10.GL_BLEND);
 //        } else {
-//            gl.glEnable(GL10.GL_BLEND);
+//            gl10.glEnable(GL10.GL_BLEND);
 //        }
         int clearFlags = GL10.GL_COLOR_BUFFER_BIT;    // Требуется очистка буфера цвета
         if (depthTestEnabled) {
@@ -167,34 +185,34 @@ public class AndroidGraphics {
         if (stencilTestEnabled) {
             clearFlags |= GL10.GL_STENCIL_BUFFER_BIT; // Требуется очистка буфера трафарета
         }
-        gl.glClear(clearFlags);               checkGLError("glClear");
+        gl10.glClear(clearFlags);               checkGLError("glClear");
 
         //todo: Применить glEnable/glDisable(GL10.GL_BLEND) для color
 
         // Выбор матрицы проектирования
-        gl.glMatrixMode(GL10.GL_PROJECTION);  checkGLError("glMatrixMode");
+        gl10.glMatrixMode(GL10.GL_PROJECTION);  checkGLError("glMatrixMode");
         // Сброс матрицы проектирования
-        gl.glLoadIdentity();                  checkGLError("glLoadIdentity");
+        gl10.glLoadIdentity();                  checkGLError("glLoadIdentity");
         // Установка матрицы проекции
 //        if (perspectiveModeEnabled) {
 //            int viewportHeight = viewportBottom - viewportTop;
 //            float aspect = (viewportRight - viewportLeft) / (viewportHeight == 0 ? 1 : viewportHeight);
 //            float fovY = 45;
-//            GLU.gluPerspective(gl, fovY, aspect, 10, 1000);
+//            GLU.gluPerspective(gl10, fovY, aspect, 10, 1000);
 //            checkGLError("gluPerspective");
 //        } else {
             // Устанавливаем ортографическую проекцию, где система координат настраивается таким образом, чтобы верхний
             // левый угол совпадал с координатой (viewportLeft, viewportTop), а левый нижний совпадал с координатой
             // (viewportRight, viewportBottom).
-//            GLU.gluOrtho2D(gl, viewportLeft, viewportRight, viewportBottom, viewportTop);  checkGLError("gluOrtho2D");
-            gl.glOrthof(viewportLeft, viewportRight, viewportBottom, viewportTop, -1, 1);  checkGLError("glOrthox");
+//            GLU.gluOrtho2D(gl10, viewportLeft, viewportRight, viewportBottom, viewportTop);  checkGLError("gluOrtho2D");
+            gl10.glOrthof(viewportLeft, viewportRight, viewportBottom, viewportTop, -1, 1);  checkGLError("glOrthox");
 //
 //        }
 
         // Выбор матрицы просмотра
-        gl.glMatrixMode(GL10.GL_MODELVIEW);   checkGLError("glMatrixMode");
+        gl10.glMatrixMode(GL10.GL_MODELVIEW);   checkGLError("glMatrixMode");
         // Сброс матрицы просмотра
-        gl.glLoadIdentity();                  checkGLError("glLoadIdentity");
+        gl10.glLoadIdentity();                  checkGLError("glLoadIdentity");
     }
 
     /**
@@ -202,9 +220,13 @@ public class AndroidGraphics {
      */
     public void swapBuffers() {
         //todo: Нужно?
-//        gl.glFinish();
-//        gl.glFlush();
+//        gl10.glFinish();
+//        gl10.glFlush();
     }
+
+    //******************************************************************************************************************
+    //**     Изображения                                                                                              **
+    //******************************************************************************************************************
 
 //    // Нарисовать изображение в соответствующих координатах и с заданным выравниванием
 //    void drawImage(Image image, int x, int y);
@@ -232,15 +254,101 @@ public class AndroidGraphics {
 
     //todo: Добавить возможность рисования изображений или их частей с заполнением, т.е. с дублированием изображения
 
+////    void onCache(int len);//включить кеширование картинок
+//
+//    void addTexture(Image image);
+//
+//    Image createImage(byte[] array, int i, int data_len) throws IOException;
+//
+//    Image createImage();
+
+    public boolean glIsTexture(int texture) {
+        return gl11.glIsTexture(texture);
+    }
+
+    public int getMaxTextureSize() {
+        int[] params = new int[1];
+        gl10.glGetIntegerv(gl10.GL_MAX_TEXTURE_SIZE, params, 0);
+        checkGLError("glGetIntegerv");
+        return params[0];
+    }
+
+    //******************************************************************************************************************
+    //**     Рисуемые точки                                                                                           **
+    //******************************************************************************************************************
+
+    /**
+     * Получить значение размера рисуемых точек.
+     * @return значение в пикселях
+     */
+    public float getPointSize() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue1(gl11.GL_POINT_SIZE);
+    }
+
+    /**
+     * Установить значение размера рисуемых точек.
+     * Размер линии должен быть больше 0.0 и по умолчанию равен 1.0.
+     * Важно: стоит учесть, что существуют ограничения на минимальный и максимальный размеры, а также размер должен быть
+     * кратным определенному значению шага, но получить значение шага невозможно под андроидом. Также следует различать,
+     * сглаженные и несглаженные точки, для каждой из них, значения PointSizeMin и PointSizeMax могут быть различны.
+     * @param size размер точек в пикселях
+     * @see #getAliasedPointSizeMin()
+     * @see #getAliasedPointSizeMax()
+     * @see #getSmoothPointSizeMin()
+     * @see #getSmoothPointSizeMax()
+     */
+    public void setPointSize(float size) {
+        //todo: функция не протестирована!
+        gl10.glPointSize(size);
+    }
+
+    //todo: что такое GL_POINT_SIZE_MIN и GL_POINT_SIZE_MAX ?
+
+    /**
+     * Получить минимально возможное значение размера, с которым могут рисоваться несглаженные точки.
+     * @return
+     */
+    public float getAliasedPointSizeMin() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue2(gl10.GL_ALIASED_POINT_SIZE_RANGE, 0);
+    }
+
+    /**
+     * Получить максимально возможное значение размера, с которым могут рисоваться несглаженные точки.
+     * @return
+     */
+    public float getAliasedPointSizeMax() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue2(gl10.GL_ALIASED_POINT_SIZE_RANGE, 1);
+    }
+
+    /**
+     * Получить минимально возможное значение размера, с которым могут рисоваться сглаженные точки.
+     * @return
+     */
+    public float getSmoothPointSizeMin() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue2(gl10.GL_SMOOTH_POINT_SIZE_RANGE, 0);
+    }
+
+    /**
+     * Получить максимально возможное значение размера, с которым могут рисоваться сглаженные точки.
+     * @return
+     */
+    public float getSmoothPointSizeMax() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue2(gl10.GL_SMOOTH_POINT_SIZE_RANGE, 1);
+    }
+
     // Нарисовать точку в указанных координатах
-    public void drawPoint(int x, int y) {
-        //todo: GL_INT не поддерживается GLES1.1, переходим на 2.0?
-        intBuffer.position(0);
-        intBuffer.put(x);
-        intBuffer.put(y);
-        intBuffer.position(0);
-        gl.glVertexPointer(2, GL_INT, 0, intBuffer.buffer);  checkGLError("glVertexPointer");
-        gl.glDrawArrays(GL10.GL_POINTS, 0, 2);               checkGLError("glDrawArrays");
+    public void drawPoint(short x, short y) {
+        vertexBuffer.position(0);
+        vertexBuffer.put(x);
+        vertexBuffer.put(y);
+        vertexBuffer.position(0);
+        gl10.glVertexPointer(2, VERTEX_TYPE, 0, vertexBuffer);  checkGLError("glVertexPointer");
+        gl10.glDrawArrays(GL10.GL_POINTS, 0, 1);                checkGLError("glDrawArrays");
     }
 
 //    public void drawPoint(float x, float y) {
@@ -260,33 +368,108 @@ public class AndroidGraphics {
 //
 //    }
 
+    //******************************************************************************************************************
+    //**     Линии                                                                                                    **
+    //******************************************************************************************************************
+
+    /**
+     * Получить значение толщины линии.
+     * @return значение в пикселях
+     */
+    public float getLineWidth() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue1(gl11.GL_LINE_WIDTH);
+    }
+
+    /**
+     * Установить толщину линии в пикселях.
+     * Ширина линии должна быть больше 0.0 и по умолчанию равна 1.0.
+     * Важно: стоит учесть, что существуют ограничения на минимальную и максимальную ширины линий, а также ширина должна
+     * быть кратной определенному значению шага, но получить значение шага невозможно под андроидом. Также следует
+     * различать, сглаженные и несглаженные линии, для каждой из них, значения LineWidthMin и LineWidthMax могут быть
+     * различны.
+     * @param width значение толщины линий в пикселях.
+     * @see #getAliasedLineWidthMin()
+     * @see #getAliasedLineWidthMax()
+     * @see #getSmoothLineWidthMin()
+     * @see #getSmoothLineWidthMax()
+     */
+    public void setLineWidth(float width) {
+        //todo: функция не протестирована!
+        gl10.glLineWidth(width);
+    }
+
+    /**
+     * Получить минимально возможное значение ширины, с которым могут рисоваться несглаженные линии.
+     * @return
+     */
+    public float getAliasedLineWidthMin() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue2(gl10.GL_ALIASED_LINE_WIDTH_RANGE, 0);
+    }
+
+    /**
+     * Получить максимально возможное значение ширины, с которым могут рисоваться несглаженные линии.
+     * @return
+     */
+    public float getAliasedLineWidthMax() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue2(gl10.GL_ALIASED_LINE_WIDTH_RANGE, 1);
+    }
+
+    /**
+     * Получить минимально возможное значение ширины, с которым могут рисоваться сглаженные линии.
+     * @return
+     */
+    public float getSmoothLineWidthMin() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue2(gl10.GL_SMOOTH_LINE_WIDTH_RANGE, 0);
+    }
+
+    /**
+     * Получить максимально возможное значение ширины, с которым могут рисоваться сглаженные линии.
+     * @return
+     */
+    public float getSmoothLineWidthMax() {
+        //todo: функция не протестирована!
+        return getOGLFloatValue2(gl10.GL_SMOOTH_LINE_WIDTH_RANGE, 1);
+    }
+
+    /**
+     * Установить шаблон линий.
+     * Шаблонирование линий не доступно под андроидом.
+     */
+//    public void setLineStipple(float factor, short pattern) {
+//        gl10.glLineStipple();
+//        gl10.glEnable(GL10.GL_LINE_STIPPLE);
+//    }
+
+//    public void resetLineStipple() {
+//        gl10.glDisable(GL10.GL_LINE_STIPPLE);
+//    }
+
     // Нарисовать линию от точки (x1, y1) до (x2, y2)
-    public void drawLine(int x1, int y1, int x2, int y2) {
-        //todo: GL_INT не поддерживается GLES1.1, переходим на 2.0?
-        intBuffer.position(0);
-        intBuffer.put(x1);
-        intBuffer.put(y1);
-        intBuffer.put(x2);
-        intBuffer.put(y2);
-        intBuffer.position(0);
-        gl.glVertexPointer(2, GL_INT, 0, intBuffer.buffer);  checkGLError("glVertexPointer");
-        gl.glDrawArrays(GL10.GL_LINES, 0, 2);                checkGLError("glDrawArrays");
+    public void drawLine(short x1, short y1, short x2, short y2) {
+        vertexBuffer.position(0);
+        vertexBuffer.put(x1);
+        vertexBuffer.put(y1);
+        vertexBuffer.put(x2);
+        vertexBuffer.put(y2);
+        vertexBuffer.position(0);
+        gl10.glVertexPointer(2, VERTEX_TYPE, 0, vertexBuffer);  checkGLError("glVertexPointer");
+        gl10.glDrawArrays(GL10.GL_LINES, 0, 2);                 checkGLError("glDrawArrays");
     }
 
-//    void glDrawArrays(int mode, int first, int count);
-//
-//    void glVertexPointer(int size, int type, int stride, java.nio.Buffer pointer);
-
-    public void drawLine(float x1, float y1, float x2, float y2) {
-        floatBuffer.position(0);
-        floatBuffer.put(x1);
-        floatBuffer.put(y1);
-        floatBuffer.put(x2);
-        floatBuffer.put(y2);
-        floatBuffer.position(0);
-        gl.glVertexPointer(2, GL10.GL_FLOAT, 0, floatBuffer);  checkGLError("glVertexPointer");
-        gl.glDrawArrays(GL10.GL_LINES, 0, 2);                  checkGLError("glDrawArrays");
-    }
+//    public void drawLine(float x1, float y1, float x2, float y2) {
+//        floatBuffer.position(0);
+//        floatBuffer.put(x1);
+//        floatBuffer.put(y1);
+//        floatBuffer.put(x2);
+//        floatBuffer.put(y2);
+//        floatBuffer.position(0);
+//        gl10.glVertexPointer(2, GL10.GL_FLOAT, 0, floatBuffer);  checkGLError("glVertexPointer");
+//        gl10.glDrawArrays(GL10.GL_LINES, 0, 2);                  checkGLError("glDrawArrays");
+//    }
 
 //    /**
 //     * Нарисовать ломанную линию
@@ -296,39 +479,47 @@ public class AndroidGraphics {
 //    void drawLines(int[] points);
 //    void drawLines(float[] points);
 
+    //******************************************************************************************************************
+    //**     Прямоугольники                                                                                           **
+    //******************************************************************************************************************
+
     // Нарисовать прямоугольную рамку без заполнения этого прямоугольника.
-    public void drawRect(int x, int y, int width, int height) {
-        intBuffer.position(0);
-        intBuffer.put(x);
-        intBuffer.put(y);
-        intBuffer.put(x + width);
-        intBuffer.put(y);
-        intBuffer.put(x + width);
-        intBuffer.put(y + height);
-        intBuffer.put(x);
-        intBuffer.put(y + height);
-        intBuffer.position(0);
-        gl.glVertexPointer(2, GL_INT, 0, intBuffer.buffer);  checkGLError("glVertexPointer");
-        gl.glDrawArrays(GL10.GL_LINE_LOOP, 0, 4);            checkGLError("glDrawArrays");
+    public void drawRect(short x, short y, short width, short height) {
+        vertexBuffer.position(0);
+        vertexBuffer.put(x);                   // v0
+        vertexBuffer.put(y);
+        vertexBuffer.put((short)(x + width));  // v1
+        vertexBuffer.put(y);
+        vertexBuffer.put((short)(x + width));  // v2
+        vertexBuffer.put((short)(y + height));
+        vertexBuffer.put(x);                   // v3
+        vertexBuffer.put((short)(y + height));
+        vertexBuffer.position(0);
+        gl10.glVertexPointer(2, VERTEX_TYPE, 0, vertexBuffer);  checkGLError("glVertexPointer");
+        gl10.glDrawArrays(GL10.GL_LINE_LOOP, 0, 4);             checkGLError("glDrawArrays");
     }
 
-    public void drawRect(float x, float y, float width, float height) {
-        floatBuffer.position(0);
-        floatBuffer.put(x);
-        floatBuffer.put(y);
-        floatBuffer.put(x + width);
-        floatBuffer.put(y);
-        floatBuffer.put(x + width);
-        floatBuffer.put(y + height);
-        floatBuffer.put(x);
-        floatBuffer.put(y + height);
-        floatBuffer.position(0);
-        gl.glVertexPointer(2, GL10.GL_FLOAT, 0, floatBuffer);  checkGLError("glVertexPointer");
-        gl.glDrawArrays(GL10.GL_LINE_LOOP, 0, 4);              checkGLError("glDrawArrays");
-    }
+//    public void drawRect(float x, float y, float width, float height) {
+//        floatBuffer.position(0);
+//        floatBuffer.put(x);
+//        floatBuffer.put(y);
+//        floatBuffer.put(x + width);
+//        floatBuffer.put(y);
+//        floatBuffer.put(x + width);
+//        floatBuffer.put(y + height);
+//        floatBuffer.put(x);
+//        floatBuffer.put(y + height);
+//        floatBuffer.position(0);
+//        gl10.glVertexPointer(2, GL10.GL_FLOAT, 0, floatBuffer);  checkGLError("glVertexPointer");
+//        gl10.glDrawArrays(GL10.GL_LINE_LOOP, 0, 4);              checkGLError("glDrawArrays");
+//    }
 
 ////    void drawRect(Rect rect);
 //    void drawRect(Region region);
+
+    //******************************************************************************************************************
+    //**     Другие фигуры                                                                                            **
+    //******************************************************************************************************************
 
 //    void drawCircle(float cx, float cy, float radius, android.graphics.Paint paint);
 //
@@ -336,21 +527,24 @@ public class AndroidGraphics {
 //
 //    void drawRoundRect(android.graphics.RectF rect, float rx, float ry);
 
+    //******************************************************************************************************************
+    //**     Полигоны с заливкой                                                                                      **
+    //******************************************************************************************************************
 
     // Нарисовать заполненную прямоугольную область
-    public void fillRect(int x, int y, int width, int height) {
-        intBuffer.position(0);
-        intBuffer.put(x);          // v0
-        intBuffer.put(y);
-        intBuffer.put(x);          // v1
-        intBuffer.put(y + height);
-        intBuffer.put(x + width);  // v2
-        intBuffer.put(y);
-        intBuffer.put(x + width);  // v3
-        intBuffer.put(y + height);
-        intBuffer.position(0);
-        gl.glVertexPointer(2, GL_INT, 0, intBuffer.buffer);  checkGLError("glVertexPointer");
-        gl.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);       checkGLError("glDrawArrays");
+    public void fillRect(short x, short y, short width, short height) {
+        vertexBuffer.position(0);
+        vertexBuffer.put(x);                   // v0
+        vertexBuffer.put(y);
+        vertexBuffer.put(x);                   // v1
+        vertexBuffer.put((short)(y + height));
+        vertexBuffer.put((short)(x + width));  // v2
+        vertexBuffer.put(y);
+        vertexBuffer.put((short)(x + width));  // v3
+        vertexBuffer.put((short)(y + height));
+        vertexBuffer.position(0);
+        gl10.glVertexPointer(2, VERTEX_TYPE, 0, vertexBuffer);  checkGLError("glVertexPointer");
+        gl10.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);        checkGLError("glDrawArrays");
     }
 //    void fillRect(float x, float y, float width, float height);
 ////    void fillRect(Rect rect);
@@ -358,48 +552,39 @@ public class AndroidGraphics {
 
     // Нарисовать заполненный выпуклый многоугольник, причем для каждой вершины фигуры возможно задать собственный цвет.
     // fillPolygon2D
-    public void fillRect(int x, int y, int width, int height, int[] colors) {
-        if (colors.length != 4) {
-            //todo: вывести ошибку
-        }
-        intBuffer.position(0);
-        intBuffer.put(x);          // v0
-        intBuffer.put(y);
-        intBuffer.put(x);          // v1
-        intBuffer.put(y + height);
-        intBuffer.put(x + width);  // v2
-        intBuffer.put(y);
-        intBuffer.put(x + width);  // v3
-        intBuffer.put(y + height);
-        intBuffer.position(0);
-        gl.glVertexPointer(2, GL_INT, 0, intBuffer.buffer);   checkGLError("glVertexPointer");
+    public void fillRect(short x, short y, short width, short height, int[] colors) {
+//        if (colors.length != 4) {
+//            //todo: вывести ошибку
+//        }
+        vertexBuffer.position(0);
+        vertexBuffer.put(x);                   // v0
+        vertexBuffer.put(y);
+        vertexBuffer.put(x);                   // v1
+        vertexBuffer.put((short)(y + height));
+        vertexBuffer.put((short)(x + width));  // v2
+        vertexBuffer.put(y);
+        vertexBuffer.put((short)(x + width));  // v3
+        vertexBuffer.put((short)(y + height));
+        vertexBuffer.position(0);
+        gl10.glVertexPointer(2, VERTEX_TYPE, 0, vertexBuffer);  checkGLError("glVertexPointer");
 
-        int p = floatBuffer.position();
-//        floatBuffer.position(0);
+        colorBuffer.position(0);
         for (int i = 0; i < colors.length; i++) {
-//            floatBuffer.put(((colors[i] >>> 16) & 0xff) / 255f);  // red
-//            floatBuffer.put(((colors[i] >>>  8) & 0xff) / 255f);  // green
-//            floatBuffer.put(((colors[i]       ) & 0xff) / 255f);  // blue
-//            floatBuffer.put(1.0f);  // alpha
-
-            floatBuffer.put(0.0f);
-            floatBuffer.put(0.0f);
-            floatBuffer.put(0.0f);
-            floatBuffer.put(0.0f);
+            colorBuffer.put(((colors[i] >>> 16) & 0xff) / 255f);  // red
+            colorBuffer.put(((colors[i] >>>  8) & 0xff) / 255f);  // green
+            colorBuffer.put(((colors[i]       ) & 0xff) / 255f);  // blue
+            colorBuffer.put(((colors[i] >>> 24) & 0xff) / 255f);  // alpha
         }
-        floatBuffer.position(p);
-        gl.glEnableClientState(GL10.GL_COLOR_ARRAY);          checkGLError("glEnableClientState");  //todo: Делать это из другого места
-        gl.glColorPointer(4, GL10.GL_FLOAT, 0, floatBuffer);  checkGLError("glColorPointer");
-        gl.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);        checkGLError("glDrawArrays");
-        gl.glDisableClientState(GL10.GL_COLOR_ARRAY);         checkGLError("glDisableClientState"); //todo: Делать это из другого места
+        colorBuffer.position(0);
+        gl10.glEnableClientState(GL10.GL_COLOR_ARRAY);          checkGLError("glEnableClientState");  //todo: Делать это из другого места
+        gl10.glColorPointer(4, GL10.GL_FLOAT, 0, colorBuffer);  checkGLError("glColorPointer");
+        gl10.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);        checkGLError("glDrawArrays");
+        gl10.glDisableClientState(GL10.GL_COLOR_ARRAY);         checkGLError("glDisableClientState"); //todo: Делать это из другого места
     }
 
-
-//    // Нарисовать строку
-//    void drawString(String string, int x, int y, int anchor);
-//
-//    // Нарисовать часть строки
-//    void drawSubstring(String string, int position, int length, int x, int y, int anchor);
+    //******************************************************************************************************************
+    //**     Настройки цвета                                                                                          **
+    //******************************************************************************************************************
 
     // Вернуть и установить цвет.
     // Цвет кодируется в формате ARGB
@@ -419,6 +604,20 @@ public class AndroidGraphics {
 //            green = (byte)(color >>> 8);
 //            blue  = (byte)(color);
             this.color = color;
+            colorChanged();
+        }
+        return colorBackup;
+    }
+
+    public int setColorARGB(byte red, byte green, byte blue, byte alpha) {
+        int newColor =
+                (alpha & 0xff) << 24 |
+                (red   & 0xff) << 16 |
+                (green & 0xff) <<  8 |
+                (blue  & 0xff);
+        int colorBackup = getColorARGB();
+        if (colorBackup != newColor) {
+            this.color = newColor;
             colorChanged();
         }
         return colorBackup;
@@ -479,39 +678,43 @@ public class AndroidGraphics {
     // applyColor
     private void colorChanged() {
         int alpha = (color >>> 24) & 0xff;
-        gl.glColor4f(
+        gl10.glColor4f(
                 ((color >>> 16) & 0xff) / 255f,  // red
-                ((color >>>  8) & 0xff) / 255f,  // green
-                ((color       ) & 0xff) / 255f,  // blue
-                  alpha                 / 255f); // alpha
-//        gl.glColor4ub(
+                ((color >>> 8) & 0xff) / 255f,  // green
+                ((color) & 0xff) / 255f,  // blue
+                alpha / 255f); // alpha
+//        gl10.glColor4ub(
 //                (byte) (color >>> 16), // red
 //                (byte) (color >>>  8), // green
 //                (byte) (color       ), // blue
 //                alpha);               // alpha
-//        gl.glColor4ub(red, green, blue, alpha);
+//        gl10.glColor4ub(red, green, blue, alpha);
         checkGLError("glColor4f");
-        if (alpha == 255) {
-            gl.glDisable(GL10.GL_BLEND); checkGLError("glDisable");
+        if (alpha == 255 & !lineSmoothEnabled) {
+            gl10.glDisable(GL10.GL_BLEND); checkGLError("glDisable");
         } else {
-            gl.glEnable(GL10.GL_BLEND);  checkGLError("glEnable");
+            gl10.glEnable(GL10.GL_BLEND);  checkGLError("glEnable");
         }
     }
 
     // applyBackgroundColor
     private void backgroundColorChanged() {
-        gl.glClearColor(
+        gl10.glClearColor(
                 ((backgroundColor >>> 16) & 0xff) / 255f,  // red
                 ((backgroundColor >>>  8) & 0xff) / 255f,  // green
                 ((backgroundColor       ) & 0xff) / 255f,  // blue
                 ((backgroundColor >>> 24) & 0xff) / 255f); // alpha
         checkGLError("glClearColor");
-//        if (alpha == 255) {
-//            gl.glDisable(GL10.GL_BLEND);
+//        if (alpha == 255 & !lineSmoothEnabled) {
+//            gl10.glDisable(GL10.GL_BLEND);
 //        } else {
-//            gl.glEnable(GL10.GL_BLEND);
+//            gl10.glEnable(GL10.GL_BLEND);
 //        }
     }
+
+    //******************************************************************************************************************
+    //**     Шрифты                                                                                                   **
+    //******************************************************************************************************************
 
 //    // Вернуть и установить шрифт
 //    public PFont getFont() {
@@ -527,6 +730,16 @@ public class AndroidGraphics {
 //    int getBaseLine(); //todo: удаляем ?
 //
 //    int getFontSize(); //todo: удаляем
+
+    //******************************************************************************************************************
+    //**     Строки                                                                                                   **
+    //******************************************************************************************************************
+
+//    // Нарисовать строку
+//    void drawString(String string, int x, int y, int anchor);
+//
+//    // Нарисовать часть строки
+//    void drawSubstring(String string, int position, int length, int x, int y, int anchor);
 //
 //    // Вернуть вычисленную ширину символа, используя текущий шрифт
 //    int getCharWidth(char character);
@@ -540,7 +753,9 @@ public class AndroidGraphics {
 //    // Вернуть вычисленную ширину подстроки, используя текущий шрифт
 //    int getStringWidth(String string, int position, int length);
 
-//    Render getRender(); //todo: это здесь должно быть?
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
 
 //    // Установить область отсечения
 //    void clipRect(int x, int y, int w, int h);
@@ -552,18 +767,30 @@ public class AndroidGraphics {
 //
 //    Region getClipBounds(); //todo: Использовать класс Rect
 
-////    public native void translate(float v, float v1);
-////
-////    public native void scale(float v, float v1);
-////
-////    public final void scale(float sx, float sy, float px, float py) { /* compiled code */ }
-////
-////    public native void rotate(float v);
-////
-////    public final void rotate(float degrees, float px, float py) { /* compiled code */ }
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
+
+//    public native void translate(float v, float v1);
 //
+//    public native void scale(float v, float v1);
+//
+//    public final void scale(float sx, float sy, float px, float py) { /* compiled code */ }
+//
+//    public native void rotate(float v);
+//
+//    public final void rotate(float degrees, float px, float py) { /* compiled code */ }
+
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
+
 //    void translate(int x, int y);
-//
+
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
+
 //    // Вернуть и установить масштабирование
 //    int getScale();
 //
@@ -575,45 +802,40 @@ public class AndroidGraphics {
 //    void pushState();
 //
 //    void popState();
-//
-////    void onCache(int len);//включить кеширование картинок
-//
-//    void addTexture(Image image);
-//
-//    Image createImage(byte[] array, int i, int data_len) throws IOException;
-//
-//    Image createImage();
 
-
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
 
     public boolean isOpenGL() {
         return true;
     }
 
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
+
     public String getVendorString() {
-        String value = gl.glGetString(gl.GL_VENDOR);
+        String value = gl10.glGetString(gl10.GL_VENDOR);
         checkGLError("glGetString");
         return value;
     }
 
     public String getRendererString() {
-        String value = gl.glGetString(gl.GL_RENDERER);
+        String value = gl10.glGetString(gl10.GL_RENDERER);
         checkGLError("glGetString");
         return value;
     }
 
     public String getVersionString() {
-        String value = gl.glGetString(gl.GL_VERSION);
+        String value = gl10.glGetString(gl10.GL_VERSION);
         checkGLError("glGetString");
         return value;
     }
 
-    public int getMaxTextureSize() {
-        int[] params = new int[1];
-        gl.glGetIntegerv(gl.GL_MAX_TEXTURE_SIZE, params, 0);
-        checkGLError("glGetIntegerv");
-        return params[0];
-    }
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
 
     public boolean isShaderSupported() {
         return false;
@@ -642,8 +864,58 @@ OpenGL version = OpenGL ES-CM 1.0
 Maximum texture size = 4096
  */
 
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
+
+    public int getOGLIntValue1(int pname) {
+        int[] params = new int[1];
+        gl10.glGetIntegerv(pname, params, 0);
+        checkGLError("glGetIntegerv");
+        return params[0];
+    }
+
+    public int getOGLIntValue2(int pname, int pindex) {
+        int[] params = new int[2];
+        gl10.glGetIntegerv(pname, params, 0);
+        checkGLError("glGetIntegerv");
+        return params[pindex];
+    }
+
+    public int getOGLIntValue4(int pname, int pindex) {
+        int[] params = new int[4];
+        gl10.glGetIntegerv(pname, params, 0);
+        checkGLError("glGetIntegerv");
+        return params[pindex];
+    }
+
+    public float getOGLFloatValue1(int pname) {
+        float[] params = new float[1];
+        gl11.glGetFloatv(pname, params, 0);
+        checkGLError("glGetFloatv");
+        return params[0];
+    }
+
+    public float getOGLFloatValue2(int pname, int pindex) {
+        float[] params = new float[2];
+        gl11.glGetFloatv(pname, params, 0);
+        checkGLError("glGetFloatv");
+        return params[pindex];
+    }
+
+    public float getOGLFloatValue4(int pname, int pindex) {
+        float[] params = new float[4];
+        gl11.glGetFloatv(pname, params, 0);
+        checkGLError("glGetFloatv");
+        return params[pindex];
+    }
+
+    //******************************************************************************************************************
+    //**                                                                                                              **
+    //******************************************************************************************************************
+
     private void checkGLError(String caller) {
-        int error = gl.glGetError();
+        int error = gl10.glGetError();
         if (error == GL10.GL_NO_ERROR) {
             return;
         }
@@ -675,30 +947,6 @@ Maximum texture size = 4096
 
         public GLException(String string) {
             super(string);
-        }
-
-    }
-
-    private static class GGIntAsFloatBuffer {
-
-        private java.nio.FloatBuffer buffer;
-
-        public GGIntAsFloatBuffer(java.nio.FloatBuffer buffer) {
-            this.buffer = buffer;
-        }
-
-        public void put(int i) {
-            buffer.put((float) i);
-        }
-
-        public void put(int[] src) {
-            for (int i : src) {
-                buffer.put((float) i);
-            }
-        }
-
-        public void position(int newPosition) {
-            buffer.position(newPosition);
         }
 
     }

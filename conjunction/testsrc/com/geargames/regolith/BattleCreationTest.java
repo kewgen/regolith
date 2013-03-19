@@ -200,6 +200,9 @@ public class BattleCreationTest {
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("Have not be able to be ready for his own battle.", confirm.isConfirm());
 
+        //todo: В бесконечном цикле проверять, что все желающие подключились и выслали isReady, только после этого послать единичный startBattle
+        //todo: Перед startBattle, можно попробовать выкинуть одного из игроков, после чего он снова должен подключиться и после этого уже слать startBattle
+
         ClientStartBattleAnswer clientStartBattleAnswer;
         while (true) {
             answer = battleCreationManager.startBattle(account);

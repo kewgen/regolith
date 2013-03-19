@@ -64,11 +64,14 @@ public class GGRenderer implements android.opengl.GLSurfaceView.Renderer {
 //        gl.glColor4f(1f, 0f, 0f, 1f);
 //        gl.glDisable(GL10.GL_BLEND);
 
-        graphics.setTransparency((byte) 0xfe);
-        graphics.setColor(0xff0000); // красный цвет
-        graphics.drawRect(10, 10, 300, 200);
+//        graphics.setColorARGB((byte) 0xe9, (byte) 0xb5, (byte) 0xa7, (byte) 0xd4);
 
-        graphics.drawLine(0, 100, 400, 100);
+//        graphics.setTransparency((byte) 0xfe);
+        graphics.setColorARGB(0xffff0000); // красный непрозрачный цвет
+//        gl.glEnable(GL10.GL_BLEND);
+        graphics.drawRect((short)10, (short)10, (short)300, (short)200);
+
+        graphics.drawLine((short)0, (short)100, (short)400, (short)100);
 
 //        graphics.setColor(0x00ff00); // зеленый цвет
 //        graphics.drawRect(-0.8f, -0.8f, 1.6f, 1.6f);
@@ -81,34 +84,44 @@ public class GGRenderer implements android.opengl.GLSurfaceView.Renderer {
 //            graphics.drawRect(n-0.2f * i, -0.2f * i, 0.4f * i, 0.4f * i);
 //        }
 
-        graphics.drawLine(10,  10, 310, 210);
-        graphics.drawLine(10, 210, 310,  10);
+        graphics.drawLine((short)10, (short) 10, (short)310, (short)210);
+        graphics.drawLine((short)10, (short)210, (short)310, (short) 10);
 
 //        graphics.setTransparency((byte) 0x7f);
 //        graphics.setColorARGB(0x7f00ff00); // зеленый полупрозрачный цвет
 //        gl.glEnable(GL10.GL_BLEND);
 //        graphics.fillRect(50, 20, 350, 180);
 
-        gl.glDisable(GL10.GL_BLEND);
-        graphics.fillRect(50, 20, 350, 180, new int[]{
-                0xffff0000,
-                0xff00ff00,
-                0xff0000ff,
-                0xffffffff
+        gl.glEnable(GL10.GL_BLEND);
+        graphics.fillRect((short)50, (short)20, (short)350, (short)180, new int[]{
+                0xafff0000,
+                0x9f00ff00,
+                0x8f0000ff,
+                0x7fffffff
         });
 
-        for (int i = 0; i <= 100; i++) {
-            gl.glColor4f(i * 0.01f, 0f, 0f, 1f);
-            graphics.drawLine(20, 40+i, 80, 40+i);
 
-            gl.glColor4f(0f, i * 0.01f, 0f, 1f);
-            graphics.drawLine(80, 40+i, 140, 40+i);
+        short y = 0;
+        for (int i = 0; i <= 255; i += 5, y++) {
+            // Красная полоска
+            graphics.setColorARGB((byte)255, (byte)i, (byte)i, (byte)255);
+//            gl.glColor4f(1f, i * 0.01f, i * 0.01f, 1f);
+            graphics.drawLine((short)20, (short)(40+y), (short)80, (short)(40+y));
 
-            gl.glColor4f(0f, 0f, i * 0.01f, 1f);
-            graphics.drawLine(140, 40+i, 200, 40+i);
+            // Зеленая полоска
+            graphics.setColorARGB((byte)i, (byte)255, (byte)i, (byte)255);
+//            gl.glColor4f(i * 0.01f, 1f, i * 0.01f, 1f);
+            graphics.drawLine((short)80, (short)(40+y), (short)140, (short)(40+y));
 
-            gl.glColor4f(0.5f, 0.5f, 0.5f, i * 0.01f);
-            graphics.drawLine(200, 40+i, 260, 40+i);
+            // Синяя полоска
+            graphics.setColorARGB((byte)i, (byte)i, (byte)255, (byte)255);
+//            gl.glColor4f(i * 0.01f, i * 0.01f, 1f, 1f);
+            graphics.drawLine((short)140, (short)(40+y), (short)200, (short)(40+y));
+
+            // Серая полупрозрачная полоска
+            graphics.setColorARGB((byte)127, (byte)127, (byte)127, (byte)i);
+//            gl.glColor4f(0.5f, 0.5f, 0.5f, i * 0.01f);
+            graphics.drawLine((short)200, (short)(40+y), (short)260, (short)(40+y));
         }
 
 //        gl.glMatrixMode(GL10.GL_MODELVIEW);
