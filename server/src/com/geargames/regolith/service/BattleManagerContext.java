@@ -17,5 +17,5 @@ public interface BattleManagerContext {
     ConcurrentMap<Battle, Set<BattleGroup>> getCompleteGroups();
     ConcurrentMap<Integer, Battle> getBattlesById();
     ConcurrentMap<Account, Battle> getCreatedBattles();
-    ConcurrentMap<Battle, List<Account>> getBattleListeners();
+    ConcurrentMap<Battle, Set<Account>> getBattleListeners();
 }

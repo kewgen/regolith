@@ -4,7 +4,6 @@ import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -16,12 +15,12 @@ import java.util.concurrent.ConcurrentMap;
 public class ConcurrentBattleManagerContext implements BattleManagerContext {
     private ConcurrentMap<Integer, Battle> battles;
     private ConcurrentMap<Account, Battle> created;
-    private ConcurrentMap<Battle, List<Account>> listeners;
+    private ConcurrentMap<Battle, Set<Account>> listeners;
     private ConcurrentMap<Battle, Set<BattleGroup>> completeGroups;
 
     public ConcurrentBattleManagerContext() {
         created = new ConcurrentHashMap<Account, Battle>();
-        listeners = new ConcurrentHashMap<Battle, List<Account>>();
+        listeners = new ConcurrentHashMap<Battle, Set<Account>>();
         battles = new ConcurrentHashMap<Integer, Battle>();
         completeGroups = new ConcurrentHashMap<Battle, Set<BattleGroup>>();
     }
@@ -43,7 +42,7 @@ public class ConcurrentBattleManagerContext implements BattleManagerContext {
     }
 
     @Override
-    public ConcurrentMap<Battle, List<Account>> getBattleListeners() {
+    public ConcurrentMap<Battle, Set<Account>> getBattleListeners() {
         return listeners;
     }
 }

@@ -1,0 +1,108 @@
+Client A:  out  createBattle
+Client B:  out  listenToBattle
+
+клиент C подключается и сам выходит
+Client C:  out  listenToBattle
+Client C:  out  joinToAlliance
+Client A:  in   Client C присоединился к альянсу
+Client B:  in   Client C присоединился к альянсу
+Client C:  in   Я присоединился к альянсу
+Client C:  out  evictAccount(Self) - сам выхожу из битвы
+Client A:  in   Client C вышел из битвы
+Client B:  in   Client C вышел из битвы
+Client C:  in   Я вышел из битвы
+
+клиент C подключается и его выкидывают
+Client С:  out  listenToBattle
+Client C:  out  joinToAlliance
+Client A:  in   Client C присоединился к альянсу
+Client B:  in   Client C присоединился к альянсу
+Client C:  in   Я присоединился к альянсу
+Client A:  out  evictAccount(Client C) - клиента C выкидывают из битвы
+Client A:  in   Client C вышел из битвы
+Client B:  in   Client C вышел из битвы
+Client C:  in   Меня выкинули из битвы
+
+клиент C подключается, жмет Ready и сам выходит
+Client С:  out  listenToBattle
+Client C:  out  joinToAlliance
+Client A:  in   Client C присоединился к альянсу
+Client B:  in   Client C присоединился к альянсу
+Client C:  in   Я присоединился к альянсу
+Client C:  out  isReady
+Client A:  in   Client C готов к битве
+Client B:  in   Client C готов к битве
+Client C:  in   Я готов к битве
+Client C:  out  evictAccount(Self) - сам выхожу из битвы
+Client A:  in   Client C вышел из битвы
+Client B:  in   Client C вышел из битвы
+Client C:  in   Я вышел из битвы
+
+клиент C подключается, жмет Ready и его выкидывают
+Client С:  out  listenToBattle
+Client C:  out  joinToAlliance
+Client A:  in   Client C присоединился к альянсу
+Client B:  in   Client C присоединился к альянсу
+Client C:  in   Я присоединился к альянсу
+Client C:  out  isReady
+Client A:  in   Client C готов к битве
+Client B:  in   Client C готов к битве
+Client C:  in   Я готов к битве
+Client A:  out  evictAccount(Client C) - клиента C выкидывают из битвы
+Client A:  in   Client C вышел из битвы
+Client B:  in   Client C вышел из битвы
+Client C:  in   Меня выкинули из битвы
+
+клиент C подключается, а автор отменяет битву
+Client С:  out  listenToBattle
+Client C:  out  joinToAlliance
+Client A:  in   Client C присоединился к альянсу
+Client B:  in   Client C присоединился к альянсу
+Client C:  in   Я присоединился к альянсу
+Client A:  out  cancelBattle
+Client A:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+Client B:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+Client C:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+
+клиент C подключается, жмет Ready, а автор отменяет битву
+Client С:  out  listenToBattle
+Client C:  out  joinToAlliance
+Client A:  in   Client C присоединился к альянсу
+Client B:  in   Client C присоединился к альянсу
+Client C:  in   Я присоединился к альянсу
+Client C:  out  isReady
+Client A:  in   Client C готов к битве
+Client B:  in   Client C готов к битве
+Client C:  in   Я готов к битве
+Client A:  out  cancelBattle
+Client A:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+Client B:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+Client C:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+
+клиент C подключается, жмет Ready, автор тоже жмет Ready и битва начинается
+Client С:  out  listenToBattle
+Client C:  out  joinToAlliance
+Client A:  in   Client C присоединился к альянсу
+Client B:  in   Client C присоединился к альянсу
+Client C:  in   Я присоединился к альянсу
+Client C:  out  isReady
+Client A:  in   Client C готов к битве
+Client B:  in   Client C готов к битве
+Client C:  in   Я готов к битве
+Client A:  out  isReady
+Client A:  in   Я готов к битве
+Client B:  in   Client A готов к битве
+Client C:  in   Client A готов к битве
+Client A:  out  startBattle
+Client A:  in   Битва началась
+Client B:  in   doNotListenToBattle - битва началась без меня, меня выкинули из слушателей битвы
+Client C:  in   Битва началась
+
+
+
+Preconditions:
+1. запустить батник rmiregistryserver.bat
+по очереди запустить следующие тесты:
+2. BattleCreationTest
+3. BattleConsoleServiceManager
+4. BattleConnectionTest

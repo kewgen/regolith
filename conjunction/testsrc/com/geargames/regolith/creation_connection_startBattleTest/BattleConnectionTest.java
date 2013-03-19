@@ -1,10 +1,12 @@
-package com.geargames.regolith;
+package com.geargames.regolith.creation_connection_startBattleTest;
 
 import com.geargames.platform.ConsoleMainHelper;
+import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.ClientLoginHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
@@ -17,16 +19,9 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 /**
- * User: mikhail v. kutuzov
+ * Users: mikhail v. kutuzov, abarakov
  * Date: 22.01.13
  * Time: 22:45
- *
- * Preconditions:
- * 1. запустить батник rmiregistryserver.bat
- * по очереди запустить следующие тесты:
- * 2. BattleCreationTest
- * 3. BattleConsoleServiceManager
- * 4. BattleConnectionTest
  */
 public class BattleConnectionTest {
 
@@ -49,34 +44,9 @@ public class BattleConnectionTest {
         ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
-        ClientCommonManager commonManager = clientConfiguration.getCommonManager();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
-        Login login = new Login();
-        login.setName("автор");
-        login.setPassword("секрет");
 
-        System.out.println("Is checking for a login name");
-        ClientDeferredAnswer answer = commonManager.checkForName(login.getName());
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        if (confirm.isConfirm()) {
-            System.out.println("Trying to create an account");
-
-            answer = commonManager.create(login);
-            Assert.assertTrue("The client could not create the login name", waitForAnswer(answer));
-
-            confirm = (ClientConfirmationAnswer) answer.getAnswer();
-            Assert.assertTrue("The client could not create an account", confirm.isConfirm());
-        }
-
-        System.out.println("Going to log in");
-
-        answer = commonManager.login(login);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-        ClientLoginAnswer loginAnswer = (ClientLoginAnswer) answer.getAnswer();
-        Assert.assertNull(loginAnswer.getError(), loginAnswer.getError());
+        ClientLoginAnswer loginAnswer = ClientLoginHelper.clientLogon("clientB", "секрет", true);
 
         System.out.println("...");
 
@@ -89,6 +59,7 @@ public class BattleConnectionTest {
         ClientBattleCreationManager battleCreationManager = clientConfiguration.getBattleCreationManager();
         ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
 
+        ClientDeferredAnswer answer;
         if (clientConfiguration.getBaseWarriors() != null) {
             Warrior[] warriors = clientConfiguration.getBaseWarriors();
             byte amount = clientConfiguration.getBaseConfiguration().getInitWarriorsAmount();
@@ -119,7 +90,7 @@ public class BattleConnectionTest {
         answer = baseManager.goBattleManager();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         answer = battleMarketManager.battlesJoinTo();
@@ -127,7 +98,7 @@ public class BattleConnectionTest {
         ClientBrowseBattlesAnswer clientBrowseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         ClientBattleCollection battles = clientBrowseBattlesAnswer.getBattles();
 
-        Assert.assertTrue("There is no battle to play", battles.size() >= 1);
+        Assert.assertTrue("There is no battle to play", battles.size() > 0);
 
         Battle battle = battles.get(0);
         answer = battleMarketManager.listenToBattle(battle, account);

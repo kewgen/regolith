@@ -1,13 +1,14 @@
-package com.geargames.regolith;
+package com.geargames.regolith.creation_connection_startBattleTest;
 
-import com.geargames.common.util.ArrayList;
 import com.geargames.platform.ConsoleMainHelper;
+import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.ClientHelper;
+import com.geargames.regolith.ClientLoginHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.network.DataMessage;
 import com.geargames.regolith.network.Network;
-import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.*;
-import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;
 import com.geargames.regolith.service.MainServiceManager;
 import com.geargames.regolith.service.SimpleService;
 import com.geargames.regolith.units.Account;
@@ -16,8 +17,6 @@ import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.map.BattleMapHelper;
-import com.geargames.regolith.units.tackle.StateTackle;
-import com.geargames.regolith.units.tackle.TackleTransitionHelper;
 import junit.framework.Assert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -27,7 +26,7 @@ import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
 
 /**
- * User: mikhail v. kutuzov
+ * Users: mikhail v. kutuzov, abarakov
  * Date: 27.06.12
  * Time: 14:51
  */
@@ -48,34 +47,9 @@ public class BattleCreationTest {
         ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
-        ClientCommonManager commonManager = clientConfiguration.getCommonManager();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
-        Login login = new Login();
-        login.setName("автор");
-        login.setPassword("секрет");
 
-        System.out.println("Is checking for a login name");
-        ClientDeferredAnswer answer = commonManager.checkForName(login.getName());
-
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        if (confirm.isConfirm()) {
-            System.out.println("Trying to create an account");
-            answer = commonManager.create(login);
-            Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-            confirm = (ClientConfirmationAnswer) answer.getAnswer();
-            Assert.assertTrue("Could not create the account", confirm.isConfirm());
-        }
-
-        System.out.println("Going to log in");
-
-        answer = commonManager.login(login);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-        ClientLoginAnswer loginAnswer = (ClientLoginAnswer) answer.getAnswer();
-        Assert.assertNull(loginAnswer.getError(), loginAnswer.getError());
+        ClientLoginAnswer loginAnswer = ClientLoginHelper.clientLogon("clientA", "секрет", true);
 
         System.out.println("...");
 
@@ -88,6 +62,7 @@ public class BattleCreationTest {
         ClientBattleCreationManager battleCreationManager = clientConfiguration.getBattleCreationManager();
         ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
 
+        ClientDeferredAnswer answer;
         if (account.getWarriors().size() <= 0) {
             if (clientConfiguration.getBaseWarriors() != null) {
                 Warrior[] warriors = clientConfiguration.getBaseWarriors();
@@ -114,43 +89,12 @@ public class BattleCreationTest {
             }
         }
 
-        System.out.println("Lets try to move a tackle");
-
-
-        Warrior warrior = account.getWarriors().get(1);
-/*      StateTackle tackle = TackleTransitionHelper.moveStateTackleBag2StoreHouse(warrior, 0, account.getBase().getStoreHouse());
-
-        confirm = new ClientConfirmationAnswer();
-        ClientMoveTackleByNumber move = new ClientMoveTackleByNumber(clientConfiguration);
-        move.setNumber((short) 0);
-        move.setWarrior(warrior);
-        move.setAmount((short) 1);
-        move.setRealAmount((short) 1);
-        move.setTackle(tackle);
-        move.setType(Packets.TAKE_TACKLE_FROM_BAG_PUT_INTO_STORE_HOUSE);
-
-        BatchMessageManager messanger = BatchMessageManager.getInstance();
-
-        messanger.deferredSend(move, confirm);
-
-        messanger.commitMessages();
-
-        Assert.assertTrue("Waiting time answer has expired", messanger.retrieve(1000));
-
-        ArrayList answers = messanger.getAnswer().getAnswers();
-
-        for (int i = 0; i < answers.size(); i++) {
-            confirm = (ClientConfirmationAnswer) answers.get(i);
-            Assert.assertTrue(confirm.isConfirm());
-        }
-*/
-
         System.out.println("Lets go to the battle market");
 
         answer = baseManager.goBattleManager();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
 
         Assert.assertTrue(confirm.isConfirm());
 
@@ -200,9 +144,6 @@ public class BattleCreationTest {
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("Have not be able to be ready for his own battle.", confirm.isConfirm());
 
-        //todo: В бесконечном цикле проверять, что все желающие подключились и выслали isReady, только после этого послать единичный startBattle
-        //todo: Перед startBattle, можно попробовать выкинуть одного из игроков, после чего он снова должен подключиться и после этого уже слать startBattle
-
         ClientStartBattleAnswer clientStartBattleAnswer;
         while (true) {
             answer = battleCreationManager.startBattle(account);
@@ -236,14 +177,9 @@ public class BattleCreationTest {
         ClientBattleLoginAnswer battleLoginAnswer = (ClientBattleLoginAnswer) answer.getAnswer();
         Assert.assertTrue("Could not login into the battle", battleLoginAnswer.isSuccess());
 
-        DataMessage dataMessage;
-        boolean active = false;
         while (true) {
-            active = ClientHelper.isOurTurn(network, alliance, active);
-            if (active) {
+            if (ClientHelper.isOurTurn(network, alliance, false)) {
                 break;
-            } else {
-                continue;
             }
         }
 
@@ -263,6 +199,8 @@ public class BattleCreationTest {
             public void onStep(Warrior warrior, int x, int y) {
             }
         }, clientConfiguration.getBattleConfiguration());
+
+        Warrior warrior = account.getWarriors().get(1);
 
         BattleMap map = battle.getMap();
         for (Warrior warriorA : clientAllyMoveAnswer.getEnemies()) {
