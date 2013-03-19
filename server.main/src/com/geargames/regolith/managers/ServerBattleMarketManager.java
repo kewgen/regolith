@@ -37,12 +37,12 @@ public class ServerBattleMarketManager {
         battle = (Battle) session.load(Battle.class, id);
         session.close();
         BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
-        List<Account> listeners = new LinkedList<Account>();
+        Set<Account> listeners = new HashSet<Account>();
         listeners.add(author);
         battleManagerContext.getBattleListeners().put(battle, listeners);
         battleManagerContext.getCreatedBattles().put(author, battle);
         battleManagerContext.getBattlesById().put(id, battle);
-        battleManagerContext.getCompleteGroups().put(battle, new HashSet<BattleGroup>(type.getAllianceSize()*type.getAllianceAmount()));
+        battleManagerContext.getCompleteGroups().put(battle, new HashSet<BattleGroup>(type.getAllianceSize() * type.getAllianceAmount()));
         return battle;
     }
 

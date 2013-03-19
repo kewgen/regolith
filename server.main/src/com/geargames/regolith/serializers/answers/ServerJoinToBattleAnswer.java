@@ -43,7 +43,7 @@ public class ServerJoinToBattleAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
         if (success) {
-            SimpleSerializer.serializeEntityReference(battleGroup, buffer);
+            SimpleSerializer.serializeEntityReference(battleGroup, buffer); //todo: высылать battleGroup + account
         }
     }
 

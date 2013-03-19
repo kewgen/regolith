@@ -56,7 +56,7 @@ public class ClientHelper {
     /**
      * Сейчас наша очередь ходить?
      *
-     * @param network  сеть в которой происходит игра
+     * @param network  сеть, в которой происходит игра
      * @param alliance наш военный союз
      * @param active   признак нашей активности после предыдущей проверки
      * @return

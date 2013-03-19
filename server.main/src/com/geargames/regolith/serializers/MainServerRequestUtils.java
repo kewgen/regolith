@@ -20,7 +20,7 @@ public class MainServerRequestUtils {
     public static List<SocketChannel> recipientsByCreatedBattle(Battle battle) {
         ServerContext serverContext = MainServerConfigurationFactory.getConfiguration().getServerContext();
         BattleManagerContext battleManagerContext = serverContext.getBattleManagerContext();
-        List<Account> accounts = battleManagerContext.getBattleListeners().get(battle);
+        Set<Account> accounts = battleManagerContext.getBattleListeners().get(battle);
         List<SocketChannel> channels = new ArrayList<SocketChannel>(accounts.size());
         for (Account listener : accounts) {
             channels.add(serverContext.getChannel(listener));
@@ -57,7 +57,7 @@ public class MainServerRequestUtils {
     }
 
     public static List<SocketChannel> getPassiveListenerChannels(Set<Client> players, ServerContext context, Battle battle) {
-        List<Account> listeners = context.getBattleManagerContext().getBattleListeners().get(battle);
+        Set<Account> listeners = context.getBattleManagerContext().getBattleListeners().get(battle);
 
         for (Client player : players) {
             listeners.remove(player.getAccount());

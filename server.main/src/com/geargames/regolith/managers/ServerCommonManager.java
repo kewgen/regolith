@@ -58,9 +58,9 @@ public class ServerCommonManager {
         account.add(Restrictions.eq("name", login.getName()));
         account.add(Restrictions.eq("password", login.getPassword()));
 
-        List<Account> accounts = (List<Account>)account.list();
+        List<Account> accounts = (List<Account>) account.list();
         session.close();
-        if(accounts.size()!=1){
+        if (accounts.size() != 1) {
             return null;
         }
         return accounts.get(0);
