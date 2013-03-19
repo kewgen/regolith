@@ -118,7 +118,7 @@ public class BattleCreationTest {
 
 
         Warrior warrior = account.getWarriors().get(1);
-/*      StateTackle tackle = TackleTransitionHelper.moveStateTackleBag2StoreHouse(warrior, 0, account.getBase().getStoreHouse());
+        StateTackle tackle = TackleTransitionHelper.moveStateTackleBag2StoreHouse(warrior, 0, account.getBase().getStoreHouse());
 
         confirm = new ClientConfirmationAnswer();
         ClientMoveTackleByNumber move = new ClientMoveTackleByNumber(clientConfiguration);
@@ -143,7 +143,6 @@ public class BattleCreationTest {
             confirm = (ClientConfirmationAnswer) answers.get(i);
             Assert.assertTrue(confirm.isConfirm());
         }
-*/
 
         System.out.println("Lets go to the battle market");
 

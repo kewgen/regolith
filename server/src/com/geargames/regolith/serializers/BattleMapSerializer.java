@@ -38,10 +38,10 @@ public class BattleMapSerializer {
         for (int i = 0; i < states.size(); i++) {
             StateTackle tackle = states.get(i);
             if (tackle instanceof Armor) {
-                SimpleSerializer.serialize(SimpleSerializer.findTypeId("Armor"), buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
                 TackleSerializer.serializeArmor((Armor) tackle, buffer);
             } else if (tackle instanceof Weapon) {
-                SimpleSerializer.serialize(SimpleSerializer.findTypeId("Weapon"), buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
                 TackleSerializer.serializeWeapon((Weapon) tackle, buffer);
             }
         }
@@ -76,43 +76,43 @@ public class BattleMapSerializer {
                 if (warrior.getBattleGroup().getAccount().getId() == account.getId()) {
                     SimpleSerializer.serialize(x, buffer);
                     SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SimpleSerializer.findTypeId("Warrior"), buffer);
+                    SimpleSerializer.serialize(SerializeHelper.findTypeId("Warrior"), buffer);
                     serialize(warrior, buffer);
                 } else if (WarriorHelper.isAlly(warrior, account)) {
                     SimpleSerializer.serialize(x, buffer);
                     SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SimpleSerializer.findTypeId("Ally"), buffer);
+                    SimpleSerializer.serialize(SerializeHelper.findTypeId("Ally"), buffer);
                     serialize(warrior, buffer);
                 }
             } else if (element instanceof Border) {
                 SimpleSerializer.serialize(x, buffer);
                 SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SimpleSerializer.findTypeId("Border"), buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Border"), buffer);
                 serialize((Border) element, buffer);
             } else if (element instanceof Armor) {
                 SimpleSerializer.serialize(x, buffer);
                 SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SimpleSerializer.findTypeId("Armor"), buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
                 TackleSerializer.serializeArmor((Armor) element, buffer);
             } else if (element instanceof Weapon) {
                 SimpleSerializer.serialize(x, buffer);
                 SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SimpleSerializer.findTypeId("Weapon"), buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
                 TackleSerializer.serializeWeapon((Weapon) element, buffer);
             } else if (element instanceof Medikit) {
                 SimpleSerializer.serialize(x, buffer);
                 SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SimpleSerializer.findTypeId("Medikit"), buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Medikit"), buffer);
                 TackleSerializer.serializeMedikit((Medikit) element, buffer);
             } else if (element instanceof Magazine) {
                 SimpleSerializer.serialize(x, buffer);
                 SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SimpleSerializer.findTypeId("Magazine"), buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Magazine"), buffer);
                 serialize((Magazine) element, buffer);
             } else if (element instanceof Box) {
                 SimpleSerializer.serialize(x, buffer);
                 SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SimpleSerializer.findTypeId("Box"), buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Box"), buffer);
                 serialize((Box) element, buffer);
             } else {
                 throw new IllegalArgumentException();

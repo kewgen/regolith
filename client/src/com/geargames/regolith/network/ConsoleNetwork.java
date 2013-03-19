@@ -6,6 +6,7 @@ import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.application.Manager;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.*;
@@ -54,7 +55,7 @@ public class ConsoleNetwork extends Network {
             socket = new Socket();
             socket.connect(socketAddress);
             dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            dos = new DataOutputStream(socket.getOutputStream());
+            dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 
             receiver = new Receiver(this, configuration);
             receiver.startReceive(dis);

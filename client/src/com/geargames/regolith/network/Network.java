@@ -27,10 +27,6 @@ public abstract class Network {
 
     protected abstract Receiver getReceiver();
 
-    public abstract void setDownloading(boolean downloading);
-
-    public abstract void setUploading(boolean uploading);
-
     protected abstract Lock getMessageLock();
 
     public void sendMessage(SerializedMessage message) {

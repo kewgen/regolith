@@ -18,17 +18,6 @@ public class SimpleSerializer {
     public static final byte ALLY = 1;
     public static final byte ENEMY = 0;
 
-    public static final String[] CLASSES = new String[]{
-            Warrior.class.getSimpleName(),
-            Box.class.getSimpleName(),
-            Magazine.class.getSimpleName(),
-            Border.class.getSimpleName(),
-            Armor.class.getSimpleName(),
-            Weapon.class.getSimpleName(),
-            Medikit.class.getSimpleName(),
-            Ally.class.getSimpleName(),
-            Projectile.class.getSimpleName()
-    };
     public static final int NULL_REFERENCE = -1;
     public static final short NULL_COORDINATE = -1;
 
@@ -36,15 +25,6 @@ public class SimpleSerializer {
     public static final int CHAR_MASK = 0xFFFF;
     public static final long INT_MASK = 0xFFFFFFFFL;
     public static final int DECIMAL_SCALE = 1000;
-
-    public static short findTypeId(String clazz) {
-        for (short i = 0; i < CLASSES.length; i++) {
-            if (CLASSES[i].equals(clazz)) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
     public static void serializeEntityReference(Entity entity, MicroByteBuffer buffer) {
         if(entity == null){

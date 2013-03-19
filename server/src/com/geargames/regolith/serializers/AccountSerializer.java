@@ -16,10 +16,10 @@ public class AccountSerializer {
 
     private static void serialize(StateTackle tackle, MicroByteBuffer buffer) {
         if (tackle instanceof Armor) {
-            SimpleSerializer.serialize(SimpleSerializer.findTypeId("Armor"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
             TackleSerializer.serializeArmor((Armor) tackle, buffer);
         } else if (tackle instanceof Weapon) {
-            SimpleSerializer.serialize(SimpleSerializer.findTypeId("Weapon"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
             TackleSerializer.serializeWeapon((Weapon) tackle, buffer);
         }
     }
@@ -38,10 +38,10 @@ public class AccountSerializer {
         SimpleSerializer.serialize(packet.getCount(), buffer);
         Ammunition tackle = packet.getAmmunition();
         if (tackle instanceof Projectile) {
-            SimpleSerializer.serialize(SimpleSerializer.findTypeId("Projectile"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.findTypeId("Projectile"), buffer);
             TackleSerializer.serializeProjectile((Projectile) tackle, buffer);
         } else if (tackle instanceof Medikit) {
-            SimpleSerializer.serialize(SimpleSerializer.findTypeId("Medikit"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.findTypeId("Medikit"), buffer);
             TackleSerializer.serializeMedikit((Medikit) tackle, buffer);
         }
     }

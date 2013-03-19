@@ -60,7 +60,7 @@ public final class Receiver extends Thread {
 
         try {
             while (running) {
-                network.setDownloading(false);
+
                 while (dis != null && dis.available() == 0) {
                     if (!running) {
                         break;
@@ -70,7 +70,6 @@ public final class Receiver extends Thread {
                 if (!running || dis == null) {
                     break;
                 }
-                network.setDownloading(true);
 
                 length = dis.readShort() & 0xffff;
                 type = dis.readShort();

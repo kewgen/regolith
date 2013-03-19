@@ -55,7 +55,6 @@ public final class Sender extends Thread {
 
     public void run() {
         while (running) {
-            network.setUploading(false);
             if (messageQueue.isEmpty()) {
                 workLock.lock();
                 if(messageQueue.isEmpty()) {
@@ -65,7 +64,6 @@ public final class Sender extends Thread {
                     break;
                 }
             }
-            network.setUploading(true);
 
             try {
                 SerializedMessage message = (SerializedMessage) messageQueue.elementAt(0);

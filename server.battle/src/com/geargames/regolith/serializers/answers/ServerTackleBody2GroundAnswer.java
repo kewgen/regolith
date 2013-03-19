@@ -1,10 +1,7 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
-import com.geargames.regolith.serializers.TackleSerializer;
+import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.StateTackle;
@@ -47,10 +44,10 @@ public class ServerTackleBody2GroundAnswer extends SerializedMessage {
         SimpleSerializer.serializeEntityReference(warrior.getBattleGroup(), buffer);
         SimpleSerializer.serializeEntityReference(warrior, buffer);
         if (stateTackle instanceof Weapon) {
-            SimpleSerializer.serialize(SimpleSerializer.findTypeId("Weapon"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
             TackleSerializer.serializeWeapon((Weapon) stateTackle, buffer);
         } else {
-            SimpleSerializer.serialize(SimpleSerializer.findTypeId("Armor"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
             TackleSerializer.serializeArmor((Armor) stateTackle, buffer);
         }
         SimpleSerializer.serialize(x, buffer);
