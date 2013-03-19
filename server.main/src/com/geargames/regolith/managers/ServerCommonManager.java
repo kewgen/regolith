@@ -52,7 +52,6 @@ public class ServerCommonManager {
 
 
     public Account login(Login login) {
-        //serverConfiguration.getServerContext().ge
 
         Session session = serverConfiguration.getSessionFactory().openSession();
         Criteria account = session.createCriteria(Account.class);

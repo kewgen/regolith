@@ -614,10 +614,18 @@ public class ServerDBTest {
             skillScores[i] = (short) (i * 3);
         }
 
+        Weapon machineGun = new Weapon();
+        tackles.add(machineGun);
+        machineGun.setProjectile(baseConfiguration.getProjectiles().get(0));
+        machineGun.setWeaponType(firearms.get(0));
+        machineGun.setFirmness(firearms.get(0).getBaseFirmness());
+        machineGun.setState((short) (firearms.get(0).getBaseFirmness() / 2));
+        machineGun.setLoad((short) 112);
+
+        WarriorHelper.putInToBag(warrior2, machineGun, baseConfiguration);
         WarriorHelper.putInToBag(warrior2, baseConfiguration.getProjectiles().get(0), 100, baseConfiguration);
         WarriorHelper.putInToBag(warrior2, baseConfiguration.getProjectiles().get(1), 200, baseConfiguration);
         baseWarriors[1] = warrior2;
-
 
         baseConfiguration.setInitWarriorsAmount((byte) 2);
 

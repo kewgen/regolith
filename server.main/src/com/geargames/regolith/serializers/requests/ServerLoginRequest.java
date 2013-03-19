@@ -26,14 +26,18 @@ public class ServerLoginRequest extends MainOneToClientRequest {
         login.setPassword(SimpleDeserializer.deserializeString(from));
         Account account = serverConfiguration.getCommonManager().login(login);
         if (account != null) {
-            serverConfiguration.getServerContext().addChannel(account, client.getChannel());
-            client.setAccount(account);
-            if (account.getWarriors().size() > 0) {
-                client.setState(new ClientAtBase());
-                return ServerLoginAnswer.answerSuccess(serverConfiguration, account, writeBuffer);
+            if (serverConfiguration.getServerContext().getActiveAccountById(account.getId()) != null) {
+                return ServerLoginAnswer.answerFailure(writeBuffer);
             } else {
-                client.setState(new ClientAtBaseWarriorsMarket());
-                return new FirstServerLoginAnswer(serverConfiguration, account, writeBuffer);
+                serverConfiguration.getServerContext().addChannel(account, client.getChannel());
+                client.setAccount(account);
+                if (account.getWarriors().size() > 0) {
+                    client.setState(new ClientAtBase());
+                    return ServerLoginAnswer.answerSuccess(serverConfiguration, account, writeBuffer);
+                } else {
+                    client.setState(new ClientAtBaseWarriorsMarket());
+                    return new FirstServerLoginAnswer(serverConfiguration, account, writeBuffer);
+                }
             }
         } else {
             return ServerLoginAnswer.answerFailure(writeBuffer);
