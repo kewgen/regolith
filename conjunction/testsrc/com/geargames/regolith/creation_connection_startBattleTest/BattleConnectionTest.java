@@ -3,7 +3,7 @@ package com.geargames.regolith.creation_connection_startBattleTest;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.ClientLoginHelper;
+import com.geargames.regolith.ClientTestHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
@@ -46,9 +46,9 @@ public class BattleConnectionTest {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
 
-        ClientLoginAnswer loginAnswer = ClientLoginHelper.clientLogon("clientB", "секрет", true);
+        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("clientC", "секрет", true);
 
-        System.out.println("...");
+        System.out.println("Configuring the client");
 
         Account account = loginAnswer.getAccount();
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());
@@ -57,39 +57,14 @@ public class BattleConnectionTest {
         ClientBaseManager baseManager = clientConfiguration.getBaseManager();
         ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
         ClientBattleCreationManager battleCreationManager = clientConfiguration.getBattleCreationManager();
-        ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
+//        ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
 
-        ClientDeferredAnswer answer;
-        if (clientConfiguration.getBaseWarriors() != null) {
-            Warrior[] warriors = clientConfiguration.getBaseWarriors();
-            byte amount = clientConfiguration.getBaseConfiguration().getInitWarriorsAmount();
-            Assert.assertTrue("An amount of available warriors is not enough for the client", warriors.length >= amount);
-
-            Warrior[] initWarriors = new Warrior[amount];
-            for (int i = 0; i < amount; i++) {
-                warriors[i].setName(warriors[i].getName() + "i");
-                initWarriors[i] = warriors[i];
-            }
-
-            System.out.println("The client is trying to hire warriors");
-            answer = baseWarriorMarketManager.hireWarrior(initWarriors);
-            Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-            ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();
-            ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
-            Assert.assertTrue("The client could not get a set of base warriors", clientJoinBaseWarriorsAnswer.isSuccess());
-
-            for (Warrior warrior : clientJoinBaseWarriorsAnswer.getWarriors()) {
-                clientWarriorCollection.add(warrior);
-            }
-            account.setWarriors(clientWarriorCollection);
-        }
+        ClientTestHelper.hireWarriorForClient(account);
 
         System.out.println("The client go to the battle market");
 
-        answer = baseManager.goBattleManager();
+        ClientDeferredAnswer answer = baseManager.goBattleManager();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
@@ -97,16 +72,15 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattlesAnswer clientBrowseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         ClientBattleCollection battles = clientBrowseBattlesAnswer.getBattles();
-
         Assert.assertTrue("There is no battle to play", battles.size() > 0);
+
+        System.out.println("Trying to connect to the battle for listening");
 
         Battle battle = battles.get(0);
         answer = battleMarketManager.listenToBattle(battle, account);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
         ClientCreateBattleAnswer listen = (ClientCreateBattleAnswer) answer.getAnswer();
         battle = listen.getBattle();
-
         Assert.assertNotNull("The client could not listen to the battle", battle);
 
         int groupSize = battle.getBattleType().getGroupSize();
@@ -133,7 +107,6 @@ public class BattleConnectionTest {
         System.out.println("The client is trying join to an alliance (id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")");
         answer = battleCreationManager.joinToAlliance(alliance, account);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
         ClientJoinBattleAnswer clientJoinBattleAnswer = (ClientJoinBattleAnswer) answer.getAnswer();
         BattleGroup battleGroup = clientJoinBattleAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
@@ -141,7 +114,6 @@ public class BattleConnectionTest {
         System.out.println("The client is trying to complete group (id = " + battleGroup.getId() + ")");
         answer = battleCreationManager.completeGroup(battleGroup, warriors);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
         ClientConfirmationAnswer clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not complete the battle group (id = " + battleGroup.getId() + ")", clientConfirmationAnswer.isConfirm());
 
@@ -150,7 +122,6 @@ public class BattleConnectionTest {
         System.out.println("The client is trying to confirm a group");
         answer = battleCreationManager.isReady(battleGroup);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
         clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client has not confirmed the group", clientConfirmationAnswer.isConfirm());
 

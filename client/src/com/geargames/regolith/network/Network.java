@@ -1,6 +1,8 @@
 package com.geargames.regolith.network;
 
 import com.geargames.common.util.Lock;
+import com.geargames.regolith.serializers.ClientDeSerializedMessage;
+import com.geargames.regolith.serializers.MicroByteBuffer;
 import com.geargames.regolith.serializers.SerializedMessage;
 
 import java.util.Vector;
@@ -10,9 +12,11 @@ import java.util.Vector;
  */
 public abstract class Network {
     private Vector asynchronousMessages;
+    private MicroByteBuffer buffer;
 
     protected Network() {
         asynchronousMessages = new Vector();
+        buffer = new MicroByteBuffer();
     }
 
     public abstract boolean connect(String address, int port);
@@ -57,6 +61,20 @@ public abstract class Network {
         }
         getMessageLock().release();
         return dataMessage;
+    }
+
+    public synchronized boolean getAsynchronousAnswer(ClientDeSerializedMessage answer, short messageType) {
+        DataMessage message = getAsynchronousMessageByType(messageType);
+        if (message != null) {
+            //todo: использовать ClientConfigurationFactory.getConfiguration().getAnswersBuffer() вместо buffer?
+            buffer.initiate(message.getData());
+            answer.setBuffer(buffer);
+            answer.deSerialize();
+            answer.setBuffer(null);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void addAsynchronousMessage(DataMessage dataMessage) {

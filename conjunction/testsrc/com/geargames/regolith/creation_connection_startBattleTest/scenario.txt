@@ -1,3 +1,13 @@
+Preconditions:
+1. запустить батник rmiregistryserver.bat
+по очереди запустить следующие тесты:
+2. BattleCreationTest
+3. BattleConsoleServiceManager
+4. BattleListenerTest
+5. BattleConnectionTest
+
+
+
 Client A:  out  createBattle
 Client B:  out  listenToBattle
 
@@ -97,12 +107,3 @@ Client A:  out  startBattle
 Client A:  in   Битва началась
 Client B:  in   doNotListenToBattle - битва началась без меня, меня выкинули из слушателей битвы
 Client C:  in   Битва началась
-
-
-
-Preconditions:
-1. запустить батник rmiregistryserver.bat
-по очереди запустить следующие тесты:
-2. BattleCreationTest
-3. BattleConsoleServiceManager
-4. BattleConnectionTest

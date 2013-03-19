@@ -7,14 +7,117 @@ import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.dictionaries.ClientBattleGroupCollection;
 import com.geargames.regolith.units.map.BattleMap;
 
+import com.geargames.platform.ConsoleMainHelper;
+import com.geargames.regolith.managers.ClientBaseWarriorMarketManager;
+import com.geargames.regolith.managers.ClientCommonManager;
+import com.geargames.regolith.managers.ClientDeferredAnswer;
+import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
+import com.geargames.regolith.serializers.answers.ClientJoinBaseWarriorsAnswer;
+import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
+import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.Login;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
+import junit.framework.Assert;
+
+import java.util.Vector;
+
 /**
- * User: mikhail v. kutuzov
+ * User: mikhail v. kutuzov, abarakov
  * Date: 16.02.13
- * Time: 12:25
+ *
+ * Модуль только для разработки!
  */
 public class ClientTestHelper {
+
+    public static final String ACCOUNT_NAME_DEFAULT     = "автор";
+    public static final String ACCOUNT_PASSWORD_DEFAULT = "секрет";
+
+    private static boolean waitForAnswer(ClientDeferredAnswer answer) {
+        return answer.retrieve(1000);
+    }
+
     /**
-     * Проверочный метод, только для разработки.
+     * Залогинить клиента.
+     */
+    public static ClientLoginAnswer clientLogon(String accountName, String accountPassword, boolean createIfNotExist) {
+        ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
+        ClientCommonManager commonManager = clientConfiguration.getCommonManager();
+
+        Login login = new Login();
+        login.setName(accountName);
+        login.setPassword(accountPassword);
+
+        System.out.println("Is checking for a login name");
+
+        ClientDeferredAnswer answer = commonManager.checkForName(accountName);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+
+        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        if (createIfNotExist) {
+            if (confirm.isConfirm()) {
+                System.out.println("Trying to create an account");
+
+                answer = commonManager.create(login);
+                Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+
+                confirm = (ClientConfirmationAnswer) answer.getAnswer();
+                Assert.assertTrue("Could not create the account", confirm.isConfirm());
+            }
+        } else {
+            // Аккаунт создаваться не будет, он должен существовать
+            Assert.assertFalse("Cannot login to account", confirm.isConfirm());
+        }
+
+        System.out.println("Going to login");
+
+        answer = commonManager.login(login);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+
+        ClientLoginAnswer loginAnswer = (ClientLoginAnswer) answer.getAnswer();
+        Assert.assertNull("Cannot login to account: " + loginAnswer.getError(), loginAnswer.getError());
+
+        return loginAnswer;
+    }
+
+    /**
+     * Нанять для игрока доступных бойцов.
+     */
+    public static void hireWarriorForClient(Account account) {
+        ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
+
+        if (account.getWarriors().size() <= 0) {
+            if (clientConfiguration.getBaseWarriors() != null) {
+                System.out.println("The client is trying to hire warriors");
+
+                Warrior[] warriors = clientConfiguration.getBaseWarriors();
+                byte amount = clientConfiguration.getBaseConfiguration().getInitWarriorsAmount();
+                Assert.assertTrue("An amount of available warriors is not enough for the client", warriors.length >= amount);
+
+                Warrior[] initWarriors = new Warrior[amount];
+                for (int i = 0; i < amount; i++) {
+                    Warrior warrior = warriors[i];
+                    initWarriors[i] = warrior;
+                    warrior.setName(warrior.getName() + "i");
+                }
+
+                ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
+
+                ClientDeferredAnswer answer = baseWarriorMarketManager.hireWarrior(initWarriors);
+                Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+                ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();
+                Assert.assertTrue("The client could not get a set of base warriors", clientJoinBaseWarriorsAnswer.isSuccess());
+
+                ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
+                for (Warrior warrior : clientJoinBaseWarriorsAnswer.getWarriors()) {
+                    clientWarriorCollection.add(warrior);
+                }
+                account.setWarriors(clientWarriorCollection);
+            }
+        }
+    }
+
+    /**
      * Создать битву с именем name.
      * @param name
      * @param mapName имя карты
