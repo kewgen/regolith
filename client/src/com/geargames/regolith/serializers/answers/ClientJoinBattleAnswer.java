@@ -21,7 +21,8 @@ public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
     }
 
     protected void deSerialize(MicroByteBuffer buffer) {
-        if (SimpleDeserializer.deserializeBoolean(buffer)) {
+        boolean success = SimpleDeserializer.deserializeBoolean(buffer);
+        if (success) {
             int id = SimpleDeserializer.deserializeInt(buffer);
             BattleGroupCollection groups = alliance.getAllies();
             for (int i = 0; i < groups.size(); i++) {

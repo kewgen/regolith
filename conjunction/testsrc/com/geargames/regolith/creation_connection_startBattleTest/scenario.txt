@@ -8,102 +8,111 @@ Preconditions:
 
 
 
-Client A:  out  createBattle
-Client B:  out  listenToBattle
+#0a	Client A:  out  createBattle
+#0b	Client B:  out  listenToBattle
 
 клиент C подключается и сам выходит
-Client C:  out  listenToBattle
-Client C:  out  joinToAlliance
-Client A:  in   Client C присоединился к альянсу
-Client B:  in   Client C присоединился к альянсу
-Client C:  in   Я присоединился к альянсу
-Client C:  out  evictAccount(Self) - сам выхожу из битвы
-Client A:  in   Client C вышел из битвы
-Client B:  in   Client C вышел из битвы
-Client C:  in   Я вышел из битвы
+#1a Client C:  out  listenToBattle
+#1b	Client C:  out  joinToAlliance
+	Client A:  in   Client C присоединился к альянсу
+	Client B:  in   Client C присоединился к альянсу
+	Client C:  in   Я присоединился к альянсу
+#1c	Client C:  out  evictAccount(Self) - сам выхожу из битвы
+	Client A:  in   Client C вышел из битвы
+	Client B:  in   Client C вышел из битвы
+	Client C:  in   Я вышел из битвы
 
 клиент C подключается и его выкидывают
-Client С:  out  listenToBattle
-Client C:  out  joinToAlliance
-Client A:  in   Client C присоединился к альянсу
-Client B:  in   Client C присоединился к альянсу
-Client C:  in   Я присоединился к альянсу
-Client A:  out  evictAccount(Client C) - клиента C выкидывают из битвы
-Client A:  in   Client C вышел из битвы
-Client B:  in   Client C вышел из битвы
-Client C:  in   Меня выкинули из битвы
+#2a	Client С:  out  listenToBattle
+#2b	Client C:  out  joinToAlliance
+	Client A:  in   Client C присоединился к альянсу
+	Client B:  in   Client C присоединился к альянсу
+	Client C:  in   Я присоединился к альянсу
+#2c	Client A:  out  evictAccount(Client C) - клиента C выкидывают из битвы
+	Client A:  in   Client C вышел из битвы
+	Client B:  in   Client C вышел из битвы
+	Client C:  in   Меня выкинули из битвы
 
 клиент C подключается, жмет Ready и сам выходит
-Client С:  out  listenToBattle
-Client C:  out  joinToAlliance
-Client A:  in   Client C присоединился к альянсу
-Client B:  in   Client C присоединился к альянсу
-Client C:  in   Я присоединился к альянсу
-Client C:  out  isReady
-Client A:  in   Client C готов к битве
-Client B:  in   Client C готов к битве
-Client C:  in   Я готов к битве
-Client C:  out  evictAccount(Self) - сам выхожу из битвы
-Client A:  in   Client C вышел из битвы
-Client B:  in   Client C вышел из битвы
-Client C:  in   Я вышел из битвы
+#3a	Client С:  out  listenToBattle
+#3b	Client C:  out  joinToAlliance
+	Client A:  in   Client C присоединился к альянсу
+	Client B:  in   Client C присоединился к альянсу
+	Client C:  in   Я присоединился к альянсу
+#3c	Client C:  out  isReady
+	Client A:  in   Client C готов к битве
+	Client B:  in   Client C готов к битве
+	Client C:  in   Я готов к битве
+#3d	Client C:  out  evictAccount(Self) - сам выхожу из битвы
+	Client A:  in   Client C вышел из битвы
+	Client B:  in   Client C вышел из битвы
+	Client C:  in   Я вышел из битвы
 
 клиент C подключается, жмет Ready и его выкидывают
-Client С:  out  listenToBattle
-Client C:  out  joinToAlliance
-Client A:  in   Client C присоединился к альянсу
-Client B:  in   Client C присоединился к альянсу
-Client C:  in   Я присоединился к альянсу
-Client C:  out  isReady
-Client A:  in   Client C готов к битве
-Client B:  in   Client C готов к битве
-Client C:  in   Я готов к битве
-Client A:  out  evictAccount(Client C) - клиента C выкидывают из битвы
-Client A:  in   Client C вышел из битвы
-Client B:  in   Client C вышел из битвы
-Client C:  in   Меня выкинули из битвы
+#4a	Client С:  out  listenToBattle
+#4b	Client C:  out  joinToAlliance
+	Client A:  in   Client C присоединился к альянсу
+	Client B:  in   Client C присоединился к альянсу
+	Client C:  in   Я присоединился к альянсу
+#4c	Client C:  out  isReady
+	Client A:  in   Client C готов к битве
+	Client B:  in   Client C готов к битве
+	Client C:  in   Я готов к битве
+#4d	Client A:  out  evictAccount(Client C) - клиента C выкидывают из битвы
+	Client A:  in   Client C вышел из битвы
+	Client B:  in   Client C вышел из битвы
+	Client C:  in   Меня выкинули из битвы
 
 клиент C подключается, а автор отменяет битву
-Client С:  out  listenToBattle
-Client C:  out  joinToAlliance
-Client A:  in   Client C присоединился к альянсу
-Client B:  in   Client C присоединился к альянсу
-Client C:  in   Я присоединился к альянсу
-Client A:  out  cancelBattle
-Client A:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
-Client B:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
-Client C:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+#5a	Client С:  out  listenToBattle
+#5b	Client C:  out  joinToAlliance
+	Client A:  in   Client C присоединился к альянсу
+	Client B:  in   Client C присоединился к альянсу
+	Client C:  in   Я присоединился к альянсу
+#5c	Client A:  out  cancelBattle
+	Client A:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+	Client B:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+	Client C:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
 
 клиент C подключается, жмет Ready, а автор отменяет битву
-Client С:  out  listenToBattle
-Client C:  out  joinToAlliance
-Client A:  in   Client C присоединился к альянсу
-Client B:  in   Client C присоединился к альянсу
-Client C:  in   Я присоединился к альянсу
-Client C:  out  isReady
-Client A:  in   Client C готов к битве
-Client B:  in   Client C готов к битве
-Client C:  in   Я готов к битве
-Client A:  out  cancelBattle
-Client A:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
-Client B:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
-Client C:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+#6a	Client С:  out  listenToBattle
+#6b	Client C:  out  joinToAlliance
+	Client A:  in   Client C присоединился к альянсу
+	Client B:  in   Client C присоединился к альянсу
+	Client C:  in   Я присоединился к альянсу
+#6c	Client C:  out  isReady
+	Client A:  in   Client C готов к битве
+	Client B:  in   Client C готов к битве
+	Client C:  in   Я готов к битве
+#6d	Client A:  out  cancelBattle
+	Client A:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+	Client B:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
+	Client C:  in   doNotListenToBattle - битва была отменена, меня выкинули из слушателей битвы
 
-клиент C подключается, жмет Ready, автор тоже жмет Ready и битва начинается
-Client С:  out  listenToBattle
-Client C:  out  joinToAlliance
-Client A:  in   Client C присоединился к альянсу
-Client B:  in   Client C присоединился к альянсу
-Client C:  in   Я присоединился к альянсу
-Client C:  out  isReady
-Client A:  in   Client C готов к битве
-Client B:  in   Client C готов к битве
-Client C:  in   Я готов к битве
-Client A:  out  isReady
-Client A:  in   Я готов к битве
-Client B:  in   Client A готов к битве
-Client C:  in   Client A готов к битве
-Client A:  out  startBattle
-Client A:  in   Битва началась
-Client B:  in   doNotListenToBattle - битва началась без меня, меня выкинули из слушателей битвы
-Client C:  in   Битва началась
+клиент C подключается, жмет Ready, автор тоже жмет Ready, клиент C жмет NotReady и снова жмет Ready, автор жмет
+startBattle и битва начинается
+#7a	Client С:  out  listenToBattle
+#7b	Client C:  out  joinToAlliance
+	Client A:  in   Client C присоединился к альянсу
+	Client B:  in   Client C присоединился к альянсу
+	Client C:  in   Я присоединился к альянсу
+#7c	Client C:  out  isReady
+	Client A:  in   Client C готов к битве
+	Client B:  in   Client C готов к битве
+	Client C:  in   Я готов к битве
+#7d	Client A:  out  isReady
+	Client A:  in   Я готов к битве
+	Client B:  in   Client A готов к битве
+	Client C:  in   Client A готов к битве
+#7e	Client C:  out  isNotReady
+	Client A:  in   Client C не готов к битве
+	Client B:  in   Client C не готов к битве
+	Client C:  in   Я не готов к битве
+#7f	Client C:  out  isReady
+	Client A:  in   Client C готов к битве
+	Client B:  in   Client C готов к битве
+	Client C:  in   Я готов к битве
+#7g	Client A:  out  startBattle
+	Client A:  in   Битва началась
+	Client B:  in   doNotListenToBattle - битва началась без меня, меня выкинули из слушателей битвы
+	Client C:  in   Битва началась

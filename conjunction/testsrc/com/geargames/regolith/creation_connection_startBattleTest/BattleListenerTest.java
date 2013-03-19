@@ -4,14 +4,12 @@ import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.ClientTestHelper;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.network.DataMessage;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.answers.ClientBrowseBattlesAnswer;
-import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
-import com.geargames.regolith.serializers.answers.ClientCreateBattleAnswer;
-import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
+import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
@@ -74,8 +72,22 @@ public class BattleListenerTest {
         battle = listen.getBattle();
         Assert.assertNotNull("The client could not listen to the battle", battle);
 
+        //todo: GROUP_IS_READY     -> ACCOUNT_IS_READY
+        //todo: GROUP_IS_NOT_READY -> ACCOUNT_IS_NOT_READY
 
-//        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer()
+//        ClientJoinBattleAnswer clientJoinBattleAnswer = new ClientJoinBattleAnswer() answer.getAnswer();
+//        BattleGroup battleGroup = clientJoinBattleAnswer.getBattleGroup();
+//        Assert.assertNotNull("The client could not join to the alliance", battleGroup);
+//        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(Packets.DO_NOT_LISTEN_TO_BATTLE);
+
+//        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(Packets.GROUP_COMPLETE);
+//        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(Packets.CANCEL_BATTLE);
+//        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(Packets.START_BATTLE);
+//        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(Packets.EVICT_ACCOUNT_FROM_ALLIANCE);
+//        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(Packets.GROUP_IS_READY);
+//        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(Packets.GROUP_IS_NOT_READY);
+
+
 
 
 
