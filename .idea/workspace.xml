@@ -12,18 +12,8 @@
     </option>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="53e49276-8e07-4f62-91d8-55d8025a41a5" name="Default" comment="Результат мержа.">
-      <change type="DELETED" beforePath="D:\для папки\PROJECT\git\regolith\.idea\workspace.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientBaseManager.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientBaseManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientBaseWarriorMarketManager.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientBaseWarriorMarketManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientBattleCreationManager.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/managers/ClientBattleCreationManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/ClientHelper.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/ClientHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientJoinBaseWarriorsAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientJoinBaseWarriorsAnswer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientJoinBattleAnswer.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/answers/ClientJoinBattleAnswer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/ConsoleNetwork.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/requests/JoinToAllianceRequest.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/serializers/requests/JoinToAllianceRequest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/MeNetwork.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Network.java" afterPath="$PROJECT_DIR$/client/src/com/geargames/regolith/network/Network.java" />
+    <list default="true" id="53e49276-8e07-4f62-91d8-55d8025a41a5" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="regolith.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,7 +22,7 @@
     <file path="/BitMapImageManager.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363759900281" ignored="false" />
     <file path="/ResourceManager.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363759747640" ignored="false" />
     <file path="/Resource.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363759199187" ignored="false" />
-    <file path="/Dummy.txt" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363793618781" ignored="false" />
+    <file path="/Dummy.txt" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363794099765" ignored="false" />
     <file path="/ClientState.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363765307625" ignored="false" />
     <file path="/a.dummy" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363779197812" ignored="false" />
     <file path="/SerializedMessage.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363769303765" ignored="false" />
@@ -189,7 +179,7 @@
       <file leaf-file-name="ServerEvictAccountFromAllianceRequest.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.main/src/com/geargames/regolith/serializers/requests/ServerEvictAccountFromAllianceRequest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="13" selection-start="3294" selection-end="3294" vertical-scroll-proportion="0.72740525">
+            <state line="63" column="13" selection-start="3294" selection-end="3294" vertical-scroll-proportion="1.0945206">
               <folding>
                 <element signature="e#3724#3741#0" expanded="true" />
               </folding>
@@ -493,6 +483,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="requests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server.main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="regolith" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="serializers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="answers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1020,7 +1040,11 @@
       <created>1363793622109</created>
       <updated>1363793622109</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Network получил функционал по отправке синхронных сообщений">
+      <created>1363794101468</created>
+      <updated>1363794101468</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1050,7 +1074,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16008772" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.6700337" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19627193" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14802632" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28884026" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -1062,7 +1086,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.4781145" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23425826" sideWeight="0.80372804" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23425826" sideWeight="0.8519737" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43265992" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.6700337" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -1111,7 +1135,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="исправляем: отказываем автору битвы в выкидывании себя из битвы на этапе создания" />
+    <option name="LAST_COMMIT_MESSAGE" value="Network получил функционал по отправке синхронных сообщений" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1143,6 +1167,7 @@
     <MESSAGE value="0.меняем работу с ресурсами&#10;1.перенёс сериализацию на базовый уровень" />
     <MESSAGE value="перенос сериализации  в общий модуль привёл к изменениям в классах" />
     <MESSAGE value="исправляем: отказываем автору битвы в выкидывании себя из битвы на этапе создания" />
+    <MESSAGE value="Network получил функционал по отправке синхронных сообщений" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1265,7 +1290,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server.main/src/com/geargames/regolith/serializers/requests/ServerEvictAccountFromAllianceRequest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="13" selection-start="3294" selection-end="3294" vertical-scroll-proportion="0.72740525">
+        <state line="63" column="13" selection-start="3294" selection-end="3294" vertical-scroll-proportion="1.0945206">
           <folding>
             <element signature="e#3724#3741#0" expanded="true" />
           </folding>
