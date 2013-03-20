@@ -62,7 +62,7 @@ public class ClientBattleCreationManager {
     public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance, Account participant) {
         MessageLock messageLock = configuration.getMessageLock();
         messageLock.setMessageType(Packets.JOIN_TO_BATTLE_ALLIANCE);
-        ClientJoinBattleAnswer clientJoinBattleAnswer = new ClientJoinBattleAnswer(alliance);
+        ClientJoinBattleAnswer clientJoinBattleAnswer = new ClientJoinBattleAnswer(alliance.getBattle());
         messageLock.setMessage(clientJoinBattleAnswer);
         configuration.getNetwork().sendMessage(new JoinToAllianceRequest(configuration, alliance));
 

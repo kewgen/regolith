@@ -13,8 +13,8 @@ public class RegolithMain extends com.geargames.platform.Main {
 
     public static void main(String[] args) throws IOException {
         Logger.logFileName         = "regolith";
-        Recorder.storageFolder     = "regolith.data.storage";
-        Recorder.storageProperties = "regolith.property.storage";
+        Recorder.storageFolder     = "data.storage";
+        Recorder.storageProperties = "property.storage";
 
         RegolithMain main = new RegolithMain();
         main.commonMain(args);

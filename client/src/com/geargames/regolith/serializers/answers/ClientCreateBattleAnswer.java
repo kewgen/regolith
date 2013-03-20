@@ -26,17 +26,26 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
     }
 
     public ClientCreateBattleAnswer() {
-        battle = null;
+        this(null);
+    }
+
+    public ClientCreateBattleAnswer(Battle battle) {
+        this.battle = battle;
     }
 
     protected void deSerialize(MicroByteBuffer buffer) {
         if (SimpleDeserializer.deserializeBoolean(buffer)) {
-            Battle battle = new Battle();
+            if (battle == null) {
+                battle = new Battle();
+            }
             battle.setId(SimpleDeserializer.deserializeInt(buffer));
             battle.setName(SimpleDeserializer.deserializeString(buffer));
             BattleType battleType = BaseConfigurationHelper.findBattleTypeById(SimpleDeserializer.deserializeInt(buffer), ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
             battle.setBattleType(battleType);
-            int allianceAmount =  buffer.get();
+            battle.setMap(null); // очищаем, на случай, если battle создавался в другом месте и map может содержать значение.
+            //todo: Заполнить Author
+//          battle.setAuthor();
+            int allianceAmount = buffer.get();
             battle.setAlliances(new BattleAlliance[allianceAmount]);
             for (int i = 0; i < allianceAmount; i++) {
                 BattleAlliance alliance = new BattleAlliance();
@@ -58,7 +67,6 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
                 alliance.setBattle(battle);
                 battle.getAlliances()[i] = alliance;
             }
-            this.battle = battle;
         }
     }
 }
