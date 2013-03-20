@@ -22,7 +22,7 @@
     <file path="/BitMapImageManager.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363759900281" ignored="false" />
     <file path="/ResourceManager.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363759747640" ignored="false" />
     <file path="/Resource.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363759199187" ignored="false" />
-    <file path="/Dummy.txt" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363794099765" ignored="false" />
+    <file path="/Dummy.txt" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363794184562" ignored="false" />
     <file path="/ClientState.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363765307625" ignored="false" />
     <file path="/a.dummy" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363779197812" ignored="false" />
     <file path="/SerializedMessage.java" changelist="53e49276-8e07-4f62-91d8-55d8025a41a5" time="1363769303765" ignored="false" />
@@ -1044,7 +1044,11 @@
       <created>1363794101468</created>
       <updated>1363794101468</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="удалён workspace.xml из git                 &#10;">
+      <created>1363794186062</created>
+      <updated>1363794186062</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1135,7 +1139,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Network получил функционал по отправке синхронных сообщений" />
+    <option name="LAST_COMMIT_MESSAGE" value="удалён workspace.xml из git                 &#10;" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1168,6 +1172,7 @@
     <MESSAGE value="перенос сериализации  в общий модуль привёл к изменениям в классах" />
     <MESSAGE value="исправляем: отказываем автору битвы в выкидывании себя из битвы на этапе создания" />
     <MESSAGE value="Network получил функционал по отправке синхронных сообщений" />
+    <MESSAGE value="удалён workspace.xml из git                 &#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />

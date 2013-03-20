@@ -27,7 +27,7 @@ public class ClientBattleServiceManager {
     public ClientDeferredAnswer login(Battle battle, BattleAlliance alliance) {
         MessageLock messageLock = configuration.getMessageLock();
         messageLock.setMessageType(Packets.BATTLE_SERVICE_LOGIN);
-        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer();
+        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer(); //todo: Answer не того класса
         messageLock.setMessage(clientCreateBattleAnswer);
         configuration.getNetwork().sendMessage(new ClientBattleServiceLoginRequest(configuration, battle, alliance, configuration.getAccount()));
         return new ClientDeferredAnswer(clientCreateBattleAnswer);
@@ -36,7 +36,7 @@ public class ClientBattleServiceManager {
     public ClientDeferredAnswer move(Warrior warrior, short x, short y) {
         MessageLock messageLock = configuration.getMessageLock();
         messageLock.setMessageType(Packets.MOVE_ALLY);
-        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer();
+        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer(); //todo: Answer не того класса
         messageLock.setMessage(clientCreateBattleAnswer);
         configuration.getNetwork().sendMessage(new ClientMoveRequest(configuration, warrior, x, y));
         return new ClientDeferredAnswer(clientCreateBattleAnswer);
@@ -45,7 +45,7 @@ public class ClientBattleServiceManager {
     public ClientDeferredAnswer shoot(Warrior hunter, Warrior victim) {
         MessageLock messageLock = configuration.getMessageLock();
         messageLock.setMessageType(Packets.SHOOT);
-        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer();
+        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer(); //todo: Answer не того класса
         messageLock.setMessage(clientCreateBattleAnswer);
         configuration.getNetwork().sendMessage(new ClientShootRequest(configuration, hunter, victim));
         return new ClientDeferredAnswer(clientCreateBattleAnswer);

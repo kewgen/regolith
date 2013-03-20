@@ -57,8 +57,19 @@ public class ClientBattleCreationManager {
     /**
      * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
      */
+<<<<<<< HEAD
     public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance) {
         return configuration.getNetwork().sendSynchronousMessage(new JoinToAllianceRequest(configuration, alliance), clientJoinBattleAnswer);
+=======
+    public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance, Account participant) {
+        MessageLock messageLock = configuration.getMessageLock();
+        messageLock.setMessageType(Packets.JOIN_TO_BATTLE_ALLIANCE);
+        ClientJoinBattleAnswer clientJoinBattleAnswer = new ClientJoinBattleAnswer(alliance.getBattle());
+        messageLock.setMessage(clientJoinBattleAnswer);
+        configuration.getNetwork().sendMessage(new JoinToAllianceRequest(configuration, alliance));
+
+        return new ClientDeferredAnswer(clientJoinBattleAnswer);
+>>>>>>> 3253015de3033fa47ec52497a0f41d7773cb488b
     }
 
     public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {

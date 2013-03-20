@@ -35,7 +35,7 @@ public class ClientBattleMarketManager {
     public ClientDeferredAnswer listenToBattle(Battle battle, Account participant) {
         MessageLock messageLock = configuration.getMessageLock();
         messageLock.setMessageType(Packets.LISTEN_TO_BATTLE);
-        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer();
+        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer(battle);
         messageLock.setMessage(clientCreateBattleAnswer);
         configuration.getNetwork().sendMessage(new ListenToBattleRequest(configuration, battle));
 

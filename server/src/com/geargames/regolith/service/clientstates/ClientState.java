@@ -14,8 +14,7 @@ public abstract class ClientState {
     /**
      * Сообщение обслуживается в зависимости от его типа.
      * @param from
-     * @param
-     * client
+     * @param client
      * @throws RegolithException
      */
     public void execute(MicroByteBuffer from, Client client) throws RegolithException {
