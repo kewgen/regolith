@@ -43,23 +43,28 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
             BattleAlliance alliance = null;
             int alliance_id = SimpleDeserializer.deserializeInt(from);
             Account victim = serverContext.getActiveAccountById(SimpleDeserializer.deserializeInt(from));
-            for (BattleAlliance battleAlliance : battle.getAlliances()) {
-                if (alliance_id == battleAlliance.getId()) {
-                    if (victim == null) {
-                        throw new RegolithException();
-                    } else if (victim != client.getAccount() && client.getAccount() != battleAlliance.getBattle().getAuthor()) {
-                        throw new RegolithException();
+            if (client.getAccount() != battle.getAuthor() || client.getAccount() != victim) {
+                for (BattleAlliance battleAlliance : battle.getAlliances()) {
+                    if (alliance_id == battleAlliance.getId()) {
+                        if (victim == null) {
+                            throw new RegolithException();
+                        } else if (victim != client.getAccount() && client.getAccount() != battle.getAuthor()) {
+                            throw new RegolithException();
+                        }
+                        alliance = battleAlliance;
+                        break;
                     }
-                    alliance = battleAlliance;
-                    break;
                 }
+                if (alliance == null) {
+                    throw new RegolithException();
+                }
+                battleCreationManager.evictAccount(alliance, victim);
+                recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
+                message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victim, alliance);
+            } else {
+                recipients = MainServerRequestUtils.singleRecipientByClient(client);
+                message = ServerEvictAccountFromAllianceAnswer.AnswerFailure(to);
             }
-            if (alliance == null) {
-                throw new RegolithException();
-            }
-            battleCreationManager.evictAccount(alliance, victim);
-            recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
-            message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victim, alliance);
         } else {
             recipients = MainServerRequestUtils.singleRecipientByClient(client);
             message = ServerEvictAccountFromAllianceAnswer.AnswerFailure(to);
