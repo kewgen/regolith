@@ -1,10 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
-import com.geargames.regolith.serializers.TackleSerializer;
+import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.StateTackle;
@@ -42,15 +42,15 @@ public class ServerTackleBody2GroundAnswer extends SerializedMessage {
 
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(warrior.getBattleGroup().getAccount(), buffer);
-        SimpleSerializer.serializeEntityReference(warrior.getBattleGroup().getAlliance(), buffer);
-        SimpleSerializer.serializeEntityReference(warrior.getBattleGroup(), buffer);
-        SimpleSerializer.serializeEntityReference(warrior, buffer);
+        SerializeHelper.serializeEntityReference(warrior.getBattleGroup().getAccount(), buffer);
+        SerializeHelper.serializeEntityReference(warrior.getBattleGroup().getAlliance(), buffer);
+        SerializeHelper.serializeEntityReference(warrior.getBattleGroup(), buffer);
+        SerializeHelper.serializeEntityReference(warrior, buffer);
         if (stateTackle instanceof Weapon) {
-            SimpleSerializer.serialize(SimpleSerializer.findTypeId("Weapon"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
             TackleSerializer.serializeWeapon((Weapon) stateTackle, buffer);
         } else {
-            SimpleSerializer.serialize(SimpleSerializer.findTypeId("Armor"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
             TackleSerializer.serializeArmor((Armor) stateTackle, buffer);
         }
         SimpleSerializer.serialize(x, buffer);

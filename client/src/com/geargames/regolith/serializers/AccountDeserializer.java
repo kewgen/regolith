@@ -1,5 +1,7 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientHelper;
 import com.geargames.regolith.units.*;
@@ -21,10 +23,10 @@ public class AccountDeserializer {
 
     private static StateTackle getStateTackleById(int id, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
         StateTackle tackle = null;
-        if (id == SimpleSerializer.findTypeId("Weapon")) {
+        if (id == SerializeHelper.findTypeId("Weapon")) {
             tackle = new Weapon();
             TackleDeserializer.deSerialize((Weapon) tackle, buffer, baseConfiguration);
-        } else if (id == SimpleSerializer.findTypeId("Armor")) {
+        } else if (id == SerializeHelper.findTypeId("Armor")) {
             tackle = new Armor();
             TackleDeserializer.deSerialize((Armor) tackle, buffer, baseConfiguration);
         }
@@ -33,10 +35,10 @@ public class AccountDeserializer {
 
     private static Ammunition getAmmunitionById(short id, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
         Ammunition tackle = null;
-        if (id == SimpleSerializer.findTypeId("Projectile")) {
+        if (id == SerializeHelper.findTypeId("Projectile")) {
             tackle = new Projectile();
             TackleDeserializer.deSerializeProjectile((Projectile) tackle, buffer, baseConfiguration);
-        } else if (id == SimpleSerializer.findTypeId("Medikit")) {
+        } else if (id == SerializeHelper.findTypeId("Medikit")) {
             tackle = new Medikit();
             TackleDeserializer.deserializeMedikit((Medikit) tackle, buffer, baseConfiguration);
         }

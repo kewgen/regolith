@@ -1,7 +1,7 @@
 package com.geargames.regolith.service;
 
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.answers.FinishBattleMessage;
 import com.geargames.regolith.serializers.answers.ServerChangeActiveAllianceMessage;
 import com.geargames.regolith.service.clientstates.ClientState;

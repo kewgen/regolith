@@ -4,9 +4,10 @@ import com.geargames.common.String;
 import com.geargames.common.logging.Debug;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.Human;
 import com.geargames.regolith.units.battle.Battle;
@@ -31,9 +32,9 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
         this.victim = null;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         int refId = SimpleDeserializer.deserializeInt(buffer);
-        if (refId != SimpleSerializer.NULL_REFERENCE) {
+        if (refId != SerializeHelper.NULL_REFERENCE) {
             try {
                 hunter = ClientBattleHelper.findWarrior(battle, refId);
                 hunter.getWeapon().onShoot(ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
@@ -49,7 +50,7 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
             }
         }
         refId = SimpleDeserializer.deserializeInt(buffer);
-        if (refId != SimpleSerializer.NULL_REFERENCE) {
+        if (refId != SerializeHelper.NULL_REFERENCE) {
             try {
                 victim = ClientBattleHelper.findWarrior(battle, refId);
 

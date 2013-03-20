@@ -2,8 +2,8 @@ package com.geargames.regolith.network;
 
 import com.geargames.common.util.Lock;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
 
 import java.util.Vector;
 
@@ -30,10 +30,6 @@ public abstract class Network {
     protected abstract Sender getSender();
 
     protected abstract Receiver getReceiver();
-
-    public abstract void setDownloading(boolean downloading);
-
-    public abstract void setUploading(boolean uploading);
 
     protected abstract Lock getMessageLock();
 

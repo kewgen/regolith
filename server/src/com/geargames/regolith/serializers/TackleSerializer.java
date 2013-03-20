@@ -1,5 +1,7 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.StateTackle;
 import com.geargames.regolith.units.tackle.Weapon;
@@ -12,7 +14,7 @@ import com.geargames.regolith.units.tackle.*;
 public class TackleSerializer {
 
     private static void serializeAbstractTackle(AbstractTackle tackle, MicroByteBuffer buffer){
-        SimpleSerializer.serializeEntityReference(tackle, buffer);
+        SerializeHelper.serializeEntityReference(tackle, buffer);
         SimpleSerializer.serialize(tackle.getFrameId(), buffer);
         SimpleSerializer.serialize(tackle.getName(), buffer);
         SimpleSerializer.serialize(tackle.getWeight(), buffer);
@@ -20,26 +22,26 @@ public class TackleSerializer {
 
     private static void serializeAmmunition(Ammunition ammunition, MicroByteBuffer buffer){
         serializeAbstractTackle(ammunition, buffer);
-        SimpleSerializer.serializeEntityReference(ammunition.getCategory(), buffer);
+        SerializeHelper.serializeEntityReference(ammunition.getCategory(), buffer);
     }
 
     private static void serializeStateTackle(StateTackle stateTackle, MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(stateTackle, buffer);
+        SerializeHelper.serializeEntityReference(stateTackle, buffer);
         SimpleSerializer.serialize(stateTackle.getFirmness(), buffer);
         SimpleSerializer.serialize(stateTackle.getState(), buffer);
         SimpleSerializer.serialize(stateTackle.getUpgrade(), buffer);
     }
 
     public static void serializeAmmunitionCategory(AmmunitionCategory ammunitionCategory, MicroByteBuffer buffer){
-        SimpleSerializer.serializeEntityReference(ammunitionCategory, buffer);
+        SerializeHelper.serializeEntityReference(ammunitionCategory, buffer);
         SimpleSerializer.serialize(ammunitionCategory.getName(), buffer);
         SimpleSerializer.serialize(ammunitionCategory.getQuality(), buffer);
     }
 
     public static void serializeWeaponCategory(WeaponCategory weaponCategory, MicroByteBuffer buffer){
-        SimpleSerializer.serializeEntityReference(weaponCategory, buffer);
+        SerializeHelper.serializeEntityReference(weaponCategory, buffer);
         SimpleSerializer.serialize(weaponCategory.getName(), buffer);
-        SimpleSerializer.serializeEntityReferences(weaponCategory.getWeaponTypes(), buffer);
+        SerializeHelper.serializeEntityReferences(weaponCategory.getWeaponTypes(), buffer);
     }
 
     public static void serializeArmorType(ArmorType armorType, MicroByteBuffer buffer){
@@ -58,7 +60,7 @@ public class TackleSerializer {
 
     public static void serializeWeaponType(WeaponType weaponType, MicroByteBuffer buffer){
         serializeAbstractTackle(weaponType, buffer);
-        SimpleSerializer.serializeEntityReference(weaponType.getCategory(), buffer);
+        SerializeHelper.serializeEntityReference(weaponType.getCategory(), buffer);
 
         buffer.put(weaponType.getAccuracy());
         buffer.put(weaponType.getAccurateAction());
@@ -81,7 +83,7 @@ public class TackleSerializer {
         SimpleSerializer.serialize(weaponType.getMinDamage().getMinDistance(), buffer);
 
         buffer.put(weaponType.getMinSkill().getAction());
-        SimpleSerializer.serializeEntityReferences(weaponType.getProjectiles(), buffer);
+        SerializeHelper.serializeEntityReferences(weaponType.getProjectiles(), buffer);
     }
 
     public static void serializeMedikit(Medikit medikit, MicroByteBuffer buffer){
@@ -98,17 +100,17 @@ public class TackleSerializer {
 
     public static void serializeArmor(Armor armor, MicroByteBuffer buffer) {
         serializeStateTackle(armor, buffer);
-        SimpleSerializer.serializeEntityReference(armor.getArmorType(), buffer);
+        SerializeHelper.serializeEntityReference(armor.getArmorType(), buffer);
     }
 
     public static void serializeWeapon(Weapon weapon, MicroByteBuffer buffer){
         serializeStateTackle(weapon, buffer);
-        SimpleSerializer.serializeEntityReference(weapon.getWeaponType().getCategory(), buffer);
-        SimpleSerializer.serializeEntityReference(weapon.getWeaponType(), buffer);
+        SerializeHelper.serializeEntityReference(weapon.getWeaponType().getCategory(), buffer);
+        SerializeHelper.serializeEntityReference(weapon.getWeaponType(), buffer);
         if(weapon.getProjectile() != null){
-            SimpleSerializer.serializeEntityReference(weapon.getProjectile(), buffer);
+            SerializeHelper.serializeEntityReference(weapon.getProjectile(), buffer);
         }else{
-            SimpleSerializer.serialize(SimpleSerializer.NULL_REFERENCE, buffer);
+            SimpleSerializer.serialize(SerializeHelper.NULL_REFERENCE, buffer);
         }
         SimpleSerializer.serialize(weapon.getLoad(), buffer);
     }

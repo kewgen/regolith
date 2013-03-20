@@ -1,8 +1,8 @@
 package com.geargames.regolith.service.clientstates;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
 import com.geargames.regolith.service.*;
 
 /**

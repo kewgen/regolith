@@ -1,5 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.answer.ServerConfirmationAnswer;
@@ -10,7 +12,6 @@ import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
 import java.util.HashSet;

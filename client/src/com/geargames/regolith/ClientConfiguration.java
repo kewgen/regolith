@@ -3,7 +3,7 @@ package com.geargames.regolith;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.network.MessageLock;
 import com.geargames.regolith.network.Network;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;
 

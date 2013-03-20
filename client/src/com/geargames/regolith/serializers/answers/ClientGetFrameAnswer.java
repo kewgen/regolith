@@ -4,8 +4,8 @@ import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PFrame;
 import com.geargames.platform.packer.Image;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 
 /**
  * User: mikhail v. kutuzov
@@ -18,7 +18,7 @@ public class ClientGetFrameAnswer extends ClientDeSerializedMessage {
         return frame;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         int id = SimpleDeserializer.deserializeInt(buffer);
         byte[] data = SimpleDeserializer.deserializeBytes(buffer);
         try {

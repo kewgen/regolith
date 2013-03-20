@@ -16,6 +16,7 @@ import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.tackle.StateTackle;
 import com.geargames.regolith.units.tackle.TackleTransitionHelper;
 import junit.framework.Assert;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

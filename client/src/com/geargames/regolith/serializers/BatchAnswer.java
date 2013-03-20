@@ -1,6 +1,8 @@
 package com.geargames.regolith.serializers;
 
 import com.geargames.common.logging.Debug;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.common.util.ArrayList;
 import com.geargames.common.String;
 import com.geargames.regolith.Packets;
@@ -23,7 +25,7 @@ public class BatchAnswer extends ClientDeSerializedMessage {
         this.answers = answers;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         if (answers != null) {
             for (int i = 0; i < answers.size(); i++) {
                 ClientDeSerializedMessage answer = (ClientDeSerializedMessage) answers.get(i);

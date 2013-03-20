@@ -154,6 +154,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="gg.common" />
   </component>
 </module>
 

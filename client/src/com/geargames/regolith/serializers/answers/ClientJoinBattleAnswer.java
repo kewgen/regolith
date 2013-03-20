@@ -3,8 +3,8 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.serializers.AccountDeserializer;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -14,7 +14,7 @@ import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 /**
  * User: mkutuzov
  * Date: 05.07.12
- * РЎРѕРѕР±С‰РµРЅРёРµ-РѕС‚РІРµС‚ Рѕ РїСЂРёСЃРѕРµРґРёРЅРµРЅРёРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Рє Р°Р»СЊСЏРЅСЃСѓ. Р Р°СЃСЃС‹Р»Р°РµС‚СЃСЏ РІСЃРµРј СЃР»СѓС€Р°С‚РµР»СЏРј Р±РёС‚РІС‹.
+ * Сообщение-ответ о присоединении пользователя к альянсу. Рассылается всем слушателям битвы.
  */
 public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
     private Battle battle;
@@ -24,7 +24,7 @@ public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
         this.battle = battle;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         boolean success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             int id = SimpleDeserializer.deserializeInt(buffer);

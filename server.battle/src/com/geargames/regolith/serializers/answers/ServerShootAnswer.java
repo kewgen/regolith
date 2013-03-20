@@ -1,9 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
@@ -37,7 +38,7 @@ public class ServerShootAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         if (hunter != null) {
-            SimpleSerializer.serializeEntityReference(hunter, buffer);
+            SerializeHelper.serializeEntityReference(hunter, buffer);
             SimpleSerializer.serialize(hunter.getHealth(), buffer);
             SimpleSerializer.serialize(hunter.getWeapon().getState(), buffer);
             SimpleSerializer.serialize(hunter.getWeapon().getLoad(), buffer);
@@ -46,16 +47,16 @@ public class ServerShootAnswer extends SerializedMessage {
             SimpleSerializer.serialize(hunter.getLegsArmor().getState(), buffer);
             SimpleSerializer.serialize(hunter.getWeapon().getLoad(), buffer);
         } else {
-            SimpleSerializer.serialize(SimpleSerializer.NULL_REFERENCE, buffer);
+            SimpleSerializer.serialize(SerializeHelper.NULL_REFERENCE, buffer);
         }
         if (victim != null) {
-            SimpleSerializer.serializeEntityReference(victim, buffer);
+            SerializeHelper.serializeEntityReference(victim, buffer);
             SimpleSerializer.serialize(victim.getHealth(), buffer);
             SimpleSerializer.serialize(victim.getHeadArmor().getState(), buffer);
             SimpleSerializer.serialize(victim.getTorsoArmor().getState(), buffer);
             SimpleSerializer.serialize(victim.getLegsArmor().getState(), buffer);
         } else {
-            SimpleSerializer.serialize(SimpleSerializer.NULL_REFERENCE, buffer);
+            SimpleSerializer.serialize(SerializeHelper.NULL_REFERENCE, buffer);
         }
     }
 }

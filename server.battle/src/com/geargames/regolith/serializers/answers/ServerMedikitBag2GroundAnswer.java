@@ -1,9 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
@@ -50,7 +51,7 @@ public class ServerMedikitBag2GroundAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
         if (success) {
-            SimpleSerializer.serializeEntityReference(warrior, buffer);
+            SerializeHelper.serializeEntityReference(warrior, buffer);
             SimpleSerializer.serialize(number, buffer);
             SimpleSerializer.serialize(x, buffer);
             SimpleSerializer.serialize(y, buffer);

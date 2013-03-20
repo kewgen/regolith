@@ -1,8 +1,8 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
 
 /**
  * Клиентское сщщьщение на основе байтового буффера из клиентской конфигурации.

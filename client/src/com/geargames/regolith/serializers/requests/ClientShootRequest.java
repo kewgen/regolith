@@ -2,8 +2,9 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
@@ -27,14 +28,14 @@ public class ClientShootRequest extends ClientSerializedMessage {
         BattleAlliance hunterAlliance = hunterGroup.getAlliance();
 
         SimpleSerializer.serialize(hunterAlliance.getNumber(), buffer);
-        SimpleSerializer.serializeEntityReference(hunterGroup, buffer);
-        SimpleSerializer.serializeEntityReference(hunter, buffer);
+        SerializeHelper.serializeEntityReference(hunterGroup, buffer);
+        SerializeHelper.serializeEntityReference(hunter, buffer);
 
         BattleGroup victimGroup = victim.getBattleGroup();
         BattleAlliance victimAlliance = victimGroup.getAlliance();
 
         SimpleSerializer.serialize(victimAlliance.getNumber(), buffer);
-        SimpleSerializer.serializeEntityReference(victimGroup, buffer);
-        SimpleSerializer.serializeEntityReference(victim, buffer);
+        SerializeHelper.serializeEntityReference(victimGroup, buffer);
+        SerializeHelper.serializeEntityReference(victim, buffer);
     }
 }

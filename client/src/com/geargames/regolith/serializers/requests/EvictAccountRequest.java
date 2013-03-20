@@ -2,12 +2,10 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.BattleAlliance;
-import com.geargames.regolith.units.battle.BattleGroup;
 
 /**
  * User: mkutuzov
@@ -28,8 +26,8 @@ public class EvictAccountRequest extends ClientSerializedMessage {
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(alliance.getBattle(), buffer);
-        SimpleSerializer.serializeEntityReference(alliance,buffer);
-        SimpleSerializer.serializeEntityReference(account,buffer);
+        SerializeHelper.serializeEntityReference(alliance.getBattle(), buffer);
+        SerializeHelper.serializeEntityReference(alliance, buffer);
+        SerializeHelper.serializeEntityReference(account,buffer);
     }
 }

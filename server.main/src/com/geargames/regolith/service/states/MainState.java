@@ -1,7 +1,8 @@
 package com.geargames.regolith.service.states;
 
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.service.clientstates.ClientState;
 
 /**

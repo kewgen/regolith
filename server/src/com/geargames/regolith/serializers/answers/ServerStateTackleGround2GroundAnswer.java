@@ -1,9 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 /**
@@ -52,7 +53,7 @@ public class ServerStateTackleGround2GroundAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
         if (success) {
-            SimpleSerializer.serializeEntityReference(stateTackle, buffer);
+            SerializeHelper.serializeEntityReference(stateTackle, buffer);
             SimpleSerializer.serialize(x1, buffer);
             SimpleSerializer.serialize(y1, buffer);
             SimpleSerializer.serialize(x2, buffer);

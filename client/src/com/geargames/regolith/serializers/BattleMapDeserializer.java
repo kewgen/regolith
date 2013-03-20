@@ -1,5 +1,8 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.units.Account;
@@ -25,11 +28,11 @@ public class BattleMapDeserializer {
         StateTackleCollection tackles = new ClientStateTackleCollection(new Vector());
         for (int i = 0; i < length; i++) {
             short typeId = SimpleDeserializer.deserializeShort(buffer);
-            if (typeId == SimpleSerializer.findTypeId("Armor")) {
+            if (typeId == SerializeHelper.findTypeId("Armor")) {
                 Armor armor = new Armor();
                 TackleDeserializer.deSerialize(armor, buffer, configuration);
                 tackles.add(armor);
-            } else if (typeId == SimpleSerializer.findTypeId("Weapon")) {
+            } else if (typeId == SerializeHelper.findTypeId("Weapon")) {
                 Weapon weapon = new Weapon();
                 TackleDeserializer.deSerialize(weapon, buffer, configuration);
                 tackles.add(weapon);
@@ -61,7 +64,7 @@ public class BattleMapDeserializer {
 
     public static BattleMap deserializeBattleMap(MicroByteBuffer buffer, BaseConfiguration baseConfiguration, Battle battle, Account account) {
         int id = SimpleDeserializer.deserializeInt(buffer);
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         }
         int length = buffer.get();
@@ -82,7 +85,7 @@ public class BattleMapDeserializer {
             short x = SimpleDeserializer.deserializeShort(buffer);
             short y = SimpleDeserializer.deserializeShort(buffer);
             short typeId = SimpleDeserializer.deserializeShort(buffer);
-            if (typeId == SimpleSerializer.findTypeId("Warrior")) {
+            if (typeId == SerializeHelper.findTypeId("Warrior")) {
                 int warriorId = SimpleDeserializer.deserializeInt(buffer);
                 WarriorCollection warriors = account.getWarriors();
                 for (int i = 0; i < warriors.size(); i++) {
@@ -91,27 +94,27 @@ public class BattleMapDeserializer {
                         break;
                     }
                 }
-            } else if (typeId == SimpleSerializer.findTypeId("Box")) {
+            } else if (typeId == SerializeHelper.findTypeId("Box")) {
                 Box box = new Box();
                 cells[x][y].setElement(box);
                 deserializeBox(box, buffer, baseConfiguration);
-            } else if (typeId == SimpleSerializer.findTypeId("Magazine")) {
+            } else if (typeId == SerializeHelper.findTypeId("Magazine")) {
                 cells[x][y].setElement(deserializeMagazine(buffer, baseConfiguration));
-            } else if (typeId == SimpleSerializer.findTypeId("Border")) {
+            } else if (typeId == SerializeHelper.findTypeId("Border")) {
                 cells[x][y].setElement(BaseConfigurationHelper.findBorderById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
-            } else if (typeId == SimpleSerializer.findTypeId("Armor")) {
+            } else if (typeId == SerializeHelper.findTypeId("Armor")) {
                 Armor armor = new Armor();
                 cells[x][y].setElement(armor);
                 TackleDeserializer.deSerialize(armor, buffer, baseConfiguration);
-            } else if (typeId == SimpleSerializer.findTypeId("Weapon")) {
+            } else if (typeId == SerializeHelper.findTypeId("Weapon")) {
                 Weapon weapon = new Weapon();
                 cells[x][y].setElement(weapon);
                 TackleDeserializer.deSerialize(weapon, buffer, baseConfiguration);
-            } else if (typeId == SimpleSerializer.findTypeId("Medikit")) {
+            } else if (typeId == SerializeHelper.findTypeId("Medikit")) {
                 Medikit medikit = new Medikit();
                 cells[x][y].setElement(medikit);
                 TackleDeserializer.deserializeMedikit(medikit, buffer, baseConfiguration);
-            } else if (typeId == SimpleSerializer.findTypeId("Ally")) {
+            } else if (typeId == SerializeHelper.findTypeId("Ally")) {
                 int allyId = SimpleDeserializer.deserializeInt(buffer);
                 BattleAlliance[] alliances = battle.getAlliances();
                 int alliancesLength = alliances.length;

@@ -2,9 +2,9 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
@@ -25,7 +25,7 @@ public class ClientJoinBaseWarriorsRequest extends ClientSerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(warriors.length, buffer);
         for (int i = 0; i < warriors.length; i++) {
-            SimpleSerializer.serializeEntityReference(warriors[i], buffer);
+            SerializeHelper.serializeEntityReference(warriors[i], buffer);
             SimpleSerializer.serialize(warriors[i].getName(), buffer);
         }
     }

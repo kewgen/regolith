@@ -1,8 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.Element;
-import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.*;
 
 /**
@@ -38,16 +40,16 @@ public class ServerBag2BoxAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         if (element instanceof Medikit) {
-            SimpleSerializer.findTypeId(Medikit.class.getSimpleName());
+            SerializeHelper.findTypeId(Medikit.class.getSimpleName());
             TackleSerializer.serializeMedikit((Medikit) element, buffer);
         } else if (element instanceof Magazine) {
-            SimpleSerializer.findTypeId(Magazine.class.getSimpleName());
+            SerializeHelper.findTypeId(Magazine.class.getSimpleName());
             BattleMapSerializer.serialize((Magazine) element, buffer);
         } else if (element instanceof Weapon) {
-            SimpleSerializer.findTypeId(Weapon.class.getSimpleName());
+            SerializeHelper.findTypeId(Weapon.class.getSimpleName());
             TackleSerializer.serializeWeapon((Weapon) element, buffer);
         } else if (element instanceof Armor) {
-            SimpleSerializer.findTypeId(Armor.class.getSimpleName());
+            SerializeHelper.findTypeId(Armor.class.getSimpleName());
             TackleSerializer.serializeArmor((Armor) element, buffer);
         }
         SimpleSerializer.serialize(x, buffer);

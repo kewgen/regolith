@@ -2,14 +2,13 @@ package com.geargames.regolith.service.state;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.requests.BattleServiceLoginRequest;
 import com.geargames.regolith.serializers.requests.ServerRequest;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.ClientWriter;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.service.clientstates.ClientState;
 
 /**
  * User: mikhail v. kutuzov

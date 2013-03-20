@@ -1,11 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Element;
-import com.geargames.regolith.units.tackle.*;
-import com.geargames.regolith.units.battle.Warrior;
 
 /**
  * User: mkutuzov
@@ -41,6 +40,6 @@ public class ServerBox2WarriorAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(boxX, buffer);
         SimpleSerializer.serialize(boxY, buffer);
-        SimpleSerializer.serializeEntityReference(element, buffer);
+        SerializeHelper.serializeEntityReference(element, buffer);
     }
 }

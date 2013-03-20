@@ -7,7 +7,7 @@ import com.geargames.regolith.serializers.answers.StartBattleAnswer;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.serializers.MainServerRequestUtils;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.service.remote.BattleServiceDescriptor;
 import com.geargames.regolith.service.remote.BattleServiceFunctions;

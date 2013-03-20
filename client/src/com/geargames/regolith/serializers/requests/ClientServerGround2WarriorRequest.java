@@ -1,8 +1,9 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
@@ -29,8 +30,8 @@ public class ClientServerGround2WarriorRequest extends ClientSerializedMessage {
         BattleGroup group = warrior.getBattleGroup();
         BattleAlliance alliance = group.getAlliance();
         SimpleSerializer.serialize(alliance.getNumber(), buffer);
-        SimpleSerializer.serializeEntityReference(group, buffer);
-        SimpleSerializer.serializeEntityReference(warrior, buffer);
+        SerializeHelper.serializeEntityReference(group, buffer);
+        SerializeHelper.serializeEntityReference(warrior, buffer);
         SimpleSerializer.serialize(x, buffer);
         SimpleSerializer.serialize(y, buffer);
     }

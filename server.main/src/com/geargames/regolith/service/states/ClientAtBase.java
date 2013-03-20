@@ -5,7 +5,7 @@ import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.service.ServerContext;
 

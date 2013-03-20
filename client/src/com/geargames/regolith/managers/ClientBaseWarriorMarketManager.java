@@ -4,7 +4,6 @@ import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.network.MessageLock;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
 import com.geargames.regolith.serializers.answers.ClientJoinBaseWarriorsAnswer;
 import com.geargames.regolith.serializers.requests.ClientJoinBaseWarriorsRequest;
 import com.geargames.regolith.units.battle.Warrior;

@@ -2,8 +2,9 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -31,9 +32,9 @@ public class LoginToBattleServiceRequest extends ClientSerializedMessage {
 
     public void serialize(MicroByteBuffer buffer) {
         Account account = getConfiguration().getAccount();
-        SimpleSerializer.serializeEntityReference(battle, buffer);
-        SimpleSerializer.serializeEntityReference(alliance, buffer);
-        SimpleSerializer.serializeEntityReference(account, buffer);
+        SerializeHelper.serializeEntityReference(battle, buffer);
+        SerializeHelper.serializeEntityReference(alliance, buffer);
+        SerializeHelper.serializeEntityReference(account, buffer);
         SimpleSerializer.serialize(account.getName(), buffer);
         SimpleSerializer.serialize(account.getPassword(), buffer);
     }

@@ -1,8 +1,9 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.AbstractTackle;
 
@@ -84,11 +85,11 @@ public class ClientMoveTackleByNumber extends ClientSerializedMessage {
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(warrior, buffer);
+        SerializeHelper.serializeEntityReference(warrior, buffer);
         SimpleSerializer.serialize(number, buffer);
         SimpleSerializer.serialize(amount, buffer);
         SimpleSerializer.serialize(realAmount, buffer);
-        SimpleSerializer.serializeEntityReference(tackle, buffer);
+        SerializeHelper.serializeEntityReference(tackle, buffer);
     }
 }
 

@@ -1,8 +1,9 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;
@@ -38,7 +39,7 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
         this.clientConfiguration = clientConfiguration;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         if (SimpleDeserializer.deserializeBoolean(buffer)) {
             baseConfiguration = ConfigurationDeserializer.deserializeBaseConfiguration(buffer);
             account = AccountDeserializer.deserialize(buffer, baseConfiguration);

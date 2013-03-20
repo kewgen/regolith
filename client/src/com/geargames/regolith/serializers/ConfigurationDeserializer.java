@@ -1,5 +1,7 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.*;
 import com.geargames.regolith.units.Underload;
 import com.geargames.regolith.units.Rank;

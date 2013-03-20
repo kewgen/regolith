@@ -3,13 +3,11 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
 
 
 public class ClientAllyMoveAnswer extends ClientDeSerializedMessage {
@@ -40,7 +38,7 @@ public class ClientAllyMoveAnswer extends ClientDeSerializedMessage {
     }
 
     @Override
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         try {
             warrior = ClientBattleHelper.findWarrior(ClientConfigurationFactory.getConfiguration().getAccount(), SimpleDeserializer.deserializeInt(buffer));
         } catch (RegolithException e) {

@@ -1,9 +1,9 @@
 package com.geargames.regolith.service.states;
 
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
-import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.requests.ServerCheckForNameRequest;
 import com.geargames.regolith.serializers.requests.ServerClientRegistrationRequest;
 import com.geargames.regolith.serializers.requests.ServerLoginRequest;

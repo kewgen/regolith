@@ -5,7 +5,7 @@ import com.geargames.common.String;
 import com.geargames.common.util.Lock;
 import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.serializers.SerializedMessage;
+import com.geargames.common.serialization.SerializedMessage;
 
 import java.io.DataOutputStream;
 import java.util.Vector;
@@ -55,7 +55,6 @@ public final class Sender extends Thread {
 
     public void run() {
         while (running) {
-            network.setUploading(false);
             if (messageQueue.isEmpty()) {
                 workLock.lock();
                 if(messageQueue.isEmpty()) {
@@ -65,7 +64,6 @@ public final class Sender extends Thread {
                     break;
                 }
             }
-            network.setUploading(true);
 
             try {
                 SerializedMessage message = (SerializedMessage) messageQueue.elementAt(0);
