@@ -1,9 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 
 /**
@@ -31,6 +32,6 @@ public class ServerChangeActiveAllianceMessage extends SerializedMessage {
 
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(alliance, buffer);
+        SerializeHelper.serializeEntityReference(alliance, buffer);
     }
 }

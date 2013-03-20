@@ -18,18 +18,8 @@ import java.io.InputStream;
 public class Image extends com.geargames.graphics.Image {
 
     @Override
-    public boolean isLoaded() {
-        return false;
-    }
-
-    @Override
-    protected void load() {
-
-    }
-
-    @Override
-    protected void release() {
-
+    public boolean isLocked() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

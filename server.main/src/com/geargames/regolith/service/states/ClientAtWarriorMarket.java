@@ -1,9 +1,8 @@
 package com.geargames.regolith.service.states;
 
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.service.Client;
-import com.geargames.regolith.service.clientstates.ClientState;
 
 /**
  * Created with IntelliJ IDEA.

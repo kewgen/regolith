@@ -5,7 +5,7 @@ import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.network.ConsoleNetwork;
 import com.geargames.regolith.network.MessageLock;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 
 /**
  * @author Mikhail_Kutuzov

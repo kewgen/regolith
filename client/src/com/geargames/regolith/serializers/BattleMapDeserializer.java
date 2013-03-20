@@ -1,5 +1,8 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.units.Account;
@@ -61,7 +64,7 @@ public class BattleMapDeserializer {
 
     public static BattleMap deserializeBattleMap(MicroByteBuffer buffer, BaseConfiguration baseConfiguration, Battle battle, Account account) {
         int id = SimpleDeserializer.deserializeInt(buffer);
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         }
         int length = buffer.get();

@@ -1,9 +1,11 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.regolith.serializers.AccountSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -43,7 +45,8 @@ public class ServerJoinToBattleAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
         if (success) {
-            SimpleSerializer.serializeEntityReference(battleGroup, buffer); //todo: высылать battleGroup + account
+            SerializeHelper.serializeEntityReference(battleGroup, buffer); //todo: высылать battleGroup + account
+            AccountSerializer.serialize(account, buffer);
         }
     }
 

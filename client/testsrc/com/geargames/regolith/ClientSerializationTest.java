@@ -1,5 +1,7 @@
 package com.geargames.regolith;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;

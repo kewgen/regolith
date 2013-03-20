@@ -2,8 +2,9 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 
 /**
@@ -22,7 +23,7 @@ public class JoinToAllianceRequest extends ClientSerializedMessage {
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(alliance.getBattle(), buffer);
-        SimpleSerializer.serializeEntityReference(alliance, buffer);
+        SerializeHelper.serializeEntityReference(alliance.getBattle(), buffer);
+        SerializeHelper.serializeEntityReference(alliance, buffer);
     }
 }

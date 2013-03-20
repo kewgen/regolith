@@ -2,14 +2,13 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.answer.ServerConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ServerGround2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;

@@ -1,5 +1,8 @@
 package com.geargames.regolith;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.*;
 import com.geargames.regolith.units.base.*;

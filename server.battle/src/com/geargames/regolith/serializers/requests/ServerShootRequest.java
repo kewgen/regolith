@@ -1,5 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.answers.ServerShootAnswer;

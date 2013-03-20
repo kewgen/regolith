@@ -3,7 +3,6 @@ package com.geargames.regolith.managers;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.network.MessageLock;
-import com.geargames.regolith.serializers.MicroByteBuffer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.requests.ChangeBaseLocation;
 

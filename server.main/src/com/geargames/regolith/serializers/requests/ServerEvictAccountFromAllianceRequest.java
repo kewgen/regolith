@@ -6,9 +6,9 @@ import com.geargames.regolith.serializers.answers.ServerEvictAccountFromAlliance
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.serializers.MainServerRequestUtils;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;

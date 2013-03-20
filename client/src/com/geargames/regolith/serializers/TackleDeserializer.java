@@ -1,5 +1,8 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.units.Skill;
@@ -161,7 +164,7 @@ public class TackleDeserializer {
             }
         }
         int projectileId = SimpleDeserializer.deserializeInt(buffer);
-        if (projectileId != SimpleSerializer.NULL_REFERENCE) {
+        if (projectileId != SerializeHelper.NULL_REFERENCE) {
             weapon.setProjectile(BaseConfigurationHelper.findProjectileById(projectileId, baseConfiguration));
         }
         weapon.setLoad(SimpleDeserializer.deserializeShort(buffer));

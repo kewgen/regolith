@@ -1,6 +1,7 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.battle.BattleType;
@@ -16,7 +17,7 @@ import com.geargames.regolith.units.tackle.*;
  */
 public class BaseConfigurationHelper {
     public static BattleType findBattleTypeById(int id, BaseConfiguration configuration) {
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
             BattleTypeCollection battleTypes = configuration.getBattleTypes();
@@ -31,7 +32,7 @@ public class BaseConfigurationHelper {
     }
 
     public static Medikit findMedikitById(int id, BaseConfiguration configuration) {
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
             MedikitCollection medikits = configuration.getMedikits();
@@ -46,7 +47,7 @@ public class BaseConfigurationHelper {
     }
 
     public static WeaponCategory findWeaponCategoryById(int id, BaseConfiguration configuration) {
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
             WeaponCategoryCollection categories = configuration.getWeaponCategories();
@@ -60,7 +61,7 @@ public class BaseConfigurationHelper {
     }
 
     public static Rank findRankById(int id, BaseConfiguration configuration) {
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
             RankCollection ranks = configuration.getRanks();
@@ -84,7 +85,7 @@ public class BaseConfigurationHelper {
     }
 
     public static ArmorType findArmorTypeById(int id, BaseConfiguration configuration) {
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
             ArmorTypeCollection armorTypes = configuration.getArmorTypes();
@@ -99,7 +100,7 @@ public class BaseConfigurationHelper {
     }
 
     public static WeaponType findWeaponTypeById(int id, WeaponCategory weaponCategory) {
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
             WeaponTypeCollection weaponTypes = weaponCategory.getWeaponTypes();
@@ -113,7 +114,7 @@ public class BaseConfigurationHelper {
     }
 
     public static Projectile findProjectileById(int id, BaseConfiguration configuration) {
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
             ProjectileCollection projectiles = configuration.getProjectiles();
@@ -127,7 +128,7 @@ public class BaseConfigurationHelper {
     }
 
     public static Border findBorderById(int id, BaseConfiguration configuration) {
-        if (id == SimpleSerializer.NULL_REFERENCE) {
+        if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
             BorderCollection borders = configuration.getBorders();

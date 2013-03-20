@@ -1,9 +1,8 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.DeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 
 /**
  * User: mkutuzov
@@ -20,7 +19,7 @@ public class ClientConfirmationAnswer extends ClientDeSerializedMessage {
     public ClientConfirmationAnswer() {
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         confirm = SimpleDeserializer.deserializeBoolean(buffer);
     }
 }

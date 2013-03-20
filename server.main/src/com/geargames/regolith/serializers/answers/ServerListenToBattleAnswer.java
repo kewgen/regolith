@@ -1,8 +1,9 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -49,16 +50,16 @@ public class ServerListenToBattleAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
         if (success) {
-            SimpleSerializer.serializeEntityReference(battle, buffer);
+            SerializeHelper.serializeEntityReference(battle, buffer);
             SimpleSerializer.serialize(battle.getName(), buffer);
-            SimpleSerializer.serializeEntityReference(battle.getBattleType(), buffer);
+            SerializeHelper.serializeEntityReference(battle.getBattleType(), buffer);
             SimpleSerializer.serialize((byte) battle.getAlliances().length, buffer);
             for (BattleAlliance alliance : battle.getAlliances()) {
-                SimpleSerializer.serializeEntityReference(alliance, buffer);
+                SerializeHelper.serializeEntityReference(alliance, buffer);
                 for (BattleGroup group : ((ServerBattleGroupCollection) alliance.getAllies()).getBattleGroups()) {
                     Account account = group.getAccount();
-                    SimpleSerializer.serializeEntityReference(group, buffer);
-                    SimpleSerializer.serializeEntityReference(account, buffer);
+                    SerializeHelper.serializeEntityReference(group, buffer);
+                    SerializeHelper.serializeEntityReference(account, buffer);
                     if (group.getAccount() != null) {
                         SimpleSerializer.serialize(account.getName(), buffer);
                     }

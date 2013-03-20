@@ -1,10 +1,8 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
-import com.geargames.regolith.serializers.SimpleSerializer;
-import com.geargames.regolith.units.Account;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
@@ -34,7 +32,7 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
     }
 
     @Override
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         if (battle.getId() != SimpleDeserializer.deserializeInt(buffer)) {
             success = SimpleDeserializer.deserializeBoolean(buffer);
             if (success) {

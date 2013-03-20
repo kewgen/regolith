@@ -2,20 +2,12 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.serializers.BattleServiceRequestUtils;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
-import com.geargames.regolith.service.Client;
-import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.AmmunitionBagHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerMagazineCollection;
-import com.geargames.regolith.units.dictionaries.ServerMedikitCollection;
 import com.geargames.regolith.units.tackle.Magazine;
-import com.geargames.regolith.units.tackle.Medikit;
-
-import java.util.List;
 
 /**
  * User: mikhail v. kutuzov

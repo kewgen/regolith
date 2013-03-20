@@ -1,6 +1,9 @@
 package com.geargames.regolith.serializers;
 
 
+import com.geargames.common.serialization.DeSerializedMessage;
+import com.geargames.common.serialization.MicroByteBuffer;
+
 /**
  * User: mkutuzov
  * Date: 04.07.12

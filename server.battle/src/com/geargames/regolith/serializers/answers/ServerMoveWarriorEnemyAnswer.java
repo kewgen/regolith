@@ -2,9 +2,10 @@ package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.map.Pair;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Warrior;
 
 import java.util.List;
@@ -37,9 +38,9 @@ public class ServerMoveWarriorEnemyAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         short invisible = 0;
-        SimpleSerializer.serializeEntityReference(warrior.getBattleGroup().getAlliance(), buffer);
-        SimpleSerializer.serializeEntityReference(warrior.getBattleGroup(), buffer);
-        SimpleSerializer.serializeEntityReference(warrior, buffer);
+        SerializeHelper.serializeEntityReference(warrior.getBattleGroup().getAlliance(), buffer);
+        SerializeHelper.serializeEntityReference(warrior.getBattleGroup(), buffer);
+        SerializeHelper.serializeEntityReference(warrior, buffer);
         for (Pair pair : pairs) {
             if (pair != null) {
                 if (invisible != 0) {

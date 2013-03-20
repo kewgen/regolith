@@ -1,11 +1,10 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 
 /**
  * @author Mikhail_Kutuzov
@@ -22,6 +21,6 @@ public class CancelBattleRequest extends ClientSerializedMessage {
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(getConfiguration().getAccount(), buffer);
+        SerializeHelper.serializeEntityReference(getConfiguration().getAccount(), buffer);
     }
 }

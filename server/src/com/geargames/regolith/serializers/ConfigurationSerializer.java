@@ -1,5 +1,7 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.*;
 import com.geargames.regolith.units.Underload;
 import com.geargames.regolith.units.Rank;
@@ -17,7 +19,7 @@ import com.geargames.regolith.units.tackle.*;
 public class ConfigurationSerializer {
 
     private static void serialize(Border border, MicroByteBuffer buffer, ServerWeaponCategoryCollection weaponCategories) {
-        SimpleSerializer.serializeEntityReference(border, buffer);
+        SerializeHelper.serializeEntityReference(border, buffer);
         SimpleSerializer.serialize(border.getFrameId(), buffer);
         byte simpleTrio = 0;
         if (border.isAbleToLookThrough()) {
@@ -42,7 +44,7 @@ public class ConfigurationSerializer {
     }
 
     private static void serialize(WeaponCategory category, MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(category, buffer);
+        SerializeHelper.serializeEntityReference(category, buffer);
         SimpleSerializer.serialize(category.getName(), buffer);
         SimpleSerializer.serialize((short) category.getWeaponTypes().size(), buffer);
         for (WeaponType weaponType : ((ServerWeaponTypeCollection)category.getWeaponTypes()).getWeaponTypes()) {
@@ -51,7 +53,7 @@ public class ConfigurationSerializer {
     }
 
     private static void serialize(Rank rank, MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(rank, buffer);
+        SerializeHelper.serializeEntityReference(rank, buffer);
         SimpleSerializer.serialize(rank.getName(), buffer);
         SimpleSerializer.serialize(rank.getExperience(), buffer);
     }
@@ -62,13 +64,13 @@ public class ConfigurationSerializer {
     }
 
     private static void serialize(AmmunitionCategory ammunitionCategory, MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(ammunitionCategory, buffer);
+        SerializeHelper.serializeEntityReference(ammunitionCategory, buffer);
         SimpleSerializer.serialize(ammunitionCategory.getName(), buffer);
         SimpleSerializer.serialize(ammunitionCategory.getQuality(), buffer);
     }
 
     private static void serialize(BattleType battleType, MicroByteBuffer buffer){
-        SimpleSerializer.serializeEntityReference(battleType, buffer);
+        SerializeHelper.serializeEntityReference(battleType, buffer);
         SimpleSerializer.serialize(battleType.getName(), buffer);
         SimpleSerializer.serialize(battleType.getScores(), buffer);
         SimpleSerializer.serialize(battleType.getAllianceAmount(), buffer);

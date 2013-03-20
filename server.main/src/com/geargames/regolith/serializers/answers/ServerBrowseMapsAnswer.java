@@ -1,9 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.map.BattleMap;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ServerBrowseMapsAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         for(BattleMap map : maps){
-            SimpleSerializer.serializeEntityReference(map, buffer);
+            SerializeHelper.serializeEntityReference(map, buffer);
             SimpleSerializer.serialize(map.getName(), buffer);
             SimpleSerializer.serialize(map.getExits().length, buffer);
         }

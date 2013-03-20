@@ -1,8 +1,8 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
@@ -20,7 +20,7 @@ public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
         this.alliance = battleAlliance;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         if (SimpleDeserializer.deserializeBoolean(buffer)) {
             int id = SimpleDeserializer.deserializeInt(buffer);
             BattleGroupCollection groups = alliance.getAllies();

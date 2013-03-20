@@ -1,9 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.serializers.TackleSerializer;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.Armor;
@@ -42,7 +43,7 @@ public class ServerTackleBag2BoxAnswer extends SerializedMessage {
 
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(warrior, buffer);
+        SerializeHelper.serializeEntityReference(warrior, buffer);
         if (stateTackle instanceof Weapon) {
             TackleSerializer.serializeWeapon((Weapon) stateTackle, buffer);
         } else {

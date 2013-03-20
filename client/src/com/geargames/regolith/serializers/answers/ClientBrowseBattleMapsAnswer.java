@@ -3,8 +3,8 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.map.BattleMap;
 
@@ -25,7 +25,7 @@ public class ClientBrowseBattleMapsAnswer extends ClientDeSerializedMessage {
         return battleMaps;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         int length = SimpleDeserializer.deserializeShort(buffer);
         BattleMap[] battleMaps = new BattleMap[length];
         for (int i = 0; i < length; i++) {

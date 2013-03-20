@@ -3,8 +3,8 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -29,7 +29,7 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
         battle = null;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         if (SimpleDeserializer.deserializeBoolean(buffer)) {
             Battle battle = new Battle();
             battle.setId(SimpleDeserializer.deserializeInt(buffer));

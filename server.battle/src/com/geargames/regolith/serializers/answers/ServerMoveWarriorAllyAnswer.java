@@ -1,9 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Ally;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
@@ -43,12 +44,12 @@ public class ServerMoveWarriorAllyAnswer extends SerializedMessage {
      */
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(warrior, buffer);
+        SerializeHelper.serializeEntityReference(warrior, buffer);
         SimpleSerializer.serialize(warrior.getX(), buffer);
         SimpleSerializer.serialize(warrior.getY(), buffer);
         SimpleSerializer.serialize(enemies.size(), buffer);
         for (Ally human : enemies.getAllies()) {
-            SimpleSerializer.serializeEntityReference(human, buffer);
+            SerializeHelper.serializeEntityReference(human, buffer);
             SimpleSerializer.serialize(human.getX(), buffer);
             SimpleSerializer.serialize(human.getY(), buffer);
         }

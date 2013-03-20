@@ -1,9 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -48,12 +49,12 @@ public class BattleServiceLoginAnswer extends SerializedMessage {
 
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(battle, buffer);
+        SerializeHelper.serializeEntityReference(battle, buffer);
         SimpleSerializer.serialize(success, buffer);
         if (success) {
             SimpleSerializer.serialize(groups.size(), buffer);
             for (BattleGroup group : groups) {
-                SimpleSerializer.serializeEntityReference(group, buffer);
+                SerializeHelper.serializeEntityReference(group, buffer);
             }
         }
     }

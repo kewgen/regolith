@@ -1,15 +1,15 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
 
 /**
  * User: mikhail v. kutuzov
  * Date: 24.08.12
  * Time: 14:48
  */
-public class ServerMessageIsLateAnswer extends SerializedMessage{
+public class ServerMessageIsLateAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
 
     public ServerMessageIsLateAnswer(MicroByteBuffer buffer) {

@@ -1,12 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SerializedMessage;
-import com.geargames.regolith.serializers.SimpleSerializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Element;
-import com.geargames.regolith.units.battle.Box;
-import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.tackle.AbstractTackle;
 
 /**
  * User: mikhail v. kutuzov
@@ -48,6 +46,6 @@ public class ServerBox2GroundAnswer extends SerializedMessage {
         SimpleSerializer.serialize(boxY, buffer);
         SimpleSerializer.serialize(x, buffer);
         SimpleSerializer.serialize(y, buffer);
-        SimpleSerializer.serializeEntityReference(element, buffer);
+        SerializeHelper.serializeEntityReference(element, buffer);
     }
 }

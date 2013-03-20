@@ -4,8 +4,8 @@ import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
-import com.geargames.regolith.serializers.MicroByteBuffer;
-import com.geargames.regolith.serializers.SimpleDeserializer;
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import com.geargames.regolith.units.map.BattleMap;
@@ -25,7 +25,7 @@ public class ClientBrowseBattlesAnswer extends ClientDeSerializedMessage {
         this.baseConfiguration = baseConfiguration;
     }
 
-    protected void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) {
         int size = SimpleDeserializer.deserializeInt(buffer);
         ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();
 

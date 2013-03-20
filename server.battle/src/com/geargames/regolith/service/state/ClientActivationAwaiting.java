@@ -2,7 +2,7 @@ package com.geargames.regolith.service.state;
 
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
-import com.geargames.regolith.serializers.MicroByteBuffer;
+import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.answers.ServerMessageIsLateAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;

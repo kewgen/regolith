@@ -1,5 +1,7 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.BattleCell;
@@ -17,21 +19,21 @@ import com.geargames.regolith.units.tackle.Weapon;
 public class BattleMapSerializer {
 
     private static void serialize(Warrior warrior, MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(warrior, buffer);
+        SerializeHelper.serializeEntityReference(warrior, buffer);
     }
 
     private static void serialize(Border border, MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(border, buffer);
+        SerializeHelper.serializeEntityReference(border, buffer);
     }
 
     public static void serialize(Magazine magazine, MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(magazine, buffer);
-        SimpleSerializer.serializeEntityReference(magazine.getProjectile(), buffer);
+        SerializeHelper.serializeEntityReference(magazine, buffer);
+        SerializeHelper.serializeEntityReference(magazine.getProjectile(), buffer);
         SimpleSerializer.serialize(magazine.getCount(), buffer);
     }
 
     private static void serialize(Box box, MicroByteBuffer buffer) {
-        SimpleSerializer.serializeEntityReference(box, buffer);
+        SerializeHelper.serializeEntityReference(box, buffer);
         SimpleSerializer.serialize(box.getFrameId(), buffer);
         SimpleSerializer.serialize((byte) box.getTackles().size(), buffer);
         StateTackleCollection states = box.getTackles();
@@ -123,11 +125,11 @@ public class BattleMapSerializer {
     public static void serialize(BattleMap battleMap, Account account, MicroByteBuffer buffer) {
         BattleCell[][] cells = battleMap.getCells();
         MicroByteBuffer byteBuffer = new MicroByteBuffer(new byte[buffer.size()]);
-        SimpleSerializer.serializeEntityReference(battleMap, buffer);
+        SerializeHelper.serializeEntityReference(battleMap, buffer);
         BattleType[] possibilities = battleMap.getPossibleBattleTypes();
         SimpleSerializer.serialize((byte) possibilities.length, buffer);
         for (int i = 0; i < possibilities.length; i++) {
-            SimpleSerializer.serializeEntityReference(possibilities[i], buffer);
+            SerializeHelper.serializeEntityReference(possibilities[i], buffer);
         }
         SimpleSerializer.serialize(battleMap.getName(), buffer);
         SimpleSerializer.serialize((short) cells.length, buffer);
