@@ -16,8 +16,8 @@ public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
 
     private BattleAlliance alliance;
 
-    public ClientJoinBattleAnswer(BattleAlliance battleAlliance){
-        this.alliance = battleAlliance;
+    public void setAlliance(BattleAlliance alliance) {
+        this.alliance = alliance;
     }
 
     public void deSerialize(MicroByteBuffer buffer) {

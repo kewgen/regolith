@@ -2,7 +2,9 @@ package com.geargames.regolith.network;
 
 import com.geargames.common.logging.Debug;
 import com.geargames.common.util.Lock;
+import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.Manager;
 
 import java.io.BufferedInputStream;
@@ -22,19 +24,25 @@ public class ConsoleNetwork extends Network {
     private DataOutputStream dos;
     private Receiver receiver;
     private Sender sender;
-    public boolean downloading, uploading;
-    private Lock fakeLock;
+    private Lock asynchronousLock;
+    private MessageLock synchronousMessageLock;
+
     private ClientConfiguration configuration;
 
     @Override
-    protected Lock getMessageLock() {
-        return fakeLock;
+    public MessageLock getMessageLock() {
+        return synchronousMessageLock;
+    }
+
+    @Override
+    protected Lock getAsynchronousLock() {
+        return asynchronousLock;
     }
 
     public ConsoleNetwork(ClientConfiguration configuration) {
         this.configuration = configuration;
         this.connected = false;
-        fakeLock = new Lock(){
+        asynchronousLock = new Lock(){
                 @Override
                 public void lock() {
                 }
@@ -43,6 +51,9 @@ public class ConsoleNetwork extends Network {
                 public void release() {
                 }
             };
+        synchronousMessageLock = new MessageLock();
+        synchronousMessageLock.setLock(new JavaLock());
+        synchronousMessageLock.setMessageType(Packets.MESSAGE_TYPE_NULL);
     }
 
     private int port;
@@ -126,11 +137,4 @@ public class ConsoleNetwork extends Network {
         return sender;
     }
 
-    public void setDownloading(boolean downloading) {
-        this.downloading = downloading;
-    }
-
-    public void setUploading(boolean uploading) {
-        this.uploading = uploading;
-    }
 }

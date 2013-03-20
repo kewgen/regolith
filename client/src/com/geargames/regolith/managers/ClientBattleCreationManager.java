@@ -20,9 +20,13 @@ import com.geargames.regolith.units.battle.Warrior;
  */
 public class ClientBattleCreationManager {
     private ClientConfiguration configuration;
+    private ClientStartBattleAnswer clientStartBattleAnswer;
+    private ClientJoinBattleAnswer clientJoinBattleAnswer;
 
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
+        clientStartBattleAnswer = new ClientStartBattleAnswer(configuration.getAccount(), configuration.getBaseConfiguration());
+        clientJoinBattleAnswer = new ClientJoinBattleAnswer();
     }
 
     /**
@@ -40,13 +44,7 @@ public class ClientBattleCreationManager {
      * @param author ссылка на аккаунт пользователя - инициатора начала битвы.
      */
     public ClientDeferredAnswer startBattle(Account author) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.START_BATTLE);
-        ClientStartBattleAnswer clientStartBattleAnswer = new ClientStartBattleAnswer(author, configuration.getBaseConfiguration());
-        messageLock.setMessage(clientStartBattleAnswer);
-        configuration.getNetwork().sendMessage(new StartBattleRequest(configuration));
-
-        return new ClientDeferredAnswer(clientStartBattleAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), clientStartBattleAnswer);
     }
 
     /**
@@ -59,14 +57,8 @@ public class ClientBattleCreationManager {
     /**
      * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
      */
-    public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance, Account participant) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.JOIN_TO_BATTLE_ALLIANCE);
-        ClientJoinBattleAnswer clientJoinBattleAnswer = new ClientJoinBattleAnswer(alliance);
-        messageLock.setMessage(clientJoinBattleAnswer);
-        configuration.getNetwork().sendMessage(new JoinToAllianceRequest(configuration, alliance));
-
-        return new ClientDeferredAnswer(clientJoinBattleAnswer);
+    public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance) {
+        return configuration.getNetwork().sendSynchronousMessage(new JoinToAllianceRequest(configuration, alliance), clientJoinBattleAnswer);
     }
 
     public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {
