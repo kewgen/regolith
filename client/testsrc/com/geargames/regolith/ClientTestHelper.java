@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.application.Manager;
 import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -146,5 +147,12 @@ public class ClientTestHelper {
 
         return battle;
     }
+
+    public static void checkAsyncMessages() {
+        Manager.pause(1000); // задержка, чтобы пришли сообщения, которые могли прийти
+        Assert.assertTrue("The client has unread messages",
+                ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousMessagesSize() == 0);
+    }
+
 
 }

@@ -18,11 +18,11 @@ public class ServerEvictAccountFromAllianceAnswer extends SerializedMessage {
     private BattleAlliance alliance;
     private boolean success;
 
-    public static final ServerEvictAccountFromAllianceAnswer AnswerSuccess(MicroByteBuffer buffer, Account account, BattleAlliance alliance){
+    public static ServerEvictAccountFromAllianceAnswer AnswerSuccess(MicroByteBuffer buffer, Account account, BattleAlliance alliance){
         return new ServerEvictAccountFromAllianceAnswer(buffer, account, alliance, true);
     }
 
-    public static final ServerEvictAccountFromAllianceAnswer AnswerFailure(MicroByteBuffer buffer){
+    public static ServerEvictAccountFromAllianceAnswer AnswerFailure(MicroByteBuffer buffer){
         return new ServerEvictAccountFromAllianceAnswer(buffer, null, null, false);
     }
 
@@ -46,7 +46,7 @@ public class ServerEvictAccountFromAllianceAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
-        if(success){
+        if (success) {
             SerializeHelper.serializeEntityReference(alliance, buffer);
             SerializeHelper.serializeEntityReference(account, buffer);
         }

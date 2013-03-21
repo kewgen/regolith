@@ -28,6 +28,6 @@ public class EvictAccountRequest extends ClientSerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(alliance.getBattle(), buffer);
         SerializeHelper.serializeEntityReference(alliance, buffer);
-        SerializeHelper.serializeEntityReference(account,buffer);
+        SerializeHelper.serializeEntityReference(account, buffer);
     }
 }

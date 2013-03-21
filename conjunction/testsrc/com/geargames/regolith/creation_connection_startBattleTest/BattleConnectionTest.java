@@ -4,6 +4,7 @@ import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.ClientTestHelper;
+import com.geargames.regolith.application.Manager;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
@@ -39,14 +40,20 @@ public class BattleConnectionTest {
         return answer.retrieve(1000);
     }
 
+    private static void pause() {
+        Manager.pause(2000);
+    }
+
     @Test
     public void client() throws com.geargames.regolith.RegolithException, BrokenBarrierException, InterruptedException {
         ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
+        ClientTestHelper.checkAsyncMessages();
 
         ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("clientC", "секрет", true);
+        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Configuring the client");
 
@@ -67,12 +74,14 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
+        ClientTestHelper.checkAsyncMessages();
 
         answer = battleMarketManager.battlesJoinTo();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattlesAnswer clientBrowseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         ClientBattleCollection battles = clientBrowseBattlesAnswer.getBattles();
         Assert.assertTrue("There is no battle to play", battles.size() > 0);
+        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Trying to connect to the battle for listening");
 
@@ -81,8 +90,9 @@ public class BattleConnectionTest {
         answer = battleMarketManager.listenToBattle(battle, account);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientCreateBattleAnswer listen = (ClientCreateBattleAnswer) answer.getAnswer();
-        battle = listen.getBattle();
-        Assert.assertNotNull("The client could not listen to the battle", battle);
+        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
+        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+        ClientTestHelper.checkAsyncMessages();
 
         int groupSize = battle.getBattleType().getGroupSize();
         Assert.assertTrue("The account " + account.getName() + " does not have enough warriors", groupSize <= account.getWarriors().size());
@@ -112,9 +122,23 @@ public class BattleConnectionTest {
         ClientJoinBattleAnswer clientJoinBattleAnswer = (ClientJoinBattleAnswer) answer.getAnswer();
         BattleGroup battleGroup = clientJoinBattleAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
+        System.out.println(
+                "Client '" + clientJoinBattleAnswer.getBattleGroup().getAccount().getName() +
+                "' joined to the alliance (id = " + clientJoinBattleAnswer.getBattleGroup().getAlliance().getId() + ")");
+        ClientTestHelper.checkAsyncMessages();
 
+        pause();
 
+        // scenario: #1c
+        System.out.println("The client is trying to get out of the battle (by himself)");
+        answer = battleCreationManager.evictAccount(alliance, account);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+        ClientEvictAccountFromAllianceAnswer clientEvictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
+//        BattleGroup battleGroup = clientEvictAccountFromAllianceAnswer.getBattleGroup();
+        Assert.assertTrue("The client could not be evicted from the alliance", clientEvictAccountFromAllianceAnswer.isSuccess());
+        ClientTestHelper.checkAsyncMessages();
 
+        pause();
 
 //        System.out.println("The client is trying to complete group (id = " + battleGroup.getId() + ")");
 //        answer = battleCreationManager.completeGroup(battleGroup, warriors);

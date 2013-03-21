@@ -18,7 +18,7 @@ public class SerializeHelper {
     public static final int NULL_REFERENCE = -1;
 
     public static void serializeEntityReference(Entity entity, MicroByteBuffer buffer) {
-        if(entity == null){
+        if (entity == null) {
             SimpleSerializer.serialize(NULL_REFERENCE, buffer);
         } else {
             SimpleSerializer.serialize(entity.getId(), buffer);
@@ -36,7 +36,7 @@ public class SerializeHelper {
         }
     }
 
-    public static final String[] CLASSES = new String[]{
+    public static final String[] CLASSES = new String[] {
             Warrior.class.getSimpleName(),
             Box.class.getSimpleName(),
             Magazine.class.getSimpleName(),

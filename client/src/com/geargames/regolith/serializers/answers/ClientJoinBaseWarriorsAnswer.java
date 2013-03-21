@@ -25,7 +25,6 @@ public class ClientJoinBaseWarriorsAnswer extends ClientDeSerializedMessage {
         return success;
     }
 
-
     public ClientJoinBaseWarriorsAnswer(Warrior[] warriors, BaseConfiguration baseConfiguration) {
         this.baseConfiguration = baseConfiguration;
         this.warriors = warriors;
@@ -36,7 +35,7 @@ public class ClientJoinBaseWarriorsAnswer extends ClientDeSerializedMessage {
         success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             int length = SimpleDeserializer.deserializeInt(buffer);
-            for(int i = 0; i<length ; i++){
+            for (int i = 0; i < length; i++) {
                 AccountDeserializer.deserialize(warriors[i], buffer, baseConfiguration);
             }
         }

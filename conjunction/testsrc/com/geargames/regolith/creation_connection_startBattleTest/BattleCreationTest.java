@@ -29,15 +29,18 @@ import java.util.concurrent.BrokenBarrierException;
 public class BattleCreationTest {
     private static SimpleService service;
 
+    private static final int FIRST_WAINTING = 1000; // 100 сек
+    private static final int NEXT_WAINTING  = 200;  // 20 сек
+
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
         return answer.retrieve(1000);
     }
 
     // Ожидаем асинхронного сообщения до 5 сек и возвращаем true, если сообщение получено.
-    private static boolean waitForAsyncAnswer(ClientDeSerializedMessage answer, short msgType) {
+    private static boolean waitForAsyncAnswer(ClientDeSerializedMessage answer, short msgType, int attemptCount) {
         int i = 0;
         while (! ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(answer, msgType)) {
-            if (i++ >= 1000) {
+            if (i++ >= attemptCount) {
                 return false;
             }
             Manager.pause(100);
@@ -56,8 +59,10 @@ public class BattleCreationTest {
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
+        ClientTestHelper.checkAsyncMessages();
 
         ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("clientA", "секрет", true);
+        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Configuring the client");
 
@@ -78,6 +83,7 @@ public class BattleCreationTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue(confirm.isConfirm());
+        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Browsing maps");
 
@@ -86,6 +92,7 @@ public class BattleCreationTest {
         ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
         BattleMap[] maps = browseMaps.getBattleMaps();
         Assert.assertTrue("there are no maps", maps.length > 0);
+        ClientTestHelper.checkAsyncMessages();
 
         // scenario: #0a
         answer = battleMarketManager.createBattle(maps[0], 0);
@@ -93,17 +100,19 @@ public class BattleCreationTest {
         ClientCreateBattleAnswer createBattleAnswer = (ClientCreateBattleAnswer) answer.getAnswer();
         Battle battle = createBattleAnswer.getBattle();
         Assert.assertNotNull("Could not create his own battle.", battle);
+        ClientTestHelper.checkAsyncMessages();
 
         // scenario: #1b
         System.out.println("Listening battle...");
         ClientJoinBattleAnswer clientJoinBattleAnswer = new ClientJoinBattleAnswer(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
-                waitForAsyncAnswer(clientJoinBattleAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE));
+                waitForAsyncAnswer(clientJoinBattleAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, FIRST_WAINTING));
         System.out.println(
-                "'Client C' (" + clientJoinBattleAnswer.getBattleGroup().getAccount().getName() +
-                ") joined to the alliance (id = " + clientJoinBattleAnswer.getBattleGroup().getAlliance().getId() + ")");
+                "Client '" + clientJoinBattleAnswer.getBattleGroup().getAccount().getName() +
+                "' joined to the alliance (id = " + clientJoinBattleAnswer.getBattleGroup().getAlliance().getId() + ")");
+        ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("Listening battle completed");
+//        System.out.println("Listening battle completed");
 
 //        BattleGroup group;
 //        BattleAlliance alliance = battle.getAlliances()[0];

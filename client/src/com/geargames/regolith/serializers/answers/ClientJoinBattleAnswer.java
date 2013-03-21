@@ -14,7 +14,7 @@ import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 /**
  * User: mkutuzov
  * Date: 05.07.12
- * Сообщение-ответ о присоединении пользователя к альянсу. Рассылается всем слушателям битвы.
+ * РЎРѕРѕР±С‰РµРЅРёРµ-РѕС‚РІРµС‚ Рѕ РїСЂРёСЃРѕРµРґРёРЅРµРЅРёРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Рє Р°Р»СЊСЏРЅСЃСѓ. Р Р°СЃСЃС‹Р»Р°РµС‚СЃСЏ РІСЃРµРј СЃР»СѓС€Р°С‚РµР»СЏРј Р±РёС‚РІС‹.
  */
 public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
     private Battle battle;
@@ -28,6 +28,8 @@ public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
         boolean success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             int id = SimpleDeserializer.deserializeInt(buffer);
+            Account account = AccountDeserializer.deserialize(
+                    buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
 
             BattleAlliance[] alliances = battle.getAlliances();
             for (int i = 0; i < alliances.length; i++) {
@@ -35,13 +37,11 @@ public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
                 for (int j = 0; j < groups.size(); j++) {
                     if (groups.get(j).getId() == id) {
                         battleGroup = groups.get(j);
+                        battleGroup.setAccount(account);
                         return;
                     }
                 }
             }
-            Account account = AccountDeserializer.deserialize(
-                    buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
-            battleGroup.setAccount(account);
             throw new IllegalStateException();
         }
     }

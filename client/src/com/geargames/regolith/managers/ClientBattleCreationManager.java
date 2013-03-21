@@ -4,6 +4,7 @@ import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.network.MessageLock;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
+import com.geargames.regolith.serializers.answers.ClientEvictAccountFromAllianceAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinBattleAnswer;
 import com.geargames.regolith.serializers.answers.ClientStartBattleAnswer;
 import com.geargames.regolith.serializers.requests.*;
@@ -26,13 +27,19 @@ public class ClientBattleCreationManager {
     }
 
     /**
-     * ??? Послать сообщение-уведомление об исключении пользователя account входящего в военный союз alliance из
+     * Послать сообщение-уведомление об исключении пользователя account, входящего в военный союз alliance, из
      * создаваемой битвы. Сообщение может посылать, как автор битвы, так и сам пользователь, чтобы выйти из битвы.
      * @param alliance
      * @param account
      */
-    public void evictAccount(BattleAlliance alliance, Account account) {
+    public ClientDeferredAnswer evictAccount(BattleAlliance alliance, Account account) {
+        MessageLock messageLock = configuration.getMessageLock();
+        messageLock.setMessageType(Packets.EVICT_ACCOUNT_FROM_ALLIANCE);
+        ClientEvictAccountFromAllianceAnswer answer = new ClientEvictAccountFromAllianceAnswer(alliance.getBattle());
+        messageLock.setMessage(answer);
         configuration.getNetwork().sendMessage(new EvictAccountRequest(configuration, account, alliance));
+
+        return new ClientDeferredAnswer(answer);
     }
 
     /**

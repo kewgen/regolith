@@ -7,10 +7,8 @@ import com.geargames.regolith.ClientTestHelper;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.Manager;
 import com.geargames.regolith.managers.*;
-import com.geargames.regolith.serializers.answers.ClientBrowseBattlesAnswer;
-import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
-import com.geargames.regolith.serializers.answers.ClientCreateBattleAnswer;
-import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
+import com.geargames.regolith.serializers.ClientDeSerializedMessage;
+import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
@@ -25,15 +23,18 @@ import java.util.concurrent.BrokenBarrierException;
  */
 public class BattleListenerTest {
 
+    private static final int FIRST_WAINTING = 1000; // 100 сек
+    private static final int NEXT_WAINTING  = 200;  // 20 сек
+
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
         return answer.retrieve(1000);
     }
 
     // Ожидаем асинхронного сообщения до 5 сек и возвращаем true, если сообщение получено.
-    private static boolean waitForAsyncAnswer(ClientDeSerializedMessage answer, short msgType) {
+    private static boolean waitForAsyncAnswer(ClientDeSerializedMessage answer, short msgType, int attemptCount) {
         int i = 0;
         while (! ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(answer, msgType)) {
-            if (i++ >= 1000) {
+            if (i++ >= attemptCount) {
                 return false;
             }
             Manager.pause(100);
@@ -47,8 +48,10 @@ public class BattleListenerTest {
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
+        ClientTestHelper.checkAsyncMessages();
 
         ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("clientB", "секрет", true);
+        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Configuring the client");
 
@@ -69,12 +72,14 @@ public class BattleListenerTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
+        ClientTestHelper.checkAsyncMessages();
 
         answer = battleMarketManager.battlesJoinTo();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattlesAnswer clientBrowseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         ClientBattleCollection battles = clientBrowseBattlesAnswer.getBattles();
         Assert.assertTrue("There is no battle to play", battles.size() > 0);
+        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Trying to connect to the battle for listening");
 
@@ -85,6 +90,7 @@ public class BattleListenerTest {
         ClientCreateBattleAnswer listen = (ClientCreateBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Listening battle...");
 
@@ -93,9 +99,13 @@ public class BattleListenerTest {
 //        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(
 //                clientJoinBattleAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE);
         Assert.assertTrue("'Client C' has not joined to the alliance",
-                waitForAsyncAnswer(clientJoinBattleAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE));
+                waitForAsyncAnswer(clientJoinBattleAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, FIRST_WAINTING));
+        System.out.println(
+                "Client '" + clientJoinBattleAnswer.getBattleGroup().getAccount().getName() +
+                "' joined to the alliance (id = " + clientJoinBattleAnswer.getBattleGroup().getAlliance().getId() + ")");
+        ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("Listening battle completed");
+//        System.out.println("Listening battle completed");
 
         //todo: GROUP_IS_READY     -> ACCOUNT_IS_READY
         //todo: GROUP_IS_NOT_READY -> ACCOUNT_IS_NOT_READY

@@ -100,12 +100,12 @@ public final class Receiver extends Thread {
                     dataMessage.setMessageType(type);
                     network.addAsynchronousMessage(dataMessage);
                 }
-                Debug.debug(String.valueOfC("Receiver: received message, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length).concatC(", res:").concatI(res));
+                Debug.debug(String.valueOfC("Receiver: received message, type: ").concatI(type).concatC(" (").concatI((type & 0xff)).concatC("), len: ").concatI(length).concatC(", res: ").concatI(res));
                 if (length != res) {//считанное колво байт не равно заявленной длине!
-                    Debug.error(String.valueOfC("Error received len, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length).concatC(" != res:").concatI(res));
+                    Debug.error(String.valueOfC("Error received len, type: ").concatI(type).concatC(" (").concatI((type & 0xff)).concatC("), len: ").concatI(length).concatC(" != res: ").concatI(res));
                     continue;
                 } else if (res == -1) {//Receiver: received message, type:-19(237), len:42309
-                    Debug.error(String.valueOfC("Error received, type:").concatI(type).concatC("(").concatI((type & 0xff)).concatC("), len:").concatI(length));
+                    Debug.error(String.valueOfC("Error received, type: ").concatI(type).concatC(" (").concatI((type & 0xff)).concatC("), len: ").concatI(length));
                     continue;
                 }
 
@@ -158,7 +158,7 @@ public final class Receiver extends Thread {
             for (; i < len; i++) {
                 c = dis.read();
                 if (c == -1) {
-                    Debug.error(String.valueOfC(" read, c:").concatI(c).concatC(" (").concatI(i).concatC(")"));
+                    Debug.error(String.valueOfC(" read, c: ").concatI(c).concatC(" (").concatI(i).concatC(")"));
                 }
                 bytes[off + i] = (byte) c;
             }

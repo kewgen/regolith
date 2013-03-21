@@ -35,6 +35,8 @@ public class ClientChangeActiveAllianceAnswer extends ClientDeSerializedMessage 
         try {
             alliance = ClientBattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(buffer));
         } catch (RegolithException e) {
+            alliance = null;
+            //todo: передать сообщение об ошибке в лог
         }
     }
 }
