@@ -30,6 +30,12 @@ public class MeNetwork extends Network {
         this.connected = false;
     }
 
+    @Override
+    public MessageLock getMessageLock() {
+        return null;
+    }
+
+    @Override
     protected Lock getAsynchronousLock() {
         return null;
     }
