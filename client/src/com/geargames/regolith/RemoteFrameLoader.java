@@ -1,9 +1,9 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.Network;
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PUnresolvedFrameManager;
 import com.geargames.platform.packer.Image;
-import com.geargames.regolith.network.Network;
 import com.geargames.regolith.serializers.answers.ClientGetFrameAnswer;
 import com.geargames.regolith.serializers.requests.ClientFrameRequest;
 

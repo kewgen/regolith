@@ -1,9 +1,9 @@
 package com.geargames.regolith.managers;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.network.MessageLock;
+import com.geargames.common.network.MessageLock;
 import com.geargames.regolith.serializers.answers.ClientCreateBattleAnswer;
 import com.geargames.regolith.serializers.requests.ClientBattleServiceLoginRequest;
 import com.geargames.regolith.serializers.requests.ClientMoveRequest;
@@ -19,36 +19,28 @@ import com.geargames.regolith.units.battle.Warrior;
  */
 public class ClientBattleServiceManager {
     private ClientConfiguration configuration;
+    private ClientCreateBattleAnswer clientCreateBattleAnswer;
+
 
     public ClientBattleServiceManager(ClientConfiguration configuration) {
         this.configuration = configuration;
+        clientCreateBattleAnswer = new ClientCreateBattleAnswer();
     }
 
     public ClientDeferredAnswer login(Battle battle, BattleAlliance alliance) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.BATTLE_SERVICE_LOGIN);
-        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer(); //todo: Answer не того класса
-        messageLock.setMessage(clientCreateBattleAnswer);
-        configuration.getNetwork().sendMessage(new ClientBattleServiceLoginRequest(configuration, battle, alliance, configuration.getAccount()));
-        return new ClientDeferredAnswer(clientCreateBattleAnswer);
+        return   configuration.getNetwork().sendSynchronousMessage(new ClientBattleServiceLoginRequest(configuration, battle, alliance, configuration.getAccount()), clientCreateBattleAnswer);
     }
 
+    //todo все вызовы ниже сделать асинхронными
+
     public ClientDeferredAnswer move(Warrior warrior, short x, short y) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.MOVE_ALLY);
-        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer(); //todo: Answer не того класса
-        messageLock.setMessage(clientCreateBattleAnswer);
-        configuration.getNetwork().sendMessage(new ClientMoveRequest(configuration, warrior, x, y));
-        return new ClientDeferredAnswer(clientCreateBattleAnswer);
+        //todo ожидается ответ неправильного типа
+        return configuration.getNetwork().sendSynchronousMessage(new ClientMoveRequest(configuration, warrior, x, y), clientCreateBattleAnswer);
     }
 
     public ClientDeferredAnswer shoot(Warrior hunter, Warrior victim) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.SHOOT);
-        ClientCreateBattleAnswer clientCreateBattleAnswer = new ClientCreateBattleAnswer(); //todo: Answer не того класса
-        messageLock.setMessage(clientCreateBattleAnswer);
-        configuration.getNetwork().sendMessage(new ClientShootRequest(configuration, hunter, victim));
-        return new ClientDeferredAnswer(clientCreateBattleAnswer);
+        //todo ожидается ответ неправильного типа
+        return configuration.getNetwork().sendSynchronousMessage(new ClientShootRequest(configuration, hunter, victim), clientCreateBattleAnswer);
     }
 
 

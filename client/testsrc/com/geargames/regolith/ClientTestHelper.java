@@ -7,10 +7,9 @@ import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.dictionaries.ClientBattleGroupCollection;
 import com.geargames.regolith.units.map.BattleMap;
 
-import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.ClientBaseWarriorMarketManager;
 import com.geargames.regolith.managers.ClientCommonManager;
-import com.geargames.regolith.managers.ClientDeferredAnswer;
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinBaseWarriorsAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;

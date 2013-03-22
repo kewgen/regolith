@@ -1,7 +1,7 @@
 package com.geargames.regolith.application;
 
 import com.geargames.awt.TextHint;
-import com.geargames.awt.timers.TimerManager;
+import com.geargames.common.timers.TimerManager;
 import com.geargames.common.String;
 import com.geargames.common.env.Environment;
 import com.geargames.common.logging.Debug;
@@ -13,9 +13,6 @@ import com.geargames.platform.packer.Graphics;
 import com.geargames.platform.packer.Image;
 import com.geargames.regolith.Port;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 
 public final class Application extends com.geargames.common.Application {
 
@@ -301,7 +298,6 @@ public final class Application extends com.geargames.common.Application {
         graphics.setColor(0xffffff);
         graphics.fillRect(0, 0, i_buf.getWidth(), i_buf.getHeight());
         panels.draw(graphics);
-        /*ObjC uncomment*///if ([Port isOpenGL]) [gles_view paintEnd];
     }
 
     // ----- Event handlers --------------------------------------------------------------------------------------------

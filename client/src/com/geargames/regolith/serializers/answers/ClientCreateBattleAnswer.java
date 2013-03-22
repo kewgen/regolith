@@ -2,7 +2,7 @@ package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.serializers.ClientDeSerializedMessage;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.Account;
@@ -26,10 +26,9 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
     }
 
     public ClientCreateBattleAnswer() {
-        this(null);
     }
 
-    public ClientCreateBattleAnswer(Battle battle) {
+    public void setBattle(Battle battle) {
         this.battle = battle;
     }
 

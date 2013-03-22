@@ -1,8 +1,9 @@
 package com.geargames.regolith.managers;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.network.MessageLock;
+import com.geargames.common.network.MessageLock;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinBattleAnswer;
 import com.geargames.regolith.serializers.answers.ClientStartBattleAnswer;
@@ -22,11 +23,13 @@ public class ClientBattleCreationManager {
     private ClientConfiguration configuration;
     private ClientStartBattleAnswer clientStartBattleAnswer;
     private ClientJoinBattleAnswer clientJoinBattleAnswer;
+    private ClientConfirmationAnswer confirmationAnswer;
 
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         clientStartBattleAnswer = new ClientStartBattleAnswer(configuration.getAccount(), configuration.getBaseConfiguration());
         clientJoinBattleAnswer = new ClientJoinBattleAnswer();
+        confirmationAnswer = new ClientConfirmationAnswer();
     }
 
     /**
@@ -57,29 +60,12 @@ public class ClientBattleCreationManager {
     /**
      * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
      */
-<<<<<<< HEAD
     public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance) {
         return configuration.getNetwork().sendSynchronousMessage(new JoinToAllianceRequest(configuration, alliance), clientJoinBattleAnswer);
-=======
-    public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance, Account participant) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.JOIN_TO_BATTLE_ALLIANCE);
-        ClientJoinBattleAnswer clientJoinBattleAnswer = new ClientJoinBattleAnswer(alliance.getBattle());
-        messageLock.setMessage(clientJoinBattleAnswer);
-        configuration.getNetwork().sendMessage(new JoinToAllianceRequest(configuration, alliance));
-
-        return new ClientDeferredAnswer(clientJoinBattleAnswer);
->>>>>>> 3253015de3033fa47ec52497a0f41d7773cb488b
     }
 
     public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.GROUP_COMPLETE);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new BattleGroupCompleteRequest(configuration, warriors, group));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),confirmationAnswer);
     }
 
     public void doNotListenToBattle(Battle battle) {
@@ -87,22 +73,10 @@ public class ClientBattleCreationManager {
     }
 
     public ClientDeferredAnswer isReady(BattleGroup group) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.GROUP_IS_READY);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new GroupReadyStateRequest(configuration,Packets.GROUP_IS_READY, group));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new GroupReadyStateRequest(configuration,Packets.GROUP_IS_READY, group), confirmationAnswer);
     }
 
     public ClientDeferredAnswer isNotReady(BattleGroup group) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.GROUP_IS_NOT_READY);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new GroupReadyStateRequest(configuration, Packets.GROUP_IS_NOT_READY, group));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new GroupReadyStateRequest(configuration, Packets.GROUP_IS_NOT_READY, group), confirmationAnswer);
     }
 }

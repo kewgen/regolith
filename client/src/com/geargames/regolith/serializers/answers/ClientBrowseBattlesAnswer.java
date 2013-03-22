@@ -3,7 +3,7 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.application.ObjectManager;
-import com.geargames.regolith.serializers.ClientDeSerializedMessage;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.battle.Battle;

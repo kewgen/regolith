@@ -2,7 +2,7 @@ package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.serializers.AccountDeserializer;
-import com.geargames.regolith.serializers.ClientDeSerializedMessage;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.units.Account;
@@ -14,7 +14,7 @@ import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 /**
  * User: mkutuzov
  * Date: 05.07.12
- * Сообщение-ответ о присоединении пользователя к альянсу. Рассылается всем слушателям битвы.
+ * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
  */
 public class ClientJoinBattleAnswer extends ClientDeSerializedMessage {
     private Battle battle;

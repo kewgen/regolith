@@ -3,7 +3,7 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PFrame;
 import com.geargames.platform.packer.Image;
-import com.geargames.regolith.serializers.ClientDeSerializedMessage;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 

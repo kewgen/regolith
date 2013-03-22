@@ -1,8 +1,6 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.network.DataMessage;
-import com.geargames.regolith.network.Network;
-import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.network.Network;
 import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
 import com.geargames.regolith.units.AmmunitionBag;
 import com.geargames.regolith.units.Bag;
