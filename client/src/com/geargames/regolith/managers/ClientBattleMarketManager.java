@@ -11,40 +11,46 @@ import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.map.BattleMap;
 
 /**
- * Users: Mikhail_Kutuzov, abarakov
+ * Users: mikhail v. kutuzov, abarakov
  * Data: 22.05.12
  */
 public class ClientBattleMarketManager {
     private ClientConfiguration configuration;
     private ClientCreateBattleAnswer createBattleAnswer;
     private ClientBrowseBattlesAnswer browseBattlesAnswer;
-    ClientBrowseBattleMapsAnswer browseBattleMapsAnswer;
+    private ClientBrowseBattleMapsAnswer browseBattleMapsAnswer;
+
     public ClientBattleMarketManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         createBattleAnswer = new ClientCreateBattleAnswer();
-        browseBattlesAnswer = new ClientBrowseBattlesAnswer(configuration.getBaseConfiguration());
-        browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration.getBaseConfiguration());
+        browseBattlesAnswer = new ClientBrowseBattlesAnswer(configuration);
+        browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
     }
 
     public ClientDeferredAnswer createBattle(BattleMap battleMap, int index) {
         createBattleAnswer.setBattle(null);
-        return configuration.getNetwork().sendSynchronousMessage(new CreateBattleRequest(configuration, battleMap, (byte) index), createBattleAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(
+                new CreateBattleRequest(configuration, battleMap, (byte) index), createBattleAnswer);
     }
 
     public ClientDeferredAnswer listenToBattle(Battle battle) {
         createBattleAnswer.setBattle(battle);
-        return configuration.getNetwork().sendSynchronousMessage(new ListenToBattleRequest(configuration, battle), createBattleAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(
+                new ListenToBattleRequest(configuration, battle), createBattleAnswer);
     }
 
-    public ClientDeferredAnswer battlesJoinTo() {
-        return configuration.getNetwork().sendSynchronousMessage(new SimpleRequest(configuration, Packets.BROWSE_CREATED_BATTLES), browseBattlesAnswer);
+    public ClientDeferredAnswer browseBattles() {
+        return configuration.getNetwork().sendSynchronousMessage(
+                new SimpleRequest(configuration, Packets.BROWSE_CREATED_BATTLES), browseBattlesAnswer);
     }
 
     public ClientDeferredAnswer browseBattleMaps() {
-        return configuration.getNetwork().sendSynchronousMessage(new SimpleRequest(configuration, Packets.BROWSE_BATTLE_MAPS), browseBattleMapsAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(
+                new SimpleRequest(configuration, Packets.BROWSE_BATTLE_MAPS), browseBattleMapsAnswer);
     }
 
     public void goToBase() {
         configuration.getNetwork().sendMessage(new SimpleRequest(configuration, Packets.GO_TO_BASE));
     }
+
 }

@@ -7,6 +7,7 @@ import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.requests.ChangeBaseLocation;
 
 /**
+ * Users: mikhail v. kutuzov, abarakov
  * Базовый интерфейс для перехода на разные части базы.
  */
 public class ClientBaseManager {
@@ -19,14 +20,18 @@ public class ClientBaseManager {
     }
 
     public ClientDeferredAnswer goWarriorMarket() {
-        return configuration.getNetwork().sendSynchronousMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_WARRIOR_MARKET), confirmation);
+        return configuration.getNetwork().sendSynchronousMessage(
+                new ChangeBaseLocation(configuration, Packets.GO_TO_WARRIOR_MARKET), confirmation);
     }
 
     public ClientDeferredAnswer goTackleMarket() {
-        return configuration.getNetwork().sendSynchronousMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_TACKLE_MARKET), confirmation);
+        return configuration.getNetwork().sendSynchronousMessage(
+                new ChangeBaseLocation(configuration, Packets.GO_TO_TACKLE_MARKET), confirmation);
     }
 
     public ClientDeferredAnswer goBattleManager() {
-        return configuration.getNetwork().sendSynchronousMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_BATTLE_MARKET), confirmation);
+        return configuration.getNetwork().sendSynchronousMessage(
+                new ChangeBaseLocation(configuration, Packets.GO_TO_BATTLE_MARKET), confirmation);
     }
+
 }

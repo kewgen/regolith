@@ -18,7 +18,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
 
 /**
  * Users: mikhail v. kutuzov, abarakov
@@ -94,7 +93,7 @@ public class BattleConnectionTest {
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
-        answer = battleMarketManager.battlesJoinTo();
+        answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattlesAnswer browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         ClientBattleCollection battles = browseBattlesAnswer.getBattles();
@@ -333,7 +332,7 @@ public class BattleConnectionTest {
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
-        answer = battleMarketManager.battlesJoinTo();
+        answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         battles = browseBattlesAnswer.getBattles();
@@ -401,7 +400,7 @@ public class BattleConnectionTest {
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
-        answer = battleMarketManager.battlesJoinTo();
+        answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         battles = browseBattlesAnswer.getBattles();

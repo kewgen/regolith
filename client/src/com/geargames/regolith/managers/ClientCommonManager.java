@@ -12,10 +12,9 @@ import com.geargames.regolith.serializers.requests.LoginRequest;
 import com.geargames.regolith.serializers.requests.LogoutRequest;
 import com.geargames.regolith.units.Login;
 
-
 /**
- * @author Mikhail_Kutuzov
- *         created: 22.05.12  18:33
+ * Users: mikhail v. kutuzov, abarakov
+ * Date: 22.05.12
  */
 public class ClientCommonManager {
     private ClientConfiguration configuration;
@@ -24,7 +23,7 @@ public class ClientCommonManager {
 
     public ClientCommonManager(ClientConfiguration configuration) {
         this.configuration = configuration;
-        loginAnswer = new ClientLoginAnswer(configuration);
+        loginAnswer = new ClientLoginAnswer();
         confirmationAnswer = new ClientConfirmationAnswer();
     }
 
@@ -59,4 +58,5 @@ public class ClientCommonManager {
     public ClientDeferredAnswer create(Login account) {
         return configuration.getNetwork().sendSynchronousMessage(new CreateAccountRequest(configuration, account), confirmationAnswer);
     }
+
 }

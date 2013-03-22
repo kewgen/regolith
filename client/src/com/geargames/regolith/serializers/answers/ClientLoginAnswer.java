@@ -4,7 +4,6 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
-import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;
@@ -14,7 +13,6 @@ import com.geargames.regolith.units.battle.Warrior;
  * Date: 06.07.12
  */
 public class ClientLoginAnswer extends ClientDeSerializedMessage {
-    private ClientConfiguration clientConfiguration;
     private BaseConfiguration baseConfiguration;
     private Account account;
     private String error;
@@ -36,11 +34,8 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
         return error;
     }
 
-    public ClientLoginAnswer(ClientConfiguration clientConfiguration) {
-        this.clientConfiguration = clientConfiguration;
-    }
-
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        baseConfiguration = null;
         account  = null;
         error    = null;
         warriors = null;

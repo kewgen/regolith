@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers.answers;
 
 import com.geargames.regolith.BaseConfiguration;
+import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.serializers.BattleDeserializer;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
@@ -20,11 +21,11 @@ public class ClientStartBattleAnswer extends ClientDeSerializedMessage {
     private boolean success;
 
     private Account account;
-    private BaseConfiguration baseConfiguration;
+    private ClientConfiguration configuration;
 
-    public ClientStartBattleAnswer(Account account, BaseConfiguration baseConfiguration) {
+    public ClientStartBattleAnswer(Account account, ClientConfiguration configuration) {
         this.account = account;
-        this.baseConfiguration = baseConfiguration;
+        this.configuration = configuration;
         this.success = false;
     }
 
@@ -34,7 +35,7 @@ public class ClientStartBattleAnswer extends ClientDeSerializedMessage {
         success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             battle = ObjectManager.getInstance().getClientBattle();
-            BattleDeserializer.deserializeBattle(buffer, baseConfiguration, account, battle);
+            BattleDeserializer.deserializeBattle(buffer, configuration.getBaseConfiguration(), account, battle);
             host = SimpleDeserializer.deserializeString(buffer);
             port = SimpleDeserializer.deserializeInt(buffer);
         }

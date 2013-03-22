@@ -13,6 +13,7 @@ import java.util.List;
  * User: mkutuzov
  * Date: 19.06.12
  */
+@Deprecated //todo: очень похож на ServerBrowseBattleMapsAnswer
 public class ServerBrowseMapsAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
     private List<BattleMap> maps;

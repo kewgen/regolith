@@ -1,6 +1,5 @@
 package com.geargames.regolith;
 
-import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;
@@ -16,6 +15,7 @@ import com.geargames.regolith.units.tackle.*;
  * Класс помошник, предназначен для общего(для клиента и сервера) поиска сущностей внутри текущей конфигурации.
  */
 public class BaseConfigurationHelper {
+
     public static BattleType findBattleTypeById(int id, BaseConfiguration configuration) {
         if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
@@ -140,4 +140,5 @@ public class BaseConfigurationHelper {
             throw new IllegalArgumentException();
         }
     }
+
 }

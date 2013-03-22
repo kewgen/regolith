@@ -2,14 +2,13 @@ package com.geargames.regolith;
 
 import com.geargames.common.network.Network;
 import com.geargames.regolith.managers.*;
-import com.geargames.common.network.MessageLock;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
- * @author Mikhail_Kutuzov
- *         created: 25.05.12  12:56
+ * Users: mikhail v. kutuzov, abarakov
+ * Date: 25.05.12
  */
 public class ClientConfiguration {
     private ClientBattleServiceManager battleServiceManager;
@@ -179,4 +178,5 @@ public class ClientConfiguration {
     public void setBaseConfiguration(BaseConfiguration baseConfiguration) {
         this.baseConfiguration = baseConfiguration;
     }
+
 }
