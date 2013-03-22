@@ -7,11 +7,9 @@ import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Battle;
 
 /**
- * Created with IntelliJ IDEA.
- * User: olga
+ * User: mkutuzov
  * Date: 05.08.12
  * Time: 15:32
- * To change this template use File | Settings | File Templates.
  */
 public class ServerStopListenAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;

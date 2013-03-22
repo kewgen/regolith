@@ -3,17 +3,16 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.common.serialization.MicroByteBuffer;
-import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 
 /**
- * Присоединиться к боевому союзу(альянсу).
+ * Сообщение-запрос о присоединении к военному союзу (альянсу).
  */
-public class JoinToAllianceRequest extends ClientSerializedMessage {
+public class ClientJoinToBattleAllianceRequest extends ClientSerializedMessage {
     private BattleAlliance alliance;
 
-    public JoinToAllianceRequest(ClientConfiguration configuration, BattleAlliance alliance) {
+    public ClientJoinToBattleAllianceRequest(ClientConfiguration configuration, BattleAlliance alliance) {
         super(configuration);
         this.alliance = alliance;
     }

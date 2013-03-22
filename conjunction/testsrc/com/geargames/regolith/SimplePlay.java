@@ -138,10 +138,10 @@ public class SimplePlay {
             }
 
             BattleGroup group;
-            answer = battleCreationManager.joinToAlliance(battle.getAlliances()[0], account);
+            answer = battleCreationManager.joinToAlliance(battle.getAlliances()[0]);
             retrieving(answer, 1000);
 
-            group = ((ClientJoinBattleAnswer) answer.getAnswer()).getBattleGroup();
+            group = ((ClientJoinToBattleAllianceAnswer) answer.getAnswer()).getBattleGroup();
             if (group == null) {
                 System.err.println("could not joint to his own battle.");
                 return;

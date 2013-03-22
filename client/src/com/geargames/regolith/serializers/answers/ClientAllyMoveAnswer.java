@@ -9,7 +9,6 @@ import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.Warrior;
 
-
 public class ClientAllyMoveAnswer extends ClientDeSerializedMessage {
     private Battle battle;
     private short x;
@@ -38,26 +37,21 @@ public class ClientAllyMoveAnswer extends ClientDeSerializedMessage {
     }
 
     @Override
-    public void deSerialize(MicroByteBuffer buffer) {
-        try {
-            warrior = ClientBattleHelper.findWarrior(ClientConfigurationFactory.getConfiguration().getAccount(), SimpleDeserializer.deserializeInt(buffer));
-        } catch (RegolithException e) {
-        }
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        warrior = ClientBattleHelper.findWarrior(ClientConfigurationFactory.getConfiguration().getAccount(), SimpleDeserializer.deserializeInt(buffer));
         x = SimpleDeserializer.deserializeShort(buffer);
         y = SimpleDeserializer.deserializeShort(buffer);
         int size = SimpleDeserializer.deserializeInt(buffer);
+        enemies = null;
         if (size > 0) {
             enemies = new Warrior[size];
-            try {
-                for (int i = 0; i < size; i++) {
-                    Warrior enemy = ClientBattleHelper.findWarrior(battle, SimpleDeserializer.deserializeInt(buffer));
-                    enemies[i] = enemy;
-                    enemy.setX(SimpleDeserializer.deserializeShort(buffer));
-                    enemy.setY(SimpleDeserializer.deserializeShort(buffer));
-                }
-            } catch (RegolithException e) {
-
+            for (int i = 0; i < size; i++) {
+                Warrior enemy = ClientBattleHelper.findWarrior(battle, SimpleDeserializer.deserializeInt(buffer));
+                enemies[i] = enemy;
+                enemy.setX(SimpleDeserializer.deserializeShort(buffer));
+                enemy.setY(SimpleDeserializer.deserializeShort(buffer));
             }
         }
     }
+
 }

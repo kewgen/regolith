@@ -1,6 +1,7 @@
 package com.geargames.regolith.network;
 
 import com.geargames.common.util.Lock;
+import com.geargames.regolith.managers.ClientDeferredAnswer;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
@@ -31,21 +32,31 @@ public abstract class Network {
 
     protected abstract Receiver getReceiver();
 
-    protected abstract Lock getMessageLock();
+    /**
+     * Вернём симафор для доступа очереди асинхронных ответов.
+     * @return
+     */
+    protected abstract Lock getAsynchronousLock();
+
+    /**
+     * Вернём блокировку синхронных сообщений.
+     * @return
+     */
+    public abstract MessageLock getMessageLock();
 
     public void sendMessage(SerializedMessage message) {
         getSender().sendMessage(message);
     }
 
     public int getAsynchronousMessagesSize() {
-        getMessageLock().lock();
+        getAsynchronousLock().lock();
         int result = asynchronousMessages.size();
-        getMessageLock().release();
+        getAsynchronousLock().release();
         return result;
     }
 
     public DataMessage getAsynchronousMessageByType(short type) {
-        getMessageLock().lock();
+        getAsynchronousLock().lock();
         DataMessage dataMessage = null;
         for (int i = 0; i < asynchronousMessages.size(); i++) {
             dataMessage = (DataMessage) asynchronousMessages.get(i);
@@ -55,7 +66,7 @@ public abstract class Network {
             }
             dataMessage = null;
         }
-        getMessageLock().release();
+        getAsynchronousLock().release();
         return dataMessage;
     }
 
@@ -65,7 +76,11 @@ public abstract class Network {
             //todo: использовать ClientConfigurationFactory.getConfiguration().getAnswersBuffer() вместо buffer?
             buffer.initiate(message.getData());
             answer.setBuffer(buffer);
-            answer.deSerialize();
+            try {
+                answer.deSerialize();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             answer.setBuffer(null);
             return true;
         } else {
@@ -74,22 +89,30 @@ public abstract class Network {
     }
 
     public void addAsynchronousMessage(DataMessage dataMessage) {
-        getMessageLock().lock();
+        getAsynchronousLock().lock();
         for (int i = 0; i < asynchronousMessages.size(); i++) {
             DataMessage message = (DataMessage) asynchronousMessages.get(i);
             if (message.getMessageType() == dataMessage.getMessageType()) {
                 asynchronousMessages.setElementAt(dataMessage, i);
-                getMessageLock().release();
+                getAsynchronousLock().release();
                 return;
             }
         }
         asynchronousMessages.addElement(dataMessage);
-        getMessageLock().release();
+        getAsynchronousLock().release();
+    }
+
+    public ClientDeferredAnswer sendSynchronousMessage(SerializedMessage request, ClientDeSerializedMessage answer){
+        MessageLock lock = getMessageLock();
+        lock.setMessageType(request.getType());
+        lock.setMessage(answer);
+        getSender().sendMessage(request);
+
+        return new ClientDeferredAnswer(answer);
     }
 
     public boolean isReceiving() {
         return getReceiver() != null && getReceiver().isRunning();
     }
-
 
 }

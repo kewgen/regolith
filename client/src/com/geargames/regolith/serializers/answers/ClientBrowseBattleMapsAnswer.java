@@ -25,7 +25,7 @@ public class ClientBrowseBattleMapsAnswer extends ClientDeSerializedMessage {
         return battleMaps;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
         int length = SimpleDeserializer.deserializeShort(buffer);
         BattleMap[] battleMaps = new BattleMap[length];
         for (int i = 0; i < length; i++) {

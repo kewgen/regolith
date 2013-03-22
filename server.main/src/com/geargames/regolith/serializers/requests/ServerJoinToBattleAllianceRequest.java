@@ -5,7 +5,7 @@ import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.managers.ServerTrainingBattleCreationManager;
-import com.geargames.regolith.serializers.answers.ServerJoinToBattleAnswer;
+import com.geargames.regolith.serializers.answers.ServerJoinToBattleAllianceAnswer;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.serializers.MainServerRequestUtils;
@@ -22,12 +22,12 @@ import java.util.List;
  * User: mkutuzov
  * Date: 13.07.12
  */
-public class ServerJoinToBattleRequest extends ServerRequest {
+public class ServerJoinToBattleAllianceRequest extends ServerRequest {
     private BattleManagerContext battleManagerContext;
     private ServerTrainingBattleCreationManager battleCreationManager;
     private ServerContext serverContext;
 
-    public ServerJoinToBattleRequest() {
+    public ServerJoinToBattleAllianceRequest() {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         this.battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         this.battleCreationManager = configuration.getBattleCreationManager();
@@ -52,10 +52,10 @@ public class ServerJoinToBattleRequest extends ServerRequest {
                 BattleGroup group = battleCreationManager.joinToAlliance(alliance, client.getAccount());
                 if (group != null) {
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
-                    message = ServerJoinToBattleAnswer.AnswerSuccess(to, group, client.getAccount());
+                    message = ServerJoinToBattleAllianceAnswer.AnswerSuccess(to, group, client.getAccount());
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);
-                    message = ServerJoinToBattleAnswer.AnswerFailure(to);
+                    message = ServerJoinToBattleAllianceAnswer.AnswerFailure(to);
                 }
             } else {
                 throw new RegolithException();
@@ -63,7 +63,7 @@ public class ServerJoinToBattleRequest extends ServerRequest {
         } else {
             recipients = new ArrayList<SocketChannel>(1);
             recipients.add(serverContext.getChannel(client.getAccount()));
-            message = ServerJoinToBattleAnswer.AnswerFailure(to);
+            message = ServerJoinToBattleAllianceAnswer.AnswerFailure(to);
         }
         List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
         messages.add(new MainMessageToClient(recipients, message.serialize()));

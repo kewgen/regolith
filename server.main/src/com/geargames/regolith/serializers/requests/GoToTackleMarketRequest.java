@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.serializers.answer.ServerConfirmationAnswer;
+import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.states.ClientAtTackleMarket;
 

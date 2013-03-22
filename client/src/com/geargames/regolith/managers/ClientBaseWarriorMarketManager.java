@@ -15,21 +15,19 @@ import com.geargames.regolith.units.battle.Warrior;
  */
 public class ClientBaseWarriorMarketManager {
     private ClientConfiguration configuration;
+    private ClientJoinBaseWarriorsAnswer message;
 
     public ClientBaseWarriorMarketManager(ClientConfiguration configuration) {
         this.configuration = configuration;
+        message = new ClientJoinBaseWarriorsAnswer();
+        message.setBaseConfiguration(configuration.getBaseConfiguration());
     }
 
     /**
      * Послать сообщение о найме текущим аккаунтом списка бойцов.
      */
     public ClientDeferredAnswer hireWarrior(Warrior[] warriors) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.JOIN_BASE_WARRIORS_TO_ACCOUNT);
-        ClientDeSerializedMessage message = new ClientJoinBaseWarriorsAnswer(warriors, configuration.getBaseConfiguration());
-        messageLock.setMessage(message);
-        configuration.getNetwork().sendMessage(new ClientJoinBaseWarriorsRequest(configuration, warriors));
-
-        return new ClientDeferredAnswer(message);
+        message.setWarriors(warriors);
+        return configuration.getNetwork().sendSynchronousMessage(new ClientJoinBaseWarriorsRequest(configuration, warriors), message);
     }
 }

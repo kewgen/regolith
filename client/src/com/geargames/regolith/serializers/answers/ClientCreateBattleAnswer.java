@@ -21,10 +21,6 @@ import java.util.Vector;
 public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
     private Battle battle;
 
-    public Battle getBattle() {
-        return battle;
-    }
-
     public ClientCreateBattleAnswer() {
         this(null);
     }
@@ -33,7 +29,11 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
         this.battle = battle;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public Battle getBattle() {
+        return battle;
+    }
+
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
         if (SimpleDeserializer.deserializeBoolean(buffer)) {
             if (battle == null) {
                 battle = new Battle();
@@ -42,9 +42,9 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
             battle.setName(SimpleDeserializer.deserializeString(buffer));
             BattleType battleType = BaseConfigurationHelper.findBattleTypeById(SimpleDeserializer.deserializeInt(buffer), ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
             battle.setBattleType(battleType);
-            battle.setMap(null); // очищаем, на случай, если battle создавался в другом месте и map может содержать значение.
-            //todo: Заполнить Author
-//          battle.setAuthor();
+            // Очищаем, на случай, если battle создавался в другом месте и map может содержать значение.
+            battle.setMap(null);
+//          battle.setAuthor(null); //todo: Заполнить Author
             int allianceAmount = buffer.get();
             battle.setAlliances(new BattleAlliance[allianceAmount]);
             for (int i = 0; i < allianceAmount; i++) {
@@ -69,4 +69,5 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
             }
         }
     }
+
 }

@@ -29,7 +29,7 @@ public class ClientDeferredAnswer {
         }
     }
 
-    public boolean retrieve(int attempt) {
+    public boolean retrieve(int attempt) throws Exception {
         int i = 0;
         while (getAnswer() == null) {
             if (i++ >= attempt) {

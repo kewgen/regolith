@@ -25,13 +25,16 @@ public class ClientJoinBaseWarriorsAnswer extends ClientDeSerializedMessage {
         return success;
     }
 
-    public ClientJoinBaseWarriorsAnswer(Warrior[] warriors, BaseConfiguration baseConfiguration) {
-        this.baseConfiguration = baseConfiguration;
+    public void setWarriors(Warrior[] warriors) {
         this.warriors = warriors;
     }
 
+    public void setBaseConfiguration(BaseConfiguration baseConfiguration) {
+        this.baseConfiguration = baseConfiguration;
+    }
+
     @Override
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
         success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             int length = SimpleDeserializer.deserializeInt(buffer);
@@ -40,4 +43,5 @@ public class ClientJoinBaseWarriorsAnswer extends ClientDeSerializedMessage {
             }
         }
     }
+
 }

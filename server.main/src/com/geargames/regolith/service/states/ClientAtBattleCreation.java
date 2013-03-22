@@ -29,7 +29,7 @@ public class ClientAtBattleCreation extends MainState {
                 request = new ServerStartBattleRequest();
                 break;
             case Packets.JOIN_TO_BATTLE_ALLIANCE:
-                request = new ServerJoinToBattleRequest();
+                request = new ServerJoinToBattleAllianceRequest();
                 break;
             case Packets.EVICT_ACCOUNT_FROM_ALLIANCE:
                 request = new ServerEvictAccountFromAllianceRequest();
@@ -38,7 +38,7 @@ public class ClientAtBattleCreation extends MainState {
                 request = new ServerGroupIsReadyRequest();
                 break;
             case Packets.GROUP_IS_NOT_READY:
-                request = new ServerGroupIsNotReady();
+                request = new ServerGroupIsNotReadyRequest();
                 break;
             case Packets.FRAME_MESSAGE:
                 request = new ServerGetFrameRequest();

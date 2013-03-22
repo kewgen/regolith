@@ -31,11 +31,13 @@ import java.util.Vector;
  */
 public class ClientTestHelper {
 
-    public static final String ACCOUNT_NAME_DEFAULT     = "автор";
-    public static final String ACCOUNT_PASSWORD_DEFAULT = "секрет";
-
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        return answer.retrieve(1000);
+        try {
+            return answer.retrieve(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -79,6 +81,22 @@ public class ClientTestHelper {
         Assert.assertNull("Cannot login to account: " + loginAnswer.getError(), loginAnswer.getError());
 
         return loginAnswer;
+    }
+
+    public static BattleAlliance getFreeAlliance(Battle battle) {
+        BattleAlliance alliance = null;
+        for (BattleAlliance battleAlliance : battle.getAlliances()) {
+            for (int i = 0; i < battleAlliance.getAllies().size(); i++) {
+                if (battleAlliance.getAllies().get(i).getAccount() == null) {
+                    alliance = battleAlliance;
+                    break;
+                }
+            }
+            if (alliance != null) {
+                return alliance;
+            }
+        }
+        return null;
     }
 
     /**
@@ -149,7 +167,7 @@ public class ClientTestHelper {
     }
 
     public static void checkAsyncMessages() {
-        Manager.pause(1000); // задержка, чтобы пришли сообщения, которые могли прийти
+//        Manager.pause(1000); // задержка, чтобы пришли сообщения, которые могли прийти
         Assert.assertTrue("The client has unread messages",
                 ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousMessagesSize() == 0);
     }

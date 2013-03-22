@@ -2,8 +2,8 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.managers.ServerTrainingBattleCreationManager;
+import com.geargames.regolith.serializers.answers.ServerStartBattleAnswer;
 import com.geargames.regolith.serializers.answers.ServerStopListenAnswer;
-import com.geargames.regolith.serializers.answers.StartBattleAnswer;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.serializers.MainServerRequestUtils;
@@ -70,7 +70,7 @@ public class ServerStartBattleRequest extends ServerRequest {
                     recipients.add(channel);
                     serverContext.removeChannel(account);
                     serverContext.removeClient(channel);
-                    messages.add(new MainMessageToClient(recipients, StartBattleAnswer.answerSuccess(to, battle, account, battleServiceDescriptor).serialize()));
+                    messages.add(new MainMessageToClient(recipients, ServerStartBattleAnswer.answerSuccess(to, battle, account, battleServiceDescriptor).serialize()));
                 }
 
                 List<SocketChannel> listeners = MainServerRequestUtils.getPassiveListenerChannels(clients, serverContext, battle);
@@ -86,7 +86,7 @@ public class ServerStartBattleRequest extends ServerRequest {
             } else {
                 recipients = new ArrayList<SocketChannel>(1);
                 recipients.add(serverContext.getChannel(client.getAccount()));
-                messages.add(new MainMessageToClient(recipients, StartBattleAnswer.answerFailure(to).serialize()));
+                messages.add(new MainMessageToClient(recipients, ServerStartBattleAnswer.answerFailure(to).serialize()));
             }
         } else {
             throw new RegolithException();

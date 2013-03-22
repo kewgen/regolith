@@ -35,7 +35,11 @@ public class SimpleServiceTest {
         while(answer.getAnswer() == null);
 
         ClientConfirmationAnswer message = (ClientConfirmationAnswer)answer.getAnswer();
-        message.deSerialize();
+        try {
+            message.deSerialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Assert.assertTrue(message.isConfirm());
 
 
@@ -46,14 +50,22 @@ public class SimpleServiceTest {
         while(answer.getAnswer() == null);
 
         message = (ClientConfirmationAnswer)answer.getAnswer();
-        message.deSerialize();
+        try {
+            message.deSerialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Assert.assertTrue(message.isConfirm());
 
         answer = managerInterface.login(login);
         while(answer.getAnswer() == null);
 
         ClientLoginAnswer loginAnswer = (ClientLoginAnswer)answer.getAnswer();
-        loginAnswer.deSerialize();
+        try {
+            loginAnswer.deSerialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Assert.assertNull(loginAnswer.getError());
 

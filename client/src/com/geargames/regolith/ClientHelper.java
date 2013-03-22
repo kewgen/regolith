@@ -62,14 +62,10 @@ public class ClientHelper {
      * @return
      */
     public static boolean isOurTurn(Network network, BattleAlliance alliance, boolean active) {
-        DataMessage dataMessage = network.getAsynchronousMessageByType(Packets.CHANGE_ACTIVE_ALLIANCE);
-        if (dataMessage == null) {
+        if(network.getAsynchronousAnswer(changeActiveAllianceAnswer, Packets.CHANGE_ACTIVE_ALLIANCE)){
+            return  changeActiveAllianceAnswer.getAlliance() == alliance;
+        }else{
             return active;
-        } else {
-            changeActiveAllianceAnswer.setBattle(alliance.getBattle());
-            changeActiveAllianceAnswer.setBuffer(new MicroByteBuffer(dataMessage.getData()));
-            changeActiveAllianceAnswer.deSerialize();
-            return alliance == changeActiveAllianceAnswer.getAlliance();
         }
     }
 

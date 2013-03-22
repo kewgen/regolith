@@ -13,21 +13,21 @@ import com.geargames.regolith.units.battle.BattleGroup;
  * User: mkutuzov
  * Date: 19.06.12
  */
-public class ServerJoinToBattleAnswer extends SerializedMessage {
+public class ServerJoinToBattleAllianceAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
     private BattleGroup battleGroup;
     private Account account;
     private boolean success;
 
-    public static final ServerJoinToBattleAnswer AnswerSuccess(MicroByteBuffer buffer, BattleGroup battleGroup, Account account) {
-        return new ServerJoinToBattleAnswer(buffer, battleGroup, account, true);
+    public static ServerJoinToBattleAllianceAnswer AnswerSuccess(MicroByteBuffer buffer, BattleGroup battleGroup, Account account) {
+        return new ServerJoinToBattleAllianceAnswer(buffer, battleGroup, account, true);
     }
 
-    public static final ServerJoinToBattleAnswer AnswerFailure(MicroByteBuffer buffer) {
-        return new ServerJoinToBattleAnswer(buffer, null, null, true);
+    public static ServerJoinToBattleAllianceAnswer AnswerFailure(MicroByteBuffer buffer) {
+        return new ServerJoinToBattleAllianceAnswer(buffer, null, null, true);
     }
 
-    private ServerJoinToBattleAnswer(MicroByteBuffer buffer, BattleGroup battleGroup, Account account, boolean success) {
+    private ServerJoinToBattleAllianceAnswer(MicroByteBuffer buffer, BattleGroup battleGroup, Account account, boolean success) {
         this.buffer = buffer;
         this.battleGroup = battleGroup;
         this.account = account;

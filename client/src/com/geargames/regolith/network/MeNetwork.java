@@ -30,7 +30,7 @@ public class MeNetwork extends Network {
         this.connected = false;
     }
 
-    protected Lock getMessageLock() {
+    protected Lock getAsynchronousLock() {
         return null;
     }
 

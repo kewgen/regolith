@@ -16,7 +16,7 @@ import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.serializers.answer.ServerConfirmationAnswer;
+import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 
 import java.util.ArrayList;
 import java.util.HashSet;

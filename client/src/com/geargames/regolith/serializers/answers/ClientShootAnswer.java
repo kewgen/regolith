@@ -1,12 +1,9 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.common.String;
-import com.geargames.common.logging.Debug;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
-import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.Human;
@@ -32,7 +29,9 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
         this.victim = null;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        hunter = null;
+        victim = null;
         int refId = SimpleDeserializer.deserializeInt(buffer);
         if (refId != SerializeHelper.NULL_REFERENCE) {
             try {
@@ -46,7 +45,7 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
                 hunter.getLegsArmor().setState(SimpleDeserializer.deserializeShort(buffer));
                 hunter.getWeapon().setLoad(SimpleDeserializer.deserializeShort(buffer));
             } catch (Exception e) {
-                Debug.error(String.valueOfC("A shooter damage serialization problem"), e);
+                throw new Exception("A shooter damage serialization problem", e);
             }
         }
         refId = SimpleDeserializer.deserializeInt(buffer);
@@ -59,7 +58,7 @@ public class ClientShootAnswer extends ClientDeSerializedMessage {
                 victim.getTorsoArmor().setState(SimpleDeserializer.deserializeShort(buffer));
                 victim.getLegsArmor().setState(SimpleDeserializer.deserializeShort(buffer));
             } catch (Exception e) {
-                Debug.error(String.valueOfC("A victim damage serialization problem"), e);
+                throw new Exception("A victim damage serialization problem", e);
             }
         }
     }

@@ -1,12 +1,9 @@
 package com.geargames.regolith.units;
 
 import com.geargames.regolith.BattleConfiguration;
-import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
-import com.geargames.regolith.units.dictionaries.ClientBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.*;
@@ -16,12 +13,10 @@ import com.geargames.regolith.units.map.BattleMapHelper;
 import com.geargames.regolith.map.Pair;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 27.02.12
  */
 public class ClientBattleHelper {
-    private static BattleConfiguration battleConfiguration;
-
 
     public static void observe(Warrior warrior, BattleConfiguration battleConfiguration){
         battleConfiguration.getObserver().observe(warrior);
@@ -40,7 +35,7 @@ public class ClientBattleHelper {
     }
 
     /**
-     *Запросить сервер: переместить основного игрока клиентского приложения из того места где он находится в точку x;y
+     * Запросить сервер: переместить основного игрока клиентского приложения из того места где он находится в точку x;y
      * по кратчайшему пути.
      *
      * @param x
@@ -86,6 +81,34 @@ public class ClientBattleHelper {
         for (int i = 0 ; i < length; i++) {
             if (alliances[i].getId() == allianceId) {
                 return alliances[i];
+            }
+        }
+        throw new RegolithException();
+    }
+
+    public static BattleGroup findBattleGroupById(Battle battle, int battleGroupId) throws RegolithException {
+        BattleAlliance[] alliances = battle.getAlliances();
+        for (int i = 0; i < alliances.length; i++) {
+            BattleGroupCollection groups = alliances[i].getAllies();
+            for (int j = 0; j < groups.size(); j++) {
+                BattleGroup battleGroup = groups.get(j);
+                if (battleGroup.getId() == battleGroupId) {
+                    return battleGroup;
+                }
+            }
+        }
+        throw new RegolithException();
+    }
+
+    public static Account findAccountById(Battle battle, int accountId) throws RegolithException {
+        BattleAlliance[] alliances = battle.getAlliances();
+        for (int i = 0; i < alliances.length; i++) {
+            BattleGroupCollection battleGroups = alliances[i].getAllies();
+            for (int j = 0; j < battleGroups.size(); j++) {
+                Account account = battleGroups.get(j).getAccount();
+                if (account != null && account.getId() == accountId) {
+                    return account;
+                }
             }
         }
         throw new RegolithException();

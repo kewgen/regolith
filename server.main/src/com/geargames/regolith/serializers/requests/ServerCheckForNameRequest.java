@@ -6,7 +6,7 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
-import com.geargames.regolith.serializers.answer.ServerConfirmationAnswer;
+import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.Client;
 
 /**

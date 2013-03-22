@@ -1,6 +1,5 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
@@ -31,12 +30,7 @@ public class ClientChangeActiveAllianceAnswer extends ClientDeSerializedMessage 
         this.battle = battle;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
-        try {
-            alliance = ClientBattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(buffer));
-        } catch (RegolithException e) {
-            alliance = null;
-            //todo: передать сообщение об ошибке в лог
-        }
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        alliance = ClientBattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(buffer));
     }
 }

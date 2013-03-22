@@ -8,11 +8,8 @@ import com.geargames.regolith.service.MessageToClient;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: olga
+ * User: mkutuzov
  * Date: 12.07.12
- * Time: 16:21
- * To change this template use File | Settings | File Templates.
  */
 public abstract class ServerRequest {
     public abstract List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException;

@@ -39,7 +39,10 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
         this.clientConfiguration = clientConfiguration;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        account  = null;
+        error    = null;
+        warriors = null;
         if (SimpleDeserializer.deserializeBoolean(buffer)) {
             baseConfiguration = ConfigurationDeserializer.deserializeBaseConfiguration(buffer);
             account = AccountDeserializer.deserialize(buffer, baseConfiguration);
@@ -56,4 +59,5 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
             error = SimpleDeserializer.deserializeString(buffer);
         }
     }
+
 }

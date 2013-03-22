@@ -32,8 +32,11 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
     }
 
     @Override
-    public void deSerialize(MicroByteBuffer buffer) {
-        if (battle.getId() != SimpleDeserializer.deserializeInt(buffer)) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        success = false;
+        battleGroups = null;
+        int battleId = SimpleDeserializer.deserializeInt(buffer);
+        if (battle.getId() != battleId) {
             success = SimpleDeserializer.deserializeBoolean(buffer);
             if (success) {
                 int size = SimpleDeserializer.deserializeInt(buffer);

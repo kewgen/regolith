@@ -38,4 +38,5 @@ public class ServerConfirmationAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(confirm, buffer);
     }
+
 }

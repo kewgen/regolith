@@ -19,7 +19,7 @@ public class ClientConfirmationAnswer extends ClientDeSerializedMessage {
     public ClientConfirmationAnswer() {
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
         confirm = SimpleDeserializer.deserializeBoolean(buffer);
     }
 }

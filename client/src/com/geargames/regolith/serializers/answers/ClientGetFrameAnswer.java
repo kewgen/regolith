@@ -18,7 +18,7 @@ public class ClientGetFrameAnswer extends ClientDeSerializedMessage {
         return frame;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
         int id = SimpleDeserializer.deserializeInt(buffer);
         byte[] data = SimpleDeserializer.deserializeBytes(buffer);
         try {

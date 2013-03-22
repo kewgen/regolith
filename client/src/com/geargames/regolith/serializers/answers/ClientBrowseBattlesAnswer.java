@@ -25,7 +25,7 @@ public class ClientBrowseBattlesAnswer extends ClientDeSerializedMessage {
         this.baseConfiguration = baseConfiguration;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
         int size = SimpleDeserializer.deserializeInt(buffer);
         ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();
 

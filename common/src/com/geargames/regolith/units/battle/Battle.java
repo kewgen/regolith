@@ -71,4 +71,5 @@ public class Battle extends Entity {
     public void setMap(BattleMap map) {
         this.map = map;
     }
+
 }

@@ -24,15 +24,16 @@ public class ServerTrainingBattleCreationManager {
     }
 
 
-    public void evictAccount(BattleAlliance alliance, Account account) {
+    public boolean evictAccount(BattleAlliance alliance, Account account) {
         for (BattleGroup battleGroup : ((ServerBattleGroupCollection) alliance.getAllies()).getBattleGroups()) {
             if (battleGroup.getAccount() == account) {
                 doNotListenToBattle(alliance.getBattle(), account);
                 battleGroup.setAccount(null);
                 ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors().clear();
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     public BattleGroup joinToAlliance(BattleAlliance alliance, Account participant) {

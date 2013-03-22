@@ -28,7 +28,9 @@ public class ClientStartBattleAnswer extends ClientDeSerializedMessage {
         this.success = false;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        host = null;
+        port = 0;
         success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             battle = ObjectManager.getInstance().getClientBattle();
@@ -53,4 +55,5 @@ public class ClientStartBattleAnswer extends ClientDeSerializedMessage {
     public boolean isSuccess() {
         return success;
     }
+
 }

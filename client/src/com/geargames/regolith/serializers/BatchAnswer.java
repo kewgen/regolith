@@ -25,7 +25,7 @@ public class BatchAnswer extends ClientDeSerializedMessage {
         this.answers = answers;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
         if (answers != null) {
             for (int i = 0; i < answers.size(); i++) {
                 ClientDeSerializedMessage answer = (ClientDeSerializedMessage) answers.get(i);

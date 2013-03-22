@@ -2,7 +2,6 @@ package com.geargames.regolith.managers;
 
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.network.MessageLock;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.requests.ChangeBaseLocation;
 
@@ -11,38 +10,22 @@ import com.geargames.regolith.serializers.requests.ChangeBaseLocation;
  */
 public class ClientBaseManager {
     private ClientConfiguration configuration;
+    private ClientConfirmationAnswer confirmation;
 
     public ClientBaseManager(ClientConfiguration clientConfiguration){
         configuration = clientConfiguration;
+        confirmation = new ClientConfirmationAnswer();
     }
 
     public ClientDeferredAnswer goWarriorMarket() {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.GO_TO_WARRIOR_MARKET);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_WARRIOR_MARKET));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_WARRIOR_MARKET), confirmation);
     }
 
     public ClientDeferredAnswer goTackleMarket() {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.GO_TO_TACKLE_MARKET);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_TACKLE_MARKET));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_TACKLE_MARKET), confirmation);
     }
 
     public ClientDeferredAnswer goBattleManager() {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.GO_TO_BATTLE_MARKET);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_BATTLE_MARKET));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new ChangeBaseLocation(configuration, Packets.GO_TO_BATTLE_MARKET), confirmation);
     }
 }

@@ -7,7 +7,7 @@ import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.*;
-import com.geargames.regolith.serializers.answer.ServerConfirmationAnswer;
+import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.units.BodyParticles;
 import com.geargames.regolith.units.battle.BattleGroup;

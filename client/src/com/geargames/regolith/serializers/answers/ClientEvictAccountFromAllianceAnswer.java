@@ -2,7 +2,6 @@ package com.geargames.regolith.serializers.answers;
 
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
-import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.ClientBattleHelper;
@@ -22,22 +21,19 @@ public class ClientEvictAccountFromAllianceAnswer extends ClientDeSerializedMess
     private BattleAlliance alliance;
     private Account account;
 
-    public ClientEvictAccountFromAllianceAnswer(Battle battle) {
+    public void setBattle(Battle battle) {
         this.battle = battle;
     }
 
-    public void deSerialize(MicroByteBuffer buffer) {
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
         isSuccess = SimpleDeserializer.deserializeBoolean(buffer);
+        alliance = null;
+        account = null;
         if (isSuccess) {
-            try {
-                alliance = ClientBattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(buffer));
-            } catch (RegolithException e) {
-                alliance = null;
-                //todo: передать сообщение об ошибке в лог
-            }
+            alliance = ClientBattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(buffer));
+
             int id = SimpleDeserializer.deserializeInt(buffer);
             BattleGroupCollection battleGroups = alliance.getAllies();
-            this.account = null;
             for (int i = 0; i < battleGroups.size(); i++) {
                 BattleGroup battleGroup = battleGroups.get(i);
                 Account account = battleGroup.getAccount();
