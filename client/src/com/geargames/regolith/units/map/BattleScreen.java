@@ -1,7 +1,7 @@
 package com.geargames.regolith.units.map;
 
 import com.geargames.awt.Eventable;
-import com.geargames.awt.timers.OnTimerListener;
+import com.geargames.common.timers.TimerListener;
 import com.geargames.regolith.Port;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
@@ -23,7 +23,7 @@ import java.util.Vector;
  * User: mkutuzov
  * Date: 13.02.12
  */
-public class BattleScreen extends Eventable implements OnTimerListener {
+public class BattleScreen extends Eventable implements TimerListener {
     public static final int GROUNR_WIDTH = 348;
     public static final int GROUNR_HEIGHT = 174;
     public static final int HORIZONTAL_DIAGONAL = 116;

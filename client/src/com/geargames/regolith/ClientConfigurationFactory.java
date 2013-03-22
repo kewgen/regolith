@@ -1,10 +1,10 @@
 package com.geargames.regolith;
 
 import com.geargames.common.util.Lock;
+import com.geargames.platform.network.ConsoleNetwork;
 import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.managers.*;
-import com.geargames.regolith.network.ConsoleNetwork;
-import com.geargames.regolith.network.MessageLock;
+import com.geargames.common.network.MessageLock;
 import com.geargames.common.serialization.MicroByteBuffer;
 
 /**
@@ -29,21 +29,15 @@ public class ClientConfigurationFactory {
     public static ClientConfiguration produce() {
         ClientConfiguration configuration = new ClientConfiguration();
 
-        configuration.setNetwork(new ConsoleNetwork(configuration));
-        configuration.setPort(1237);
-        configuration.setServer("localhost");
         configuration.setMaxErrorsAmount(3);
         int SIZE = 4096;
         configuration.setIncomingMessage(new byte[SIZE]);
         configuration.setOutgoingMessageSize(256);
-        Lock lock = new JavaLock();
-        MessageLock messageLock = new MessageLock();
-        messageLock.setLock(lock);
-        lock.lock();
-        configuration.setMessageLock(messageLock);
 
         configuration.setMessageBuffer(new MicroByteBuffer(new byte[SIZE]));
-        configuration.setAnswersBuffer(new MicroByteBuffer());
+        configuration.setNetwork(new ConsoleNetwork(new MicroByteBuffer(new byte[SIZE])));
+        configuration.setPort(1237);
+        configuration.setServer("localhost");
 
         configuration.setBattleCreationManager(new ClientBattleCreationManager(configuration));
         configuration.setCommonManager(new ClientCommonManager(configuration));

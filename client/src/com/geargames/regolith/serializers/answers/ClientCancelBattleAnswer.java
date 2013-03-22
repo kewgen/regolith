@@ -1,7 +1,7 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
-import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 
 /**
  * User: abarakov

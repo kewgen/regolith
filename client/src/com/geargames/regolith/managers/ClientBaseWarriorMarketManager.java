@@ -1,9 +1,7 @@
 package com.geargames.regolith.managers;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.Packets;
-import com.geargames.regolith.network.MessageLock;
-import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.serializers.answers.ClientJoinBaseWarriorsAnswer;
 import com.geargames.regolith.serializers.requests.ClientJoinBaseWarriorsRequest;
 import com.geargames.regolith.units.battle.Warrior;

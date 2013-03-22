@@ -1,8 +1,9 @@
 package com.geargames.regolith.managers;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.network.MessageLock;
+import com.geargames.common.network.MessageLock;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
 import com.geargames.regolith.serializers.requests.CheckForNameRequest;
@@ -18,9 +19,13 @@ import com.geargames.regolith.units.Login;
  */
 public class ClientCommonManager {
     private ClientConfiguration configuration;
+    private ClientLoginAnswer loginAnswer;
+    private ClientConfirmationAnswer confirmationAnswer;
 
     public ClientCommonManager(ClientConfiguration configuration) {
         this.configuration = configuration;
+        loginAnswer = new ClientLoginAnswer(configuration);
+        confirmationAnswer = new ClientConfirmationAnswer();
     }
 
     /**
@@ -29,13 +34,7 @@ public class ClientCommonManager {
      * @return
      */
     public ClientDeferredAnswer login(Login login) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.LOGIN);
-        ClientLoginAnswer clientLoginAnswer = new ClientLoginAnswer(configuration);
-        messageLock.setMessage(clientLoginAnswer);
-        configuration.getNetwork().sendMessage(new LoginRequest(configuration, login));
-
-        return new ClientDeferredAnswer(clientLoginAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new LoginRequest(configuration, login), loginAnswer);
     }
 
     /**
@@ -51,25 +50,13 @@ public class ClientCommonManager {
      * использовать при создании нового аккаунта.
      */
     public ClientDeferredAnswer checkForName(String login) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.CHECK_FOR_NAME);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new CheckForNameRequest(configuration, login));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new CheckForNameRequest(configuration, login), confirmationAnswer);
     }
 
     /**
      * Послать сообщение-запрос о создании нового аккаунта.
      */
     public ClientDeferredAnswer create(Login account) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.CLIENT_REGISTRATION);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new CreateAccountRequest(configuration, account));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new CreateAccountRequest(configuration, account), confirmationAnswer);
     }
 }

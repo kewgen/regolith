@@ -1,8 +1,8 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.Network;
 import com.geargames.regolith.managers.*;
-import com.geargames.regolith.network.MessageLock;
-import com.geargames.regolith.network.Network;
+import com.geargames.common.network.MessageLock;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;
@@ -23,14 +23,12 @@ public class ClientConfiguration {
 
     private Network network;
     private Account account;
-    private MicroByteBuffer answersBuffer;
     private MicroByteBuffer messageBuffer;
     private int maxErrorsAmount;
     private String server;
     private int port;
     private byte[] incomingMessage;
     private int outgoingMessageSize;
-    private MessageLock messageLock;
     private Warrior[] baseWarriors;
 
     public ClientConfiguration() {
@@ -69,14 +67,6 @@ public class ClientConfiguration {
     }
 
     private boolean ready;
-
-    public MicroByteBuffer getAnswersBuffer() {
-        return answersBuffer;
-    }
-
-    public void setAnswersBuffer(MicroByteBuffer answersBuffer) {
-        this.answersBuffer = answersBuffer;
-    }
 
     public boolean isReady() {
         return ready;
@@ -188,13 +178,5 @@ public class ClientConfiguration {
 
     public void setBaseConfiguration(BaseConfiguration baseConfiguration) {
         this.baseConfiguration = baseConfiguration;
-    }
-
-    public MessageLock getMessageLock() {
-        return messageLock;
-    }
-
-    public void setMessageLock(MessageLock messageLock) {
-        this.messageLock = messageLock;
     }
 }

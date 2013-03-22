@@ -1,5 +1,7 @@
 package com.geargames.regolith.battleConnectionTest;
 
+import com.geargames.common.network.ClientDeferredAnswer;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
@@ -7,7 +9,6 @@ import com.geargames.regolith.ClientTestHelper;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.Manager;
 import com.geargames.regolith.managers.*;
-import com.geargames.regolith.serializers.ClientDeSerializedMessage;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
@@ -30,7 +31,7 @@ public class BattleListenerTest {
 
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
         try {
-            return answer.retrieve(1000);
+            return answer.retrieve(100);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -40,13 +41,18 @@ public class BattleListenerTest {
     // Ожидаем асинхронного сообщения и возвращаем true, если сообщение получено.
     private static boolean waitForAsyncAnswer(ClientDeSerializedMessage answer, short msgType, int attemptCount) {
         int i = 0;
-        while (! ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(answer, msgType)) {
-            if (i++ >= attemptCount) {
-                return false;
+        try {
+            while (! ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(answer, msgType)) {
+                if (i++ >= attemptCount) {
+                    return false;
+                }
+                Manager.pause(100);
             }
-            Manager.pause(100);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return true;
     }
 
     @Test
@@ -92,7 +98,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #0b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
-        answer = battleMarketManager.listenToBattle(battle, account);
+        answer = battleMarketManager.listenToBattle(battle);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientCreateBattleAnswer listen = (ClientCreateBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
@@ -297,7 +303,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #6b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
-        answer = battleMarketManager.listenToBattle(battle, account);
+        answer = battleMarketManager.listenToBattle(battle);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listen = (ClientCreateBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
@@ -366,7 +372,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #7b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
-        answer = battleMarketManager.listenToBattle(battle, account);
+        answer = battleMarketManager.listenToBattle(battle);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listen = (ClientCreateBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());

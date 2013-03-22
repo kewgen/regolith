@@ -6,7 +6,7 @@ import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
-import com.geargames.regolith.managers.ClientDeferredAnswer;
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -84,10 +84,10 @@ public class PButtonOk extends PEntitledTouchButton {
 
         ClientDeferredAnswer answer = clientConfiguration.getBattleCreationManager().startBattle(clientConfiguration.getAccount());
 
-        if (answer.retrieve(100)) { // ждем ответа в течении 10 сек
+//        if (answer.retrieve(100)) { // ждем ответа в течении 10 сек
 //            answer.getAnswer().deSerialize();
 //            ClientStartBattleAnswer
-        }
+//        }
 
         return battle;
     }

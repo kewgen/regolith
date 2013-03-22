@@ -1,9 +1,9 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.Network;
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PUnresolvedFrameManager;
 import com.geargames.platform.packer.Image;
-import com.geargames.regolith.network.Network;
 import com.geargames.regolith.serializers.answers.ClientGetFrameAnswer;
 import com.geargames.regolith.serializers.requests.ClientFrameRequest;
 
@@ -32,16 +32,21 @@ public class RemoteFrameLoader extends PUnresolvedFrameManager {
         PFrame frame = (PFrame) images.get(frameId);
         if (frame != null) {
             if (frame == NULL_FRAME) {
-                PFrame found = null;
-                while (network.getAsynchronousAnswer(answer, Packets.FRAME_MESSAGE)) {
-                    frame = answer.getFrame();
-                    images.put(frame.getPID(), frame);
-                    if (frame.getPID() == frameId) {
-                        found = frame;
+                try {
+                    PFrame found = null;
+                    while (network.getAsynchronousAnswer(answer, Packets.FRAME_MESSAGE)) {
+                        frame = answer.getFrame();
+                        images.put(frame.getPID(), frame);
+                        if (frame.getPID() == frameId) {
+                            found = frame;
+                        }
                     }
-                }
-                if (found != null) {
-                    return found;
+                    if (found != null) {
+                        return found;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //todo: Ошибка
                 }
             }
             return frame;

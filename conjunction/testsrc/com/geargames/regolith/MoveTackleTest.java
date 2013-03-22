@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.util.ArrayList;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.*;
@@ -32,7 +33,12 @@ public class MoveTackleTest {
     private static SimpleService service;
 
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        return answer.retrieve(1000);
+        try {
+            return answer.retrieve(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @BeforeClass
@@ -104,7 +110,11 @@ public class MoveTackleTest {
 
         messanger.deferredSend(move, confirm);
         messanger.commitMessages();
-        Assert.assertTrue("Waiting time answer has expired", messanger.retrieve(1000));
+        try {
+            Assert.assertTrue("Waiting time answer has expired", messanger.retrieve(1000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ArrayList answers = messanger.getAnswer().getAnswers();
 

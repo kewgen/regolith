@@ -1,8 +1,6 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.network.DataMessage;
-import com.geargames.regolith.network.Network;
-import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.common.network.Network;
 import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
 import com.geargames.regolith.units.AmmunitionBag;
 import com.geargames.regolith.units.Bag;
@@ -61,10 +59,10 @@ public class ClientHelper {
      * @param active   признак нашей активности после предыдущей проверки
      * @return
      */
-    public static boolean isOurTurn(Network network, BattleAlliance alliance, boolean active) {
-        if(network.getAsynchronousAnswer(changeActiveAllianceAnswer, Packets.CHANGE_ACTIVE_ALLIANCE)){
-            return  changeActiveAllianceAnswer.getAlliance() == alliance;
-        }else{
+    public static boolean isOurTurn(Network network, BattleAlliance alliance, boolean active) throws Exception {
+        if (network.getAsynchronousAnswer(changeActiveAllianceAnswer, Packets.CHANGE_ACTIVE_ALLIANCE)) {
+            return changeActiveAllianceAnswer.getAlliance() == alliance;
+        } else {
             return active;
         }
     }

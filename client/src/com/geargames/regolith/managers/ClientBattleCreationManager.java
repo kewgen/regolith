@@ -1,8 +1,9 @@
 package com.geargames.regolith.managers;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.network.MessageLock;
+import com.geargames.common.network.MessageLock;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.Account;
@@ -23,6 +24,7 @@ public class ClientBattleCreationManager {
     private ClientJoinToBattleAllianceAnswer clientJoinToBattleAllianceAnswer;
     private ClientGroupReadyStateAnswer clientGroupReadyStateAnswer;
     private ClientEvictAccountFromAllianceAnswer clientEvictAccountFromAllianceAnswer;
+    private ClientConfirmationAnswer confirmationAnswer;
 
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
@@ -31,6 +33,7 @@ public class ClientBattleCreationManager {
         clientJoinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
         clientGroupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         clientEvictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
+        confirmationAnswer = new ClientConfirmationAnswer();
     }
 
     /**
@@ -69,13 +72,7 @@ public class ClientBattleCreationManager {
     }
 
     public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {
-        MessageLock messageLock = configuration.getMessageLock();
-        messageLock.setMessageType(Packets.GROUP_COMPLETE);
-        ClientConfirmationAnswer clientConfirmationAnswer = new ClientConfirmationAnswer();
-        messageLock.setMessage(clientConfirmationAnswer);
-        configuration.getNetwork().sendMessage(new BattleGroupCompleteRequest(configuration, warriors, group));
-
-        return new ClientDeferredAnswer(clientConfirmationAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),confirmationAnswer);
     }
 
     public void doNotListenToBattle(Battle battle) {

@@ -1,6 +1,5 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.application.Manager;
 import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -8,10 +7,9 @@ import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.dictionaries.ClientBattleGroupCollection;
 import com.geargames.regolith.units.map.BattleMap;
 
-import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.ClientBaseWarriorMarketManager;
 import com.geargames.regolith.managers.ClientCommonManager;
-import com.geargames.regolith.managers.ClientDeferredAnswer;
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinBaseWarriorsAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
@@ -33,7 +31,7 @@ public class ClientTestHelper {
 
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
         try {
-            return answer.retrieve(1000);
+            return answer.retrieve(100);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

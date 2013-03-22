@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
@@ -22,7 +23,12 @@ public class MenuTest {
 
 
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        return answer.retrieve(200);
+        try {
+            return answer.retrieve(200);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static void main(String[] arg) throws Exception {
