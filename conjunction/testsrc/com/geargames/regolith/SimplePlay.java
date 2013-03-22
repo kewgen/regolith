@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.service.MainServiceManager;
@@ -138,7 +139,7 @@ public class SimplePlay {
             }
 
             BattleGroup group;
-            answer = battleCreationManager.joinToAlliance(battle.getAlliances()[0], account);
+            answer = battleCreationManager.joinToAlliance(battle.getAlliances()[0]);
             retrieving(answer, 1000);
 
             group = ((ClientJoinBattleAnswer) answer.getAnswer()).getBattleGroup();

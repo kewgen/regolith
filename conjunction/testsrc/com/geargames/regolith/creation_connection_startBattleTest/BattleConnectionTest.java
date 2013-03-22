@@ -1,5 +1,6 @@
 package com.geargames.regolith.creation_connection_startBattleTest;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
@@ -9,12 +10,10 @@ import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
-import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 
 import junit.framework.Assert;
 import org.junit.Test;
 
-import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -107,7 +106,7 @@ public class BattleConnectionTest {
 
         // scenario: #1b
         System.out.println("The client is trying join to an alliance (id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")");
-        answer = battleCreationManager.joinToAlliance(alliance, account);
+        answer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientJoinBattleAnswer clientJoinBattleAnswer = (ClientJoinBattleAnswer) answer.getAnswer();
         BattleGroup battleGroup = clientJoinBattleAnswer.getBattleGroup();

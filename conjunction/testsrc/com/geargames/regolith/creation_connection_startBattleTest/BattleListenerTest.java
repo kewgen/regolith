@@ -1,5 +1,7 @@
 package com.geargames.regolith.creation_connection_startBattleTest;
 
+import com.geargames.common.network.ClientDeferredAnswer;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
@@ -7,10 +9,7 @@ import com.geargames.regolith.ClientTestHelper;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.Manager;
 import com.geargames.regolith.managers.*;
-import com.geargames.regolith.serializers.answers.ClientBrowseBattlesAnswer;
-import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
-import com.geargames.regolith.serializers.answers.ClientCreateBattleAnswer;
-import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
+import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
@@ -89,6 +88,7 @@ public class BattleListenerTest {
         System.out.println("Listening battle...");
 
         // scenario: #1b
+/*
         ClientJoinBattleAnswer clientJoinBattleAnswer = new ClientJoinBattleAnswer(battle);
 //        ClientConfigurationFactory.getConfiguration().getNetwork().getAsynchronousAnswer(
 //                clientJoinBattleAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE);
@@ -97,6 +97,7 @@ public class BattleListenerTest {
 
         System.out.println("Listening battle completed");
 
+*/
         //todo: GROUP_IS_READY     -> ACCOUNT_IS_READY
         //todo: GROUP_IS_NOT_READY -> ACCOUNT_IS_NOT_READY
 

@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
