@@ -65,6 +65,7 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
                 }
                 if (battleCreationManager.evictAccount(alliance, victim)) {
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
+                    recipients.add(serverContext.getChannel(victim));
                     message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victim, alliance);
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);

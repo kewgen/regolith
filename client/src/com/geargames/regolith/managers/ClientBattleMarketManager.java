@@ -5,7 +5,7 @@ import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.answers.ClientBrowseBattleMapsAnswer;
 import com.geargames.regolith.serializers.answers.ClientBrowseBattlesAnswer;
-import com.geargames.regolith.serializers.answers.ClientCreateBattleAnswer;
+import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.map.BattleMap;
@@ -16,27 +16,27 @@ import com.geargames.regolith.units.map.BattleMap;
  */
 public class ClientBattleMarketManager {
     private ClientConfiguration configuration;
-    private ClientCreateBattleAnswer createBattleAnswer;
+    private ClientListenToBattleAnswer listenToBattleAnswer;
     private ClientBrowseBattlesAnswer browseBattlesAnswer;
     private ClientBrowseBattleMapsAnswer browseBattleMapsAnswer;
 
     public ClientBattleMarketManager(ClientConfiguration configuration) {
         this.configuration = configuration;
-        createBattleAnswer = new ClientCreateBattleAnswer();
+        listenToBattleAnswer = new ClientListenToBattleAnswer();
         browseBattlesAnswer = new ClientBrowseBattlesAnswer(configuration);
         browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
     }
 
     public ClientDeferredAnswer createBattle(BattleMap battleMap, int index) {
-        createBattleAnswer.setBattle(null);
+        listenToBattleAnswer.setBattle(null);
         return configuration.getNetwork().sendSynchronousMessage(
-                new CreateBattleRequest(configuration, battleMap, (byte) index), createBattleAnswer);
+                new CreateBattleRequest(configuration, battleMap, (byte) index), listenToBattleAnswer);
     }
 
     public ClientDeferredAnswer listenToBattle(Battle battle) {
-        createBattleAnswer.setBattle(battle);
+        listenToBattleAnswer.setBattle(battle);
         return configuration.getNetwork().sendSynchronousMessage(
-                new ListenToBattleRequest(configuration, battle), createBattleAnswer);
+                new ListenToBattleRequest(configuration, battle), listenToBattleAnswer);
     }
 
     public ClientDeferredAnswer browseBattles() {

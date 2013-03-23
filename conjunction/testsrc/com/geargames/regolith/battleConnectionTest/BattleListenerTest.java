@@ -26,11 +26,11 @@ import java.util.concurrent.BrokenBarrierException;
 public class BattleListenerTest {
 
     private static final int FIRST_WAINTING = 1000; // 100 сек
-    private static final int NEXT_WAINTING  = 200;  // 20 сек
+    private static final int NEXT_WAINTING  = 2000;  // 20 сек
 
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
         try {
-            return answer.retrieve(100);
+            return answer.retrieve(1000);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -65,7 +65,8 @@ public class BattleListenerTest {
 
         System.out.println("Configuring the client...");
 
-        Account account = loginAnswer.getAccount();
+        Account selfAccount = loginAnswer.getAccount();
+        System.out.println("Account id = " + selfAccount.getId());
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());
         clientConfiguration.setBaseWarriors(loginAnswer.getWarriors());
 
@@ -74,7 +75,7 @@ public class BattleListenerTest {
         ClientBattleCreationManager battleCreationManager = clientConfiguration.getBattleCreationManager();
 //        ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
 
-        ClientTestHelper.hireWarriorForClient(account);
+        ClientTestHelper.hireWarriorForClient(selfAccount);
 
         System.out.println("The client go to the battle market...");
 
@@ -89,7 +90,6 @@ public class BattleListenerTest {
         ClientBattleCollection battles = browseBattlesAnswer.getBattles();
         Assert.assertTrue("There is no battle to play", battles.size() > 0);
         Battle battle = battles.get(0);
-
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -99,7 +99,7 @@ public class BattleListenerTest {
         System.out.println("Trying to connect to the battle for listening...");
         answer = battleMarketManager.listenToBattle(battle);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientCreateBattleAnswer listen = (ClientCreateBattleAnswer) answer.getAnswer();
+        ClientListenToBattleAnswer listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
@@ -127,7 +127,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not evicted from the alliance",
                 waitForAsyncAnswer(evictAccountFromAllianceAnswer, Packets.EVICT_ACCOUNT_FROM_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' has not evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
         System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
                 "' evicted from the alliance (id = " + evictAccountFromAllianceAnswer.getAlliance().getId() + ")");
         Manager.pause(300);
@@ -142,7 +142,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("??? 'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different references to the accounts", accountClientC == joinToBattleAllianceAnswer.getBattleGroup().getAccount());
+        Assert.assertTrue("Different ID of the client accounts", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
         Manager.pause(300);
@@ -155,7 +155,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not evicted from the alliance",
                 waitForAsyncAnswer(evictAccountFromAllianceAnswer, Packets.EVICT_ACCOUNT_FROM_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' has not evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
         System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
                 "' evicted from the alliance (id = " + evictAccountFromAllianceAnswer.getAlliance().getId() + ")");
         Manager.pause(300);
@@ -170,7 +170,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("??? 'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
         Manager.pause(300);
@@ -183,7 +183,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not establish its readiness",
                 waitForAsyncAnswer(groupReadyStateAnswer, Packets.GROUP_IS_READY, NEXT_WAINTING));
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
         Manager.pause(300);
@@ -196,7 +196,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not evicted from the alliance",
                 waitForAsyncAnswer(evictAccountFromAllianceAnswer, Packets.EVICT_ACCOUNT_FROM_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' has not evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
         System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
                 "' evicted from the alliance (id = " + evictAccountFromAllianceAnswer.getAlliance().getId() + ")");
         Manager.pause(300);
@@ -211,7 +211,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("??? 'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
         Manager.pause(300);
@@ -224,7 +224,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not establish its readiness",
                 waitForAsyncAnswer(groupReadyStateAnswer, Packets.GROUP_IS_READY, NEXT_WAINTING));
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
         Manager.pause(300);
@@ -237,7 +237,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not evicted from the alliance",
                 waitForAsyncAnswer(evictAccountFromAllianceAnswer, Packets.EVICT_ACCOUNT_FROM_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' has not evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
         System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
                 "' evicted from the alliance (id = " + evictAccountFromAllianceAnswer.getAlliance().getId() + ")");
         Manager.pause(300);
@@ -252,7 +252,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("??? 'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
         Manager.pause(300);
@@ -304,7 +304,7 @@ public class BattleListenerTest {
         System.out.println("Trying to connect to the battle for listening...");
         answer = battleMarketManager.listenToBattle(battle);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientCreateBattleAnswer) answer.getAnswer();
+        listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
@@ -317,7 +317,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("??? 'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
         Manager.pause(300);
@@ -330,7 +330,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not establish its readiness",
                 waitForAsyncAnswer(groupReadyStateAnswer, Packets.GROUP_IS_READY, NEXT_WAINTING));
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
         Manager.pause(300);
@@ -373,7 +373,7 @@ public class BattleListenerTest {
         System.out.println("Trying to connect to the battle for listening...");
         answer = battleMarketManager.listenToBattle(battle);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientCreateBattleAnswer) answer.getAnswer();
+        listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
@@ -386,7 +386,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("??? 'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
         Manager.pause(300);
@@ -399,7 +399,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' has not establish its readiness",
                 waitForAsyncAnswer(groupReadyStateAnswer, Packets.GROUP_IS_READY, NEXT_WAINTING));
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
         Manager.pause(300);
@@ -412,7 +412,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client A' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("??? 'Client A' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client account", battle.getAuthor().getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client selfAccount", battle.getAuthor().getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
         BattleAlliance alliance = joinToBattleAllianceAnswer.getBattleGroup().getAlliance();

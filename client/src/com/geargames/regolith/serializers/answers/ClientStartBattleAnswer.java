@@ -1,6 +1,5 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.serializers.BattleDeserializer;

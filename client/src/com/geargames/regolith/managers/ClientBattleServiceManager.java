@@ -2,7 +2,7 @@ package com.geargames.regolith.managers;
 
 import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.serializers.answers.ClientCreateBattleAnswer;
+import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.requests.ClientBattleServiceLoginRequest;
 import com.geargames.regolith.serializers.requests.ClientMoveRequest;
 import com.geargames.regolith.serializers.requests.ClientShootRequest;
@@ -16,17 +16,17 @@ import com.geargames.regolith.units.battle.Warrior;
  */
 public class ClientBattleServiceManager {
     private ClientConfiguration configuration;
-    private ClientCreateBattleAnswer clientCreateBattleAnswer;
+    private ClientListenToBattleAnswer clientListenToBattleAnswer;
 
     public ClientBattleServiceManager(ClientConfiguration configuration) {
         this.configuration = configuration;
-        clientCreateBattleAnswer = new ClientCreateBattleAnswer();
+        clientListenToBattleAnswer = new ClientListenToBattleAnswer();
     }
 
     public ClientDeferredAnswer login(Battle battle, BattleAlliance alliance) {
         return configuration.getNetwork().sendSynchronousMessage(
                 new ClientBattleServiceLoginRequest(configuration, battle, alliance, configuration.getAccount()),
-                clientCreateBattleAnswer);
+                clientListenToBattleAnswer);
     }
 
     //todo все вызовы ниже сделать асинхронными
@@ -35,14 +35,14 @@ public class ClientBattleServiceManager {
         //todo ожидается ответ неправильного типа
         return configuration.getNetwork().sendSynchronousMessage(
                 new ClientMoveRequest(configuration, warrior, x, y),
-                clientCreateBattleAnswer);
+                clientListenToBattleAnswer);
     }
 
     public ClientDeferredAnswer shoot(Warrior hunter, Warrior victim) {
         //todo ожидается ответ неправильного типа
         return configuration.getNetwork().sendSynchronousMessage(
                 new ClientShootRequest(configuration, hunter, victim),
-                clientCreateBattleAnswer);
+                clientListenToBattleAnswer);
     }
 
 }

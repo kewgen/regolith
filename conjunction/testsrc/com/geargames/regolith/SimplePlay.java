@@ -132,8 +132,8 @@ public class SimplePlay {
         if (maps.length > 0) {
             answer = battleMarketManager.createBattle(maps[0], 0);
             retrieving(answer, 1000);
-            ClientCreateBattleAnswer createBattle = (ClientCreateBattleAnswer) answer.getAnswer();
-            Battle battle = createBattle.getBattle();
+            ClientListenToBattleAnswer listenToBattle = (ClientListenToBattleAnswer) answer.getAnswer();
+            Battle battle = listenToBattle.getBattle();
             if (battle == null) {
                 System.err.println("could not createAmmunitionBag his own battle.");
             }
