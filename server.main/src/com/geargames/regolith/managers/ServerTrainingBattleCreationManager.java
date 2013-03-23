@@ -1,8 +1,10 @@
 package com.geargames.regolith.managers;
 
+import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.BattleManagerContext;
+import com.geargames.regolith.service.states.ClientAtBattleMarket;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleHelper;
 import com.geargames.regolith.units.battle.*;
@@ -10,6 +12,7 @@ import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 
 import java.io.IOException;
+import java.nio.channels.SocketChannel;
 import java.util.Set;
 
 /**
@@ -23,13 +26,17 @@ public class ServerTrainingBattleCreationManager {
         configuration = MainServerConfigurationFactory.getConfiguration();
     }
 
-
     public boolean evictAccount(BattleAlliance alliance, Account account) {
         for (BattleGroup battleGroup : ((ServerBattleGroupCollection) alliance.getAllies()).getBattleGroups()) {
             if (battleGroup.getAccount() == account) {
                 doNotListenToBattle(alliance.getBattle(), account);
                 battleGroup.setAccount(null);
                 ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors().clear();
+
+                //todo: Верно ли подобрано место для смены клиентского стейта?
+                SocketChannel channel = configuration.getServerContext().getChannel(account);
+                Client client = configuration.getServerContext().getClient(channel);
+                client.setState(new ClientAtBattleMarket());
                 return true;
             }
         }
@@ -45,7 +52,6 @@ public class ServerTrainingBattleCreationManager {
         }
         return null;
     }
-
 
     public Battle startBattle(Account author) {
         BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
@@ -101,4 +107,5 @@ public class ServerTrainingBattleCreationManager {
         Set<BattleGroup> groups = configuration.getServerContext().getBattleManagerContext().getCompleteGroups().get(battle);
         return groups != null && groups.contains(group) && groups.remove(group);
     }
+
 }

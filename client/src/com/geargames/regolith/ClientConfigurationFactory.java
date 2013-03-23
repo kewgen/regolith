@@ -4,7 +4,6 @@ import com.geargames.common.util.Lock;
 import com.geargames.platform.network.ConsoleNetwork;
 import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.managers.*;
-import com.geargames.common.network.MessageLock;
 import com.geargames.common.serialization.MicroByteBuffer;
 
 /**

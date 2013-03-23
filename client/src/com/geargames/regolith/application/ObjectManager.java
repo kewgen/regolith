@@ -29,8 +29,8 @@ public class ObjectManager {
         return clientBattle;
     }
 
-    public  static ObjectManager getInstance(){
-        if(instance == null){
+    public static ObjectManager getInstance() {
+        if (instance == null) {
             instance = new ObjectManager();
         }
         return instance;

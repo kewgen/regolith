@@ -113,7 +113,7 @@ startBattle и битва начинается
 	Client B:  in   Client A присоединился к альянсу
 	Client C:  in   Client A присоединился к альянсу
 7g	Client B:  out  joinToAlliance (aliance with client A, B)
-	Client B:  in   join failed - не возможно присоединиться к уже заполненному альянсу
+	Client B:  in   join failed - невозможно присоединиться к уже заполненному альянсу
 7h	Client A:  out  isReady
 	Client A:  in   Я готов к битве
 	Client B:  in   Client A готов к битве

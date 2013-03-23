@@ -40,6 +40,7 @@ public class ClientEvictAccountFromAllianceAnswer extends ClientDeSerializedMess
                 if (account.getId() == id) {
                     this.account = account;
                     battleGroup.setAccount(null);
+                    battleGroup.setWarriors(null);
                     return;
                 }
             }

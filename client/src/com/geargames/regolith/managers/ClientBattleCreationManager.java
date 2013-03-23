@@ -3,7 +3,6 @@ package com.geargames.regolith.managers;
 import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.common.network.MessageLock;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.Account;
@@ -19,20 +18,20 @@ import com.geargames.regolith.units.battle.Warrior;
  */
 public class ClientBattleCreationManager {
     private ClientConfiguration configuration;
-    private ClientStartBattleAnswer clientStartBattleAnswer;
-    private ClientCancelBattleAnswer clientCancelBattleAnswer;
-    private ClientJoinToBattleAllianceAnswer clientJoinToBattleAllianceAnswer;
-    private ClientGroupReadyStateAnswer clientGroupReadyStateAnswer;
-    private ClientEvictAccountFromAllianceAnswer clientEvictAccountFromAllianceAnswer;
+    private ClientStartBattleAnswer startBattleAnswer;
+    private ClientCancelBattleAnswer cancelBattleAnswer;
+    private ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer;
+    private ClientGroupReadyStateAnswer groupReadyStateAnswer;
+    private ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer;
     private ClientConfirmationAnswer confirmationAnswer;
 
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
-        clientStartBattleAnswer  = new ClientStartBattleAnswer(configuration.getAccount(), configuration.getBaseConfiguration());
-        clientCancelBattleAnswer = new ClientCancelBattleAnswer();
-        clientJoinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
-        clientGroupReadyStateAnswer = new ClientGroupReadyStateAnswer();
-        clientEvictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
+        startBattleAnswer = new ClientStartBattleAnswer(configuration.getAccount(), configuration);
+        cancelBattleAnswer = new ClientCancelBattleAnswer();
+        joinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
+        groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
+        evictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
         confirmationAnswer = new ClientConfirmationAnswer();
     }
 
@@ -43,9 +42,9 @@ public class ClientBattleCreationManager {
      * @param account
      */
     public ClientDeferredAnswer evictAccount(BattleAlliance alliance, Account account) {
-        clientEvictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
+        evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
         return configuration.getNetwork().sendSynchronousMessage(
-                new EvictAccountRequest(configuration, account, alliance), clientEvictAccountFromAllianceAnswer);
+                new EvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer);
     }
 
     /**
@@ -53,22 +52,22 @@ public class ClientBattleCreationManager {
      * @param author ссылка на аккаунт пользователя - инициатора начала битвы.
      */
     public ClientDeferredAnswer startBattle(Account author) {
-        return configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), clientStartBattleAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), startBattleAnswer);
     }
 
     /**
      * Послать сообщение-запрос об отмене пользователем битвы.
      */
     public ClientDeferredAnswer cancelBattle() {
-        return configuration.getNetwork().sendSynchronousMessage(new ClientCancelBattleRequest(configuration), clientCancelBattleAnswer);
+        return configuration.getNetwork().sendSynchronousMessage(new ClientCancelBattleRequest(configuration), cancelBattleAnswer);
     }
 
     /**
      * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
      */
     public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance) {
-        clientJoinToBattleAllianceAnswer.setBattle(alliance.getBattle());
-        return configuration.getNetwork().sendSynchronousMessage(new ClientJoinToBattleAllianceRequest(configuration, alliance), clientJoinToBattleAllianceAnswer);
+        joinToBattleAllianceAnswer.setBattle(alliance.getBattle());
+        return configuration.getNetwork().sendSynchronousMessage(new ClientJoinToBattleAllianceRequest(configuration, alliance), joinToBattleAllianceAnswer);
     }
 
     public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {
@@ -80,15 +79,15 @@ public class ClientBattleCreationManager {
     }
 
     public ClientDeferredAnswer isReady(BattleGroup group) {
-        clientGroupReadyStateAnswer.setBattle(group.getAlliance().getBattle());
+        groupReadyStateAnswer.setBattle(group.getAlliance().getBattle());
         return configuration.getNetwork().sendSynchronousMessage(
-                new GroupReadyStateRequest(configuration, Packets.GROUP_IS_READY, group), clientGroupReadyStateAnswer);
+                new GroupReadyStateRequest(configuration, Packets.GROUP_IS_READY, group), groupReadyStateAnswer);
     }
 
     public ClientDeferredAnswer isNotReady(BattleGroup group) {
-        clientGroupReadyStateAnswer.setBattle(group.getAlliance().getBattle());
+        groupReadyStateAnswer.setBattle(group.getAlliance().getBattle());
         return configuration.getNetwork().sendSynchronousMessage(
-                new GroupReadyStateRequest(configuration, Packets.GROUP_IS_NOT_READY, group), clientGroupReadyStateAnswer);
+                new GroupReadyStateRequest(configuration, Packets.GROUP_IS_NOT_READY, group), groupReadyStateAnswer);
     }
 
 }

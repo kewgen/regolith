@@ -18,10 +18,11 @@ import java.util.Vector;
  * User: mkutuzov
  * Date: 06.07.12
  */
-public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
+// ClientCreateBattleAnswer
+public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
     private Battle battle;
 
-    public ClientCreateBattleAnswer() {
+    public ClientListenToBattleAnswer() {
     }
 
     public void setBattle(Battle battle) {
@@ -33,7 +34,8 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
     }
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        if (SimpleDeserializer.deserializeBoolean(buffer)) {
+        boolean success = SimpleDeserializer.deserializeBoolean(buffer);
+        if (success) {
             if (battle == null) {
                 battle = new Battle();
             }

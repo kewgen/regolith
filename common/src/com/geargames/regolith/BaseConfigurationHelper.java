@@ -15,6 +15,7 @@ import com.geargames.regolith.units.tackle.*;
  * Класс помошник, предназначен для общего(для клиента и сервера) поиска сущностей внутри текущей конфигурации.
  */
 public class BaseConfigurationHelper {
+
     public static BattleType findBattleTypeById(int id, BaseConfiguration configuration) {
         if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
@@ -139,4 +140,5 @@ public class BaseConfigurationHelper {
             throw new IllegalArgumentException();
         }
     }
+
 }
