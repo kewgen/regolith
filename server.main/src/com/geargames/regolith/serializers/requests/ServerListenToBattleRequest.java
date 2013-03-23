@@ -36,4 +36,5 @@ public class ServerListenToBattleRequest extends MainOneToClientRequest {
             return ServerListenToBattleAnswer.AnswerFailure(writeBuffer, Packets.LISTEN_TO_BATTLE);
         }
     }
+
 }

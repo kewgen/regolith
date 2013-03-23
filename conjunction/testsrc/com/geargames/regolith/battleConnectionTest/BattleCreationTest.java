@@ -153,7 +153,7 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
-        Manager.pause(300);
+        Manager.pause(300 + 1000); // + секунда, чтобы клиент C успел выполнить свой сценарий #2b
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #2c ==============================");
@@ -229,7 +229,7 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
-        Manager.pause(300);
+        Manager.pause(300 + 1000); // + секунда, чтобы клиент C успел выполнить свой сценарий #2b
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #4d ==============================");
