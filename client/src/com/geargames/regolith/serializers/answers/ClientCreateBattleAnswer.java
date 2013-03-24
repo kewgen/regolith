@@ -5,6 +5,7 @@ import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -54,11 +55,12 @@ public class ClientCreateBattleAnswer extends ClientDeSerializedMessage {
                     BattleGroup group = new BattleGroup();
                     group.setId(SimpleDeserializer.deserializeInt(buffer));
                     int id = SimpleDeserializer.deserializeInt(buffer);
-                    if (id != -1) {
+                    if (id != SerializeHelper.NULL_REFERENCE) {
                         Account account = new Account();
                         account.setId(id);
                         group.setAccount(account);
                         account.setName(SimpleDeserializer.deserializeString(buffer));
+                        account.setFrameId(SimpleDeserializer.deserializeInt(buffer));
                     }
                     group.setAlliance(alliance);
                     alliance.getAllies().add(group);

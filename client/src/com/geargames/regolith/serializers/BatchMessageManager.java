@@ -18,7 +18,7 @@ public class BatchMessageManager {
 
     private ClientConfiguration configuration;
     private BatchRequest request;
-    private BatchAnswer answer;
+    private SimpleBatchAnswer answer;
 
     private ClientDeferredAnswer deferredAnswer;
 
@@ -33,7 +33,7 @@ public class BatchMessageManager {
         configuration = ClientConfigurationFactory.getConfiguration();
         request = new BatchRequest(configuration);
         request.setRequests(new ArrayList(20));
-        answer = new BatchAnswer();
+        answer = new SimpleBatchAnswer();
         answer.setAnswers(new ArrayList(20));
     }
 

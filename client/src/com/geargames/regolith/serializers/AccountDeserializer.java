@@ -91,11 +91,16 @@ public class AccountDeserializer {
         deserialize(warrior.getAmmunitionBag(), buffer, baseConfiguration);
     }
 
-    public static Account deserialize(MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
+    public static Account deserializeAnother(MicroByteBuffer buffer){
         Account account = new Account();
         account.setId(SimpleDeserializer.deserializeInt(buffer));
         account.setName(SimpleDeserializer.deserializeString(buffer));
         account.setFrameId(SimpleDeserializer.deserializeInt(buffer));
+        return account;
+    }
+
+    public static Account deserialize(MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
+        Account account = deserializeAnother(buffer);
         account.setBreadwinner(SimpleDeserializer.deserializeInt(buffer));
         account.setCoach(SimpleDeserializer.deserializeInt(buffer));
         account.setEconomist(SimpleDeserializer.deserializeInt(buffer));
