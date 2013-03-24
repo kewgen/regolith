@@ -15,15 +15,26 @@ import java.util.LinkedList;
 public class BatchAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
     private LinkedList<SerializedMessage> messages;
+    private short type;
 
-    public BatchAnswer(MicroByteBuffer buffer, LinkedList<SerializedMessage> messages) {
+    public BatchAnswer() {
+    }
+
+    public void setBuffer(MicroByteBuffer buffer) {
         this.buffer = buffer;
+    }
+
+    public void setMessages(LinkedList<SerializedMessage> messages) {
         this.messages = messages;
     }
 
     @Override
     public short getType() {
-        return Packets.BATCH_MESSAGE;
+        return type;
+    }
+
+    public void setType(short type) {
+        this.type = type;
     }
 
     @Override
@@ -34,6 +45,7 @@ public class BatchAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         if (messages.size() != 0) {
+            SimpleSerializer.serialize(messages.size(), buffer);
             for (SerializedMessage message : messages) {
                 int position = buffer.position();
                 buffer.position(position + Packets.HEAD_SIZE);

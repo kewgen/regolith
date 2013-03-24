@@ -26,12 +26,14 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
     private BattleManagerContext battleManagerContext;
     private ServerTrainingBattleCreationManager battleCreationManager;
     private ServerContext serverContext;
+    private BrowseBattlesSchedulerService schedulerService;
 
     public ServerEvictAccountFromAllianceRequest() {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         this.battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         this.battleCreationManager = configuration.getBattleCreationManager();
         this.serverContext = configuration.getServerContext();
+        this.schedulerService = configuration.getBrowseBattlesSchedulerService();
     }
 
     @Override
@@ -65,6 +67,7 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
                 }
                 if (battleCreationManager.evictAccount(alliance, victim)) {
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
+                    schedulerService.addBattle(battle);
                     message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victim, alliance);
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);

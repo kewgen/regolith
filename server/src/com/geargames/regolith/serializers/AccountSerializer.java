@@ -73,10 +73,15 @@ public class AccountSerializer {
         serialize(warrior.getAmmunitionBag(), buffer);
     }
 
-    public static void serialize(Account account, MicroByteBuffer buffer) {
+    public static void serializeAnother(Account account, MicroByteBuffer buffer){
         SerializeHelper.serializeEntityReference(account, buffer);
         SimpleSerializer.serialize(account.getName(), buffer);
         SimpleSerializer.serialize(account.getFrameId(), buffer);
+    }
+
+
+    public static void serialize(Account account, MicroByteBuffer buffer) {
+        serializeAnother(account, buffer);
         SimpleSerializer.serialize(account.getBreadwinner(), buffer);
         SimpleSerializer.serialize(account.getCoach(), buffer);
         SimpleSerializer.serialize(account.getEconomist(), buffer);

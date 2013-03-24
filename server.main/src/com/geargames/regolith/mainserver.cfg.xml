@@ -8,4 +8,5 @@
     <messageOutputDataProcessorsAmount>3</messageOutputDataProcessorsAmount>
     <port>1237</port>
     <imageDirectory>images</imageDirectory>
+    <browseBattlesTimeInterval>10</browseBattlesTimeInterval>
 </serverConfiguration>

@@ -26,12 +26,14 @@ public class ServerJoinToBattleAllianceRequest extends ServerRequest {
     private BattleManagerContext battleManagerContext;
     private ServerTrainingBattleCreationManager battleCreationManager;
     private ServerContext serverContext;
+    private BrowseBattlesSchedulerService browseBattlesSchedulerService;
 
     public ServerJoinToBattleAllianceRequest() {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         this.battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         this.battleCreationManager = configuration.getBattleCreationManager();
         this.serverContext = configuration.getServerContext();
+        this.browseBattlesSchedulerService = configuration.getBrowseBattlesSchedulerService();
     }
 
     @Override
@@ -52,6 +54,7 @@ public class ServerJoinToBattleAllianceRequest extends ServerRequest {
                 BattleGroup group = battleCreationManager.joinToAlliance(alliance, client.getAccount());
                 if (group != null) {
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
+                    browseBattlesSchedulerService.addBattle(battle);
                     message = ServerJoinToBattleAllianceAnswer.AnswerSuccess(to, group, client.getAccount());
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);
