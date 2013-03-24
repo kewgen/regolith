@@ -44,7 +44,7 @@ public class ClientAtBattleCreation extends MainState {
                 request = new ServerGetFrameRequest();
                 break;
             default:
-                throw new RegolithException();
+                throw new RegolithException("Invalid message type (" + type + ")");
         }
         List<MessageToClient> messages = request.request(from, getWriteBuffer(), client);
         ClientWriter writer = MainServerConfigurationFactory.getConfiguration().getWriter();

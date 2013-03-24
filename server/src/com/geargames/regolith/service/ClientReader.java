@@ -43,7 +43,6 @@ public abstract class ClientReader {
         }
         socketChannel.read(buffer);
         buffer.flip();
-        System.out.println("ClientReader: read (" + buffer.limit() + ")");
         putMessages(buffer, socketChannel);
     }
 

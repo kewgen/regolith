@@ -28,6 +28,7 @@ public class ClientBrowseBattlesAnswer extends ClientDeSerializedMessage {
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         int size = SimpleDeserializer.deserializeInt(buffer);
         ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();
+        battles.getBattles().clear(); //todo: здесь чистится список битв
 
         for (int i = 0; i < size; i++) {
             Battle battle = new Battle();

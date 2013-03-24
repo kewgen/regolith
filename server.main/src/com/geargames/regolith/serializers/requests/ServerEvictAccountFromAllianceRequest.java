@@ -10,6 +10,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.service.*;
+import com.geargames.regolith.service.states.ClientAtBattleMarket;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -64,6 +65,10 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
                     throw new RegolithException();
                 }
                 if (battleCreationManager.evictAccount(alliance, victim)) {
+                    SocketChannel victimChannel = serverContext.getChannel(victim);
+                    Client victimClient = serverContext.getClient(victimChannel);
+                    victimClient.setState(new ClientAtBattleMarket());
+
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
                     recipients.add(serverContext.getChannel(victim));
                     message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victim, alliance);

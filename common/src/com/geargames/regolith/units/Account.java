@@ -121,4 +121,10 @@ public class Account extends Login {
     public void setBase(Base base) {
         this.base = base;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "; name='" + getName() + "'";
+    }
+
 }

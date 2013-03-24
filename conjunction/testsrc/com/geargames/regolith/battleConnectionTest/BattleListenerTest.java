@@ -78,17 +78,17 @@ public class BattleListenerTest {
         ClientTestHelper.hireWarriorForClient(selfAccount);
 
         System.out.println("The client go to the battle market...");
-
         ClientDeferredAnswer answer = baseManager.goBattleManager();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
+        System.out.println("Browsing battles...");
         answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattlesAnswer browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         ClientBattleCollection battles = browseBattlesAnswer.getBattles();
-        Assert.assertTrue("There is no battle to play", battles.size() > 0);
+        Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         Battle battle = battles.get(0);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -273,7 +273,7 @@ public class BattleListenerTest {
         ClientCancelBattleAnswer cancelBattleAnswer = new ClientCancelBattleAnswer();
         Assert.assertTrue("The battle has not been cancelled",
                 waitForAsyncAnswer(cancelBattleAnswer, Packets.CANCEL_BATTLE, NEXT_WAINTING));
-//        Assert.assertTrue("'Client C' has not evicted from the alliance", cancelBattleAnswer.isSuccess()); //todo: реализовать метод isSuccess
+        Assert.assertTrue("Author is not able to cancel the battle", cancelBattleAnswer.isSuccess());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -281,7 +281,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #6 ==============================");
 
-        Manager.pause(1000); // Ждем, пока ClientA создаст битву
+        Manager.pause(1500); // Ждем, пока ClientA создаст битву
         ClientTestHelper.checkAsyncMessages();
 
         //todo: goBattleManager - надо ли?
@@ -291,11 +291,12 @@ public class BattleListenerTest {
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
+        System.out.println("Browsing battles...");
         answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         battles = browseBattlesAnswer.getBattles();
-        Assert.assertTrue("There is no battle to play", battles.size() > 0);
+        Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         battle = battles.get(0);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -341,7 +342,7 @@ public class BattleListenerTest {
         cancelBattleAnswer = new ClientCancelBattleAnswer();
         Assert.assertTrue("The battle has not been cancelled",
                 waitForAsyncAnswer(cancelBattleAnswer, Packets.CANCEL_BATTLE, NEXT_WAINTING));
-//        Assert.assertTrue("'Client C' has not evicted from the alliance", cancelBattleAnswer.isSuccess()); //todo: реализовать метод isSuccess
+        Assert.assertTrue("Author is not able to cancel the battle", cancelBattleAnswer.isSuccess());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -349,7 +350,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #7 ==============================");
 
-        Manager.pause(1000); // Ждем, пока ClientA создаст битву
+        Manager.pause(1500); // Ждем, пока ClientA создаст битву
         ClientTestHelper.checkAsyncMessages();
 
         //todo: goBattleManager - надо ли?
@@ -359,11 +360,12 @@ public class BattleListenerTest {
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
+        System.out.println("Browsing battles...");
         answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
         battles = browseBattlesAnswer.getBattles();
-        Assert.assertTrue("There is no battle to play", battles.size() > 0);
+        Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         battle = battles.get(0);
 
         Manager.pause(300);

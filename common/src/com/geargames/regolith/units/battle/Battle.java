@@ -72,4 +72,9 @@ public class Battle extends Entity {
         this.map = map;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + "; name='" + getName() + "'";
+    }
+
 }

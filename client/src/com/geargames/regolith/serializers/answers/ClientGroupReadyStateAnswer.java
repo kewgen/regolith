@@ -25,8 +25,8 @@ public class ClientGroupReadyStateAnswer extends ClientDeSerializedMessage {
         battleGroup = null;
         boolean success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
-            int id = SimpleDeserializer.deserializeInt(buffer);
-            battleGroup = ClientBattleHelper.findBattleGroupById(battle, id);
+            int battleGroupId = SimpleDeserializer.deserializeInt(buffer);
+            battleGroup = ClientBattleHelper.findBattleGroupById(battle, battleGroupId);
         }
     }
 

@@ -50,7 +50,7 @@ public class ClientAtBattleMarket extends MainState {
                 request = new ServerGetFrameRequest();
                 break;
             default:
-                throw new RegolithException();
+                throw new RegolithException("Invalid message type (" + type + ")");
         }
         serverConfiguration.getWriter().addMessageToClient(request.request(from, getWriteBuffer(), client).get(0));
     }

@@ -63,4 +63,5 @@ public class BattleAlliance extends Entity {
     public void setBattle(Battle battle) {
         this.battle = battle;
     }
+
 }
