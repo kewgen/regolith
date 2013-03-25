@@ -18,7 +18,7 @@ public class SimpleBatchAnswer extends  BatchAnswer {
         this.answers = answers;
     }
 
-    protected ClientDeSerializedMessage getAnswer(int i, short type) {
+    protected ClientDeSerializedMessage getTypedAnswer(int i, short type) {
         return (ClientDeSerializedMessage)answers.get(i);
     }
 }

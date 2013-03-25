@@ -37,7 +37,7 @@ public class PBattlesList extends PVerticalScrollView implements TimerListener {
 
     public void onTimer(int timerId) {
         try {
-            network.getAsynchronousAnswer(browseBattlesAnswer, Packets.BROWSE_CREATED_BATTLES);
+            //network.getAsynchronousAnswer(browseBattlesAnswer, Packets.BROWSE_CREATED_BATTLES);
         } catch (Exception e) {
             Debug.error("Could not serialize list of battles",e);
         }

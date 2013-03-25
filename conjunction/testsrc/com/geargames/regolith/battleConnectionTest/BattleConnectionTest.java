@@ -2,6 +2,8 @@ package com.geargames.regolith.battleConnectionTest;
 
 import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
+
+import com.geargames.common.util.ArrayList;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
@@ -17,6 +19,7 @@ import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import junit.framework.Assert;
 import org.junit.Test;
 
+import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
 
 /**
@@ -97,7 +100,13 @@ public class BattleConnectionTest {
         answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattlesAnswer browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
-        ClientBattleCollection battles = browseBattlesAnswer.getBattles();
+        ArrayList answers = browseBattlesAnswer.getAnswers();
+        ClientBattleCollection battles = new ClientBattleCollection();
+        battles.setBattles(new Vector(answers.size()));
+        for(int i = 0 ; i < answers.size(); i++){
+            battles.add(((ClientListenToBattleAnswer)answers.get(i)).getBattle());
+        }
+
         Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         Battle battle = battles.get(0);
         Manager.pause(300);
@@ -344,7 +353,14 @@ public class BattleConnectionTest {
         answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
-        battles = browseBattlesAnswer.getBattles();
+
+        ArrayList listen2battles = browseBattlesAnswer.getAnswers();
+        battles = new ClientBattleCollection();
+        battles.setBattles(new Vector(listen2battles.size()));
+        for(int i = 0 ; i < listen2battles.size(); i++){
+            battles.add(((ClientListenToBattleAnswer)listen2battles.get(i)).getBattle());
+        }
+
         Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         battle = battles.get(0);
         Manager.pause(300);
@@ -416,7 +432,14 @@ public class BattleConnectionTest {
         answer = battleMarketManager.browseBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
-        battles = browseBattlesAnswer.getBattles();
+
+        listen2battles = browseBattlesAnswer.getAnswers();
+        battles = new ClientBattleCollection();
+        battles.setBattles(new Vector(listen2battles.size()));
+        for(int i = 0 ; i < listen2battles.size(); i++){
+            battles.add(((ClientListenToBattleAnswer)listen2battles.get(i)).getBattle());
+        }
+
         Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         battle = battles.get(0);
         Manager.pause(300);

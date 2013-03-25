@@ -54,7 +54,7 @@ public class BatchMessageManager {
         return deferredAnswer.retrieve(count);
     }
 
-    public BatchAnswer getAnswer() {
+    public SimpleBatchAnswer getAnswer() {
         return answer;
     }
 

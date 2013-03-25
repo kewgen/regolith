@@ -1,6 +1,5 @@
 package com.geargames.regolith.awt.components.warrior;
 
-import com.geargames.awt.components.PLabel;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.units.battle.Warrior;
