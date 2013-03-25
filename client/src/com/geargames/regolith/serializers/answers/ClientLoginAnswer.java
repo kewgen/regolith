@@ -39,7 +39,8 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
         account  = null;
         error    = null;
         warriors = null;
-        if (SimpleDeserializer.deserializeBoolean(buffer)) {
+        boolean success = SimpleDeserializer.deserializeBoolean(buffer);
+        if (success) {
             baseConfiguration = ConfigurationDeserializer.deserializeBaseConfiguration(buffer);
             account = AccountDeserializer.deserialize(buffer, baseConfiguration);
             if (account.getWarriors() == null || account.getWarriors().size() == 0) {

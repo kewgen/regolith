@@ -117,13 +117,13 @@ public class BrowseBattlesSchedulerService {
                         new ServerBrowseCreatedBattlesAnswer(buffer, battleMarketManager.battlesJoinTo()).serialize()));
 
                 Set<Battle> browsed = new HashSet<Battle>();
-                size =  browsed.size();
-                for(int i = 0; i < size; i++){
+                size = browsed.size();
+                for (int i = 0; i < size; i++) {
                     browsed.add(battles.poll());
                 }
 
                 writer.addMessageToClient(new MainMessageToClient(oldListeners,
-                        new ServerBrowseCreatedBattlesAnswer(buffer,  browsed.toArray(new Battle[]{})).serialize()));
+                        new ServerBrowseCreatedBattlesAnswer(buffer, browsed.toArray(new Battle[]{})).serialize()));
                 oldListeners.addAll(newListeners);
                 newListeners.clear();
             }

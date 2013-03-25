@@ -1,16 +1,14 @@
 package com.geargames.regolith.units;
 
-import com.geargames.regolith.units.battle.Warrior;
-
 /**
- * Класс представляет собой звание бойца. Содержит в себе наименование и наименьший уровеньм опыта,
- * достаточный для получния звания, а так же список бойцов обладающих этим званием.
+ * Класс представляет собой звание бойца. Содержит в себе наименование и наименьший уровень опыта,
+ * достаточный для получения звания.
  * User: mkutuzov
  * Date: 10.02.12
  */
 public class Rank extends Entity {
     private String name;
-    private short experience;
+    private short experience; //todo: int
 
     public String getName() {
         return name;
@@ -27,4 +25,5 @@ public class Rank extends Entity {
     public void setExperience(short experience) {
         this.experience = experience;
     }
+
 }
