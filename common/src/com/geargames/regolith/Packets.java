@@ -83,6 +83,7 @@ public interface Packets {
     short DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES = 21;
 
 
+
     short GO_TO_WARRIOR_MARKET = 30;
 
     short GO_TO_TACKLE_MARKET = 31;
