@@ -127,9 +127,9 @@ public class BrowseBattlesSchedulerService {
                 oldListeners.addAll(newListeners);
                 newListeners.clear();
             }
-        },MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
-          MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
-          TimeUnit.SECONDS);
+        }, MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
+           MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
+           TimeUnit.SECONDS);
     }
 
 }

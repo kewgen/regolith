@@ -477,6 +477,7 @@ public class BattleConnectionTest {
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+        Account accountClientA = battle.getAuthor();
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -515,7 +516,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("'Client A' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("??? 'Client A' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client selfAccount", battle.getAuthor().getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client accounts", accountClientA.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (alliance id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
         Manager.pause(300 + 1000); // +1 секунда, т.к. в это время выполняется сценарий #7g у клиента B
@@ -528,7 +529,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("'Client A' has not establish its readiness",
                 waitForAsyncAnswer(groupReadyStateAnswer, Packets.GROUP_IS_READY, NEXT_WAINTING));
         Assert.assertTrue("'Client A' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
-        Assert.assertTrue("Different ID of the client selfAccount", battle.getAuthor().getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
+        Assert.assertTrue("Different ID of the client accounts", accountClientA.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (battle id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
         BattleAlliance allianceClientA = groupReadyStateAnswer.getBattleGroup().getAlliance();
@@ -546,7 +547,7 @@ public class BattleConnectionTest {
         Manager.pause(1000);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7g ==============================");
+        System.out.println("========== scenario: #7j ==============================");
         System.out.println("'Client C' informs about the readiness for the battle (battle group id=" + battleGroup.getId() + ")...");
         answer = battleCreationManager.isReady(battleGroup);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
@@ -557,18 +558,30 @@ public class BattleConnectionTest {
         Manager.pause(1000);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7n ==============================");
-        System.out.println("The client is trying to evict the author of battle from the alliance...");
-        answer = battleCreationManager.evictAccount(allianceClientA, battle.getAuthor());
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
-//        BattleGroup battleGroup = evictAccountFromAllianceAnswer.getBattleGroup();
-        Assert.assertFalse("The client could not be evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
-        Manager.pause(1000);
+//        System.out.println("========== scenario: #7n ==============================");
+//        System.out.println("The client is trying to evict the author of battle from the alliance...");
+//        answer = battleCreationManager.evictAccount(allianceClientA, accountClientA);
+//        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+//        evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
+////        BattleGroup battleGroup = evictAccountFromAllianceAnswer.getBattleGroup();
+//        Assert.assertFalse("The client could not be evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
+//        Manager.pause(1000);
+//        ClientTestHelper.checkAsyncMessages();
+
+        System.out.println("========== scenario: #7o ==============================");
+        System.out.println("Waiting of start of the battle (by Author)...");
+        ClientStartBattleAnswer startBattleAnswer = new ClientStartBattleAnswer(selfAccount, clientConfiguration);
+        Assert.assertTrue("'Client A' does not begin the battle",
+                waitForAsyncAnswer(startBattleAnswer, Packets.START_BATTLE, NEXT_WAINTING));
+        Assert.assertTrue("??? The battle began with an error", startBattleAnswer.isSuccess());
+        Assert.assertTrue("Different ID of the client accounts", accountClientA.getId() == startBattleAnswer.getBattle().getAuthor().getId());
+        System.out.println("Client '" + startBattleAnswer.getBattle().getAuthor().getName() +
+                "' began the battle (battle id = " + startBattleAnswer.getBattle().getId() +
+                ", address: " + startBattleAnswer.getHost() + ":" + startBattleAnswer.getPort() + ")");
+        Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-
-
+        // -------------------------------------------------------------------------------------------------------------
 
 //        int groupSize = battle.getBattleType().getGroupSize();
 //        Assert.assertTrue("The selfAccount " + selfAccount.getName() + " does not have enough warriors", groupSize <= selfAccount.getWarriors().size());

@@ -138,10 +138,8 @@ public class BattleDeserializer {
         battle.setId(SimpleDeserializer.deserializeInt(buffer));
         battle.setName(SimpleDeserializer.deserializeString(buffer));
         battle.setBattleType(BaseConfigurationHelper.findBattleTypeById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
-        buffer.mark();
-        if (SimpleDeserializer.deserializeInt(buffer) != -1) {
-            buffer.reset();
-            byte length = buffer.get();
+        byte length = buffer.get();
+        if (length > 0) {
             BattleAlliance[] battleAlliances = new BattleAlliance[length];
             for (int i = 0; i < length; i++) {
                 battleAlliances[i] = new BattleAlliance();
@@ -152,9 +150,11 @@ public class BattleDeserializer {
                 }
             }
             battle.setAlliances(battleAlliances);
+        } else {
+            battle.setAlliances(null);
         }
-        battle.setMap(BattleMapDeserializer.deserializeBattleMap(buffer, baseConfiguration, battle, account));
-        BattleMap map = battle.getMap();
+        BattleMap map = BattleMapDeserializer.deserializeBattleMap(buffer, baseConfiguration, battle, account);
+        battle.setMap(map);
         if (map != null) {
             int amount = battle.getAlliances().length;
             ExitZone[] exitZones = new ExitZone[amount];

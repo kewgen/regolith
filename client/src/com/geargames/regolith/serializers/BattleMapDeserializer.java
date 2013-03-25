@@ -53,7 +53,6 @@ public class BattleMapDeserializer {
         box.setMagazines(magazines);
     }
 
-
     private static Magazine deserializeMagazine(MicroByteBuffer buffer, BaseConfiguration configuration) {
         Magazine magazine = new Magazine();
         magazine.setId(SimpleDeserializer.deserializeInt(buffer));

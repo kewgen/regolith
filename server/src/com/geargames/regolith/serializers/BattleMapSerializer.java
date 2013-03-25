@@ -123,9 +123,12 @@ public class BattleMapSerializer {
     }
 
     public static void serialize(BattleMap battleMap, Account account, MicroByteBuffer buffer) {
+        SerializeHelper.serializeEntityReference(battleMap, buffer);
+        if (battleMap == null) {
+            return;
+        }
         BattleCell[][] cells = battleMap.getCells();
         MicroByteBuffer byteBuffer = new MicroByteBuffer(new byte[buffer.size()]);
-        SerializeHelper.serializeEntityReference(battleMap, buffer);
         BattleType[] possibilities = battleMap.getPossibleBattleTypes();
         SimpleSerializer.serialize((byte) possibilities.length, buffer);
         for (int i = 0; i < possibilities.length; i++) {

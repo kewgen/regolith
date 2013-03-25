@@ -89,7 +89,6 @@ public class BattleSerializer {
         }
     }
 
-
     public static void serialize(Battle battle, Account account, MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(battle, buffer);
         SimpleSerializer.serialize(battle.getName(), buffer);
@@ -106,13 +105,9 @@ public class BattleSerializer {
                 }
             }
         } else {
-            SimpleSerializer.serialize(SerializeHelper.NULL_REFERENCE, buffer);
+            SimpleSerializer.serialize((byte)0, buffer);
         }
-        if (battle.getMap() != null) {
-            BattleMapSerializer.serialize(battle.getMap(), account, buffer);
-        } else {
-            SimpleSerializer.serialize(SerializeHelper.NULL_REFERENCE, buffer);
-        }
+        BattleMapSerializer.serialize(battle.getMap(), account, buffer);
     }
 
 }
