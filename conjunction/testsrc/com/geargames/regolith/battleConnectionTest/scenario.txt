@@ -126,14 +126,14 @@ startBattle и битва начинается
 	Client A:  in   Client C готов к битве
 	Client B:  in   Client C готов к битве
 	Client C:  in   Я готов к битве
-7k	Client A:  out  evictAccount(Self) - сам выхожу из битвы
-	Client A:  in   evict failed - автор не может выкинуть сам себя из битвы
-7l	Client B:  out  evictAccount(Client A) - клиент, не участник битвы, выкидывает автора из битвы
-	Client B:  in   evict failed - клиент, не участник битвы, не может никого выкинуть из игры
-7m	Client B:  out  evictAccount(Client C) - клиент, не участник битвы, выкидывает клиента из битвы
-	Client B:  in   evict failed - клиент, не участник битвы, не может никого выкинуть из игры
-7n	Client C:  out  evictAccount(Client A) - клиент выкидывает автора из битвы
-	Client C:  in   evict failed - автора никто не может выкинуть из игры
+//7k	Client A:  out  evictAccount(Self) - сам выхожу из битвы
+//		Client A:  in   evict failed - автор не может выкинуть сам себя из битвы
+//7l	Client B:  out  evictAccount(Client A) - клиент, не участник битвы, выкидывает автора из битвы
+//		Client B:  in   evict failed - клиент, не участник битвы, не может никого выкинуть из игры
+//7m	Client B:  out  evictAccount(Client C) - клиент, не участник битвы, выкидывает клиента из битвы
+//		Client B:  in   evict failed - клиент, не участник битвы, не может никого выкинуть из игры
+//7n	Client C:  out  evictAccount(Client A) - клиент выкидывает автора из битвы
+//		Client C:  in   evict failed - автора никто не может выкинуть из игры
 7o	Client A:  out  startBattle
 	Client A:  in   Битва началась
 	Client B:  in   doNotListenToBattle - битва началась без меня, меня выкинули из слушателей битвы

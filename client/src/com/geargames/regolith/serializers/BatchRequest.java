@@ -34,14 +34,14 @@ public class BatchRequest extends ClientSerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         for (int i = 0; i < requests.size(); i++) {
             ClientSerializedMessage message = ((ClientSerializedMessage) requests.get(i));
-            int position = buffer.position();
-            buffer.position(position + Packets.HEAD_SIZE);
+            int position = buffer.getPosition();
+            buffer.setPosition(position + Packets.HEAD_SIZE);
             message.serialize(buffer);
-            int newPosition = buffer.position();
-            buffer.position(position);
+            int newPosition = buffer.getPosition();
+            buffer.setPosition(position);
             SimpleSerializer.serialize((short) (newPosition - Packets.HEAD_SIZE - position), buffer);
             SimpleSerializer.serialize(message.getType(), buffer);
-            buffer.position(newPosition);
+            buffer.setPosition(newPosition);
         }
         requests.clear();
     }

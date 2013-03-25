@@ -2,7 +2,6 @@ package com.geargames.regolith.serializers;
 
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
-import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.regolith.units.Account;
@@ -74,13 +73,13 @@ public class BattleMapDeserializer {
 
         String name = SimpleDeserializer.deserializeString(buffer);
         length = SimpleDeserializer.deserializeShort(buffer);
-        int last = SimpleDeserializer.deserializeInt(buffer) + buffer.position();
+        int last = SimpleDeserializer.deserializeInt(buffer) + buffer.getPosition();
         BattleMap battleMap = ClientBattleHelper.createBattleMap(length);
         battleMap.setPossibleBattleTypes(types);
         battleMap.setName(name);
         BattleCell[][] cells = battleMap.getCells();
         battleMap.setId(id);
-        while (buffer.position() != last) {
+        while (buffer.getPosition() != last) {
             short x = SimpleDeserializer.deserializeShort(buffer);
             short y = SimpleDeserializer.deserializeShort(buffer);
             short typeId = SimpleDeserializer.deserializeShort(buffer);

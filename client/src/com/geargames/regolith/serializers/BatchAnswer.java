@@ -21,16 +21,16 @@ public abstract class BatchAnswer extends ClientDeSerializedMessage {
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         int size = SimpleDeserializer.deserializeInt(buffer);
         for (int i = 0; i < size; i++) {
-            int position = buffer.position();
+            int position = buffer.getPosition();
             short messageLength = SimpleDeserializer.deserializeShort(buffer);
             short messageType = SimpleDeserializer.deserializeShort(buffer);
             getTypedAnswer(i, messageType).deSerialize(buffer);
             // Проверка того, что сообщение было считано полностью и не считано лишних данных
             int expectedPosition = position + Packets.HEAD_SIZE + messageLength;
-            if (buffer.position() != expectedPosition) {
+            if (buffer.getPosition() != expectedPosition) {
                 Debug.error("BatchAnswer.deSerialize(): The expected position does not coincide with the actual position (" +
                         "expected=" + expectedPosition +
-                        "; actual=" + buffer.position() +
+                        "; actual=" + buffer.getPosition() +
                         "; index=" + i +
                         "; msg count=" + size +
                         "; msg length=" + messageLength +
@@ -38,7 +38,7 @@ public abstract class BatchAnswer extends ClientDeSerializedMessage {
                         ")");
             }
             // На всякий случай перемещаем позицию буфера туда, где начинается следующее сообщение
-            buffer.position(expectedPosition);
+            buffer.setPosition(expectedPosition);
         }
     }
 

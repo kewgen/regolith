@@ -27,8 +27,8 @@ public class SerializerTest {
     @Test
     public void simple() {
         MicroByteBuffer buffer = new MicroByteBuffer(new byte[100]);
-        buffer.limit(99);
-        buffer.position(0);
+        buffer.setLimit(100);
+        buffer.setPosition(0);
         buffer.mark();
         SimpleSerializer.serialize("1234567890", buffer);
         SimpleSerializer.serialize(Short.MAX_VALUE, buffer);
@@ -107,11 +107,11 @@ public class SerializerTest {
     @Test
     public void circleBattleConfiguration() {
         MicroByteBuffer buffer = new MicroByteBuffer(new byte[500]);
-        buffer.limit(499);
-        buffer.position(0);
+        buffer.setLimit(500);
+        buffer.setPosition(0);
         buffer.mark();
         ConfigurationSerializer.serialize(battleConfiguration, buffer);
-        buffer.limit(buffer.position());
+        buffer.setLimit(buffer.getPosition() + 1);
         buffer.reset();
 
         BattleConfiguration deserialized = ConfigurationDeserializer.deserializeBattleConfiguration(buffer);
@@ -404,11 +404,11 @@ public class SerializerTest {
     @Test
     public void circleBaseConfiguration() {
         MicroByteBuffer buffer = new MicroByteBuffer(new byte[1000]);
-        buffer.limit(999);
-        buffer.position(0);
+        buffer.setLimit(1000);
+        buffer.setPosition(0);
         buffer.mark();
         ConfigurationSerializer.serialize(baseConfiguration, buffer);
-        buffer.limit(buffer.position());
+        buffer.setLimit(buffer.getPosition() + 1);
         buffer.reset();
         BaseConfiguration deserialized = ConfigurationDeserializer.deserializeBaseConfiguration(buffer);
         Assert.assertEquals(baseConfiguration.getPocketsAmount(), deserialized.getPocketsAmount());
@@ -548,8 +548,8 @@ public class SerializerTest {
     @Test
     public void account() {
         MicroByteBuffer buffer = new MicroByteBuffer(new byte[1000]);
-        buffer.limit(999);
-        buffer.position(0);
+        buffer.setLimit(1000);
+        buffer.setPosition(0);
         buffer.mark();
         AccountSerializer.serialize(account, buffer);
         buffer.reset();
@@ -714,8 +714,8 @@ public class SerializerTest {
         cells[10][10].setElement(weapon);
 
         MicroByteBuffer buffer = new MicroByteBuffer(new byte[2000]);
-        buffer.limit(1999);
-        buffer.position(0);
+        buffer.setLimit(2000);
+        buffer.setPosition(0);
         buffer.mark();
         BattleSerializer.serialize(battle, account, buffer);
         buffer.reset();
@@ -744,7 +744,7 @@ public class SerializerTest {
 
         MicroByteBuffer buffer = new MicroByteBuffer(new byte[2000]);
         BattleSerializer.serialize(battle, account, buffer);
-        buffer.position(0);
+        buffer.setPosition(0);
         Battle newBattle = BattleDeserializer.deserializeBattle(buffer, baseConfiguration, account);
         Assert.assertEquals(newBattle.getName(), battle.getName());
     }

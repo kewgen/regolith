@@ -33,7 +33,7 @@ public class BatchRequest extends MainOneToClientRequest {
         answer.setBuffer(writeBuffer);
         answer.setMessages(messages);
 
-        while (from.position() < from.limit()) {
+        while (from.getPosition() < from.getLimit()) {
             SimpleDeserializer.deserializeShort(from);
             MainOneToClientRequest request = (MainOneToClientRequest) processors.get(SimpleDeserializer.deserializeShort(from));
             if (request != null) {

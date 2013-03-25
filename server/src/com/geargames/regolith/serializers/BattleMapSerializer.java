@@ -136,19 +136,15 @@ public class BattleMapSerializer {
         }
         SimpleSerializer.serialize(battleMap.getName(), buffer);
         SimpleSerializer.serialize((short) cells.length, buffer);
-        byteBuffer.position(0);
-        byteBuffer.limit(byteBuffer.size() - 1);
-        byteBuffer.mark();
+        byteBuffer.setPosition(0);
+        byteBuffer.setLimit(byteBuffer.size());
         for (short i = 0; i < cells.length; i++) {
             for (short j = 0; j < cells.length; j++) {
                 serialize(cells, i, j, account, byteBuffer);
             }
         }
-        SimpleSerializer.serialize(byteBuffer.position(), buffer);
-        byteBuffer.limit(byteBuffer.position());
-        byteBuffer.reset();
-        for (int i = 0; i < byteBuffer.limit(); i++) {
-            buffer.put(byteBuffer.get());
-        }
+        SimpleSerializer.serialize(byteBuffer.getPosition(), buffer);
+        byteBuffer.flip();
+        buffer.put(byteBuffer);
     }
 }

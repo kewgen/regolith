@@ -47,14 +47,14 @@ public class BatchAnswer extends SerializedMessage {
         if (messages.size() != 0) {
             SimpleSerializer.serialize(messages.size(), buffer);
             for (SerializedMessage message : messages) {
-                int position = buffer.position();
-                buffer.position(position + Packets.HEAD_SIZE);
+                int position = buffer.getPosition();
+                buffer.setPosition(position + Packets.HEAD_SIZE);
                 message.serialize(buffer);
-                int newPosition = buffer.position();
-                buffer.position(position);
+                int newPosition = buffer.getPosition();
+                buffer.setPosition(position);
                 SimpleSerializer.serialize((short) (newPosition - position - Packets.HEAD_SIZE), buffer);
                 SimpleSerializer.serialize(message.getType(), buffer);
-                buffer.position(newPosition);
+                buffer.setPosition(newPosition);
             }
         }
     }

@@ -35,13 +35,13 @@ public class ServerGetFrameAnswer extends SerializedMessage {
         try {
             BufferedInputStream input = new BufferedInputStream(new FileInputStream(file));
             int size = (int) file.length();
-            buffer.position(0);
+            buffer.setPosition(0);
             String name = file.getName();
             name = name.substring(0, name.indexOf(".") - 1 );
             int id = Integer.valueOf(file.getParent() + name);
             SimpleSerializer.serialize(id, buffer);
-            input.read(buffer.getBytes(), buffer.position(), size);
-            buffer.position(size + 4);
+            input.read(buffer.getBytes(), buffer.getPosition(), size);
+            buffer.setPosition(size + 4);
         } catch (FileNotFoundException e) {
 
         } catch (IOException e) {
