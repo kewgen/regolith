@@ -38,7 +38,8 @@ public class BrowseBattlesSchedulerService {
 
     private class AddChanger implements Changer {
         private Client client;
-        public AddChanger(Client client){
+
+        public AddChanger(Client client) {
             this.client = client;
         }
 
@@ -51,7 +52,7 @@ public class BrowseBattlesSchedulerService {
     private class DeleteChanger implements Changer {
         private Client client;
 
-        public DeleteChanger(Client client){
+        public DeleteChanger(Client client) {
             this.client = client;
         }
 
@@ -65,6 +66,7 @@ public class BrowseBattlesSchedulerService {
 
     /**
      * Добавить клиента к списку слушателей активных битв.
+     *
      * @param client
      */
     public void addListener(Client client) {
@@ -73,6 +75,7 @@ public class BrowseBattlesSchedulerService {
 
     /**
      * Удалить клиента из списка слушателей активных битв.
+     *
      * @param client
      */
     public void removeListener(Client client) {
@@ -108,28 +111,33 @@ public class BrowseBattlesSchedulerService {
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                int size = requests.size();
-                for (int i = 0; i < size; i++) {
-                    requests.poll().change();
+                if (requests.size() != 0) {
+                    int size = requests.size();
+                    for (int i = 0; i < size; i++) {
+                        requests.poll().change();
+                    }
+
+                    if (newListeners.size() != 0) {
+                        writer.addMessageToClient(new MainMessageToClient(newListeners,
+                                new ServerBrowseCreatedBattlesAnswer(buffer, battleMarketManager.battlesJoinTo()).serialize()));
+                    }
+
+                    Set<Battle> browsed = new HashSet<Battle>();
+                    size = browsed.size();
+                    for (int i = 0; i < size; i++) {
+                        browsed.add(battles.poll());
+                    }
+                    if (oldListeners.size() != 0) {
+                        writer.addMessageToClient(new MainMessageToClient(oldListeners,
+                                new ServerBrowseCreatedBattlesAnswer(buffer, browsed.toArray(new Battle[]{})).serialize()));
+                    }
+                    oldListeners.addAll(newListeners);
+                    newListeners.clear();
                 }
-
-                writer.addMessageToClient(new MainMessageToClient(newListeners,
-                        new ServerBrowseCreatedBattlesAnswer(buffer, battleMarketManager.battlesJoinTo()).serialize()));
-
-                Set<Battle> browsed = new HashSet<Battle>();
-                size = browsed.size();
-                for (int i = 0; i < size; i++) {
-                    browsed.add(battles.poll());
-                }
-
-                writer.addMessageToClient(new MainMessageToClient(oldListeners,
-                        new ServerBrowseCreatedBattlesAnswer(buffer, browsed.toArray(new Battle[]{})).serialize()));
-                oldListeners.addAll(newListeners);
-                newListeners.clear();
             }
         }, MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
-           MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
-           TimeUnit.SECONDS);
+                MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
+                TimeUnit.SECONDS);
     }
 
 }

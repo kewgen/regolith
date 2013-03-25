@@ -107,10 +107,16 @@ public class BattleConnectionTest {
 //            battles.add(((ClientListenToBattleAnswer)answers.get(i)).getBattle());
 //        }
 
+        answer = battleMarketManager.listenToCreatedBattles();
+        Assert.assertTrue(waitForAnswer(answer));
+
+        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        Assert.assertTrue(confirm.isConfirm());
+
         System.out.println("Waiting receiving a list of battles...");
         ClientBrowseBattlesAnswer browseBattlesAnswer = new ClientBrowseBattlesAnswer();
         Assert.assertTrue("'Client C' does not receive a list of battles",
-                waitForAsyncAnswer(browseBattlesAnswer, Packets.BROWSE_CREATED_BATTLES, 150)); // 15 сек
+                waitForAsyncAnswer(browseBattlesAnswer, Packets.BROWSE_CREATED_BATTLES, 200)); // 20 сек
 //        Assert.assertTrue("'Client C' has not evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
 //        Assert.assertTrue("Different ID of the client selfAccount", accountClientC.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
 //        System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
@@ -374,7 +380,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing battles...");
-        answer = battleMarketManager.browseBattles();
+        answer = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
 
@@ -453,7 +459,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing battles...");
-        answer = battleMarketManager.browseBattles();
+        answer = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
 

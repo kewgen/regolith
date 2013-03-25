@@ -78,6 +78,10 @@ public interface Packets {
 
     short GROUP_IS_NOT_READY = 19;
 
+    short LISTEN_TO_BROWSED_CREATED_BATTLES = 20;
+
+    short DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES = 21;
+
 
     short GO_TO_WARRIOR_MARKET = 30;
 

@@ -86,7 +86,7 @@ public class BattleListenerTest {
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing battles...");
-        answer = battleMarketManager.browseBattles();
+        answer = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattlesAnswer browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
 
@@ -301,7 +301,7 @@ public class BattleListenerTest {
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing battles...");
-        answer = battleMarketManager.browseBattles();
+        answer = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
 
@@ -377,7 +377,7 @@ public class BattleListenerTest {
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing battles...");
-        answer = battleMarketManager.browseBattles();
+        answer = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
 

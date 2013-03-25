@@ -8,7 +8,6 @@ import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.service.*;
-import com.geargames.regolith.service.ServerContext;
 
 /**
  * User: mkutuzov
@@ -18,23 +17,17 @@ public class ClientAtBattleMarket extends MainState {
     private MainServerConfiguration serverConfiguration;
     private BattleManagerContext battleManagerContext;
     private BrowseBattlesSchedulerService schedulerService;
-    private boolean first;
 
     public ClientAtBattleMarket() {
         this.serverConfiguration = MainServerConfigurationFactory.getConfiguration();
         battleManagerContext = serverConfiguration.getServerContext().getBattleManagerContext();
         schedulerService = serverConfiguration.getBrowseBattlesSchedulerService();
-        first = false;
     }
 
     @Override
     protected void execute(MicroByteBuffer from, Client client, short type) throws RegolithException {
         ServerRequest request;
         ServerBattleMarketManager battleMarketManager = serverConfiguration.getBattleMarketManager();
-        if (first) {
-            first = false;
-            schedulerService.addListener(client);
-        }
         switch (type) {
             case Packets.CREATE_BATTLE:
                 request = new ServerCreateBattleRequest(serverConfiguration, battleMarketManager, schedulerService);
@@ -47,6 +40,12 @@ public class ClientAtBattleMarket extends MainState {
                 break;
             case Packets.BROWSE_BATTLE_MAPS:
                 request = new ServerBrowseBattleMapsRequest(battleMarketManager);
+                break;
+            case Packets.LISTEN_TO_BROWSED_CREATED_BATTLES:
+                request = new ServerListenToBrowsedCreatedBattlesRequest(schedulerService);
+                break;
+            case Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES:
+                request = new ServerDoNotListenToCreatedBattlesRequest(schedulerService);
                 break;
             case Packets.FRAME_MESSAGE:
                 request = new ServerGetFrameRequest();
