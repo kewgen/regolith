@@ -59,7 +59,7 @@ public class ClientAtBase extends MainState {
                 if (request != null) {
                     messages = request.request(from, getWriteBuffer(), client);
                 } else {
-                    throw new RegolithException();
+                    throw new RegolithException("Invalid message type (" + type + ")");
                 }
         }
         writer.addMessageToClient(messages.get(0));

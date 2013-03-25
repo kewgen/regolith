@@ -54,4 +54,19 @@ public class BattleMap extends Entity {
     public void setCells(BattleCell[][] cells) {
         this.cells = cells;
     }
+
+    @Override
+    public String toString() {
+        String dimension;
+        if (cells == null) {
+            dimension = "null";
+        } else
+        if (cells.length == 0) {
+            dimension = "0x0";
+        } else {
+            dimension = cells[0].length + "x" + cells.length; //todo: или наоборот
+        }
+        return super.toString() + "; name='" + getName() + "'; size=" + dimension;
+    }
+
 }

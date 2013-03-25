@@ -1,0 +1,320 @@
+<project name="regolith" default="conjunction" basedir=".">
+
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="release" value="release" />
+	<property name="lib" location="${basedir}/lib" />
+    <property name="report.dir" location="${basedir}/reports" />
+
+	<property name="deploy" value="deploy" />
+
+	<property name="gg" value="../" />
+	<property name="gg.console.dir" location="${gg}/awt/console/" />
+	<property name="gg.common.dir" location="${gg}/awt/common" />
+	<property name="gg.awt.console.dir" location="${gg}/awt/awt" />
+    <property name="gg.modules.dir" location="${build}/gg.modules" />
+	<property name="client.dir" location="client" />
+	<property name="common.dir" location="common" />
+
+    <property name="conjunction.dir" value="conjunction" />
+    <property name="server.dir" value="server" />
+	<property name="server.main.dir" value="server.main" />
+	<property name="server.battle.dir" value="server.battle" />
+
+	<target name="clean">
+		<delete dir="${build}" />
+		<mkdir dir="${build}" />
+		<delete dir="${release}" />
+		<mkdir dir="${release}" />
+		<echo message="Cleaning has been finished." />
+	</target>
+
+	<target name="gg.console" depends="gg.common">
+        <echo message="Deploying gg.console" />
+
+		<delete dir="${gg.modules.dir}/gg.console" />
+		<mkdir dir="${gg.modules.dir}/gg.console" />
+
+		<path id="classpath.gg.console">
+			<fileset dir="${gg.console.dir}/lib">
+				<patternset>
+					<include name="**/*" />
+				</patternset>
+			</fileset>
+
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+
+		</path>
+
+		<javac srcdir="${gg.console.dir}/" destdir="${gg.modules.dir}/gg.console" includeantruntime="false" debug="true">
+			<classpath refid="classpath.gg.console" />
+		</javac>
+
+        <jar basedir="${gg.modules.dir}/gg.console" destfile="${release}/GGConsole.jar"/>
+
+	</target>
+
+	<target name="gg.common">
+        <echo message="Deploying gg.common" />
+
+		<delete dir="${gg.modules.dir}/gg.common" />
+		<mkdir dir="${gg.modules.dir}/gg.common" />
+
+
+		<javac srcdir="${gg.common.dir}/" destdir="${gg.modules.dir}/gg.common" includeantruntime="false" debug="true"/>
+
+        <jar basedir="${gg.modules.dir}/gg.common" destfile="${release}/GGCommon.jar"/>
+
+	</target>
+
+	<target name="gg.awt.console" depends="gg.common,gg.console" >
+        <echo message="Deploying gg.awt.console" />
+
+		<delete dir="${gg.modules.dir}/gg.awt.console" />
+		<mkdir dir="${gg.modules.dir}/gg.awt.console" />
+
+		<path id="classpath.gg.awt.console">
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+		</path>
+
+		<javac srcdir="${gg.awt.console.dir}/" destdir="${gg.modules.dir}/gg.awt.console" includeantruntime="false" debug="true">
+           <classpath refid="classpath.gg.awt.console" />
+        </javac>
+
+            <jar basedir="${gg.modules.dir}/gg.awt.console" destfile="${release}/GGAwtConsole.jar"/>
+
+    </target>
+
+    <target name="common" depends="gg.common">
+
+    <delete dir="${build}/common" />
+    <mkdir dir="${build}/common" />
+
+        <path id="classpath.common">
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+        </path>
+
+    <javac srcdir="${common.dir}/src" destdir="${build}/common" includeantruntime="false" debug="true">
+        <classpath refid="classpath.common" />
+    </javac>
+    <javac srcdir="${common.dir}/testsrc" destdir="${build}/common" includeantruntime="false" debug="true">
+        <classpath refid="classpath.common" />
+    </javac>
+    <jar basedir="${build}/common" destfile="${release}/Common.jar"/>
+
+
+</target>
+
+	<target name="client" depends="common,gg.awt.console,gg.console">
+
+        <delete dir="${build}/client" />
+        <mkdir dir="${build}/client" />
+
+
+
+		<path id="classpath.client">
+			<fileset dir="${lib}">
+				<patternset>
+					<include name="**/*" />
+				</patternset>
+			</fileset>
+
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+		</path>
+
+		<echo message="Compiling client src..." />
+
+		<javac srcdir="${client.dir}/src" destdir="${build}/client" includeantruntime="false" debug="true">
+			<classpath refid="classpath.client" />
+		</javac>
+
+        <echo message="Compiling client testsrc..." />
+
+        <javac srcdir="${client.dir}/testsrc" destdir="${build}/client" includeantruntime="false" debug="true">
+            <classpath refid="classpath.client" />
+        </javac>
+
+		<echo message="Copying libs" />
+
+		<copy todir="${release}/lib">
+			<fileset dir="${lib}" >
+				<include name="**/*"/>
+
+			</fileset>
+		</copy>
+
+		<echo message="JARing RegolithClient"/>
+
+		<jar basedir="${build}/client" destfile="${release}/RegolithClient.jar">
+			<manifest>
+				<attribute name="Main-Class" value="client.RegolithMain" />
+				<attribute name="Class-Path" value="
+					lib/j2me/cldcapi10.jar
+					lib/j2me/midpapi20.jar
+					lib/j2me/wma20.jar
+					lib/junit-4.9.jar" />
+			</manifest>
+		</jar>
+
+	</target>
+
+    <target name="server" depends="common">
+            <delete dir="${build}/server" />
+            <mkdir dir="${build}/server" />
+
+        <path id="classpath.server">
+            <fileset dir="${lib}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+        </path>
+
+        <javac srcdir="${server.dir}/src" destdir="${build}/server" includeantruntime="false" debug="true">
+            <classpath refid="classpath.server" />
+        </javac>
+        <javac srcdir="${server.dir}/testsrc" destdir="${build}/server" includeantruntime="false" debug="true">
+            <classpath refid="classpath.server" />
+        </javac>
+
+        <jar basedir="${build}/server" destfile="${release}/Server.jar"/>
+    </target>
+
+    <target name="server.main" depends="common,server">
+        <delete dir="${build}/server.main" />
+        <mkdir dir="${build}/server.main" />
+
+        <path id="classpath.server.main">
+            <fileset dir="${lib}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+
+        </path>
+
+        <javac srcdir="${server.main.dir}/src" destdir="${build}/server.main" includeantruntime="false" debug="true">
+            <classpath refid="classpath.server.main" />
+        </javac>
+        <javac srcdir="${server.main.dir}/testsrc" destdir="${build}/server.main" includeantruntime="false" debug="true">
+            <classpath refid="classpath.server.main" />
+        </javac>
+
+        <jar basedir="${build}/server.main" destfile="${release}/ServerMain.jar"/>
+    </target>
+
+    <target name="server.battle" depends="common,server">
+        <delete dir="${build}/server.battle" />
+        <mkdir dir="${build}/server.battle" />
+
+        <path id="classpath.server.battle">
+            <fileset dir="${lib}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+        </path>
+
+        <javac srcdir="${server.battle.dir}/src" destdir="${build}/server.battle" includeantruntime="false" debug="true">
+            <classpath refid="classpath.server.battle" />
+        </javac>
+
+        <jar basedir="${build}/server.battle" destfile="${release}/ServerBattle.jar"/>
+    </target>
+
+    <target name="conjunction" depends="clean,common,server,client,server.main,gg.console,gg.common">
+        <delete dir="${build}/conjunction" />
+        <mkdir dir="${build}/conjunction" />
+
+        <path id="classpath.conjunction">
+            <fileset dir="${lib}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+        </path>
+
+        <javac srcdir="${conjunction.dir}/testsrc" destdir="${build}/conjunction" includeantruntime="false" debug="true">
+            <classpath refid="classpath.conjunction"/>
+        </javac>
+
+
+    </target>
+    <target name="test.task">
+
+        <path id="classpath.conjunction">
+            <fileset dir="${lib}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+            <fileset dir="${build}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="**/*" />
+                </patternset>
+            </fileset>
+        </path>
+
+        <delete dir="${report.dir}" />
+        <mkdir dir="${report.dir}" />
+
+        <junit printsummary="yes" haltonfailure="yes" >
+            <classpath refid="classpath.conjunction"/>
+            <formatter type="plain" usefile="false" />
+            <test name="com.geargames.regolith.MotionTest" haltonfailure="no" outfile="${report.dir}/result"/>
+
+        </junit>
+
+    </target>
+
+	<target name="zip">
+			<zip destfile="${release}/TradCsv.zip">
+			<fileset dir="${release}" includes="**/*" />
+			<fileset dir="${basedir}" includes="**/*.bat" />
+			<fileset dir="${basedir}" includes="**/*.sh" />
+		</zip>
+	</target>
+
+</project>

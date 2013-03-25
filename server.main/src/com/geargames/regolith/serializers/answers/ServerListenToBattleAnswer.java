@@ -28,7 +28,6 @@ public class ServerListenToBattleAnswer extends SerializedMessage {
         return new ServerListenToBattleAnswer(buffer, null, type, false);
     }
 
-
     private ServerListenToBattleAnswer(MicroByteBuffer buffer, Battle battle, short type, boolean success) {
         this.buffer = buffer;
         this.battle = battle;
@@ -68,4 +67,5 @@ public class ServerListenToBattleAnswer extends SerializedMessage {
             }
         }
     }
+
 }

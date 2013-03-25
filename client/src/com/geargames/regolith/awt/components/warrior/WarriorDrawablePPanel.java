@@ -20,7 +20,7 @@ public class WarriorDrawablePPanel extends DrawablePPanel {
             try{
                 manager.retrieve(10000);
             }catch (Exception e) {
-                //todo
+                 //todo:  Написать корректный обработчик события
             }
             ArrayList answers = manager.getAnswer().getAnswers();
             for (int i = 0; i < answers.size(); i++) {

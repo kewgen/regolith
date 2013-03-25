@@ -30,8 +30,9 @@ public class ServerListenToBattleRequest extends MainOneToClientRequest {
 
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
-        Battle battle = battleManagerContext.getBattlesById().get(SimpleDeserializer.deserializeInt(from));
-        if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) != null) {
+        int battleId = SimpleDeserializer.deserializeInt(from);
+        Battle battle = battleManagerContext.getBattlesById().get(battleId);
+        if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) == battle) {
             battleMarketManager.listenToBattle(battle, client.getAccount());
             browseBattlesSchedulerService.removeListener(client);
             client.setState(new ClientAtBattleCreation());
@@ -40,4 +41,5 @@ public class ServerListenToBattleRequest extends MainOneToClientRequest {
             return ServerListenToBattleAnswer.AnswerFailure(writeBuffer, Packets.LISTEN_TO_BATTLE);
         }
     }
+
 }

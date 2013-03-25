@@ -8,6 +8,7 @@ import com.geargames.regolith.units.BattleHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
+import com.geargames.regolith.units.map.BattleCell;
 
 import java.io.IOException;
 import java.util.Set;
@@ -23,13 +24,14 @@ public class ServerTrainingBattleCreationManager {
         configuration = MainServerConfigurationFactory.getConfiguration();
     }
 
-
     public boolean evictAccount(BattleAlliance alliance, Account account) {
         for (BattleGroup battleGroup : ((ServerBattleGroupCollection) alliance.getAllies()).getBattleGroups()) {
             if (battleGroup.getAccount() == account) {
                 doNotListenToBattle(alliance.getBattle(), account);
+                isNotReady(battleGroup);
                 battleGroup.setAccount(null);
                 ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors().clear();
+                // Не забыть изменить стейт у клиента
                 return true;
             }
         }
@@ -46,7 +48,6 @@ public class ServerTrainingBattleCreationManager {
         return null;
     }
 
-
     public Battle startBattle(Account author) {
         BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         Battle battle = battleManagerContext.getCreatedBattles().get(author);
@@ -58,7 +59,8 @@ public class ServerTrainingBattleCreationManager {
             return null;
         }
         try {
-            battle.getMap().setCells(BattleHelper.deserializeBattleCells(battle.getMap().getContent()));
+            BattleCell[][] cells = BattleHelper.deserializeBattleCells(battle.getMap().getContent());
+            battle.getMap().setCells(cells);
         } catch (IOException e) {
             return null;
         } catch (ClassNotFoundException e) {
@@ -74,6 +76,8 @@ public class ServerTrainingBattleCreationManager {
         Battle battle = battleManagerContext.getCreatedBattles().get(author);
         battleManagerContext.getCreatedBattles().remove(author);
         battleManagerContext.getBattlesById().remove(battle.getId());
+        battleManagerContext.getCompleteGroups().remove(battle);
+        battleManagerContext.getBattleListeners().remove(battle);
     }
 
     public boolean completeGroup(BattleGroup group, Warrior[] warriors) {
@@ -101,4 +105,5 @@ public class ServerTrainingBattleCreationManager {
         Set<BattleGroup> groups = configuration.getServerContext().getBattleManagerContext().getCompleteGroups().get(battle);
         return groups != null && groups.contains(group) && groups.remove(group);
     }
+
 }

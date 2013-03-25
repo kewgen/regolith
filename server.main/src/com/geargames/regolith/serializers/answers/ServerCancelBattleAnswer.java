@@ -2,6 +2,7 @@ package com.geargames.regolith.serializers.answers;
 
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
+import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
 
 /**
@@ -24,5 +25,6 @@ public class ServerCancelBattleAnswer extends SerializedMessage {
     }
 
     public void serialize(MicroByteBuffer buffer) {
+        SimpleSerializer.serialize(true, buffer);
     }
 }

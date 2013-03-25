@@ -7,25 +7,25 @@ import com.geargames.regolith.serializers.requests.ClientJoinBaseWarriorsRequest
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
- * User: mikhail v. kutuzov
+ * Users: mikhail v. kutuzov, abarakov
  * Date: 02.07.12
- * Time: 9:45
  */
 public class ClientBaseWarriorMarketManager {
     private ClientConfiguration configuration;
-    private ClientJoinBaseWarriorsAnswer message;
+    private ClientJoinBaseWarriorsAnswer joinBaseWarriorsAnswer;
 
     public ClientBaseWarriorMarketManager(ClientConfiguration configuration) {
         this.configuration = configuration;
-        message = new ClientJoinBaseWarriorsAnswer();
-        message.setBaseConfiguration(configuration.getBaseConfiguration());
+        joinBaseWarriorsAnswer = new ClientJoinBaseWarriorsAnswer(configuration);
     }
 
     /**
      * Послать сообщение о найме текущим аккаунтом списка бойцов.
      */
     public ClientDeferredAnswer hireWarrior(Warrior[] warriors) {
-        message.setWarriors(warriors);
-        return configuration.getNetwork().sendSynchronousMessage(new ClientJoinBaseWarriorsRequest(configuration, warriors), message);
+        joinBaseWarriorsAnswer.setWarriors(warriors);
+        return configuration.getNetwork().sendSynchronousMessage(
+                new ClientJoinBaseWarriorsRequest(configuration, warriors), joinBaseWarriorsAnswer);
     }
+
 }

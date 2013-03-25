@@ -31,7 +31,7 @@ public class ClientNotLoggedIn extends MainState {
                 messages = new ServerLoginRequest().request(from, getWriteBuffer(), client);
                 break;
             default:
-                throw new RegolithException();
+                throw new RegolithException("Invalid message type (" + type + ")");
         }
         MainServerConfigurationFactory.getConfiguration().getWriter().addMessageToClient(messages.get(0));
     }
