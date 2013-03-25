@@ -111,7 +111,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientListenToBattleAnswer listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Clientс C' listens to the battle (battle id=" + battle.getId() + ")");
+        System.out.println("'Client C' listens to the battle (battle id=" + battle.getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -152,7 +152,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Clientс C' listens to the battle (battle id=" + battle.getId() + ")");
+        System.out.println("'Client C' listens to the battle (battle id=" + battle.getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -191,7 +191,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Clientс C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
+        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -217,7 +217,7 @@ public class BattleConnectionTest {
         ClientGroupReadyStateAnswer groupReadyStateAnswer = (ClientGroupReadyStateAnswer) answer.getAnswer();
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
         Assert.assertNotNull("The client could not establish its readiness", groupReadyStateAnswer.getBattleGroup());
-        System.out.println("'Clientс C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
+        System.out.println("'Client C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
         Manager.pause(1000);
         ClientTestHelper.checkAsyncMessages();
 
@@ -239,7 +239,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Clientс C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
+        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -265,7 +265,7 @@ public class BattleConnectionTest {
         groupReadyStateAnswer = (ClientGroupReadyStateAnswer) answer.getAnswer();
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
         Assert.assertNotNull("The client could not establish its readiness", groupReadyStateAnswer.getBattleGroup());
-        System.out.println("'Clientс C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
+        System.out.println("'Client C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
         Manager.pause(1000);
         ClientTestHelper.checkAsyncMessages();
 
@@ -289,7 +289,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Clientс C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
+        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -356,7 +356,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Clientс C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
+        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -385,7 +385,7 @@ public class BattleConnectionTest {
         groupReadyStateAnswer = (ClientGroupReadyStateAnswer) answer.getAnswer();
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
         Assert.assertNotNull("The client could not establish its readiness", groupReadyStateAnswer.getBattleGroup());
-        System.out.println("'Clientс C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
+        System.out.println("'Client C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
         Manager.pause(1000);
         ClientTestHelper.checkAsyncMessages();
 
@@ -428,7 +428,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listen = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Clientс C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
+        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -457,7 +457,7 @@ public class BattleConnectionTest {
         groupReadyStateAnswer = (ClientGroupReadyStateAnswer) answer.getAnswer();
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
         Assert.assertNotNull("The client could not establish its readiness", groupReadyStateAnswer.getBattleGroup());
-        System.out.println("'Clientс C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
+        System.out.println("'Client C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
         Manager.pause(1000);
         ClientTestHelper.checkAsyncMessages();
 
@@ -471,8 +471,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Different ID of the client selfAccount", battle.getAuthor().getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
                 "' joined to the alliance (alliance id = " + joinToBattleAllianceAnswer.getBattleGroup().getAlliance().getId() + ")");
-        Manager.pause(300);
-        Manager.pause(300+1000); // + секунда, т.к. в это время выполняется сценарий #7g у клиента B
+        Manager.pause(300 + 1000); // +1 секунда, т.к. в это время выполняется сценарий #7g у клиента B
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #7h ==============================");
@@ -496,7 +495,7 @@ public class BattleConnectionTest {
         groupReadyStateAnswer = (ClientGroupReadyStateAnswer) answer.getAnswer();
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
         Assert.assertNotNull("The client could not establish its readiness", groupReadyStateAnswer.getBattleGroup());
-        System.out.println("'Clientс C' is not ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
+        System.out.println("'Client C' is not ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
         Manager.pause(1000);
         ClientTestHelper.checkAsyncMessages();
 
@@ -507,7 +506,7 @@ public class BattleConnectionTest {
         groupReadyStateAnswer = (ClientGroupReadyStateAnswer) answer.getAnswer();
         Assert.assertTrue("'Client C' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
         Assert.assertNotNull("The client could not establish its readiness", groupReadyStateAnswer.getBattleGroup());
-        System.out.println("'Clientс C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
+        System.out.println("'Client C' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
         Manager.pause(1000);
         ClientTestHelper.checkAsyncMessages();
 

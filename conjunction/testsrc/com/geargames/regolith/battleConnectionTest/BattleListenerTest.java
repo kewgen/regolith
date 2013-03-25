@@ -440,14 +440,14 @@ public class BattleListenerTest {
 
 
 
-        System.out.println("========== scenario: #6f ==============================");
-        System.out.println("Waiting for the cancellation of the battle (by author)...");
-        cancelBattleAnswer = new ClientCancelBattleAnswer();
-        Assert.assertTrue("The battle has not been cancelled",
-                waitForAsyncAnswer(cancelBattleAnswer, Packets.CANCEL_BATTLE, NEXT_WAINTING));
-//        Assert.assertTrue("'Client C' has not evicted from the alliance", cancelBattleAnswer.isSuccess()); //todo: реализовать метод isSuccess
-        Manager.pause(300);
-        ClientTestHelper.checkAsyncMessages();
+//        System.out.println("========== scenario: #6f ==============================");
+//        System.out.println("Waiting for the cancellation of the battle (by author)...");
+//        cancelBattleAnswer = new ClientCancelBattleAnswer();
+//        Assert.assertTrue("The battle has not been cancelled",
+//                waitForAsyncAnswer(cancelBattleAnswer, Packets.CANCEL_BATTLE, NEXT_WAINTING));
+////        Assert.assertTrue("'Client C' has not evicted from the alliance", cancelBattleAnswer.isSuccess()); //todo: реализовать метод isSuccess
+//        Manager.pause(300);
+//        ClientTestHelper.checkAsyncMessages();
 
         // -------------------------------------------------------------------------------------------------------------
 

@@ -3,6 +3,7 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.AccountSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
@@ -52,14 +53,15 @@ public class ServerListenToBattleAnswer extends SerializedMessage {
             SerializeHelper.serializeEntityReference(battle, buffer);
             SimpleSerializer.serialize(battle.getName(), buffer);
             SerializeHelper.serializeEntityReference(battle.getBattleType(), buffer);
+            AccountSerializer.serialize(battle.getAuthor(), buffer);
             SimpleSerializer.serialize((byte) battle.getAlliances().length, buffer);
             for (BattleAlliance alliance : battle.getAlliances()) {
                 SerializeHelper.serializeEntityReference(alliance, buffer);
                 for (BattleGroup group : ((ServerBattleGroupCollection) alliance.getAllies()).getBattleGroups()) {
-                    Account account = group.getAccount();
                     SerializeHelper.serializeEntityReference(group, buffer);
+                    Account account = group.getAccount();
                     SerializeHelper.serializeEntityReference(account, buffer);
-                    if (group.getAccount() != null) {
+                    if (account != null) {
                         SimpleSerializer.serialize(account.getName(), buffer);
                     }
                 }
