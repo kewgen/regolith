@@ -107,6 +107,13 @@ public class BattleConnectionTest {
 //            battles.add(((ClientListenToBattleAnswer)answers.get(i)).getBattle());
 //        }
 
+
+        answer = battleMarketManager.listenToCreatedBattles();
+        Assert.assertTrue(waitForAnswer(answer));
+
+        confirm = (ClientConfirmationAnswer )answer.getAnswer();
+        Assert.assertTrue(confirm.isConfirm());
+
         System.out.println("Waiting receiving a list of battles...");
         ClientBrowseBattlesAnswer browseBattlesAnswer = new ClientBrowseBattlesAnswer();
         Assert.assertTrue("'Client C' does not receive a list of battles",
@@ -374,7 +381,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing battles...");
-        answer = battleMarketManager.browseBattles();
+        answer = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
 
@@ -453,7 +460,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing battles...");
-        answer = battleMarketManager.browseBattles();
+        answer = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         browseBattlesAnswer = (ClientBrowseBattlesAnswer) answer.getAnswer();
 
