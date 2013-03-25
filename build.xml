@@ -112,10 +112,53 @@
     <javac srcdir="${common.dir}/testsrc" destdir="${build}/common" includeantruntime="false" debug="true">
         <classpath refid="classpath.common" />
     </javac>
-    <jar basedir="${build}/common" destfile="${release}/Common.jar"/>
+        <copy todir="${build}/common/com/geargames/regolith/units/">
+            <fileset dir="${common.dir}/src/com/geargames/regolith/units">
+                <patternset>
+                    <include name="*.xml" />
+                </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${build}/common/com/geargames/regolith/units/tackle">
+            <fileset dir="${common.dir}/src/com/geargames/regolith/units/tackle">
+                <patternset>
+                    <include name="*.xml" />
+                </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${build}/common/com/geargames/regolith/units/map">
+            <fileset dir="${common.dir}/src/com/geargames/regolith/units/map">
+                <patternset>
+                    <include name="*.xml" />
+                </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${build}/common/com/geargames/regolith/units/battle">
+            <fileset dir="${common.dir}/src/com/geargames/regolith/units/battle">
+                <patternset>
+                    <include name="*.xml" />
+                </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${build}/common/com/geargames/regolith/units/base">
+            <fileset dir="${common.dir}/src/com/geargames/regolith/units/base">
+                <patternset>
+                    <include name="*.xml" />
+                </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${build}/common/com/geargames/regolith/">
+            <fileset dir="${common.dir}/src/com/geargames/regolith/">
+                <patternset>
+                    <include name="*.xml" />
+                </patternset>
+            </fileset>
+        </copy>
+
+        <jar basedir="${build}/common" destfile="${release}/Common.jar"/>
 
 
-</target>
+    </target>
 
 	<target name="client" depends="common,gg.awt.console,gg.console">
 
@@ -199,6 +242,21 @@
             <classpath refid="classpath.server" />
         </javac>
 
+        <copy todir="${build}/server/com/geargames/regolith/units">
+            <fileset dir="${server.dir}/src/com/geargames/regolith/units">
+                <patternset>
+                    <include name="*.xml" />
+                </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${build}/server/com/geargames/regolith/units/battle">
+            <fileset dir="${server.dir}/src/com/geargames/regolith/units/battle">
+                <patternset>
+                    <include name="*.xml" />
+                </patternset>
+            </fileset>
+        </copy>
+
         <jar basedir="${build}/server" destfile="${release}/Server.jar"/>
     </target>
 
@@ -226,6 +284,10 @@
         <javac srcdir="${server.main.dir}/testsrc" destdir="${build}/server.main" includeantruntime="false" debug="true">
             <classpath refid="classpath.server.main" />
         </javac>
+        <copy file="${server.main.dir}/src/com/geargames/regolith/mainserver.cfg.xml" todir="${build}/server.main/com/geargames/regolith/"/>
+        <copy file="${server.main.dir}/src/hibernate.cfg.xml" todir="${build}/server.main/"/>
+
+
 
         <jar basedir="${build}/server.main" destfile="${release}/ServerMain.jar"/>
     </target>
@@ -251,6 +313,8 @@
             <classpath refid="classpath.server.battle" />
         </javac>
 
+        <copy file="${server.battle.dir}/src/com/geargames/regolith/battleserver.cfg.xml" todir="${build}/server.battle/com/geargames/regolith/"/>
+
         <jar basedir="${build}/server.battle" destfile="${release}/ServerBattle.jar"/>
     </target>
 
@@ -274,25 +338,12 @@
         <javac srcdir="${conjunction.dir}/testsrc" destdir="${build}/conjunction" includeantruntime="false" debug="true">
             <classpath refid="classpath.conjunction"/>
         </javac>
-
-
-    </target>
-    <target name="test.task">
-
-        <path id="classpath.conjunction">
-            <fileset dir="${lib}">
-                <patternset>
-                    <include name="**/*" />
-                </patternset>
-            </fileset>
-            <fileset dir="${build}">
-                <patternset>
-                    <include name="**/*" />
-                </patternset>
-            </fileset>
+        <path id="classpath.test">
             <fileset dir="${release}">
                 <patternset>
+                    <exclude name="**/*.dtd" />
                     <include name="**/*" />
+
                 </patternset>
             </fileset>
         </path>
@@ -300,21 +351,28 @@
         <delete dir="${report.dir}" />
         <mkdir dir="${report.dir}" />
 
-        <junit printsummary="yes" haltonfailure="yes" >
-            <classpath refid="classpath.conjunction"/>
+        <junit printsummary="yes" haltonfailure="yes" maxmemory="512m" >
+            <classpath refid="classpath.test"/>
             <formatter type="plain" usefile="false" />
-            <test name="com.geargames.regolith.MotionTest" haltonfailure="no" outfile="${report.dir}/result"/>
-
+            <test name="com.geargames.regolith.ServerDBTest" haltonfailure="no" outfile="${report.dir}/result"/>
         </junit>
+        <jar basedir="${build}/conjunction" destfile="${release}/conjunction.jar"/>
+    </target>
+    <target name="test.task">
+
+        <path id="classpath.test">
+            <fileset dir="${release}">
+                <patternset>
+                    <exclude name="**/*.dtd" />
+                    <include name="**/*" />
+
+                </patternset>
+            </fileset>
+        </path>
+        <java classname="com.geargames.regolith.MenuTest"  >
+            <classpath refid="classpath.test"/>
+        </java>
 
     </target>
-
-	<target name="zip">
-			<zip destfile="${release}/TradCsv.zip">
-			<fileset dir="${release}" includes="**/*" />
-			<fileset dir="${basedir}" includes="**/*.bat" />
-			<fileset dir="${basedir}" includes="**/*.sh" />
-		</zip>
-	</target>
 
 </project>
