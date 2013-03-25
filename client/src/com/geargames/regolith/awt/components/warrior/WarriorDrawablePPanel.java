@@ -17,11 +17,10 @@ public class WarriorDrawablePPanel extends DrawablePPanel {
         BatchMessageManager manager = BatchMessageManager.getInstance();
         if (manager.size() > 0) {
             manager.commitMessages();
-            //todo:  Написать корректный обработчик события
-            try {
+            try{
                 manager.retrieve(10000);
-            } catch (Exception e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }catch (Exception e) {
+                 //todo:  Написать корректный обработчик события
             }
             ArrayList answers = manager.getAnswer().getAnswers();
             for (int i = 0; i < answers.size(); i++) {

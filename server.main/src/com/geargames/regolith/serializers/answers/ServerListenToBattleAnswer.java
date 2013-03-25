@@ -53,7 +53,7 @@ public class ServerListenToBattleAnswer extends SerializedMessage {
             SerializeHelper.serializeEntityReference(battle, buffer);
             SimpleSerializer.serialize(battle.getName(), buffer);
             SerializeHelper.serializeEntityReference(battle.getBattleType(), buffer);
-            AccountSerializer.serialize(battle.getAuthor(), buffer);
+            AccountSerializer.serializeAnother(battle.getAuthor(), buffer);
             SimpleSerializer.serialize((byte) battle.getAlliances().length, buffer);
             for (BattleAlliance alliance : battle.getAlliances()) {
                 SerializeHelper.serializeEntityReference(alliance, buffer);
@@ -63,6 +63,7 @@ public class ServerListenToBattleAnswer extends SerializedMessage {
                     SerializeHelper.serializeEntityReference(account, buffer);
                     if (account != null) {
                         SimpleSerializer.serialize(account.getName(), buffer);
+                        SimpleSerializer.serialize(account.getFrameId(), buffer);
                     }
                 }
             }

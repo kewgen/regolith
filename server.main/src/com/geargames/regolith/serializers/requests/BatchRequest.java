@@ -3,6 +3,7 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.answers.BatchAnswer;
 import com.geargames.regolith.service.Client;
@@ -15,7 +16,7 @@ import java.util.LinkedList;
  * Date: 10.01.13
  * Time: 9:45
  * Обслуживает запрос на обработку связки сообщений. С помощью простых расширений класса MainOneToClientRequest
- * обрабатываются конкретные сообщения клиента, а за тем ,сдесь же, происходит склеивание.
+ * обрабатываются конкретные сообщения клиента, а затем, здесь же, происходит склеивание.
  */
 public class BatchRequest extends MainOneToClientRequest {
     HashMap<Short, ServerRequest> processors;
@@ -27,7 +28,10 @@ public class BatchRequest extends MainOneToClientRequest {
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         LinkedList<SerializedMessage> messages = new LinkedList<SerializedMessage>();
-        BatchAnswer answer = new BatchAnswer(writeBuffer, messages);
+        BatchAnswer answer = new BatchAnswer();
+        answer.setType(Packets.BATCH_MESSAGE);
+        answer.setBuffer(writeBuffer);
+        answer.setMessages(messages);
 
         while (from.position() < from.limit()) {
             SimpleDeserializer.deserializeShort(from);

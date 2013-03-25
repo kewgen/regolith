@@ -33,6 +33,8 @@ public class MainServerConfiguration {
     private ServerContext serverContext;
     @XmlTransient
     private SessionFactory sessionFactory;
+    @XmlTransient
+    private BrowseBattlesSchedulerService browseBattlesSchedulerService;
 
     @XmlElement
     private int baseWarriorsMarketRevision;
@@ -48,6 +50,24 @@ public class MainServerConfiguration {
     private int port;
     @XmlElement
     private String imageDirectory;
+    @XmlElement
+    private int browseBattlesTimeInterval;
+
+    public BrowseBattlesSchedulerService getBrowseBattlesSchedulerService() {
+        return browseBattlesSchedulerService;
+    }
+
+    public void setBrowseBattlesSchedulerService(BrowseBattlesSchedulerService browseBattlesSchedulerService) {
+        this.browseBattlesSchedulerService = browseBattlesSchedulerService;
+    }
+
+    public int getBrowseBattlesTimeInterval() {
+        return browseBattlesTimeInterval;
+    }
+
+    public void setBrowseBattlesTimeInterval(int browseBattlesTimeInterval) {
+        this.browseBattlesTimeInterval = browseBattlesTimeInterval;
+    }
 
     public String getImageDirectory() {
         return imageDirectory;

@@ -6,6 +6,7 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.answers.ServerListenToBattleAnswer;
+import com.geargames.regolith.service.BrowseBattlesSchedulerService;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.managers.ServerBattleMarketManager;
 import com.geargames.regolith.service.Client;
@@ -21,10 +22,12 @@ import org.hibernate.Session;
 public class ServerCreateBattleRequest extends MainOneToClientRequest {
     private MainServerConfiguration serverConfiguration;
     private ServerBattleMarketManager battleMarketManager;
+    private BrowseBattlesSchedulerService schedulerService;
 
-    public ServerCreateBattleRequest(MainServerConfiguration serverConfiguration, ServerBattleMarketManager battleMarketManager) {
+    public ServerCreateBattleRequest(MainServerConfiguration serverConfiguration, ServerBattleMarketManager battleMarketManager, BrowseBattlesSchedulerService schedulerService) {
         this.serverConfiguration = serverConfiguration;
         this.battleMarketManager = battleMarketManager;
+        this.schedulerService = schedulerService;
     }
 
     @Override
@@ -35,6 +38,8 @@ public class ServerCreateBattleRequest extends MainOneToClientRequest {
         int index = from.get();
         Battle battle = battleMarketManager.createBattle(battleMap, index, client.getAccount());
         client.setState(new ClientAtBattleCreation());
+        schedulerService.removeListener(client);
+        schedulerService.addBattle(battle);
         return ServerListenToBattleAnswer.AnswerSuccess(writeBuffer, battle, Packets.CREATE_BATTLE);
     }
 }

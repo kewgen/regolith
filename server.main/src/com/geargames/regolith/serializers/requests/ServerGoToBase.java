@@ -6,6 +6,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.Client;
+import com.geargames.regolith.service.MainServerConfigurationFactory;
 
 /**
  * User: mkutuzov
@@ -14,6 +15,7 @@ import com.geargames.regolith.service.Client;
 public class ServerGoToBase extends MainOneToClientRequest {
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
+        MainServerConfigurationFactory.getConfiguration().getBrowseBattlesSchedulerService().removeListener(client);
         return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.GO_TO_BASE);
     }
 }

@@ -6,10 +6,9 @@ import com.geargames.common.packer.PObject;
 
 /**
  * User: mikhail v. kutuzov
- *
+ * Панель на которой отображены текущие битвы + кнопка [создать битву].
  */
 public class PBattlesPanel extends PContentPanel {
-    private PBattlesList list;
 
     public PBattlesPanel(PObject prototype) {
         super(prototype);
@@ -18,8 +17,7 @@ public class PBattlesPanel extends PContentPanel {
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
             case 0:
-                list = new PBattlesList((PObject)index.getPrototype());
-                addActiveChild(list, index);
+                addActiveChild(new PBattlesList((PObject)index.getPrototype()), index);
                 break;
             case 1:
                 addActiveChild(new PBattleCreateButton((PObject)index.getPrototype()), index);
@@ -27,7 +25,4 @@ public class PBattlesPanel extends PContentPanel {
         }
     }
 
-    public PBattlesList getList() {
-        return list;
-    }
 }

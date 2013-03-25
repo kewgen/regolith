@@ -47,7 +47,7 @@ public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
             battle.setBattleType(battleType);
             // Очищаем, на случай, если battle создавался в другом месте и map может содержать значение от предыдущего сообщения-ответа.
             battle.setMap(null); //todo: Заполнить Map
-            Account battleAuthor = AccountDeserializer.deserialize(buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
+            Account battleAuthor = AccountDeserializer.deserializeAnother(buffer);
             battle.setAuthor(battleAuthor);
             int allianceAmount = buffer.get();
             battle.setAlliances(new BattleAlliance[allianceAmount]);
@@ -65,6 +65,7 @@ public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
                         account.setId(id);
                         group.setAccount(account);
                         account.setName(SimpleDeserializer.deserializeString(buffer));
+                        account.setFrameId(SimpleDeserializer.deserializeInt(buffer));
                     }
                     group.setAlliance(alliance);
                     alliance.getAllies().add(group);
