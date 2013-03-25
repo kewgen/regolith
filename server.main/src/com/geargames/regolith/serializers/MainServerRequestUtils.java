@@ -10,10 +10,7 @@ import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 
 import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class MainServerRequestUtils {
 
@@ -70,4 +67,11 @@ public class MainServerRequestUtils {
         return channels;
     }
 
+    public static List<SocketChannel> getChannelsByClients(Collection<Client> clients){
+        List<SocketChannel> channels = new ArrayList<SocketChannel>(clients.size());
+        for(Client client : clients){
+            channels.add(client.getChannel());
+        }
+        return channels;
+    }
 }

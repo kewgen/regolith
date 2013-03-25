@@ -61,6 +61,7 @@ public class ServerListenToBattleAnswer extends SerializedMessage {
                     SerializeHelper.serializeEntityReference(account, buffer);
                     if (group.getAccount() != null) {
                         SimpleSerializer.serialize(account.getName(), buffer);
+                        SimpleSerializer.serialize(account.getFrameId(), buffer);
                     }
                 }
             }

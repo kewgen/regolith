@@ -25,22 +25,34 @@ public class ConcurrentBattleManagerContext implements BattleManagerContext {
         completeGroups = new ConcurrentHashMap<Battle, Set<BattleGroup>>();
     }
 
-
+    /**
+     * ??? Получить map...
+     */
     @Override
     public ConcurrentMap<Battle, Set<BattleGroup>> getCompleteGroups() {
         return completeGroups;
     }
 
+    /**
+     * Получить map всех созданных битв, где ключ - это id битвы.
+     */
     @Override
     public ConcurrentMap<Integer, Battle> getBattlesById() {
         return battles;
     }
 
+    /**
+     * Получить map всех созданных битв, где ключ - это ссылка на автора битвы.
+     */
     @Override
     public ConcurrentMap<Account, Battle> getCreatedBattles() {
         return created;
     }
 
+    /**
+     * Получить map слушателей всех битв.
+     * Где ключ - ссылка на созданную битву, значение - множество всех слушателей битвы.
+     */
     @Override
     public ConcurrentMap<Battle, Set<Account>> getBattleListeners() {
         return listeners;

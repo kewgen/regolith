@@ -8,6 +8,7 @@ import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.answers.ServerListenToBattleAnswer;
 import com.geargames.regolith.service.BattleManagerContext;
+import com.geargames.regolith.service.BrowseBattlesSchedulerService;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.states.ClientAtBattleCreation;
 import com.geargames.regolith.units.battle.Battle;
@@ -19,17 +20,21 @@ import com.geargames.regolith.units.battle.Battle;
 public class ServerListenToBattleRequest extends MainOneToClientRequest {
     private BattleManagerContext battleManagerContext;
     private ServerBattleMarketManager battleMarketManager;
+    private BrowseBattlesSchedulerService browseBattlesSchedulerService;
 
-    public ServerListenToBattleRequest(BattleManagerContext battleManagerContext, ServerBattleMarketManager battleMarketManager) {
+    public ServerListenToBattleRequest(BattleManagerContext battleManagerContext, ServerBattleMarketManager battleMarketManager, BrowseBattlesSchedulerService browseBattlesSchedulerService) {
         this.battleManagerContext = battleManagerContext;
         this.battleMarketManager = battleMarketManager;
+        this.browseBattlesSchedulerService = browseBattlesSchedulerService;
     }
 
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
-        Battle battle = battleManagerContext.getBattlesById().get(SimpleDeserializer.deserializeInt(from));
-        if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) != null) {
+        int battleId = SimpleDeserializer.deserializeInt(from);
+        Battle battle = battleManagerContext.getBattlesById().get(battleId);
+        if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) == battle) {
             battleMarketManager.listenToBattle(battle, client.getAccount());
+            browseBattlesSchedulerService.removeListener(client);
             client.setState(new ClientAtBattleCreation());
             return ServerListenToBattleAnswer.AnswerSuccess(writeBuffer, battle, Packets.LISTEN_TO_BATTLE);
         } else {

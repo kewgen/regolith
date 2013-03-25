@@ -78,4 +78,14 @@ public class BattleType extends Entity {
     public void setGroupSize(int groupSize) {
         this.groupSize = groupSize;
     }
+
+    @Override
+    public String toString() {
+        String res = super.toString() + "; type=";
+        for (int i = 0; i < allianceAmount - 1; i++) {
+            res += allianceSize + ":";
+        }
+        return res + allianceSize + "x" + groupSize + "; name='" + name + "'";
+    }
+
 }

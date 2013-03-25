@@ -10,6 +10,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.service.*;
+import com.geargames.regolith.service.states.ClientAtBattleMarket;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -26,12 +27,14 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
     private BattleManagerContext battleManagerContext;
     private ServerTrainingBattleCreationManager battleCreationManager;
     private ServerContext serverContext;
+    private BrowseBattlesSchedulerService schedulerService;
 
     public ServerEvictAccountFromAllianceRequest() {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         this.battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         this.battleCreationManager = configuration.getBattleCreationManager();
         this.serverContext = configuration.getServerContext();
+        this.schedulerService = configuration.getBrowseBattlesSchedulerService();
     }
 
     @Override
@@ -64,8 +67,13 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
                     throw new RegolithException();
                 }
                 if (battleCreationManager.evictAccount(alliance, victim)) {
+                    SocketChannel victimChannel = serverContext.getChannel(victim);
+                    Client victimClient = serverContext.getClient(victimChannel);
+                    victimClient.setState(new ClientAtBattleMarket());
+
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
                     recipients.add(serverContext.getChannel(victim));
+					schedulerService.addBattle(battle);
                     message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victim, alliance);
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);

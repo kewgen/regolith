@@ -23,7 +23,7 @@ public class ClientBattleMarketManager {
     public ClientBattleMarketManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         listenToBattleAnswer = new ClientListenToBattleAnswer();
-        browseBattlesAnswer = new ClientBrowseBattlesAnswer(configuration);
+        browseBattlesAnswer = new ClientBrowseBattlesAnswer();
         browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
     }
 

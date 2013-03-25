@@ -29,7 +29,7 @@ public class ClientAtBaseWarriorsMarket extends MainState {
                 messages = new ServerJoinBaseWarriorsRequest().request(from, getWriteBuffer(), client);
                 break;
             default:
-                throw new RegolithException();
+                throw new RegolithException("Invalid message type (" + type + ")");
         }
         writer.addMessageToClient(messages.get(0));
     }

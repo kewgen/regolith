@@ -5,7 +5,7 @@ import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.service.ConcurrentServerContext;
+import com.geargames.regolith.service.MainServerContext;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.ServerContext;
@@ -49,7 +49,7 @@ public class FirstServerLoginAnswer extends SerializedMessage {
         if (context.getBaseWarriors() == null) {
             synchronized (this) {
                 if (context.getBaseWarriors() == null) {
-                    ((ConcurrentServerContext) context).setWarriors(MainServerConfigurationFactory.getConfiguration().getBaseWarriorMarketManager().browseWarriors());
+                    ((MainServerContext) context).setWarriors(MainServerConfigurationFactory.getConfiguration().getBaseWarriorMarketManager().browseWarriors());
                 }
             }
         }

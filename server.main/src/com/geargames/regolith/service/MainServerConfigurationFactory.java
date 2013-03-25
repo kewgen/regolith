@@ -53,12 +53,14 @@ public class MainServerConfigurationFactory {
                     regolithConfiguration.setBattleConfiguration(battleConfiguration);
                     configuration.setRegolithConfiguration(regolithConfiguration);
 
-                    ConcurrentServerContext serverContext = new ConcurrentServerContext(1);
+                    MainServerContext serverContext = new MainServerContext(1);
                     serverContext.setBattleManagerContext(new ConcurrentBattleManagerContext());
                     configuration.setServerContext(serverContext);
 
                     configuration.setReader(new MainClientReader());
                     configuration.setWriter(new ClientWriter(configuration.getMessageOutputDataProcessorAmount()));
+
+                    configuration.setBrowseBattlesSchedulerService(new BrowseBattlesSchedulerService());
                 }
             }
         }

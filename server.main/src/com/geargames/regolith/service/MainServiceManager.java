@@ -20,6 +20,7 @@ public class MainServiceManager {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         service = new SimpleService(configuration.getPort(), configuration.getReader());
         new Thread(service).start();
+        configuration.getBrowseBattlesSchedulerService().start();
 
         return service;
     }

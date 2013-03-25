@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author Mikhail_Kutuzov
  *         created: 11.06.12  13:35
  */
-public class ConcurrentServerContext implements ServerContext {
+public class MainServerContext implements ServerContext {
     private Set<Warrior> warriors;
     private ConcurrentHashMap<String, BattleServiceDescriptor> battleServicePorts;
     private ConcurrentHashMap<String, Integer> battleServicePowers;
@@ -23,7 +23,7 @@ public class ConcurrentServerContext implements ServerContext {
     private ConcurrentSkipListMap<Integer, Account> activeAccounts;
     private BattleManagerContext battleManagerContext;
 
-    public ConcurrentServerContext(int inputDataProcessorsAmount){
+    public MainServerContext(int inputDataProcessorsAmount){
         clients = new ConcurrentHashMap<SocketChannel, Client>(inputDataProcessorsAmount);
         channels = new ConcurrentHashMap<Account, SocketChannel>(inputDataProcessorsAmount);
         activeAccounts = new ConcurrentSkipListMap<Integer, Account>();
