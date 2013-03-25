@@ -105,7 +105,7 @@ public class BrowseBattlesSchedulerService {
     public void start() {
         executor = Executors.newScheduledThreadPool(1);
 
-        executor.schedule(new Runnable() {
+        executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 int size = requests.size();
@@ -127,7 +127,9 @@ public class BrowseBattlesSchedulerService {
                 oldListeners.addAll(newListeners);
                 newListeners.clear();
             }
-        }, MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(), TimeUnit.SECONDS);
+        },MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
+          MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
+          TimeUnit.SECONDS);
     }
 
 }
