@@ -4,7 +4,7 @@ import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.answers.ClientBrowseBattleMapsAnswer;
-import com.geargames.regolith.serializers.answers.ClientBrowseBattlesAnswer;
+import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.battle.Battle;
@@ -17,13 +17,13 @@ import com.geargames.regolith.units.map.BattleMap;
 public class ClientBattleMarketManager {
     private ClientConfiguration configuration;
     private ClientListenToBattleAnswer listenToBattleAnswer;
-    private ClientBrowseBattlesAnswer browseBattlesAnswer;
     private ClientBrowseBattleMapsAnswer browseBattleMapsAnswer;
+    private ClientConfirmationAnswer confirmationAnswer;
 
     public ClientBattleMarketManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         listenToBattleAnswer = new ClientListenToBattleAnswer();
-        browseBattlesAnswer = new ClientBrowseBattlesAnswer();
+        confirmationAnswer = new ClientConfirmationAnswer();
         browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
     }
 
@@ -39,9 +39,14 @@ public class ClientBattleMarketManager {
                 new ListenToBattleRequest(configuration, battle), listenToBattleAnswer);
     }
 
-    public ClientDeferredAnswer browseBattles() {
+    public ClientDeferredAnswer listenToCreatedBattles() {
         return configuration.getNetwork().sendSynchronousMessage(
-                new SimpleRequest(configuration, Packets.BROWSE_CREATED_BATTLES), browseBattlesAnswer);
+                new SimpleRequest(configuration, Packets.LISTEN_TO_BROWSED_CREATED_BATTLES), confirmationAnswer);
+    }
+
+    public ClientDeferredAnswer doNotListenToCreatedBattles(){
+        return configuration.getNetwork().sendSynchronousMessage(
+                new SimpleRequest(configuration, Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES), confirmationAnswer);
     }
 
     public ClientDeferredAnswer browseBattleMaps() {
