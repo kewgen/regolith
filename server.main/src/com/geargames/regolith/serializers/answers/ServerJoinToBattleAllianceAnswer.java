@@ -24,7 +24,7 @@ public class ServerJoinToBattleAllianceAnswer extends SerializedMessage {
     }
 
     public static ServerJoinToBattleAllianceAnswer AnswerFailure(MicroByteBuffer buffer) {
-        return new ServerJoinToBattleAllianceAnswer(buffer, null, null, true);
+        return new ServerJoinToBattleAllianceAnswer(buffer, null, null, false);
     }
 
     private ServerJoinToBattleAllianceAnswer(MicroByteBuffer buffer, BattleGroup battleGroup, Account account, boolean success) {
