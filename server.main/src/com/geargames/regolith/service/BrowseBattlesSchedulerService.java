@@ -26,17 +26,26 @@ public class BrowseBattlesSchedulerService {
     private ServerBattleMarketManager battleMarketManager;
     private MicroByteBuffer buffer;
 
-    private Queue<Battle> battles;
-    private Queue<Changer> requests;
+    private Set<Battle> battles;
 
     private Set<SocketChannel> newListeners;
     private Set<SocketChannel> oldListeners;
 
-    private interface Changer {
-        void change();
+    private class AddBattle implements Runnable {
+        private Battle battle;
+
+        private AddBattle(Battle battle) {
+            this.battle = battle;
+        }
+
+        @Override
+        public void run() {
+            battles.add(battle);
+        }
     }
 
-    private class AddChanger implements Changer {
+
+    private class AddChanger implements Runnable {
         private Client client;
 
         public AddChanger(Client client) {
@@ -44,12 +53,13 @@ public class BrowseBattlesSchedulerService {
         }
 
         @Override
-        public void change() {
+        public void run() {
+            logger.debug("do listen to created battles " + client.getAccount().getName());
             newListeners.add(client.getChannel());
         }
     }
 
-    private class DeleteChanger implements Changer {
+    private class DeleteChanger implements Runnable {
         private Client client;
 
         public DeleteChanger(Client client) {
@@ -57,7 +67,8 @@ public class BrowseBattlesSchedulerService {
         }
 
         @Override
-        public void change() {
+        public void run() {
+            logger.debug("do not listen to created battles " + client.getAccount().getName());
             newListeners.remove(client.getChannel());
             oldListeners.remove(client.getChannel());
         }
@@ -70,7 +81,7 @@ public class BrowseBattlesSchedulerService {
      * @param client
      */
     public void addListener(Client client) {
-        requests.add(new AddChanger(client));
+        executor.execute(new AddChanger(client));
     }
 
     /**
@@ -79,7 +90,7 @@ public class BrowseBattlesSchedulerService {
      * @param client
      */
     public void removeListener(Client client) {
-        requests.add(new DeleteChanger(client));
+        executor.execute(new DeleteChanger(client));
     }
 
     /**
@@ -91,7 +102,7 @@ public class BrowseBattlesSchedulerService {
      * @param battle
      */
     public void addBattle(Battle battle) {
-        battles.add(battle);
+        executor.execute(new AddBattle(battle));
     }
 
     public BrowseBattlesSchedulerService() {
@@ -101,8 +112,7 @@ public class BrowseBattlesSchedulerService {
         buffer = new MicroByteBuffer(new byte[configuration.getMessageBufferSize()]);
         oldListeners = new HashSet<SocketChannel>();
         newListeners = new HashSet<SocketChannel>();
-        requests = new LinkedList<Changer>();
-        battles = new LinkedList<Battle>();
+        battles = new HashSet<Battle>();
     }
 
     public void start() {
@@ -111,29 +121,22 @@ public class BrowseBattlesSchedulerService {
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                if (requests.size() != 0) {
-                    int size = requests.size();
-                    for (int i = 0; i < size; i++) {
-                        requests.poll().change();
-                    }
-
                     if (newListeners.size() != 0) {
-                        writer.addMessageToClient(new MainMessageToClient(newListeners,
-                                new ServerBrowseCreatedBattlesAnswer(buffer, battleMarketManager.battlesJoinTo()).serialize()));
+                        Battle[] battles = battleMarketManager.battlesJoinTo();
+                        writer.addMessageToClient(new MainMessageToClient(new LinkedList<SocketChannel>(newListeners),
+                                new ServerBrowseCreatedBattlesAnswer(buffer, battles).serialize()));
+                        logger.debug("an amount of new listeners =" + newListeners.size() + " an amount of battles =" + battles.length);
                     }
 
-                    Set<Battle> browsed = new HashSet<Battle>();
-                    size = browsed.size();
-                    for (int i = 0; i < size; i++) {
-                        browsed.add(battles.poll());
-                    }
                     if (oldListeners.size() != 0) {
+                        Battle[] battleArray = battles.toArray(new Battle[]{});
                         writer.addMessageToClient(new MainMessageToClient(oldListeners,
-                                new ServerBrowseCreatedBattlesAnswer(buffer, browsed.toArray(new Battle[]{})).serialize()));
+                                new ServerBrowseCreatedBattlesAnswer(buffer, battleArray).serialize()));
+                        logger.debug("an amount of old listeners =" + oldListeners.size() + " an amount of battles =" + battleArray.length);
                     }
                     oldListeners.addAll(newListeners);
                     newListeners.clear();
-                }
+                    battles.clear();
             }
         }, MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
                 MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),

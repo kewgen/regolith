@@ -14,12 +14,15 @@ import com.geargames.regolith.service.states.ClientAtBattleCreation;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.map.BattleMap;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User: mkutuzov
  * Date: 12.07.12
  */
 public class ServerCreateBattleRequest extends MainOneToClientRequest {
+    private static Logger logger = LoggerFactory.getLogger(ServerCreateBattleRequest.class);
     private MainServerConfiguration serverConfiguration;
     private ServerBattleMarketManager battleMarketManager;
     private BrowseBattlesSchedulerService schedulerService;
