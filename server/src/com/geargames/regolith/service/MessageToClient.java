@@ -15,15 +15,6 @@ import java.util.Collection;
 public abstract class MessageToClient implements Runnable {
     private static Logger logger = LoggerFactory.getLogger(MessageToClient.class);
 
-/*
-    public static  ThreadLocal<ByteBuffer> BYTE_BUFFER = new ThreadLocal<ByteBuffer>(){
-        @Override
-        protected ByteBuffer initialValue() {
-            return ByteBuffer.allocateDirect(ServerConfigurationFactory.getConfiguration().getMessageBufferSize());
-        }
-    };
-*/
-
     private Collection<SocketChannel> recipients;
     private byte[] message;
 

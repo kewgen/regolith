@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="regolith" default="conjunction" basedir=".">
 
 	<property name="src" location="src" />
@@ -47,7 +48,6 @@
                     <include name="**/*" />
                 </patternset>
             </fileset>
-
 		</path>
 
 		<javac srcdir="${gg.console.dir}/" destdir="${gg.modules.dir}/gg.console" includeantruntime="false" debug="true">
@@ -55,7 +55,6 @@
 		</javac>
 
         <jar basedir="${gg.modules.dir}/gg.console" destfile="${release}/GGConsole.jar"/>
-
 	</target>
 
 	<target name="gg.common">
@@ -64,11 +63,9 @@
 		<delete dir="${gg.modules.dir}/gg.common" />
 		<mkdir dir="${gg.modules.dir}/gg.common" />
 
-
 		<javac srcdir="${gg.common.dir}/" destdir="${gg.modules.dir}/gg.common" includeantruntime="false" debug="true"/>
 
         <jar basedir="${gg.modules.dir}/gg.common" destfile="${release}/GGCommon.jar"/>
-
 	</target>
 
 	<target name="gg.awt.console" depends="gg.common,gg.console" >
@@ -89,7 +86,7 @@
            <classpath refid="classpath.gg.awt.console" />
         </javac>
 
-            <jar basedir="${gg.modules.dir}/gg.awt.console" destfile="${release}/GGAwtConsole.jar"/>
+        <jar basedir="${gg.modules.dir}/gg.awt.console" destfile="${release}/GGAwtConsole.jar"/>
 
     </target>
 
