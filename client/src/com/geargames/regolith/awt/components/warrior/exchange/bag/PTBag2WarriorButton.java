@@ -20,7 +20,8 @@ import com.geargames.regolith.units.tackle.TackleTransitionHelper;
  */
 public class PTBag2WarriorButton extends PExchangeButton {
     public PTBag2WarriorButton(PObject prototype) {
-        super(prototype, String.valueOfC("НАДЕТЬ"));
+        super(prototype);
+        setText(String.valueOfC("НАДЕТЬ"));
     }
 
     public void doAction() {

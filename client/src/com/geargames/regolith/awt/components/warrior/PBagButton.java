@@ -11,7 +11,8 @@ public class PBagButton extends PEntitledRadioButton {
     private PWarriorPanel panel;
 
     public PBagButton(PObject prototype, PWarriorPanel panel) {
-        super(prototype, com.geargames.common.String.valueOfC("СУМКА"));
+        super(prototype);
+        setText(com.geargames.common.String.valueOfC("СУМКА"));
         this.panel = panel;
     }
 

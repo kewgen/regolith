@@ -22,7 +22,8 @@ import com.geargames.regolith.units.tackle.TackleTransitionHelper;
  */
 public class PTBag2StoreHouseButton extends PExchangeButton {
     public PTBag2StoreHouseButton(PObject prototype) {
-        super(prototype, String.valueOfC("НА СКЛАД"));
+        super(prototype);
+        setText(String.valueOfC("НА СКЛАД"));
     }
 
     public void doAction() {

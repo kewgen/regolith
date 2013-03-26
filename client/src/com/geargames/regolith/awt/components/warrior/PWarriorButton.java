@@ -11,7 +11,8 @@ public class PWarriorButton extends PEntitledRadioButton {
     private PWarriorPanel panel;
 
     public PWarriorButton(PObject prototype, PWarriorPanel panel) {
-        super(prototype, com.geargames.common.String.valueOfC("НАДЕТО"));
+        super(prototype);
+        setText(com.geargames.common.String.valueOfC("НАДЕТО"));
         this.panel = panel;
     }
 

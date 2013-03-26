@@ -5,11 +5,13 @@ import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.awt.components.battles.PWarriorInformation;
+import com.geargames.regolith.awt.components.selectMaps.PSelectMapPanel;
 import com.geargames.regolith.awt.components.main.PHeadlinePanel;
 import com.geargames.regolith.awt.components.main.PLeftPanel;
 import com.geargames.regolith.awt.components.main.PMainMenuPanel;
 import com.geargames.regolith.awt.components.main.PMoneyRegolithPanel;
 import com.geargames.regolith.awt.components.battleCreate.PBattleCreatePanel;
+import com.geargames.regolith.awt.components.selectWarriors.PSelectWarriorsPanel;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.WarriorDrawablePPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.bag.PArmorFromBagPanel;
@@ -24,6 +26,8 @@ import com.geargames.regolith.awt.components.warrior.exchange.warrior.PArmorFrom
 import com.geargames.regolith.awt.components.warrior.exchange.warrior.PWeaponFromWarriorPanel;
 
 public class PRegolithPanelManager extends PPanelManager {
+    private static PRegolithPanelManager instance;
+
     private DrawablePPanel left;
     private DrawablePPanel headline;
     private DrawablePPanel right;
@@ -41,12 +45,12 @@ public class PRegolithPanelManager extends PPanelManager {
     private DrawablePPanel weaponFromBag;
     private DrawablePPanel medikitFromBag;
 
-    private static PRegolithPanelManager instance;
-
     private DrawablePPanel warrior;
     private DrawablePPanel mainMenu;
     private DrawablePPanel warriorInfo;
     private DrawablePPanel battleCreate;
+    private DrawablePPanel selectMap;
+    private DrawablePPanel selectWarriors;
 
     private PRegolithPanelManager() {
     }
@@ -145,6 +149,16 @@ public class PRegolithPanelManager extends PPanelManager {
         battleCreate = new DefaultDrawablePPanel();
         battleCreate.setAnchor(Anchors.CENTER_ANCHOR);
         battleCreate.setElement(battleCreatePanel);
+
+        PSelectMapPanel selectMapPanel = new PSelectMapPanel(render.getObject(Graph.PAN_MAP_SELECT));
+        selectMap = new DefaultDrawablePPanel();
+        selectMap.setAnchor(Anchors.CENTER_ANCHOR);
+        selectMap.setElement(selectMapPanel);
+
+        PSelectWarriorsPanel selectWarriorsPanel = new PSelectWarriorsPanel(render.getObject(Graph.PAN_FIGHTER_SELECT));
+        selectWarriors = new DefaultDrawablePPanel();
+        selectWarriors.setAnchor(Anchors.CENTER_ANCHOR);
+        selectWarriors.setElement(selectWarriorsPanel);
     }
 
     public DrawablePPanel getWarriorInfo() {
@@ -214,4 +228,13 @@ public class PRegolithPanelManager extends PPanelManager {
     public DrawablePPanel getBattleCreate() {
         return battleCreate;
     }
+
+    public DrawablePPanel getSelectMap() {
+        return selectMap;
+    }
+
+    public DrawablePPanel getSelectWarriors() {
+        return selectWarriors;
+    }
+
 }

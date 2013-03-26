@@ -21,7 +21,8 @@ import com.geargames.regolith.units.tackle.TackleTransitionHelper;
 public class PTWarrior2BagButton extends PExchangeButton {
 
     public PTWarrior2BagButton(PObject prototype) {
-        super(prototype, String.valueOfC("В СУМКУ"));
+        super(prototype);
+        setText(String.valueOfC("В СУМКУ"));
     }
 
     public void doAction() {

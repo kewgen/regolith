@@ -26,9 +26,9 @@ import com.geargames.regolith.units.tackle.*;
 public class PAStoreHouse2WarriorButton extends PExchangeButton {
 
     public PAStoreHouse2WarriorButton(PObject prototype) {
-        super(prototype, String.valueOfC("ЗАРЯДИТЬ"));
+        super(prototype);
+        setText(String.valueOfC("ЗАРЯДИТЬ"));
     }
-
 
     public void doAction() {
         Warrior warrior = getPanel().getWarrior();

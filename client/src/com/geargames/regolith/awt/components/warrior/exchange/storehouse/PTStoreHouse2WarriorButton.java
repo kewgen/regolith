@@ -24,7 +24,8 @@ import com.geargames.regolith.units.tackle.*;
 public class PTStoreHouse2WarriorButton extends PExchangeButton {
 
     public PTStoreHouse2WarriorButton(PObject prototype) {
-        super(prototype, String.valueOfC("НАДЕТЬ"));
+        super(prototype);
+        setText(String.valueOfC("НАДЕТЬ"));
     }
 
     public void doAction() {

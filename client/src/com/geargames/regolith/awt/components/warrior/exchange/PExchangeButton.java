@@ -12,8 +12,8 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 public abstract class PExchangeButton extends PEntitledTouchButton {
     private PExchangePanel panel;
 
-    protected PExchangeButton(PObject prototype, String title) {
-        super(prototype, title);
+    protected PExchangeButton(PObject prototype) {
+        super(prototype);
     }
 
     public PExchangePanel getPanel() {
