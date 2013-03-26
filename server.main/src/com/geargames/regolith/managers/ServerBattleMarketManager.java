@@ -27,7 +27,7 @@ public class ServerBattleMarketManager {
 
     public Battle createBattle(BattleMap battleMap, int battleTypeIndex, Account author) throws RegolithException{
         BattleType type = battleMap.getPossibleBattleTypes()[battleTypeIndex];
-        Battle battle = BattleHelper.createBattle(battleMap.getName() + author.getName(), battleMap, battleTypeIndex);
+        Battle battle = BattleHelper.createBattle(battleMap.getName() + "_" + author.getName(), battleMap, battleTypeIndex);
         battle.setAuthor(author);
         Session session = configuration.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();

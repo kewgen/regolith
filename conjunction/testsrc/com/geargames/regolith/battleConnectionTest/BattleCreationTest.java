@@ -76,6 +76,7 @@ public class BattleCreationTest {
         System.out.println("Account id = " + selfAccount.getId());
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());
         clientConfiguration.setBaseWarriors(loginAnswer.getWarriors());
+        clientConfiguration.setAccount(selfAccount);
 
         ClientBaseManager baseManager = clientConfiguration.getBaseManager();
         ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
@@ -88,14 +89,14 @@ public class BattleCreationTest {
         ClientDeferredAnswer answer = baseManager.goBattleManager();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        Assert.assertTrue(confirm.isConfirm());
+        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
         answer = battleMarketManager.browseBattleMaps();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
         BattleMap[] maps = browseMaps.getBattleMaps();
-        Assert.assertTrue("there are no maps", maps.length > 0);
+        Assert.assertTrue("There are no maps", maps.length > 0);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -272,7 +273,7 @@ public class BattleCreationTest {
         answer = baseManager.goBattleManager(); //todo: надо ли?
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        Assert.assertTrue(confirm.isConfirm());
+        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
         answer = battleMarketManager.browseBattleMaps();
@@ -336,7 +337,7 @@ public class BattleCreationTest {
         answer = baseManager.goBattleManager(); //todo: надо ли?
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         confirm = (ClientConfirmationAnswer) answer.getAnswer();
-        Assert.assertTrue(confirm.isConfirm());
+        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
         answer = battleMarketManager.browseBattleMaps();

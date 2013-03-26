@@ -94,6 +94,11 @@ public class PFontCollection {
         return instance.font12;
     }
 
+    public static PFont getFontListTitle() {
+        checkInstance();
+        return instance.font12;
+    }
+
     public static PFont getFontHint() {
         checkInstance();
         return instance.font12;

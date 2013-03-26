@@ -82,6 +82,7 @@ public class BattleConnectionTest {
         System.out.println("Account id = " + selfAccount.getId());
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());
         clientConfiguration.setBaseWarriors(loginAnswer.getWarriors());
+        clientConfiguration.setAccount(selfAccount);
 
         ClientBaseManager baseManager = clientConfiguration.getBaseManager();
         ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();

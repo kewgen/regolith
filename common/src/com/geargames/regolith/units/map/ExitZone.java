@@ -48,4 +48,10 @@ public class ExitZone extends Entity {
     public boolean isWithIn(int xx, int yy){
         return x - xRadius <= xx && y - yRadius <= yy && xx <= x + xRadius && yy <= y + yRadius;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "; x=" + x + "; y=" + y + "; xR=" + xRadius + "; yR=" + yRadius;
+    }
+
 }

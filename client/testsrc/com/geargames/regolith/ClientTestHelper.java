@@ -120,6 +120,7 @@ public class ClientTestHelper {
 
                 ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
 
+                System.out.println("We are trying to hire warriors");
                 ClientDeferredAnswer answer = baseWarriorMarketManager.hireWarrior(initWarriors);
                 Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
                 ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();

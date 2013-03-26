@@ -31,6 +31,22 @@ public class BaseConfigurationHelper {
         }
     }
 
+    public static BattleType findBattleTypeByArgs(int allianceAmount, int allianceSize, int groupSize, BaseConfiguration configuration) {
+        BattleTypeCollection battleTypes = configuration.getBattleTypes();
+        for (int i = 0; i < battleTypes.size(); i++) {
+            BattleType battleType = battleTypes.get(i);
+            if (battleType.getAllianceAmount() == allianceAmount &&
+                    battleType.getAllianceSize() == allianceSize &&
+                    battleType.getGroupSize() == groupSize) {
+                return battleType;
+            }
+        }
+        throw new IllegalArgumentException("Type of battle can not be found (" +
+                "allianceAmount=" + allianceAmount +
+                "; allianceSize=" + allianceSize +
+                "; groupSize=" + groupSize + ")");
+    }
+
     public static Medikit findMedikitById(int id, BaseConfiguration configuration) {
         if (id == SerializeHelper.NULL_REFERENCE) {
             return null;

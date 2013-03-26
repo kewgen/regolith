@@ -1,9 +1,6 @@
 package com.geargames.regolith.awt.components.battleCreate;
 
-import com.geargames.awt.components.PContentPanel;
-import com.geargames.awt.components.PRadioButton;
-import com.geargames.awt.components.PRadioGroup;
-import com.geargames.awt.components.PSimpleLabel;
+import com.geargames.awt.components.*;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
@@ -36,6 +33,8 @@ public class PBattleCreatePanel extends PContentPanel {
     private PRadioButton buttonFighter2;
     private PRadioButton buttonFighter3;
     private PRadioButton buttonFighter4;
+
+    private PEntitledToggleButton cbRandomMap;
 
     public PBattleCreatePanel(PObject prototype) {
         super(prototype);
@@ -171,20 +170,28 @@ public class PBattleCreatePanel extends PContentPanel {
                 addActiveChild(buttonFighter4, index);
                 groupFighter.addButton(buttonFighter4);
                 break;
+            case 18:
+                // CheckBox для указания использования случайной карты
+                cbRandomMap = new PEntitledToggleButton((PObject) index.getPrototype());
+                cbRandomMap.setText(LocalizedStrings.BATTLE_CREATE_BUTTON_USE_RANDOM_MAP);
+                cbRandomMap.setFont(PFontCollection.getFontButtonCaption());
+                cbRandomMap.setChecked(true);
+                addActiveChild(cbRandomMap, index);
+                break;
 
             // ----- Общие компоненты ----------------------------------------------------------------------------------
 
             case 13:
                 // Кнопка Ok
-                PButtonOk buttonOk = new PButtonOk((PObject) index.getPrototype(), LocalizedStrings.BUTTON_OK);
-                buttonOk.setText(LocalizedStrings.BATTLE_CREATE_TITLE);
-                buttonOk.setFont(PFontCollection.getFontFormTitle());
+                PButtonOk buttonOk = new PButtonOk((PObject) index.getPrototype());
+                buttonOk.setText(LocalizedStrings.BUTTON_OK);
+                buttonOk.setFont(PFontCollection.getFontButtonCaption());
                 addActiveChild(buttonOk, index);
                 break;
             case 19:
                 // Заголовок окна
                 PSimpleLabel labelTitle = new PSimpleLabel(index);
-                labelTitle.setText(LocalizedStrings.BATTLE_CREATE_TITLE);
+                labelTitle.setText(LocalizedStrings.BATTLE_CREATE_PANEL_TITLE);
                 labelTitle.setFont(PFontCollection.getFontFormTitle());
                 addPassiveChild(labelTitle, index);
                 break;
@@ -269,6 +276,10 @@ public class PBattleCreatePanel extends PContentPanel {
             Debug.warning(String.valueOfC("groupSize is an invalid value (groupSize=0)"));
         }
         return groupSize;
+    }
+
+    public boolean getIsRandomMap() {
+        return cbRandomMap.getChecked();
     }
 
 }

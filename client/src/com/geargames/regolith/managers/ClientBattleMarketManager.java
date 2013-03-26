@@ -27,10 +27,11 @@ public class ClientBattleMarketManager {
         browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
     }
 
-    public ClientDeferredAnswer createBattle(BattleMap battleMap, int index) {
+    // todo: использовать battleTypeId вместо battleTypeIndex?
+    public ClientDeferredAnswer createBattle(BattleMap battleMap, int battleTypeIndex) {
         listenToBattleAnswer.setBattle(null);
         return configuration.getNetwork().sendSynchronousMessage(
-                new CreateBattleRequest(configuration, battleMap, (byte) index), listenToBattleAnswer);
+                new CreateBattleRequest(configuration, battleMap, (byte) battleTypeIndex), listenToBattleAnswer);
     }
 
     public ClientDeferredAnswer listenToBattle(Battle battle) {
