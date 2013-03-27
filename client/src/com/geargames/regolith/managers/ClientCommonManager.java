@@ -4,6 +4,7 @@ import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.common.network.MessageLock;
+import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
 import com.geargames.regolith.serializers.requests.CheckForNameRequest;
@@ -21,10 +22,14 @@ public class ClientCommonManager {
     private ClientLoginAnswer loginAnswer;
     private ClientConfirmationAnswer confirmationAnswer;
 
+    private ClientDeferredAnswer answer;
+
     public ClientCommonManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         loginAnswer = new ClientLoginAnswer();
         confirmationAnswer = new ClientConfirmationAnswer();
+
+        answer = new RegolithDeferredAnswer();
     }
 
     /**
@@ -33,7 +38,9 @@ public class ClientCommonManager {
      * @return
      */
     public ClientDeferredAnswer login(Login login) {
-        return configuration.getNetwork().sendSynchronousMessage(new LoginRequest(configuration, login), loginAnswer);
+        answer.setDeSerializedMessage(loginAnswer);
+        configuration.getNetwork().sendSynchronousMessage(new LoginRequest(configuration, login), answer);
+        return answer;
     }
 
     /**
@@ -49,14 +56,18 @@ public class ClientCommonManager {
      * использовать при создании нового аккаунта.
      */
     public ClientDeferredAnswer checkForName(String login) {
-        return configuration.getNetwork().sendSynchronousMessage(new CheckForNameRequest(configuration, login), confirmationAnswer);
+        answer.setDeSerializedMessage(confirmationAnswer);
+        configuration.getNetwork().sendSynchronousMessage(new CheckForNameRequest(configuration, login), answer);
+        return answer;
     }
 
     /**
      * Послать сообщение-запрос о создании нового аккаунта.
      */
     public ClientDeferredAnswer create(Login account) {
-        return configuration.getNetwork().sendSynchronousMessage(new CreateAccountRequest(configuration, account), confirmationAnswer);
+        answer.setDeSerializedMessage(confirmationAnswer);
+        configuration.getNetwork().sendSynchronousMessage(new CreateAccountRequest(configuration, account), answer);
+        return answer;
     }
 
 }

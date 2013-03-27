@@ -148,4 +148,17 @@ public class BattleMapDeserializer {
         return battleMap;
     }
 
+
+    public static BattleMap  deserializeLightBattleMap(MicroByteBuffer buffer, BaseConfiguration baseConfiguration){
+        BattleMap battleMap = new BattleMap();
+        battleMap.setId(SimpleDeserializer.deserializeInt(buffer));
+        int amount = buffer.get();
+        battleMap.setPossibleBattleTypes(new BattleType[amount]);
+        for (int j = 0; j < amount; j++) {
+            battleMap.getPossibleBattleTypes()[j] = BaseConfigurationHelper.findBattleTypeById(
+                    SimpleDeserializer.deserializeInt(buffer), baseConfiguration);
+        }
+        battleMap.setName(SimpleDeserializer.deserializeString(buffer));
+        return battleMap;
+    }
 }

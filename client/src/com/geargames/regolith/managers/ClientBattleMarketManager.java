@@ -3,6 +3,7 @@ package com.geargames.regolith.managers;
 import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientBrowseBattleMapsAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
@@ -20,39 +21,52 @@ public class ClientBattleMarketManager {
     private ClientBrowseBattleMapsAnswer browseBattleMapsAnswer;
     private ClientConfirmationAnswer confirmationAnswer;
 
+    private ClientDeferredAnswer answer;
+
     public ClientBattleMarketManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         listenToBattleAnswer = new ClientListenToBattleAnswer();
         confirmationAnswer = new ClientConfirmationAnswer();
         browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
+        answer = new RegolithDeferredAnswer();
     }
 
     // todo: использовать battleTypeId вместо battleTypeIndex?
     public ClientDeferredAnswer createBattle(BattleMap battleMap, int battleTypeIndex) {
+        answer.setDeSerializedMessage(listenToBattleAnswer);
         listenToBattleAnswer.setBattle(null);
-        return configuration.getNetwork().sendSynchronousMessage(
-                new CreateBattleRequest(configuration, battleMap, (byte) battleTypeIndex), listenToBattleAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
+                new CreateBattleRequest(configuration, battleMap, (byte) battleTypeIndex), answer);
+        return answer;
     }
 
     public ClientDeferredAnswer listenToBattle(Battle battle) {
+        answer.setDeSerializedMessage(listenToBattleAnswer);
         listenToBattleAnswer.setBattle(battle);
-        return configuration.getNetwork().sendSynchronousMessage(
-                new ListenToBattleRequest(configuration, battle), listenToBattleAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
+                new ListenToBattleRequest(configuration, battle), answer);
+        return answer;
     }
 
     public ClientDeferredAnswer listenToCreatedBattles() {
-        return configuration.getNetwork().sendSynchronousMessage(
-                new SimpleRequest(configuration, Packets.LISTEN_TO_BROWSED_CREATED_BATTLES), confirmationAnswer);
+        answer.setDeSerializedMessage(confirmationAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
+                new SimpleRequest(configuration, Packets.LISTEN_TO_BROWSED_CREATED_BATTLES), answer);
+        return answer;
     }
 
     public ClientDeferredAnswer doNotListenToCreatedBattles(){
-        return configuration.getNetwork().sendSynchronousMessage(
-                new SimpleRequest(configuration, Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES), confirmationAnswer);
+        answer.setDeSerializedMessage(confirmationAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
+                new SimpleRequest(configuration, Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES), answer);
+        return answer;
     }
 
     public ClientDeferredAnswer browseBattleMaps() {
-        return configuration.getNetwork().sendSynchronousMessage(
-                new SimpleRequest(configuration, Packets.BROWSE_BATTLE_MAPS), browseBattleMapsAnswer);
+        answer.setDeSerializedMessage(confirmationAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
+                new SimpleRequest(configuration, Packets.BROWSE_BATTLE_MAPS), answer);
+        return answer;
     }
 
     public void goToBase() {

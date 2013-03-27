@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.MessageDispatcher;
 import com.geargames.common.network.Network;
 import com.geargames.regolith.managers.*;
 import com.geargames.common.serialization.MicroByteBuffer;
@@ -29,6 +30,15 @@ public class ClientConfiguration {
     private byte[] incomingMessage;
     private int outgoingMessageSize;
     private Warrior[] baseWarriors;
+    private MessageDispatcher messageDispatcher;
+
+    public MessageDispatcher getMessageDispatcher() {
+        return messageDispatcher;
+    }
+
+    public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
+        this.messageDispatcher = messageDispatcher;
+    }
 
     public ClientConfiguration() {
     }
