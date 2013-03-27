@@ -22,7 +22,7 @@ public class ServerTackleBox2GroundAnswer extends SerializedMessage {
     private boolean success;
 
     public static ServerTackleBox2GroundAnswer answerFailure(MicroByteBuffer buffer){
-        return new ServerTackleBox2GroundAnswer(buffer, (short)-1, (short)-1, (short)-1, (short)-1, null, true);
+        return new ServerTackleBox2GroundAnswer(buffer, (short)-1, (short)-1, (short)-1, (short)-1, null, false);
     }
 
     public static ServerTackleBox2GroundAnswer answerSuccess(MicroByteBuffer buffer, short xBox, short yBox, short xGround, short yGround, StateTackle tackle){

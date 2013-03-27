@@ -21,7 +21,7 @@ public class ServerMedikitBag2GroundAnswer extends SerializedMessage {
     private boolean success;
 
     public static ServerMedikitBag2GroundAnswer answerFailure(MicroByteBuffer buffer){
-        return new ServerMedikitBag2GroundAnswer(buffer, null, (short)0, (short)0, (short)0, true);
+        return new ServerMedikitBag2GroundAnswer(buffer, null, (short)0, (short)0, (short)0, false);
     }
 
     public static ServerMedikitBag2GroundAnswer answerSuccess(MicroByteBuffer buffer, Warrior warrior, short number, short x, short y) {

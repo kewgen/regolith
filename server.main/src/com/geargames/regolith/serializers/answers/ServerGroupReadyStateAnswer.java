@@ -21,7 +21,7 @@ public class ServerGroupReadyStateAnswer extends SerializedMessage {
     }
 
     public static ServerGroupReadyStateAnswer answerFailure(MicroByteBuffer buffer, short type) {
-        return new ServerGroupReadyStateAnswer(buffer, null, type, true);
+        return new ServerGroupReadyStateAnswer(buffer, null, type, false);
     }
 
     private ServerGroupReadyStateAnswer(MicroByteBuffer buffer, BattleGroup battleGroup, short type, boolean success) {
