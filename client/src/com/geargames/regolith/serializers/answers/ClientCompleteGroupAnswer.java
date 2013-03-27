@@ -12,11 +12,12 @@ import com.geargames.regolith.units.battle.BattleGroup;
  * Date: 21.03.13
  * Сообщение-ответ или оповещение о готовности/неготовности боевой группы (пользователя) к битве. Рассылается всем слушателям битвы.
  */
-// ClientGroupIsReadyAnswer, ClientGroupIsNotReadyAnswer
-public class ClientGroupReadyStateAnswer extends ClientDeSerializedMessage {
+// ClientGroupReadyStateAnswer, ClientGroupIsReadyAnswer, ClientGroupIsNotReadyAnswer
+public class ClientCompleteGroupAnswer extends ClientDeSerializedMessage {
     private Battle battle;
     private BattleGroup battleGroup;
 
+    @Deprecated
     public void setBattle(Battle battle) {
         this.battle = battle;
     }

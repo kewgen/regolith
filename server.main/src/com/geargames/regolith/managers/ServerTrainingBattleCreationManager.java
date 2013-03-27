@@ -94,7 +94,7 @@ public class ServerTrainingBattleCreationManager {
             return false;
         } else {
             for (Warrior warrior : warriors) {
-                if (warrior.getBattleGroup().getId() == group.getId()) {
+                if (warrior.getBattleGroup() != null && warrior.getBattleGroup().getId() == group.getId()) {
                     return false;
                 }
             }

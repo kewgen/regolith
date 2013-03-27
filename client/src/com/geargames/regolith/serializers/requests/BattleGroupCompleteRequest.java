@@ -1,15 +1,15 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.Packets;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
- * User: mkutuzov
+ * User: mkutuzov, abarakov
  * Date: 22.06.12
  */
 public class BattleGroupCompleteRequest extends ClientSerializedMessage {
@@ -36,4 +36,5 @@ public class BattleGroupCompleteRequest extends ClientSerializedMessage {
             SerializeHelper.serializeEntityReference(warriors[i], buffer);
         }
     }
+
 }

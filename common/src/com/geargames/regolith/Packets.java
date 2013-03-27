@@ -74,10 +74,6 @@ public interface Packets {
 
     short EVICT_ACCOUNT_FROM_ALLIANCE = 17;
 
-    short GROUP_IS_READY = 18;
-
-    short GROUP_IS_NOT_READY = 19;
-
     short LISTEN_TO_BROWSED_CREATED_BATTLES = 20;
 
     short DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES = 21;
