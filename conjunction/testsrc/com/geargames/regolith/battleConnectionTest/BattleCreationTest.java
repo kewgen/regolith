@@ -184,7 +184,7 @@ public class BattleCreationTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #3c ==============================");
+        System.out.println("========== scenario: #3e ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         ClientGroupReadyStateAnswer groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -197,7 +197,7 @@ public class BattleCreationTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #3d ==============================");
+        System.out.println("========== scenario: #3f ==============================");
         System.out.println("Waiting for a client's eviction from the alliance (Client C)...");
         evictAccountFromAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not evicted from the alliance",
@@ -223,7 +223,7 @@ public class BattleCreationTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #4c ==============================");
+        System.out.println("========== scenario: #4e ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -233,10 +233,10 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
-        Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #4c
+        Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #4e
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #4d ==============================");
+        System.out.println("========== scenario: #4f ==============================");
         System.out.println("Trying to eviction the client from the battle (by author)...");
         answer = battleCreationManager.evictAccount(joinToBattleAllianceAnswer.getBattleGroup().getAlliance(), accountClientC);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
@@ -312,7 +312,7 @@ public class BattleCreationTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #6e ==============================");
+        System.out.println("========== scenario: #6f ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -322,10 +322,10 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
-        Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #6e
+        Manager.pause(300 + 1500); // +1.5 секунды, чтобы клиент C успел выполнить свои сценарии #6e и #6f
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #6f ==============================");
+        System.out.println("========== scenario: #6g ==============================");
         System.out.println("Trying to cancelation the battle (by author)...");
         answer = battleCreationManager.cancelBattle();
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
@@ -376,7 +376,7 @@ public class BattleCreationTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7e ==============================");
+        System.out.println("========== scenario: #7f ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -386,13 +386,13 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
-        Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #6e
+        Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #7f
         ClientTestHelper.checkAsyncMessages();
 
         BattleAlliance alliance = ClientTestHelper.getFreeAlliance(battle);
         Assert.assertNotNull("There is no empty battle group for the client", alliance);
 
-        System.out.println("========== scenario: #7f ==============================");
+        System.out.println("========== scenario: #7g ==============================");
         System.out.println("The author of battle is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
         answer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
@@ -403,10 +403,26 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the client accounts", selfAccount.getId() == battleGroup.getAccount().getId());
         System.out.println("Client '" + battleGroup.getAccount().getName() +
                 "' joined to the alliance (alliance id = " + battleGroup.getAlliance().getId() + ")");
-        Manager.pause(300 + 1000); // +1 секунда, т.к. в это время выполняется сценарий #7g у клиента B
+        Manager.pause(300 + 1000); // +1 секунда, т.к. в это время выполняется сценарий #7h у клиента B
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7h ==============================");
+        System.out.println("========== scenario: #7i ==============================");
+        System.out.println("The client is trying to complete group (battle group id = " + battleGroup.getId() + ")");
+        int groupSize = battle.getBattleType().getGroupSize();
+        Assert.assertTrue("Client '" + selfAccount.getName() + "' does not have enough warriors", groupSize <= selfAccount.getWarriors().size());
+        Warrior[] warriors = new Warrior[groupSize];
+        for (int i = 0; i < groupSize; i++) {
+            warriors[i] = selfAccount.getWarriors().get(i);
+        }
+        answer = battleCreationManager.completeGroup(battleGroup, warriors);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+        ClientConfirmationAnswer clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
+        Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", clientConfirmationAnswer.isConfirm());
+        System.out.println("The client has completed a group");
+        Manager.pause(800);
+        ClientTestHelper.checkAsyncMessages();
+
+        System.out.println("========== scenario: #7j ==============================");
         System.out.println("'Client A' informs about the readiness for the battle (battle group id=" + battleGroup.getId() + ")...");
         answer = battleCreationManager.isReady(battleGroup);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
@@ -417,7 +433,7 @@ public class BattleCreationTest {
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7i ==============================");
+        System.out.println("========== scenario: #7k ==============================");
         System.out.println("Waiting for a client's unreadiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -427,10 +443,19 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established unreadiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
-        Manager.pause(300);
+        Manager.pause(300 + 1000); // +1 секунда, т.к. в это время выполняется сценарий #7k у клиента C
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7j ==============================");
+        System.out.println("========== scenario: #7l ==============================");
+        System.out.println("Trying to fake start a battle (by Author)...");
+        answer = battleCreationManager.startBattle(selfAccount);
+        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
+        ClientStartBattleAnswer startBattleAnswer = (ClientStartBattleAnswer) answer.getAnswer();
+        Assert.assertFalse("The client should not start the battle", startBattleAnswer.isSuccess());
+        Manager.pause(800);
+        ClientTestHelper.checkAsyncMessages();
+
+        System.out.println("========== scenario: #7n ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -440,67 +465,24 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the 'Client C'", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
-        Manager.pause(300);
+        Manager.pause(300 + 3000); // +3 секунды, т.к. в это время выполняются сценарии #7n - #7r у клиентов B и C
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7o ==============================");
+        System.out.println("========== scenario: #7s ==============================");
         System.out.println("Trying to start a battle (by Author)...");
         answer = battleCreationManager.startBattle(selfAccount);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientStartBattleAnswer startBattleAnswer = (ClientStartBattleAnswer) answer.getAnswer();
+        startBattleAnswer = (ClientStartBattleAnswer) answer.getAnswer();
         Assert.assertTrue("The client can not start the battle", startBattleAnswer.isSuccess());
         Assert.assertNotNull("Battle can not be null", startBattleAnswer.getBattle());
         Assert.assertTrue("Different ID of the client accounts", selfAccount.getId() == startBattleAnswer.getBattle().getAuthor().getId());
         System.out.println("Client '" + startBattleAnswer.getBattle().getAuthor().getName() +
                 "' began the battle (battle id = " + startBattleAnswer.getBattle().getId() +
                 ", address: " + startBattleAnswer.getHost() + ":" + startBattleAnswer.getPort() + ")");
-        Manager.pause(300);
+        Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
         // -------------------------------------------------------------------------------------------------------------
-
-//        System.out.println("Listening battle completed");
-
-//        BattleGroup group;
-//        BattleAlliance alliance = battle.getAlliances()[0];
-//        answer = battleCreationManager.joinToAlliance(alliance, selfAccount);
-//        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-//        group = ((ClientJoinToBattleAllianceAnswer) answer.getAnswer()).getBattleGroup();
-//        Assert.assertNotNull("Could not joint to his own battle.", group);
-//        Assert.assertTrue(selfAccount.getName() + " has no enough warriors for this battle", battle.getBattleType().getGroupSize() <= selfAccount.getWarriors().size());
-
-//        Warrior[] warriors = new Warrior[battle.getBattleType().getGroupSize()];
-//        for (int i = 0; i < warriors.length; i++) {
-//            warriors[i] = selfAccount.getWarriors().get(i);
-//        }
-//
-//        answer = battleCreationManager.completeGroup(group, warriors);
-//        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-//        confirm = (ClientConfirmationAnswer) answer.getAnswer();
-//        Assert.assertTrue("Could not put a group into his own battle.", confirm.isConfirm());
-//
-//        answer = battleCreationManager.isReady(group);
-//        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-//        confirm = (ClientConfirmationAnswer) answer.getAnswer();
-//        Assert.assertTrue("Have not be able to be ready for his own battle.", confirm.isConfirm());
-//
-//        ClientStartBattleAnswer startBattleAnswer;
-//        while (true) {
-//            answer = battleCreationManager.startBattle(selfAccount);
-//            Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-//            startBattleAnswer = (ClientStartBattleAnswer) answer.getAnswer();
-//            if (startBattleAnswer.isSuccess()) {
-//                break;
-//            }
-//
-//            try {
-//                System.out.println("The battle could not be started.");
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                Assert.fail("Could not start a battle and was interrupted.");
-//            }
-//        }
-//        System.out.println("The battle has begun");
 
         System.out.println("The test was completed successfully.");
     }

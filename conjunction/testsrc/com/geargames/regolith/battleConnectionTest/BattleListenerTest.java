@@ -187,7 +187,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #3c ==============================");
+        System.out.println("========== scenario: #3e ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         ClientGroupReadyStateAnswer groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -200,7 +200,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #3d ==============================");
+        System.out.println("========== scenario: #3f ==============================");
         System.out.println("Waiting for a client's eviction from the alliance (Client C)...");
         evictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
         evictAccountFromAllianceAnswer.setBattle(battle);
@@ -228,7 +228,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #4c ==============================");
+        System.out.println("========== scenario: #4e ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -241,7 +241,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #4d ==============================");
+        System.out.println("========== scenario: #4f ==============================");
         System.out.println("Waiting for a client's eviction from the alliance (Client C)...");
         evictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
         evictAccountFromAllianceAnswer.setBattle(battle);
@@ -344,7 +344,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #6e ==============================");
+        System.out.println("========== scenario: #6f ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -357,7 +357,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #6f ==============================");
+        System.out.println("========== scenario: #6g ==============================");
         System.out.println("Waiting for the cancellation of the battle (by author)...");
         cancelBattleAnswer = new ClientCancelBattleAnswer();
         Assert.assertTrue("The battle has not been cancelled",
@@ -423,7 +423,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7e ==============================");
+        System.out.println("========== scenario: #7f ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -436,7 +436,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7f ==============================");
+        System.out.println("========== scenario: #7g ==============================");
         System.out.println("Waiting for a client's joining to the alliance (Client A)...");
         joinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
         joinToBattleAllianceAnswer.setBattle(battle);
@@ -450,7 +450,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7g ==============================");
+        System.out.println("========== scenario: #7h ==============================");
         System.out.println("'Client B' is trying join to an alliance (id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
         answer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
@@ -459,7 +459,7 @@ public class BattleListenerTest {
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7h ==============================");
+        System.out.println("========== scenario: #7j ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client A)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -472,7 +472,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7i ==============================");
+        System.out.println("========== scenario: #7k ==============================");
         System.out.println("Waiting for a client's unreadiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -485,7 +485,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7j ==============================");
+        System.out.println("========== scenario: #7n ==============================");
         System.out.println("Waiting for a client's readiness for the battle (Client C)...");
         groupReadyStateAnswer = new ClientGroupReadyStateAnswer();
         groupReadyStateAnswer.setBattle(battle);
@@ -498,7 +498,7 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
-        System.out.println("========== scenario: #7o ==============================");
+        System.out.println("========== scenario: #7s ==============================");
         System.out.println("Waiting of start of the battle (by Author)...");
         ClientStartBattleAnswer startBattleAnswer = new ClientStartBattleAnswer(selfAccount, clientConfiguration);
         Assert.assertTrue("'Client A' does not begin the battle",
