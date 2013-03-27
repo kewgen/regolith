@@ -489,7 +489,7 @@ public class BattleListenerTest {
         completeGroupAnswer = new ClientCompleteGroupAnswer();
         completeGroupAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' could not disband the battle group",
-                waitForAsyncAnswer(completeGroupAnswer, Packets.GROUP_INCOMPLETE, NEXT_WAINTING));
+                waitForAsyncAnswer(completeGroupAnswer, Packets.GROUP_DISBAND, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not disband the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +

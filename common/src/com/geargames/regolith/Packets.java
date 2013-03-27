@@ -46,41 +46,32 @@ public interface Packets {
         user_id[int]    - ид пользователя - новое, если пользователь не был зарегистрирован
     */
 
-    short LOGIN = 3;
+    short CHECK_FOR_NAME = 3;
+    short LOGIN = 4;
+    short LOGOUT = 5;
 
-    short LOGOUT = 4;
+    short LISTEN_TO_BROWSED_CREATED_BATTLES = 6;
+    short DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES = 7;
+    short BROWSE_CREATED_BATTLES = 8;
 
-    short CHECK_FOR_NAME = 5;
+    short BROWSE_BATTLE_MAPS = 9;
+    short BROWSE_RANDOM_BATTLE_MAP = 10;
 
-    short JOIN_BASE_WARRIORS_TO_ACCOUNT = 6;
+    short CREATE_BATTLE = 11;
+    short CANCEL_BATTLE = 12;
+    short START_BATTLE = 13;
 
-    short CREATE_BATTLE = 8;
+    short LISTEN_TO_BATTLE = 14;
+    short DO_NOT_LISTEN_TO_BATTLE = 15;
 
-    short CANCEL_BATTLE = 9;
-
-    short START_BATTLE = 10;
-
-    short JOIN_TO_BATTLE_ALLIANCE = 11;
-
-    short LISTEN_TO_BATTLE = 12;
-
-    short GROUP_COMPLETE = 13;
-
-    short DO_NOT_LISTEN_TO_BATTLE = 14;
-
-    short BROWSE_CREATED_BATTLES = 15;
-
-    short BROWSE_BATTLE_MAPS = 16;
-
+    short JOIN_TO_BATTLE_ALLIANCE = 16;
     short EVICT_ACCOUNT_FROM_ALLIANCE = 17;
 
-    short LISTEN_TO_BROWSED_CREATED_BATTLES = 20;
+    short GROUP_COMPLETE = 18;
+    short GROUP_DISBAND = 19;
 
-    short DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES = 21;
+    short JOIN_BASE_WARRIORS_TO_ACCOUNT = 20;
 
-    short GROUP_INCOMPLETE = 22;
-
-    short BROWSE_RANDOM_BATTLE_MAP = 23;
 
 
     short GO_TO_WARRIOR_MARKET = 30;

@@ -44,7 +44,7 @@ public class ServerGroupRemoveWarriorsRequest extends ServerRequest {
                 battleCreationManager.removeWarriors(group);
                 if (battleCreationManager.isNotReady(group)) {
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
-                    message = ServerGroupReadyStateAnswer.answerSuccess(to, Packets.GROUP_INCOMPLETE, group);
+                    message = ServerGroupReadyStateAnswer.answerSuccess(to, Packets.GROUP_DISBAND, group);
 
                     List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
                     messages.add(new MainMessageToClient(recipients, message.serialize()));
@@ -53,7 +53,7 @@ public class ServerGroupRemoveWarriorsRequest extends ServerRequest {
             }
         }
         recipients = MainServerRequestUtils.singleRecipientByClient(client);
-        message = ServerGroupReadyStateAnswer.answerFailure(to, Packets.GROUP_INCOMPLETE);
+        message = ServerGroupReadyStateAnswer.answerFailure(to, Packets.GROUP_DISBAND);
         List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
         messages.add(new MainMessageToClient(recipients, message.serialize()));
         return messages;

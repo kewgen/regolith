@@ -19,7 +19,7 @@ public class BattleGroupDisbandRequest extends ClientSerializedMessage {
     }
 
     public short getType() {
-        return Packets.GROUP_INCOMPLETE;
+        return Packets.GROUP_DISBAND;
     }
 
     public void serialize(MicroByteBuffer buffer) {
