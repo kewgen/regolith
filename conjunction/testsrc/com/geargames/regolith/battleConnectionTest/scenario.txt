@@ -112,8 +112,8 @@ startBattle и битва начинается
 	Client A:  in   Я присоединился к альянсу
 	Client B:  in   Client A присоединился к альянсу
 	Client C:  in   Client A присоединился к альянсу
-7g	Client B:  out  joinToAlliance (aliance with client A, B)
-	Client B:  in   join failed - невозможно присоединиться к уже заполненному альянсу
+//7g	Client B:  out  joinToAlliance (aliance with client A, B)
+//		Client B:  in   join failed - невозможно присоединиться к уже заполненному альянсу
 7h	Client A:  out  isReady
 	Client A:  in   Я готов к битве
 	Client B:  in   Client A готов к битве
@@ -135,10 +135,14 @@ startBattle и битва начинается
 //7n	Client C:  out  evictAccount(Client A) - клиент выкидывает автора из битвы
 //		Client C:  in   evict failed - автора никто не может выкинуть из игры
 7o	Client A:  out  startBattle
+	Client A:  in   reject - битва не может быть начата, пока игроки не выполнят groupComplete
+	
+
+
+7o	Client A:  out  startBattle
 	Client A:  in   Битва началась
 	Client B:  in   doNotListenToBattle - битва началась без меня, меня выкинули из слушателей битвы
 	Client C:  in   Битва началась
-
 
 
 

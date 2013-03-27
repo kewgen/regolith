@@ -3,6 +3,9 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.serializers.BatchAnswer;
+import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
+
+import java.util.Vector;
 
 
 /**
@@ -23,7 +26,20 @@ public class ClientBrowseBattlesAnswer extends BatchAnswer {
         return answer;
     }
 
+    /**
+     * Получить список объектов типа ClientListenToBattleAnswer.
+     */
     public ArrayList getAnswers() {
         return answers;
     }
+
+    public ClientBattleCollection getBattles() {
+        ClientBattleCollection battles = new ClientBattleCollection();
+        battles.setBattles(new Vector(answers.size()));
+        for (int i = 0 ; i < answers.size(); i++) {
+            battles.add(((ClientListenToBattleAnswer) answers.get(i)).getBattle());
+        }
+        return battles;
+    }
+
 }

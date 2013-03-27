@@ -29,6 +29,7 @@ public class BattleCreationTest {
 
     private static final int FIRST_WAINTING = 1000; // 100 сек
     private static final int NEXT_WAINTING  = 2000;  // 20 сек
+    private static final int BROWSE_CREATED_BATTLES_WAINTING = 200; // 20 сек
 
     private static boolean waitForAnswer(ClientDeferredAnswer answer) {
         try {
@@ -164,7 +165,9 @@ public class BattleCreationTest {
         evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
 //        BattleGroup battleGroup = evictAccountFromAllianceAnswer.getBattleGroup();
         Assert.assertTrue("The client could not be evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
-        Manager.pause(1000);
+        System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
+                "' evicted from the alliance (id = " + evictAccountFromAllianceAnswer.getAlliance().getId() + ")");
+        Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
         // -------------------------------------------------------------------------------------------------------------
@@ -239,7 +242,9 @@ public class BattleCreationTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
         Assert.assertTrue("The client could not be evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
-        Manager.pause(1000);
+        System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
+                "' evicted from the alliance (id = " + evictAccountFromAllianceAnswer.getAlliance().getId() + ")");
+        Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
         // -------------------------------------------------------------------------------------------------------------
@@ -262,7 +267,7 @@ public class BattleCreationTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientCancelBattleAnswer cancelBattleAnswer = (ClientCancelBattleAnswer) answer.getAnswer();
         Assert.assertTrue("The client is not able to cancel the battle", cancelBattleAnswer.isSuccess());
-        Manager.pause(1000);
+        Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
         // -------------------------------------------------------------------------------------------------------------
@@ -299,7 +304,7 @@ public class BattleCreationTest {
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
         joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
-                waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
+                waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING + BROWSE_CREATED_BATTLES_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
@@ -326,7 +331,7 @@ public class BattleCreationTest {
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         cancelBattleAnswer = (ClientCancelBattleAnswer) answer.getAnswer();
         Assert.assertTrue("The client is not able to cancel the battle", cancelBattleAnswer.isSuccess());
-        Manager.pause(1000);
+        Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
         // -------------------------------------------------------------------------------------------------------------
@@ -363,7 +368,7 @@ public class BattleCreationTest {
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
         joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
-                waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
+                waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING + BROWSE_CREATED_BATTLES_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == joinToBattleAllianceAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + joinToBattleAllianceAnswer.getBattleGroup().getAccount().getName() +
@@ -381,7 +386,7 @@ public class BattleCreationTest {
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == groupReadyStateAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + groupReadyStateAnswer.getBattleGroup().getAccount().getName() +
                 "' established readiness for battle (id = " + groupReadyStateAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
-        Manager.pause(300);
+        Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #6e
         ClientTestHelper.checkAsyncMessages();
 
         BattleAlliance alliance = ClientTestHelper.getFreeAlliance(battle);
@@ -409,7 +414,7 @@ public class BattleCreationTest {
         Assert.assertTrue("'Client A' can not change their readiness for battle", groupReadyStateAnswer.isSuccess());
         Assert.assertNotNull("The client could not establish its readiness", groupReadyStateAnswer.getBattleGroup());
         System.out.println("'Client A' is ready for battle (battle group id=" + groupReadyStateAnswer.getBattleGroup().getId() + ")");
-        Manager.pause(1000);
+        Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #7i ==============================");
