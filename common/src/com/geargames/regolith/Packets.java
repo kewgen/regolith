@@ -84,6 +84,8 @@ public interface Packets {
 
     short GROUP_INCOMPLETE = 22;
 
+    short BROWSE_RANDOM_BATTLE_MAP = 23;
+
 
     short GO_TO_WARRIOR_MARKET = 30;
 
