@@ -30,7 +30,8 @@ import com.geargames.regolith.units.map.BattleMap;
 // PBrowseMapsPanel
 public class PSelectMapPanel extends PContentPanel {
 
-    private BattleMap battleMap;
+    private BattleMap[] battleMaps;
+    private BattleMap selectedMap;
     private DrawablePPanel currentPanel;
 
     public PSelectMapPanel(PObject prototype) {
@@ -109,25 +110,35 @@ public class PSelectMapPanel extends PContentPanel {
             Debug.critical("The client could not go to the battle market");
         }
 
-        Debug.debug("Browsing maps...");
-        answer = battleMarketManager.browseBattleMaps();
-        if (!waitForAnswer(answer)) {
-            Debug.critical("Waiting time answer has expired");
-        }
-        ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
-        BattleMap[] maps = browseMaps.getBattleMaps();
-        if (maps.length == 0) {
-            Debug.critical("There are no maps to use");
-        }
-        BattleMap battleMap = maps[0]; //todo: выбирать случайную, подходящую
-
-        Debug.debug("Creating a battle (map id = " + battleMap.getId() + ")...");
-
         if (isRandomMap) {
-            battleMap = null;
+            Debug.debug("Browsing maps...");
+            answer = battleMarketManager.browseBattleMaps(/*battleType*/);
+            if (!waitForAnswer(answer)) {
+                Debug.critical("Waiting time answer has expired");
+            }
+            ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
+            BattleMap[] maps = browseMaps.getBattleMaps();
+            if (maps.length == 0) {
+                Debug.critical("There are no maps to use");
+            }
+            selectedMap = maps[0];
+
             currentPanel = callerPanel;
             createBattle();
         } else {
+            Debug.debug("Browsing maps...");
+            //todo: Я должен получать только те карты, которые меня устраивают, по выбранным параметрам.
+            answer = battleMarketManager.browseBattleMaps(/*battleType*/);
+            if (!waitForAnswer(answer)) {
+                Debug.critical("Waiting time answer has expired");
+            }
+            ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
+            battleMaps = browseMaps.getBattleMaps();
+            if (battleMaps.length == 0) {
+                Debug.critical("There are no maps to use");
+            }
+            //todo: selectedMap = ?
+
             PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
             currentPanel = panelManager.getSelectMap();
             panelManager.hide(callerPanel);
@@ -140,6 +151,10 @@ public class PSelectMapPanel extends PContentPanel {
         // Ожидаем ответа от игроков/сервера. Пожалуйста подождите.
 
 
+        if (currentPanel == null) {
+            Debug.critical("PSelectMapPanel.createBattle(): currentPanel == null");
+            return;
+        }
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         com.geargames.regolith.awt.components.battleCreate.PBattleCreatePanel battleCreatePanel = (PBattleCreatePanel) panelManager.getBattleCreate().getElement();
@@ -147,6 +162,8 @@ public class PSelectMapPanel extends PContentPanel {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         ClientBaseManager baseManager = clientConfiguration.getBaseManager();
         ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
+
+        Debug.debug("Creating a battle (map id = " + selectedMap.getId() + ")...");
 
         /*
 //        if (battleCreatePanel.getIsRandomMap()) {

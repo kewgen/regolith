@@ -168,16 +168,6 @@ public class SimplePlay {
                 System.err.println("could not put a group into his own battle.");
                 return;
             }
-
-            answer = battleCreationManager.isReady(group);
-            retrieving(answer, 1000);
-
-            confirm = (ClientConfirmationAnswer) answer.getAnswer();
-            if (!confirm.isConfirm()) {
-                System.err.println("have not be able to be ready for his own battle.");
-                return;
-            }
-
         } else {
             System.out.print("there are no maps");
         }

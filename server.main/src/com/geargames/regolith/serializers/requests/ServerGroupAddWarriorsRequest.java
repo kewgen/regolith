@@ -6,22 +6,25 @@ import com.geargames.regolith.managers.ServerTrainingBattleCreationManager;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.regolith.serializers.MainServerRequestUtils;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
-import com.geargames.regolith.service.BattleManagerContext;
-import com.geargames.regolith.service.Client;
-import com.geargames.regolith.service.MainServerConfiguration;
-import com.geargames.regolith.service.MainServerConfigurationFactory;
+import com.geargames.regolith.serializers.answers.ServerGroupReadyStateAnswer;
+import com.geargames.regolith.service.*;
 import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 
+import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * User: mkutuzov
  * Date: 13.07.12
  */
-public class ServerGroupAddWarriorsRequest extends MainOneToClientRequest {
+public class ServerGroupAddWarriorsRequest extends ServerRequest {
     private BattleManagerContext battleManagerContext;
     private ServerTrainingBattleCreationManager battleCreationManager;
 
@@ -32,35 +35,40 @@ public class ServerGroupAddWarriorsRequest extends MainOneToClientRequest {
     }
 
     @Override
-    public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
+    public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException {
         Battle battle = battleManagerContext.getBattlesById().get(SimpleDeserializer.deserializeInt(from));
+        List<SocketChannel> recipients;
+        SerializedMessage message;
 
         if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) != null) {
             BattleAlliance alliance = BattleHelper.findAlliance(battle, SimpleDeserializer.deserializeInt(from));
-            if (alliance == null) {
-                throw new RegolithException();
-            }
-            BattleGroup group = BattleHelper.findBattleGroup(alliance, SimpleDeserializer.deserializeInt(from));
-            if (group == null) {
-                throw new RegolithException();
-            }
-            byte length = from.get();
-            int[] warriorIds = new int[length];
-            for (int i = 0; i < length; i++) {
-                warriorIds[i] = SimpleDeserializer.deserializeInt(from);
-            }
-            Warrior[] warriors = ServerDataBaseHelper.getWarriorsByIds(warriorIds);
-            if (warriors.length < length) {
-                throw new RegolithException();
-            }
-            if (battleCreationManager.addWarriors(group, warriors)) {
-                return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.GROUP_COMPLETE);
-            } else {
-                return ServerConfirmationAnswer.answerFailure(writeBuffer, Packets.GROUP_COMPLETE);
-            }
-        } else {
-            return ServerConfirmationAnswer.answerFailure(writeBuffer, Packets.GROUP_COMPLETE);
-        }
+            if (alliance != null) {
+                BattleGroup group = BattleHelper.findBattleGroup(alliance, SimpleDeserializer.deserializeInt(from));
+                if (group != null) {
+                    byte length = from.get();
+                    int[] warriorIds = new int[length];
+                    for (int i = 0; i < length; i++) {
+                        warriorIds[i] = SimpleDeserializer.deserializeInt(from);
+                    }
+                    Warrior[] warriors = ServerDataBaseHelper.getWarriorsByIds(warriorIds);
+                    if (warriors.length == length) {
+                        if (battleCreationManager.addWarriors(group, warriors) && battleCreationManager.isReady(group)) {
+                            recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
+                            message = ServerGroupReadyStateAnswer.answerSuccess(to, Packets.GROUP_COMPLETE, group);
 
+                            List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
+                            messages.add(new MainMessageToClient(recipients, message.serialize()));
+                            return messages;
+                        }
+                    }
+                }
+            }
+        }
+        recipients = MainServerRequestUtils.singleRecipientByClient(client);
+        message = ServerGroupReadyStateAnswer.answerFailure(to, Packets.GROUP_COMPLETE);
+
+        List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
+        messages.add(new MainMessageToClient(recipients, message.serialize()));
+        return messages;
     }
 }

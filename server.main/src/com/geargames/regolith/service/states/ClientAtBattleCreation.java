@@ -22,6 +22,9 @@ public class ClientAtBattleCreation extends MainState {
             case Packets.GROUP_COMPLETE:
                 request = new ServerGroupAddWarriorsRequest();
                 break;
+            case Packets.GROUP_INCOMPLETE:
+                request = new ServerGroupRemoveWarriorsRequest();
+                break;
             case Packets.CANCEL_BATTLE:
                 request = new ServerCancelBattleRequest(client.getAccount());
                 break;
@@ -33,12 +36,6 @@ public class ClientAtBattleCreation extends MainState {
                 break;
             case Packets.EVICT_ACCOUNT_FROM_ALLIANCE:
                 request = new ServerEvictAccountFromAllianceRequest();
-                break;
-            case Packets.GROUP_IS_READY:
-                request = new ServerGroupIsReadyRequest();
-                break;
-            case Packets.GROUP_IS_NOT_READY:
-                request = new ServerGroupIsNotReadyRequest();
                 break;
             case Packets.FRAME_MESSAGE:
                 request = new ServerGetFrameRequest();

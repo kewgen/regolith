@@ -41,6 +41,9 @@ public class ClientAtBattleMarket extends MainState {
             case Packets.BROWSE_BATTLE_MAPS:
                 request = new ServerBrowseBattleMapsRequest(battleMarketManager);
                 break;
+            case Packets.BROWSE_RANDOM_BATTLE_MAP:
+                request = new ServerBrowseRandomBattleMapRequest();
+                break;
             case Packets.LISTEN_TO_BROWSED_CREATED_BATTLES:
                 request = new ServerListenToBrowsedCreatedBattlesRequest(schedulerService);
                 break;

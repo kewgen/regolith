@@ -1,6 +1,7 @@
 package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.service.MainServerConfigurationFactory;
+import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleMap;
 import org.hibernate.Criteria;
@@ -68,5 +69,12 @@ public class ServerDataBaseHelper {
         List<Warrior> warriors = criteria.list();
         session.close();
         return warriors.toArray(new Warrior[warriors.size()]);
+    }
+
+    public static BattleType getBattleTypeById(int id){
+        Session session = sessionFactory.openSession();
+        BattleType type = (BattleType)session.get(BattleType.class, id);
+        session.close();
+        return type;
     }
 }

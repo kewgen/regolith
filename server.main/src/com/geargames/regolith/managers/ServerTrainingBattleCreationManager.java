@@ -90,19 +90,21 @@ public class ServerTrainingBattleCreationManager {
      * @return false если какой-то боец уже находился в группе или число бойцов в группе превысило предел.
      */
     public boolean addWarriors(BattleGroup group, Warrior[] warriors) {
-        if (warriors.length + group.getWarriors().size() > group.getAlliance().getBattle().getBattleType().getGroupSize()) {
+        if (group.getWarriors().size() > 0 || warriors.length != group.getAlliance().getBattle().getBattleType().getGroupSize()) {
             return false;
         } else {
-            for (Warrior warrior : warriors) {
-                if (warrior.getBattleGroup() != null && warrior.getBattleGroup().getId() == group.getId()) {
-                    return false;
-                }
-            }
             for (Warrior warrior : warriors) {
                 WarriorHelper.addWarriorToGroup(group, warrior);
             }
             return true;
         }
+    }
+
+    public void removeWarriors(BattleGroup group){
+        for(Warrior warrior : ((ServerWarriorCollection)group.getWarriors()).getWarriors()){
+            warrior.setBattleGroup(null);
+        }
+        ((ServerWarriorCollection)group.getWarriors()).getWarriors().clear();
     }
 
     public void doNotListenToBattle(Battle battle, Account account) {

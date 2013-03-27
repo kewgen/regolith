@@ -20,12 +20,14 @@ import java.util.*;
  */
 public class ServerBattleMarketManager {
     private MainServerConfiguration configuration;
+    private Random random;
 
     public ServerBattleMarketManager() {
         configuration = MainServerConfigurationFactory.getConfiguration();
+        random = new Random();
     }
 
-    public Battle createBattle(BattleMap battleMap, int battleTypeIndex, Account author) throws RegolithException{
+    public Battle createBattle(BattleMap battleMap, int battleTypeIndex, Account author) throws RegolithException {
         BattleType type = battleMap.getPossibleBattleTypes()[battleTypeIndex];
         Battle battle = BattleHelper.createBattle(battleMap.getName() + "_" + author.getName(), battleMap, battleTypeIndex);
         battle.setAuthor(author);
@@ -56,14 +58,34 @@ public class ServerBattleMarketManager {
         return collection.toArray(new Battle[collection.size()]);
     }
 
-    public BattleMap[] browseBattleMaps() {
+    public List<BattleMap> browseBattleMaps() {
         Session session = configuration.getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(BattleMap.class);
         List<BattleMap> list = criteria.list();
-        return list.toArray(new BattleMap[list.size()]);
+        return list;
     }
 
-    public boolean goToBase() {
-        return true;
+    //todo: сделано крайне неоптимально
+    public List<BattleMap> browseBattleMaps(BattleType battleType) {
+        LinkedList<BattleMap> maps = new LinkedList<BattleMap>();
+        for (BattleMap map : browseBattleMaps()) {
+            for (BattleType type : map.getPossibleBattleTypes()) {
+                if (type == battleType) {
+                    maps.add(map);
+                    continue;
+                }
+            }
+        }
+        return maps;
     }
+
+    public BattleMap getRandomBattleMap(BattleType type) {
+        List<BattleMap> maps = browseBattleMaps(type);
+        if (maps.size() > 0) {
+            return maps.get(random.nextInt() % maps.size());
+        } else {
+            return null;
+        }
+    }
+
 }
