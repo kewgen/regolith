@@ -20,7 +20,7 @@ public class ClientAtBattleCreation extends MainState {
         ServerRequest request;
         switch (type) {
             case Packets.GROUP_COMPLETE:
-                request = new ServerGroupCompleteRequest();
+                request = new ServerGroupAddWarriorsRequest();
                 break;
             case Packets.CANCEL_BATTLE:
                 request = new ServerCancelBattleRequest(client.getAccount());
