@@ -1,7 +1,7 @@
-package com.geargames.regolith.units.tackle;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.BaseConfiguration;
-import com.geargames.regolith.RegolithConfiguration;
+import com.geargames.regolith.units.tackle.Armor;
 
 /**
  * @author Mikhail_Kutuzov

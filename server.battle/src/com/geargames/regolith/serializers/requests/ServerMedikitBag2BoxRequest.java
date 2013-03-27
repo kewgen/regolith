@@ -2,15 +2,13 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.AmmunitionBagHelper;
 import com.geargames.regolith.units.AmmunitionBag;
-import com.geargames.regolith.units.AmmunitionBagHelper;
 import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.MedikitCollection;
-import com.geargames.regolith.units.dictionaries.ServerMedikitCollection;
-import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.tackle.Ammunition;
 import com.geargames.regolith.units.tackle.Medikit;
 

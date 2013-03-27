@@ -2,9 +2,8 @@ package com.geargames.regolith.serializers;
 
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
-import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
-import com.geargames.regolith.BaseConfigurationHelper;
+import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.tackle.StateTackle;
 import com.geargames.regolith.units.dictionaries.*;

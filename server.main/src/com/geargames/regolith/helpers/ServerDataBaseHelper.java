@@ -1,4 +1,4 @@
-package com.geargames.regolith;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.units.battle.Warrior;

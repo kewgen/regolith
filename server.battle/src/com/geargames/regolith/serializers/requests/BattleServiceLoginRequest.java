@@ -10,7 +10,7 @@ import com.geargames.regolith.serializers.answers.BattleServiceNewClientLogin;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.service.state.ClientAtBattle;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.BattleHelper;
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;

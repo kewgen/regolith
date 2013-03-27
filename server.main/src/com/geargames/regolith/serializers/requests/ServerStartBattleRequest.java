@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.ServerContextHelper;
 import com.geargames.regolith.managers.ServerTrainingBattleCreationManager;
 import com.geargames.regolith.serializers.answers.ServerStartBattleAnswer;
 import com.geargames.regolith.serializers.answers.ServerStopListenAnswer;

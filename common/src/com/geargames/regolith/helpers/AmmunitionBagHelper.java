@@ -1,5 +1,7 @@
-package com.geargames.regolith.units;
+package com.geargames.regolith.helpers;
 
+import com.geargames.regolith.units.AmmunitionBag;
+import com.geargames.regolith.units.AmmunitionPacket;
 import com.geargames.regolith.units.dictionaries.AmmunitionPacketCollection;
 import com.geargames.regolith.units.tackle.Ammunition;
 

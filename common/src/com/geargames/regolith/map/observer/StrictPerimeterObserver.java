@@ -1,5 +1,6 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.AllyCollection;
 import com.geargames.regolith.units.map.BattleMap;

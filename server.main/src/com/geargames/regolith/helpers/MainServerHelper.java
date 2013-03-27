@@ -1,4 +1,4 @@
-package com.geargames.regolith;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.SecurityOperationManager;
@@ -6,13 +6,9 @@ import com.geargames.regolith.units.*;
 import com.geargames.regolith.units.base.*;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.*;
-import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.StateTackle;
-import com.geargames.regolith.units.tackle.Weapon;
 
 import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**

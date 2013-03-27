@@ -1,15 +1,11 @@
 package com.geargames.regolith.units.tackle;
 
 import com.geargames.regolith.BaseConfiguration;
-import com.geargames.regolith.Packets;
-import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.*;
 import com.geargames.regolith.units.*;
 import com.geargames.regolith.units.base.StoreHouse;
-import com.geargames.regolith.units.base.StoreHouseHelper;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.dictionaries.AmmunitionPacketCollection;
-import com.geargames.regolith.units.dictionaries.ProjectileCollection;
 
 /**
  * User: mikhail v. kutuzov

@@ -1,9 +1,10 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.helpers.AmmunitionBagHelper;
+import com.geargames.regolith.helpers.ServerHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.AmmunitionBag;
-import com.geargames.regolith.units.AmmunitionBagHelper;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.dictionaries.ServerProjectileCollection;
 import com.geargames.regolith.units.dictionaries.ServerWeaponTypeCollection;
 import com.geargames.regolith.units.dictionaries.WeaponTypeCollection;

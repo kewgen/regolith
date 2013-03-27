@@ -2,6 +2,7 @@ package com.geargames.regolith.serializers;
 
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.Human;
 import com.geargames.regolith.units.battle.*;

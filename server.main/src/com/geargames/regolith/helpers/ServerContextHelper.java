@@ -1,5 +1,6 @@
-package com.geargames.regolith.service;
+package com.geargames.regolith.helpers;
 
+import com.geargames.regolith.service.ServerContext;
 import com.geargames.regolith.service.remote.BattleServiceDescriptor;
 import com.geargames.regolith.units.Account;
 

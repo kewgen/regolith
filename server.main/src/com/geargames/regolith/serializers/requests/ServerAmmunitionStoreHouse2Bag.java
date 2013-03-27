@@ -5,11 +5,11 @@ import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.ServerDataBaseHelper;
+import com.geargames.regolith.helpers.ServerDataBaseHelper;
+import com.geargames.regolith.helpers.StoreHouseHelper;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.units.AmmunitionPacket;
-import com.geargames.regolith.units.base.StoreHouseHelper;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.TackleTransitionHelper;
 

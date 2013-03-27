@@ -6,6 +6,7 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.Client;
@@ -13,7 +14,6 @@ import com.geargames.regolith.units.BodyParticles;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 /**

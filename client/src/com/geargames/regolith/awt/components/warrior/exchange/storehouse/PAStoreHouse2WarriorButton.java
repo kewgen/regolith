@@ -9,13 +9,13 @@ import com.geargames.regolith.Packets;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PExchangeButton;
+import com.geargames.regolith.helpers.StoreHouseHelper;
 import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.AmmunitionPacket;
 import com.geargames.regolith.units.base.StoreHouse;
-import com.geargames.regolith.units.base.StoreHouseHelper;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.*;
 

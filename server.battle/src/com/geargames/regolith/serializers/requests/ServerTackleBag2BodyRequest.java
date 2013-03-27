@@ -2,6 +2,7 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BagHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
@@ -11,7 +12,6 @@ import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.Bag;
-import com.geargames.regolith.units.BagHelper;
 import com.geargames.regolith.units.BodyParticles;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
@@ -53,7 +53,7 @@ public class ServerTackleBag2BodyRequest extends ServerRequest {
             throw new RegolithException();
         }
 
-        StateTackle tackle = BagHelper.putOut(bag,number);
+        StateTackle tackle = BagHelper.putOut(bag, number);
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(2);
 
         if (tackle instanceof Armor) {

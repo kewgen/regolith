@@ -5,9 +5,9 @@ import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
 import com.geargames.common.String;
 import com.geargames.regolith.awt.components.warrior.PAbstractTacklePanel;
+import com.geargames.regolith.helpers.StoreHouseHelper;
 import com.geargames.regolith.units.AmmunitionPacket;
 import com.geargames.regolith.units.base.StoreHouse;
-import com.geargames.regolith.units.base.StoreHouseHelper;
 import com.geargames.regolith.units.tackle.Ammunition;
 import com.geargames.regolith.units.tackle.StateTackle;
 

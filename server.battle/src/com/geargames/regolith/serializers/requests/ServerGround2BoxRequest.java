@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
@@ -16,7 +17,6 @@ import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.BattleMapHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,7 +56,7 @@ public abstract class ServerGround2BoxRequest extends ServerRequest {
         BattleCell[][] cells = map.getCells();
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(2);
 
-        if (BattleMapHelper.ableToPeek(warrior,cells,groundX,groundY)) {
+        if (BattleMapHelper.ableToPeek(warrior, cells, groundX, groundY)) {
             Element boxElement = cells[boxX][boxY].getElement();
             if (BattleMapHelper.isNear(warrior, boxX, boxY) && boxElement != null && boxElement instanceof Box) {
                 moveGround2Box(cells[groundX][groundY], (Box) boxElement);

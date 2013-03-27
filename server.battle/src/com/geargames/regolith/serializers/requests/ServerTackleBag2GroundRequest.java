@@ -1,12 +1,10 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
-import com.geargames.regolith.units.dictionaries.StateTackleCollection;
-import com.geargames.regolith.units.tackle.StateTackle;
 
 /**
  * User: mikhail v. kutuzov

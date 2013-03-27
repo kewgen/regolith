@@ -1,6 +1,8 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.units.BattleHelper;
+import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
@@ -12,7 +14,6 @@ import com.geargames.regolith.map.router.Router;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.battle.ServerBorder;
-import com.geargames.regolith.units.map.BattleMapHelper;
 import com.geargames.regolith.units.map.ExitZone;
 import org.junit.Assert;
 import org.junit.Before;

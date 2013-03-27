@@ -1,6 +1,6 @@
 package com.geargames.regolith.managers;
 
-import com.geargames.regolith.MainServerHelper;
+import com.geargames.regolith.helpers.MainServerHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.Login;

@@ -1,10 +1,11 @@
-package com.geargames.regolith.units;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
-import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.map.BattleMap;

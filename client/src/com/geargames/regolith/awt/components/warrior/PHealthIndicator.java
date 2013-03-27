@@ -5,8 +5,8 @@ import com.geargames.common.util.Region;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 
 /**
  * User: mikhail v. kutuzov
@@ -31,7 +31,7 @@ public class PHealthIndicator extends PElement {
 
     public void draw(Graphics graphics, int x, int y) {
         if(!initiated){
-            indicator.setValue(warrior.getHealth() * indicator.getCardinality()/WarriorHelper.getMaxHealth(warrior, ClientConfigurationFactory.getConfiguration().getBaseConfiguration()));
+            indicator.setValue(warrior.getHealth() * indicator.getCardinality()/ WarriorHelper.getMaxHealth(warrior, ClientConfigurationFactory.getConfiguration().getBaseConfiguration()));
             initiated = true;
         }
         indicator.draw(graphics, x, y);

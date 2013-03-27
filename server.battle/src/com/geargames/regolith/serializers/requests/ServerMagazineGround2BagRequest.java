@@ -1,13 +1,11 @@
 package com.geargames.regolith.serializers.requests;
 
-import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
-import com.geargames.regolith.units.AmmunitionBagHelper;
 import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.tackle.Magazine;
 

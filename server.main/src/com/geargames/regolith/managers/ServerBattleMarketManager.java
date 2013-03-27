@@ -5,7 +5,7 @@ import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.BattleHelper;
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleMap;
 import org.hibernate.Criteria;

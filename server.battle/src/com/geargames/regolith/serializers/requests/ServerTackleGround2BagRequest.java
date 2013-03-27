@@ -2,6 +2,7 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;

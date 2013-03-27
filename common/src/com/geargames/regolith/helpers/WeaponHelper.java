@@ -1,7 +1,11 @@
-package com.geargames.regolith.units.tackle;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.units.dictionaries.ProjectileCollection;
+import com.geargames.regolith.units.tackle.Projectile;
+import com.geargames.regolith.units.tackle.Weapon;
+import com.geargames.regolith.units.tackle.WeaponDistances;
+import com.geargames.regolith.units.tackle.WeaponType;
 
 /**
  * User: mkutuzov

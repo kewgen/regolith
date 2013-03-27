@@ -5,7 +5,6 @@ import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMapHelper;
 import com.geargames.regolith.units.tackle.Magazine;
 
 /**

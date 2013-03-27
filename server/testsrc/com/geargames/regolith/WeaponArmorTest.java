@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.helpers.ArmorHelper;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.Weapon;

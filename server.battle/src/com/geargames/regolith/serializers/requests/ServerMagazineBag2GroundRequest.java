@@ -1,8 +1,8 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.helpers.AmmunitionBagHelper;
 import com.geargames.regolith.units.AmmunitionBag;
-import com.geargames.regolith.units.AmmunitionBagHelper;
 import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
