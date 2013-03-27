@@ -21,11 +21,11 @@ import com.geargames.regolith.units.battle.Warrior;
  * User: mkutuzov
  * Date: 13.07.12
  */
-public class ServerGroupCompleteRequest extends MainOneToClientRequest {
+public class ServerGroupAddWarriorsRequest extends MainOneToClientRequest {
     private BattleManagerContext battleManagerContext;
     private ServerTrainingBattleCreationManager battleCreationManager;
 
-    public ServerGroupCompleteRequest() {
+    public ServerGroupAddWarriorsRequest() {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         this.battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         this.battleCreationManager = configuration.getBattleCreationManager();
@@ -53,7 +53,7 @@ public class ServerGroupCompleteRequest extends MainOneToClientRequest {
             if (warriors.length < length) {
                 throw new RegolithException();
             }
-            if (battleCreationManager.completeGroup(group, warriors)) {
+            if (battleCreationManager.addWarriors(group, warriors)) {
                 return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.GROUP_COMPLETE);
             } else {
                 return ServerConfirmationAnswer.answerFailure(writeBuffer, Packets.GROUP_COMPLETE);

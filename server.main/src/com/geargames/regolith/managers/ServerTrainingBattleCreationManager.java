@@ -82,14 +82,27 @@ public class ServerTrainingBattleCreationManager {
         battleManagerContext.getBattleListeners().remove(battle);
     }
 
-    public boolean completeGroup(BattleGroup group, Warrior[] warriors) {
-        if (warriors.length > group.getAlliance().getBattle().getBattleType().getGroupSize()) {
+    /**
+     * Метод добавляет бойцов в боевую группу.
+     *
+     * @param group
+     * @param warriors
+     * @return false если какой-то боец уже находился в группе или число бойцов в группе превысило предел.
+     */
+    public boolean addWarriors(BattleGroup group, Warrior[] warriors) {
+        if (warriors.length + group.getWarriors().size() > group.getAlliance().getBattle().getBattleType().getGroupSize()) {
             return false;
+        } else {
+            for (Warrior warrior : warriors) {
+                if (warrior.getBattleGroup().getId() == group.getId()) {
+                    return false;
+                }
+            }
+            for (Warrior warrior : warriors) {
+                WarriorHelper.addWarriorToGroup(group, warrior);
+            }
+            return true;
         }
-        for (Warrior warrior : warriors) {
-            WarriorHelper.addWarriorToGroup(group, warrior);
-        }
-        return true;
     }
 
     public void doNotListenToBattle(Battle battle, Account account) {
