@@ -6,29 +6,32 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.ServerDataBaseHelper;
 import com.geargames.regolith.managers.ServerBattleMarketManager;
-import com.geargames.regolith.serializers.answers.ServerBrowseBattleMapsAnswer;
+import com.geargames.regolith.serializers.answers.ServerBrowseRandomBattleMapAnswer;
 import com.geargames.regolith.service.Client;
+import com.geargames.regolith.service.MainServerConfiguration;
+import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.units.battle.BattleType;
-import com.geargames.regolith.units.map.BattleMap;
 
 /**
- * User: mkutuzov
- * Date: 13.07.12
+ * User: m.v.kutuzov
+ * Date: 27.03.13
  */
-public class ServerBrowseBattleMapsRequest extends MainOneToClientRequest {
+public class ServerBrowseRandomBattleMapRequest extends MainOneToClientRequest {
+
     private ServerBattleMarketManager battleMarketManager;
 
-    public ServerBrowseBattleMapsRequest(ServerBattleMarketManager battleMarketManager) {
-        this.battleMarketManager = battleMarketManager;
+    public ServerBrowseRandomBattleMapRequest() {
+        MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
+        battleMarketManager = configuration.getBattleMarketManager();
     }
 
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         BattleType type = ServerDataBaseHelper.getBattleTypeById(SimpleDeserializer.deserializeInt(from));
         if(type != null){
-            return new ServerBrowseBattleMapsAnswer(writeBuffer, battleMarketManager.browseBattleMaps(type).toArray(new BattleMap[]{}));
+            return ServerBrowseRandomBattleMapAnswer.answerSuccess(writeBuffer, battleMarketManager.getRandomBattleMap(type));
         }else{
-            return new ServerBrowseBattleMapsAnswer(writeBuffer, new BattleMap[]{});
+            return ServerBrowseRandomBattleMapAnswer.answerFailure(writeBuffer);
         }
     }
 }
