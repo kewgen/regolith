@@ -1,12 +1,11 @@
 package com.geargames.regolith.awt.components.warrior;
 
-import com.geargames.awt.components.PLabel;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.*;
 import com.geargames.common.String;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 
 /**
  * User: mikhail v. kutuzov

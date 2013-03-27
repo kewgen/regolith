@@ -2,13 +2,12 @@ package com.geargames.regolith.units.base;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
-import com.geargames.regolith.ServerHelper;
+import com.geargames.regolith.helpers.ServerHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.units.AmmunitionBag;
-import com.geargames.regolith.units.AmmunitionBagHelper;
 import com.geargames.regolith.units.Bag;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.dictionaries.ServerStateTackleCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.tackle.Armor;

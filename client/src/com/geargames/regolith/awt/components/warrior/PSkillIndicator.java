@@ -9,8 +9,8 @@ import com.geargames.common.util.NullRegion;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.PFontCollection;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 import com.geargames.common.String;
 

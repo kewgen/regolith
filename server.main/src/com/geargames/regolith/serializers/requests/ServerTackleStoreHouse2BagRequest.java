@@ -3,7 +3,7 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.ServerDataBaseHelper;
+import com.geargames.regolith.helpers.ServerDataBaseHelper;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;

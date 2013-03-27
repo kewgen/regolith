@@ -1,13 +1,13 @@
-package com.geargames.regolith.units.battle;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
+import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.*;
-import com.geargames.regolith.units.map.BattleMapHelper;
 import com.geargames.regolith.units.tackle.*;
 
 import java.util.Date;

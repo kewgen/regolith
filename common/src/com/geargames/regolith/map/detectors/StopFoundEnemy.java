@@ -1,7 +1,7 @@
 package com.geargames.regolith.map.detectors;
 
+import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMapHelper;
 import com.geargames.regolith.units.battle.Ally;
 import com.geargames.regolith.units.battle.Warrior;
 

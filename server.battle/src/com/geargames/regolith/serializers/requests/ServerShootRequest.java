@@ -3,6 +3,7 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.answers.ServerShootAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
@@ -12,7 +13,6 @@ import com.geargames.regolith.service.state.ClientAtBattle;
 import com.geargames.regolith.service.state.ClientCheckSumAwaiting;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMapHelper;
 
 import java.nio.channels.SocketChannel;
 import java.util.LinkedList;

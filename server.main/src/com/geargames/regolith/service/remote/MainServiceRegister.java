@@ -2,10 +2,11 @@ package com.geargames.regolith.service.remote;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.ServerContext;
-import com.geargames.regolith.service.ServerContextHelper;
+import com.geargames.regolith.helpers.ServerContextHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;

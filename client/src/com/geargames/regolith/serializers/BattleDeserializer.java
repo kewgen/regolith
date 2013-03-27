@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
-import com.geargames.regolith.BaseConfigurationHelper;
+import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.Human;
 import com.geargames.regolith.units.battle.*;

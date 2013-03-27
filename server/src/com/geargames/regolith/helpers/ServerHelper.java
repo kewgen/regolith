@@ -1,5 +1,6 @@
-package com.geargames.regolith;
+package com.geargames.regolith.helpers;
 
+import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.units.AmmunitionBag;
 import com.geargames.regolith.units.AmmunitionPacket;
 import com.geargames.regolith.units.dictionaries.ServerAmmunitionPacketCollection;

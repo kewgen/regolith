@@ -1,10 +1,10 @@
 package com.geargames.regolith.map.router;
 
+import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.BattleMapHelper;
 
 /**
  * User: mkutuzov

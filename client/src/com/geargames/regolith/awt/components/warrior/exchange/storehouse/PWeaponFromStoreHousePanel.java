@@ -2,14 +2,7 @@ package com.geargames.regolith.awt.components.warrior.exchange.storehouse;
 
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.awt.components.warrior.exchange.PExchangePanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PWeaponExchangePanel;
-import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.base.StoreHouse;
-import com.geargames.regolith.units.base.StoreHouseHelper;
-import com.geargames.regolith.units.tackle.AbstractTackle;
-import com.geargames.regolith.units.tackle.Weapon;
 
 /**
  * User: mikhail v. kutuzov

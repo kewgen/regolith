@@ -1,6 +1,6 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.units.BattleHelper;
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.map.BattleCell;
 import junit.framework.Assert;
 import org.junit.Test;

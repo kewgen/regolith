@@ -1,5 +1,7 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.Unit;
@@ -10,7 +12,6 @@ import com.geargames.regolith.units.map.finder.ProjectionFinder;
 import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
 import com.geargames.regolith.units.map.verifier.CubeBorderCorrector;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.BattleMapHelper;
 import com.geargames.regolith.units.map.ExitZone;
 import org.junit.Assert;
 import org.junit.Before;

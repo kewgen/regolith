@@ -1,10 +1,10 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.regolith.BaseConfigurationHelper;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.map.BattleMap;
 

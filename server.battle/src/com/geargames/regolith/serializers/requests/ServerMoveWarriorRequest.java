@@ -2,6 +2,8 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.map.Pair;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
@@ -16,7 +18,6 @@ import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.BattleMapHelper;
 
 import java.nio.channels.SocketChannel;
 import java.util.*;

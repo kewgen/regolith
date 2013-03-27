@@ -2,11 +2,11 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.battle.WarriorHelper;
 import com.geargames.regolith.units.dictionaries.ServerStateTackleCollection;
 import com.geargames.regolith.units.tackle.StateTackle;
 

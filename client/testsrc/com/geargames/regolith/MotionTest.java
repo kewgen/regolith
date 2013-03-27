@@ -1,12 +1,12 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.battle.ClientBorder;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.BattleMapHelper;
 import org.junit.Before;
 import org.junit.Test;
 

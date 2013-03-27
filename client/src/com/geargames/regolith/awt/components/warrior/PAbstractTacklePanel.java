@@ -9,11 +9,11 @@ import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.common.util.NullRegion;
 import com.geargames.regolith.application.PFontCollection;
+import com.geargames.regolith.helpers.WeaponHelper;
 import com.geargames.regolith.units.tackle.AbstractTackle;
 import com.geargames.regolith.units.tackle.TackleType;
 import com.geargames.common.String;
 import com.geargames.regolith.units.tackle.Weapon;
-import com.geargames.regolith.units.tackle.WeaponHelper;
 
 /**
  * User: mikhail v. kutuzov

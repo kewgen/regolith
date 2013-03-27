@@ -1,5 +1,6 @@
-package com.geargames.regolith;
+package com.geargames.regolith.helpers;
 
+import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;

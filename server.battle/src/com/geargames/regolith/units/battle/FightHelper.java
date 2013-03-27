@@ -1,6 +1,10 @@
 package com.geargames.regolith.units.battle;
 
 import com.geargames.regolith.*;
+import com.geargames.regolith.helpers.ArmorHelper;
+import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.helpers.WeaponHelper;
 import com.geargames.regolith.map.observer.ShootBarriersFinder;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.units.map.BattleCell;
@@ -10,7 +14,6 @@ import com.geargames.regolith.map.observer.LineViewCaster;
 import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.SubordinationDamage;
-import com.geargames.regolith.units.map.BattleMapHelper;
 import com.geargames.regolith.units.tackle.*;
 
 import java.util.*;

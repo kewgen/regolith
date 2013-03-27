@@ -1,13 +1,15 @@
 package com.geargames.regolith.managers;
 
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.BattleManagerContext;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.BattleHelper;
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
 
 import java.io.IOException;
@@ -55,7 +57,7 @@ public class ServerTrainingBattleCreationManager {
         if (battleManagerContext.getCompleteGroups().get(battle).size() < battle.getBattleType().getAllianceAmount() * battle.getBattleType().getAllianceSize() * battle.getBattleType().getGroupSize()) {
             return null;
         }
-        if (!((ServerBattleType)(battle.getBattleType())).haveToStart(battle)) {
+        if (!((ServerBattleType) (battle.getBattleType())).haveToStart(battle)) {
             return null;
         }
         try {
@@ -97,7 +99,20 @@ public class ServerTrainingBattleCreationManager {
     public boolean isReady(BattleGroup group) {
         Battle battle = group.getAlliance().getBattle();
         Set<BattleGroup> groups = configuration.getServerContext().getBattleManagerContext().getCompleteGroups().get(battle);
-        return groups != null && !groups.contains(group) && groups.add(group);
+
+        if (groups != null && !groups.contains(group)) {
+            WarriorCollection warriors = group.getWarriors();
+            if (battle.getBattleType().getGroupSize() == warriors.size()) {
+                for (int i = 0; i < warriors.size(); i++) {
+                    Warrior warrior = warriors.get(i);
+                    if (warrior == null || warrior.getHealth() <= 0) {
+                        return false;
+                    }
+                }
+                return groups.add(group);
+            }
+        }
+        return false;
     }
 
     public boolean isNotReady(BattleGroup group) {

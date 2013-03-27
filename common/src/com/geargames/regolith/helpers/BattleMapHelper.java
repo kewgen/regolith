@@ -1,10 +1,13 @@
-package com.geargames.regolith.units.map;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.map.Pair;
 import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.*;
+import com.geargames.regolith.units.map.BattleCell;
+import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.ExitZone;
 import com.geargames.regolith.units.tackle.Magazine;
 import com.geargames.regolith.units.tackle.Medikit;
 import com.geargames.regolith.units.tackle.StateTackle;

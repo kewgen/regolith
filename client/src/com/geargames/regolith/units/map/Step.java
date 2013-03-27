@@ -2,10 +2,10 @@ package com.geargames.regolith.units.map;
 
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.ClientBattleHelper;
 import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.Direction;
-import com.geargames.regolith.units.battle.WarriorHelper;
 
 /**
  * User: mkutuzov

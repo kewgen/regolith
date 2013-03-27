@@ -1,6 +1,7 @@
-package com.geargames.regolith.units.base;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.units.*;
+import com.geargames.regolith.units.base.StoreHouse;
 import com.geargames.regolith.units.dictionaries.StateTackleCollection;
 import com.geargames.regolith.units.tackle.Ammunition;
 import com.geargames.regolith.units.tackle.StateTackle;

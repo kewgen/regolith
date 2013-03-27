@@ -1,5 +1,6 @@
-package com.geargames.regolith.units;
+package com.geargames.regolith.helpers;
 
+import com.geargames.regolith.units.Bag;
 import com.geargames.regolith.units.dictionaries.StateTackleCollection;
 import com.geargames.regolith.units.tackle.StateTackle;
 
