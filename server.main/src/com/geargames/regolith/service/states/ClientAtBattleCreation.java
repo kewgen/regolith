@@ -22,7 +22,7 @@ public class ClientAtBattleCreation extends MainState {
             case Packets.GROUP_COMPLETE:
                 request = new ServerGroupAddWarriorsRequest();
                 break;
-            case Packets.GROUP_INCOMPLETE:
+            case Packets.GROUP_DISBAND:
                 request = new ServerGroupRemoveWarriorsRequest();
                 break;
             case Packets.CANCEL_BATTLE:

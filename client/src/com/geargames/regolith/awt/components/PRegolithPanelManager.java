@@ -229,8 +229,16 @@ public class PRegolithPanelManager extends PPanelManager {
         return battleCreate;
     }
 
+    public PBattleCreatePanel getBattleCreatePanel() {
+        return (PBattleCreatePanel) battleCreate.getElement();
+    }
+
     public DrawablePPanel getSelectMap() {
         return selectMap;
+    }
+
+    public PSelectMapPanel getSelectMapPanel() {
+        return (PSelectMapPanel) selectMap.getElement();
     }
 
     public DrawablePPanel getSelectWarriors() {

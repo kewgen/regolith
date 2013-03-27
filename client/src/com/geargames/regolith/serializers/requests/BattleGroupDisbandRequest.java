@@ -2,25 +2,24 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.BattleGroup;
 
 /**
- * User: mkutuzov
+ * User: mkutuzov, abarakov
  * Date: 27.06.12
  */
-public class GroupReadyStateRequest extends ClientSerializedMessage {
-    private short type;
+public class BattleGroupDisbandRequest extends ClientSerializedMessage {
     private BattleGroup group;
 
-    public GroupReadyStateRequest(ClientConfiguration configuration, short type, BattleGroup group) {
+    public BattleGroupDisbandRequest(ClientConfiguration configuration, BattleGroup group) {
         super(configuration);
-        this.type = type;
         this.group = group;
     }
 
     public short getType() {
-        return type;
+        return Packets.GROUP_DISBAND;
     }
 
     public void serialize(MicroByteBuffer buffer) {
@@ -28,4 +27,5 @@ public class GroupReadyStateRequest extends ClientSerializedMessage {
         SerializeHelper.serializeEntityReference(group.getAlliance(), buffer);
         SerializeHelper.serializeEntityReference(group, buffer);
     }
+
 }
