@@ -10,10 +10,10 @@ import com.geargames.regolith.units.battle.BattleType;
  * User: m.v.kutuzov
  * Date: 27.03.13
  */
-public class ClientBrowseBattleMapsRequest1 extends ClientSerializedMessage {
+public class ClientBrowseBattleMapsRequest extends ClientSerializedMessage {
     private BattleType battleType;
 
-    public ClientBrowseBattleMapsRequest1(ClientConfiguration configuration) {
+    public ClientBrowseBattleMapsRequest(ClientConfiguration configuration) {
         super(configuration);
     }
 

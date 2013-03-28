@@ -19,7 +19,7 @@ import com.geargames.regolith.units.map.BattleMap;
  */
 public class ClientBattleMarketManager {
     private ClientBrowseRandomBattleMapRequest browseRandomBattleMapRequest;
-    private ClientBrowseBattleMapsRequest1 browseBattleMapsRequest;
+    private ClientBrowseBattleMapsRequest browseBattleMapsRequest;
 
     private ClientDeferredAnswer answer;
     private ClientConfiguration configuration;
@@ -32,7 +32,7 @@ public class ClientBattleMarketManager {
         this.configuration = configuration;
 
         browseRandomBattleMapRequest = new ClientBrowseRandomBattleMapRequest(configuration);
-        browseBattleMapsRequest = new ClientBrowseBattleMapsRequest1(configuration);
+        browseBattleMapsRequest = new ClientBrowseBattleMapsRequest(configuration);
 
         answer = new RegolithDeferredAnswer();
         listenToBattleAnswer = new ClientListenToBattleAnswer();
