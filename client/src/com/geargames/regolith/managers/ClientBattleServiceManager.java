@@ -2,6 +2,7 @@ package com.geargames.regolith.managers;
 
 import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.requests.ClientBattleServiceLoginRequest;
 import com.geargames.regolith.serializers.requests.ClientMoveRequest;
@@ -18,31 +19,39 @@ public class ClientBattleServiceManager {
     private ClientConfiguration configuration;
     private ClientListenToBattleAnswer clientListenToBattleAnswer;
 
+    private ClientDeferredAnswer answer;
+
     public ClientBattleServiceManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         clientListenToBattleAnswer = new ClientListenToBattleAnswer();
+        answer = new RegolithDeferredAnswer();
     }
 
     public ClientDeferredAnswer login(Battle battle, BattleAlliance alliance) {
-        return configuration.getNetwork().sendSynchronousMessage(
+        answer.setDeSerializedMessage(clientListenToBattleAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
                 new ClientBattleServiceLoginRequest(configuration, battle, alliance, configuration.getAccount()),
-                clientListenToBattleAnswer);
+                answer);
+        return answer;
     }
 
     //todo все вызовы ниже сделать асинхронными
-
     public ClientDeferredAnswer move(Warrior warrior, short x, short y) {
         //todo ожидается ответ неправильного типа
-        return configuration.getNetwork().sendSynchronousMessage(
+        answer.setDeSerializedMessage(clientListenToBattleAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
                 new ClientMoveRequest(configuration, warrior, x, y),
-                clientListenToBattleAnswer);
+                answer);
+        return answer;
     }
 
     public ClientDeferredAnswer shoot(Warrior hunter, Warrior victim) {
         //todo ожидается ответ неправильного типа
-        return configuration.getNetwork().sendSynchronousMessage(
+        answer.setDeSerializedMessage(clientListenToBattleAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
                 new ClientShootRequest(configuration, hunter, victim),
-                clientListenToBattleAnswer);
+                answer);
+        return answer;
     }
 
 }

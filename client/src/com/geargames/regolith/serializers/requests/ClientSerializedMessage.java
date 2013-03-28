@@ -10,12 +10,18 @@ import com.geargames.common.serialization.SerializedMessage;
 public abstract class ClientSerializedMessage extends SerializedMessage {
     private ClientConfiguration configuration;
 
+    public ClientSerializedMessage(){}
+
     public ClientSerializedMessage(ClientConfiguration configuration) {
         this.configuration = configuration;
     }
 
     protected MicroByteBuffer getBuffer() {
         return configuration.getMessageBuffer();
+    }
+
+    public void setConfiguration(ClientConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     protected ClientConfiguration getConfiguration() {

@@ -27,5 +27,4 @@ public class BattleGroupDisbandRequest extends ClientSerializedMessage {
         SerializeHelper.serializeEntityReference(group.getAlliance(), buffer);
         SerializeHelper.serializeEntityReference(group, buffer);
     }
-
 }

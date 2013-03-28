@@ -7,6 +7,7 @@ import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
 import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.network.MessageLock;
+import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.requests.ClientSerializedMessage;
 
 /**
@@ -35,13 +36,15 @@ public class BatchMessageManager {
         request.setRequests(new ArrayList(20));
         answer = new SimpleBatchAnswer();
         answer.setAnswers(new ArrayList(20));
+        deferredAnswer = new RegolithDeferredAnswer();
+        deferredAnswer.setDeSerializedMessage(answer);
     }
 
     /**
      * Отослать стопку сообщений скопом и настроить.
      */
     public void commitMessages() {
-        deferredAnswer = configuration.getNetwork().sendSynchronousMessage(request, answer);
+        configuration.getNetwork().sendSynchronousMessage(request, deferredAnswer);
     }
 
     /**

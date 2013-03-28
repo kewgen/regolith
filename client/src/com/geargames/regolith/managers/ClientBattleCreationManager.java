@@ -2,6 +2,7 @@ package com.geargames.regolith.managers;
 
 import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.Account;
@@ -22,6 +23,8 @@ public class ClientBattleCreationManager {
     private ClientCompleteGroupAnswer completeGroupAnswer;
     private ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer;
 
+    private ClientDeferredAnswer answer;
+
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         startBattleAnswer = new ClientStartBattleAnswer(configuration.getAccount(), configuration);
@@ -29,29 +32,7 @@ public class ClientBattleCreationManager {
         joinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
         completeGroupAnswer = new ClientCompleteGroupAnswer();
         evictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
-    }
-
-    /**
-     * Послать сообщение-запрос о начале битвы.
-     * @param author ссылка на аккаунт пользователя - инициатора начала битвы.
-     */
-    public ClientDeferredAnswer startBattle(Account author) {
-        return configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), startBattleAnswer);
-    }
-
-    /**
-     * Послать сообщение-запрос об отмене пользователем битвы.
-     */
-    public ClientDeferredAnswer cancelBattle() {
-        return configuration.getNetwork().sendSynchronousMessage(new ClientCancelBattleRequest(configuration), cancelBattleAnswer);
-    }
-
-    /**
-     * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
-     */
-    public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance) {
-        joinToBattleAllianceAnswer.setBattle(alliance.getBattle());
-        return configuration.getNetwork().sendSynchronousMessage(new ClientJoinToBattleAllianceRequest(configuration, alliance), joinToBattleAllianceAnswer);
+        answer = new RegolithDeferredAnswer();
     }
 
     /**
@@ -61,9 +42,40 @@ public class ClientBattleCreationManager {
      * @param account
      */
     public ClientDeferredAnswer evictAccount(BattleAlliance alliance, Account account) {
+        answer.setDeSerializedMessage(evictAccountFromAllianceAnswer);
         evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
-        return configuration.getNetwork().sendSynchronousMessage(
-                new EvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer);
+        configuration.getNetwork().sendSynchronousMessage(
+                new EvictAccountRequest(configuration, account, alliance), answer);
+        return answer;
+    }
+
+    /**
+     * Послать сообщение-запрос о начале битвы.
+     * @param author ссылка на аккаунт пользователя - инициатора начала битвы.
+     */
+    public ClientDeferredAnswer startBattle(Account author) {
+        answer.setDeSerializedMessage(startBattleAnswer);
+        configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), answer);
+        return answer;
+    }
+
+    /**
+     * Послать сообщение-запрос об отмене пользователем битвы.
+     */
+    public ClientDeferredAnswer cancelBattle() {
+        answer.setDeSerializedMessage(cancelBattleAnswer);
+        configuration.getNetwork().sendSynchronousMessage(new ClientCancelBattleRequest(configuration), answer);
+        return answer;
+    }
+
+    /**
+     * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
+     */
+    public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance) {
+        answer.setDeSerializedMessage(joinToBattleAllianceAnswer);
+        joinToBattleAllianceAnswer.setBattle(alliance.getBattle());
+        configuration.getNetwork().sendSynchronousMessage(new ClientJoinToBattleAllianceRequest(configuration, alliance), answer);
+        return answer;
     }
 
     /**
@@ -73,9 +85,9 @@ public class ClientBattleCreationManager {
      * @return         сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
     public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {
-        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
-        return configuration.getNetwork().sendSynchronousMessage(
-                new BattleGroupCompleteRequest(configuration, warriors, group), completeGroupAnswer);
+        answer.setDeSerializedMessage(completeGroupAnswer);
+        configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),answer);
+        return answer;
     }
 
     /**
@@ -84,9 +96,10 @@ public class ClientBattleCreationManager {
      * @return      сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
     public ClientDeferredAnswer disbandGroup(BattleGroup group) {
+        answer.setDeSerializedMessage(completeGroupAnswer);
         completeGroupAnswer.setBattle(group.getAlliance().getBattle());
-        return configuration.getNetwork().sendSynchronousMessage(
-                new BattleGroupDisbandRequest(configuration, group), completeGroupAnswer);
+        configuration.getNetwork().sendSynchronousMessage(new BattleGroupDisbandRequest(configuration, group), answer);
+        return answer;
     }
 
     public void doNotListenToBattle(Battle battle) {

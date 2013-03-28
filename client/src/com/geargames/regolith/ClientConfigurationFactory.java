@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.common.network.MessageDispatcher;
 import com.geargames.common.util.Lock;
 import com.geargames.platform.network.ConsoleNetwork;
 import com.geargames.platform.util.JavaLock;
@@ -38,6 +39,7 @@ public class ClientConfigurationFactory {
         configuration.setPort(1237);
         configuration.setServer("localhost");
 
+        configuration.setMessageDispatcher(new MessageDispatcher(configuration.getNetwork(), Packets.BATTLE_SERVICE_NEW_CLIENT_LOGIN));
         configuration.setBattleCreationManager(new ClientBattleCreationManager(configuration));
         configuration.setCommonManager(new ClientCommonManager(configuration));
         configuration.setBattleMarketManager(new ClientBattleMarketManager(configuration));

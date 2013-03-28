@@ -5,6 +5,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
+import com.geargames.regolith.serializers.BattleMapDeserializer;
 import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.map.BattleMap;
 
@@ -28,17 +29,7 @@ public class ClientBrowseBattleMapsAnswer extends ClientDeSerializedMessage {
         int size = SimpleDeserializer.deserializeShort(buffer);
         BattleMap[] battleMaps = new BattleMap[size];
         for (int i = 0; i < size; i++) {
-            BattleMap battleMap = new BattleMap();
-            battleMap.setId(SimpleDeserializer.deserializeInt(buffer));
-            int amount = buffer.get();
-            BattleType[] battleTypes = new BattleType[amount];
-            for (int j = 0; j < amount; j++) {
-                battleTypes[j] = BaseConfigurationHelper.findBattleTypeById(
-                        SimpleDeserializer.deserializeInt(buffer), configuration.getBaseConfiguration());
-            }
-            battleMap.setPossibleBattleTypes(battleTypes);
-            battleMap.setName(SimpleDeserializer.deserializeString(buffer));
-            battleMaps[i] = battleMap;
+            battleMaps[i] = BattleMapDeserializer.deserializeLightBattleMap(buffer, configuration.getBaseConfiguration());
         }
         this.battleMaps = battleMaps;
     }

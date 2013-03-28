@@ -30,6 +30,7 @@ import com.geargames.regolith.units.map.BattleMap;
 // PBrowseMapsPanel
 public class PSelectMapPanel extends PContentPanel {
 
+    private BattleType battleType;
     private BattleMap[] battleMaps;
     private BattleMap selectedMap;
     private DrawablePPanel currentPanel;
@@ -86,7 +87,6 @@ public class PSelectMapPanel extends PContentPanel {
         Debug.debug("Dialog 'Select map'");
 
         Debug.debug("Find battle type...");
-        BattleType battleType;
         try {
             battleType = BaseConfigurationHelper.findBattleTypeByArgs(allianceAmount, allianceSize, groupSize,
                     ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
@@ -111,24 +111,18 @@ public class PSelectMapPanel extends PContentPanel {
         }
 
         if (isRandomMap) {
-            Debug.debug("Browsing maps...");
-            answer = battleMarketManager.browseBattleMaps(/*battleType*/);
+            Debug.debug("Browsing a random map...");
+            answer = battleMarketManager.browseRandomBattleMap(battleType);
             if (!waitForAnswer(answer)) {
                 Debug.critical("Waiting time answer has expired");
             }
-            ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
-            BattleMap[] maps = browseMaps.getBattleMaps();
-            if (maps.length == 0) {
-                Debug.critical("There are no maps to use");
-            }
-            selectedMap = maps[0];
-
+            ClientBrowseRandomBattleMapAnswer browseRandomBattleMapAnswer = (ClientBrowseRandomBattleMapAnswer) answer.getAnswer();
+            selectedMap = browseRandomBattleMapAnswer.getBattleMap();
             currentPanel = callerPanel;
             createBattle();
         } else {
             Debug.debug("Browsing maps...");
-            //todo: Я должен получать только те карты, которые меня устраивают, по выбранным параметрам.
-            answer = battleMarketManager.browseBattleMaps(/*battleType*/);
+            answer = battleMarketManager.browseBattleMaps(battleType);
             if (!waitForAnswer(answer)) {
                 Debug.critical("Waiting time answer has expired");
             }
@@ -151,6 +145,10 @@ public class PSelectMapPanel extends PContentPanel {
         // Ожидаем ответа от игроков/сервера. Пожалуйста подождите.
 
 
+        if (selectedMap == null) {
+            Debug.critical("PSelectMapPanel.createBattle(): selectedMap == null");
+            return;
+        }
         if (currentPanel == null) {
             Debug.critical("PSelectMapPanel.createBattle(): currentPanel == null");
             return;
@@ -165,23 +163,7 @@ public class PSelectMapPanel extends PContentPanel {
 
         Debug.debug("Creating a battle (map id = " + selectedMap.getId() + ")...");
 
-        /*
-//        if (battleCreatePanel.getIsRandomMap()) {
-            Debug.debug("Browsing maps...");
-            answer = battleMarketManager.browseBattleMaps();
-            if (!waitForAnswer(answer)) {
-                Debug.critical("Waiting time answer has expired");
-            }
-            ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
-            BattleMap[] maps = browseMaps.getBattleMaps();
-            if (maps.length == 0) {
-                Debug.critical("There are no maps to use");
-            }
-            BattleMap battleMap = maps[0]; //todo: выбирать случайную, подходящую
-//        }
-
-        Debug.debug("Creating a battle (map id = " + battleMap.getId() + ")...");
-        answer = battleMarketManager.createBattle(battleMap, 0);
+        ClientDeferredAnswer answer = battleMarketManager.createBattle(selectedMap, battleType);
         if (!waitForAnswer(answer)) {
             Debug.critical("Waiting time answer has expired");
         }
