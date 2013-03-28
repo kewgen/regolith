@@ -16,10 +16,12 @@ import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.managers.ClientBaseManager;
 import com.geargames.regolith.managers.ClientBattleMarketManager;
-import com.geargames.regolith.serializers.answers.ClientBrowseBattleMapsAnswer;
+import com.geargames.regolith.serializers.answers.ClientBattleMapAnswer;
+import com.geargames.regolith.serializers.answers.ClientBattleMapListAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
+import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
+import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleType;
-import com.geargames.regolith.units.dictionaries.BattleTypeCollection;
 import com.geargames.regolith.units.map.BattleMap;
 
 /**
@@ -116,8 +118,8 @@ public class PSelectMapPanel extends PContentPanel {
             if (!waitForAnswer(answer)) {
                 Debug.critical("Waiting time answer has expired");
             }
-            ClientBrowseRandomBattleMapAnswer browseRandomBattleMapAnswer = (ClientBrowseRandomBattleMapAnswer) answer.getAnswer();
-            selectedMap = browseRandomBattleMapAnswer.getBattleMap();
+            ClientBattleMapAnswer battleMapAnswer = (ClientBattleMapAnswer) answer.getAnswer();
+            selectedMap = battleMapAnswer.getBattleMap();
             currentPanel = callerPanel;
             createBattle();
         } else {
@@ -126,8 +128,8 @@ public class PSelectMapPanel extends PContentPanel {
             if (!waitForAnswer(answer)) {
                 Debug.critical("Waiting time answer has expired");
             }
-            ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
-            battleMaps = browseMaps.getBattleMaps();
+            ClientBattleMapListAnswer battleMapList = (ClientBattleMapListAnswer) answer.getAnswer();
+            battleMaps = battleMapList.getBattleMaps();
             if (battleMaps.length == 0) {
                 Debug.critical("There are no maps to use");
             }
@@ -170,7 +172,6 @@ public class PSelectMapPanel extends PContentPanel {
         ClientListenToBattleAnswer listenToBattleAnswer = (ClientListenToBattleAnswer) answer.getAnswer();
         Battle battle = listenToBattleAnswer.getBattle();
         Debug.debug("The battle was created (battle id = " + battle.getId() + ")");
-        */
 
 
 

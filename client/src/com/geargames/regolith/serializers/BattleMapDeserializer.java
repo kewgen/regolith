@@ -149,10 +149,10 @@ public class BattleMapDeserializer {
     }
 
 
-    public static BattleMap  deserializeLightBattleMap(MicroByteBuffer buffer, BaseConfiguration baseConfiguration){
+    public static BattleMap deserializeLightBattleMap(MicroByteBuffer buffer, BaseConfiguration baseConfiguration){
         BattleMap battleMap = new BattleMap();
         battleMap.setId(SimpleDeserializer.deserializeInt(buffer));
-        int amount = buffer.get();
+        byte amount = buffer.get();
         BattleType[] battleTypes = new BattleType[amount];
         battleMap.setPossibleBattleTypes(battleTypes);
         for (int j = 0; j < amount; j++) {

@@ -4,7 +4,8 @@ import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.network.RegolithDeferredAnswer;
-import com.geargames.regolith.serializers.answers.ClientBrowseBattleMapsAnswer;
+import com.geargames.regolith.serializers.answers.ClientBattleMapAnswer;
+import com.geargames.regolith.serializers.answers.ClientBattleMapListAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.requests.*;
@@ -17,19 +18,27 @@ import com.geargames.regolith.units.map.BattleMap;
  * Data: 22.05.12
  */
 public class ClientBattleMarketManager {
-    private ClientConfiguration configuration;
-    private ClientListenToBattleAnswer listenToBattleAnswer;
-    private ClientBrowseBattleMapsAnswer browseBattleMapsAnswer;
-    private ClientConfirmationAnswer confirmationAnswer;
+    private ClientBrowseRandomBattleMapRequest browseRandomBattleMapRequest;
+    private ClientBrowseBattleMapsRequest1 browseBattleMapsRequest;
 
     private ClientDeferredAnswer answer;
+    private ClientConfiguration configuration;
+    private ClientListenToBattleAnswer listenToBattleAnswer;
+    private ClientConfirmationAnswer confirmationAnswer;
+    private ClientBattleMapAnswer battleMapAnswer;
+    private ClientBattleMapListAnswer battleMapListAnswer;
 
     public ClientBattleMarketManager(ClientConfiguration configuration) {
         this.configuration = configuration;
+
+        browseRandomBattleMapRequest = new ClientBrowseRandomBattleMapRequest(configuration);
+        browseBattleMapsRequest = new ClientBrowseBattleMapsRequest1(configuration);
+
+        answer = new RegolithDeferredAnswer();
         listenToBattleAnswer = new ClientListenToBattleAnswer();
         confirmationAnswer = new ClientConfirmationAnswer();
-        browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
-        answer = new RegolithDeferredAnswer();
+        battleMapAnswer = new ClientBattleMapAnswer();
+        battleMapListAnswer = new ClientBattleMapListAnswer(configuration);
     }
 
     public ClientDeferredAnswer createBattle(BattleMap battleMap, BattleType battleType) {
@@ -62,10 +71,24 @@ public class ClientBattleMarketManager {
         return answer;
     }
 
-    public ClientDeferredAnswer browseBattleMaps() {
-        answer.setDeSerializedMessage(confirmationAnswer);
-        configuration.getNetwork().sendSynchronousMessage(
-                new SimpleRequest(configuration, Packets.BROWSE_BATTLE_MAPS), answer);
+//    public ClientDeferredAnswer browseBattleMaps() {
+//        answer.setDeSerializedMessage(confirmationAnswer);
+//        configuration.getNetwork().sendSynchronousMessage(
+//                new SimpleRequest(configuration, Packets.BROWSE_BATTLE_MAPS), answer);
+//        return answer;
+//    }
+
+    public ClientDeferredAnswer browseRandomBattleMap(BattleType battleType) {
+        browseRandomBattleMapRequest.setBattleType(battleType);
+        answer.setDeSerializedMessage(battleMapAnswer);
+        configuration.getNetwork().sendSynchronousMessage(browseRandomBattleMapRequest, answer);
+        return answer;
+    }
+
+    public ClientDeferredAnswer browseBattleMaps(BattleType battleType) {
+        browseBattleMapsRequest.setBattleType(battleType);
+        answer.setDeSerializedMessage(battleMapListAnswer);
+        configuration.getNetwork().sendSynchronousMessage(browseBattleMapsRequest, answer);
         return answer;
     }
 

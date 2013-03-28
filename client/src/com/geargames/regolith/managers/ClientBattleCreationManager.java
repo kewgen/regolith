@@ -85,6 +85,7 @@ public class ClientBattleCreationManager {
      * @return         сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
     public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {
+        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
         answer.setDeSerializedMessage(completeGroupAnswer);
         configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),answer);
         return answer;

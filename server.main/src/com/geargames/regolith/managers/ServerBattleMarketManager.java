@@ -71,9 +71,9 @@ public class ServerBattleMarketManager {
         LinkedList<BattleMap> maps = new LinkedList<BattleMap>();
         for (BattleMap map : browseBattleMaps()) {
             for (BattleType type : map.getPossibleBattleTypes()) {
-                if (type == battleType) {
+                if (type.getId() == battleType.getId()) { //todo: сравнивать ссылки, а не id
                     maps.add(map);
-                    continue;
+                    break;
                 }
             }
         }
@@ -83,7 +83,7 @@ public class ServerBattleMarketManager {
     public BattleMap getRandomBattleMap(BattleType type) {
         List<BattleMap> maps = browseBattleMaps(type);
         if (maps.size() > 0) {
-            return maps.get(random.nextInt() % maps.size());
+            return maps.get(random.nextInt(maps.size()));
         } else {
             return null;
         }

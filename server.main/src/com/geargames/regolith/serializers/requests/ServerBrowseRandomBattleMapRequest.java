@@ -28,10 +28,11 @@ public class ServerBrowseRandomBattleMapRequest extends MainOneToClientRequest {
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         BattleType type = ServerDataBaseHelper.getBattleTypeById(SimpleDeserializer.deserializeInt(from));
-        if(type != null){
+        if (type != null) {
             return ServerBrowseRandomBattleMapAnswer.answerSuccess(writeBuffer, battleMarketManager.getRandomBattleMap(type));
-        }else{
+        } else {
             return ServerBrowseRandomBattleMapAnswer.answerFailure(writeBuffer);
         }
     }
+
 }

@@ -13,11 +13,11 @@ import com.geargames.regolith.units.map.BattleMap;
  * Users: mkutuzov, abarakov
  * Date: 06.07.12
  */
-public class ClientBrowseBattleMapsAnswer extends ClientDeSerializedMessage {
+public class ClientBattleMapListAnswer extends ClientDeSerializedMessage {
     private ClientConfiguration configuration;
     private BattleMap[] battleMaps;
 
-    public ClientBrowseBattleMapsAnswer(ClientConfiguration configuration) {
+    public ClientBattleMapListAnswer(ClientConfiguration configuration) {
         this.configuration = configuration;
     }
 
