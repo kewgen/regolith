@@ -99,7 +99,7 @@ public class GroupsSpreadTest {
         exit.setY((short) 18);
         exit.setyRadius((byte)1);
 
-        battle = BattleHelper.createBattle("test", battleMap, 0);
+        battle = BattleHelper.createBattle("test", battleMap, battleType);
         BattleHelper.prepareBattle(battle);
 
         BattleAlliance battleAlliance = battle.getAlliances()[0];

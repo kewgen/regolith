@@ -8,6 +8,7 @@ import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.map.BattleMap;
 
 /**
@@ -27,11 +28,10 @@ public class ClientBattleMarketManager {
         browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
     }
 
-    // todo: использовать battleTypeId вместо battleTypeIndex?
-    public ClientDeferredAnswer createBattle(BattleMap battleMap, int battleTypeIndex) {
+    public ClientDeferredAnswer createBattle(BattleMap battleMap, BattleType battleType) {
         listenToBattleAnswer.setBattle(null);
         return configuration.getNetwork().sendSynchronousMessage(
-                new CreateBattleRequest(configuration, battleMap, (byte) battleTypeIndex), listenToBattleAnswer);
+                new CreateBattleRequest(configuration, battleMap, battleType), listenToBattleAnswer);
     }
 
     public ClientDeferredAnswer listenToBattle(Battle battle) {

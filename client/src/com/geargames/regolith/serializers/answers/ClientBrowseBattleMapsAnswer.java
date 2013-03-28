@@ -31,11 +31,12 @@ public class ClientBrowseBattleMapsAnswer extends ClientDeSerializedMessage {
             BattleMap battleMap = new BattleMap();
             battleMap.setId(SimpleDeserializer.deserializeInt(buffer));
             int amount = buffer.get();
-            battleMap.setPossibleBattleTypes(new BattleType[amount]);
+            BattleType[] battleTypes = new BattleType[amount];
             for (int j = 0; j < amount; j++) {
-                battleMap.getPossibleBattleTypes()[j] = BaseConfigurationHelper.findBattleTypeById(
+                battleTypes[j] = BaseConfigurationHelper.findBattleTypeById(
                         SimpleDeserializer.deserializeInt(buffer), configuration.getBaseConfiguration());
             }
+            battleMap.setPossibleBattleTypes(battleTypes);
             battleMap.setName(SimpleDeserializer.deserializeString(buffer));
             battleMaps[i] = battleMap;
         }

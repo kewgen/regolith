@@ -5,6 +5,8 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.*;
 import com.geargames.regolith.application.Manager;
+import com.geargames.regolith.helpers.BaseConfigurationHelper;
+import com.geargames.regolith.helpers.BattleTypeHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.service.MainServiceManager;
@@ -100,11 +102,17 @@ public class BattleCreationTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
+        BattleType battleType = BaseConfigurationHelper.findBattleTypeByArgs(2, 1, 1,
+                ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
+
+        BattleType bt = BattleTypeHelper.findBattleTypeById(battleType.getId(), maps[0].getPossibleBattleTypes());
+        Assert.assertNotNull("Map does not support the type of battle '1:1x1'", bt);
+
         // -------------------------------------------------------------------------------------------------------------
 
         System.out.println("========== scenario: #0a ==============================");
         System.out.println("Creating a battle (map id = " + maps[0].getId() + ")...");
-        answer = battleMarketManager.createBattle(maps[0], 0);
+        answer = battleMarketManager.createBattle(maps[0], battleType);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         ClientListenToBattleAnswer listenToBattleAnswer = (ClientListenToBattleAnswer) answer.getAnswer();
         Battle battle = listenToBattleAnswer.getBattle();
@@ -302,7 +310,7 @@ public class BattleCreationTest {
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Creating a battle (map id = " + maps[0].getId() + ")...");
-        answer = battleMarketManager.createBattle(maps[0], 0);
+        answer = battleMarketManager.createBattle(maps[0], battleType);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listenToBattleAnswer = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("Could not create his own battle.", listenToBattleAnswer.getBattle());
@@ -366,7 +374,7 @@ public class BattleCreationTest {
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Creating a battle (map id = " + maps[0].getId() + ")...");
-        answer = battleMarketManager.createBattle(maps[0], 0);
+        answer = battleMarketManager.createBattle(maps[0], battleType);
         Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
         listenToBattleAnswer = (ClientListenToBattleAnswer) answer.getAnswer();
         Assert.assertNotNull("Could not create his own battle.", listenToBattleAnswer.getBattle());

@@ -5,20 +5,21 @@ import com.geargames.regolith.Packets;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
+import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.map.BattleMap;
 
 /**
- * User: mkutuzov
+ * User: mkutuzov, abarakov
  * Date: 20.06.12
  */
 public class CreateBattleRequest extends ClientSerializedMessage {
     private BattleMap battleMap;
-    private byte index;
+    private BattleType battleType;
 
-    public CreateBattleRequest(ClientConfiguration configuration, BattleMap battleMap, byte index) {
+    public CreateBattleRequest(ClientConfiguration configuration, BattleMap battleMap, BattleType battleType) {
         super(configuration);
         this.battleMap = battleMap;
-        this.index = index;
+        this.battleType = battleType;
     }
 
     public short getType() {
@@ -27,6 +28,7 @@ public class CreateBattleRequest extends ClientSerializedMessage {
 
     public void serialize(MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(battleMap, buffer);
-        SimpleSerializer.serialize(index, buffer);
+        SerializeHelper.serializeEntityReference(battleType, buffer);
     }
+
 }

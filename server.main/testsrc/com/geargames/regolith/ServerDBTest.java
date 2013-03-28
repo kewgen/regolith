@@ -815,7 +815,7 @@ public class ServerDBTest {
         map.setPossibleBattleTypes(types);
         types[0] = baseConfiguration.getBattleTypes().get(0);
 
-        Battle battle = BattleHelper.createBattle("qqq", map, 0);
+        Battle battle = BattleHelper.createBattle("qqq", map, types[0]);
         BattleHelper.prepareBattle(battle);
 
         Border border = baseConfiguration.getBorders().get(0);

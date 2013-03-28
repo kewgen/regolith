@@ -38,8 +38,8 @@ public class ServerCreateBattleRequest extends MainOneToClientRequest {
         Session session = serverConfiguration.getSessionFactory().openSession();
         BattleMap battleMap = (BattleMap) session.load(BattleMap.class, SimpleDeserializer.deserializeInt(from));
         session.close();
-        int index = from.get();
-        Battle battle = battleMarketManager.createBattle(battleMap, index, client.getAccount());
+        int battleTypeId = SimpleDeserializer.deserializeInt(from);
+        Battle battle = battleMarketManager.createBattle(battleMap, battleTypeId, client.getAccount());
         client.setState(new ClientAtBattleCreation());
         schedulerService.removeListener(client);
         schedulerService.addBattle(battle);

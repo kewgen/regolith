@@ -1,6 +1,7 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleTypeHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.*;
@@ -27,9 +28,9 @@ public class ServerBattleMarketManager {
         random = new Random();
     }
 
-    public Battle createBattle(BattleMap battleMap, int battleTypeIndex, Account author) throws RegolithException {
-        BattleType type = battleMap.getPossibleBattleTypes()[battleTypeIndex];
-        Battle battle = BattleHelper.createBattle(battleMap.getName() + "_" + author.getName(), battleMap, battleTypeIndex);
+    public Battle createBattle(BattleMap battleMap, int battleTypeId, Account author) throws RegolithException {
+        BattleType battleType = BattleTypeHelper.findBattleTypeById(battleTypeId, battleMap.getPossibleBattleTypes());
+        Battle battle = BattleHelper.createBattle(battleMap.getName() + "_" + author.getName(), battleMap, battleType);
         battle.setAuthor(author);
         Session session = configuration.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
@@ -44,7 +45,7 @@ public class ServerBattleMarketManager {
         battleManagerContext.getBattleListeners().put(battle, listeners);
         battleManagerContext.getCreatedBattles().put(author, battle);
         battleManagerContext.getBattlesById().put(id, battle);
-        battleManagerContext.getCompleteGroups().put(battle, new HashSet<BattleGroup>(type.getAllianceSize() * type.getAllianceAmount()));
+        battleManagerContext.getCompleteGroups().put(battle, new HashSet<BattleGroup>(battleType.getAllianceSize() * battleType.getAllianceAmount()));
         return battle;
     }
 
