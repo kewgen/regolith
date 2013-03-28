@@ -79,25 +79,13 @@ public class ClientBattleCreationManager {
     }
 
     /**
-     * Послать сообщение-уведомление об исключении пользователя account, входящего в военный союз alliance, из
-     * создаваемой битвы. Сообщение может посылать, как автор битвы, так и сам пользователь, чтобы выйти из битвы.
-     * @param alliance
-     * @param account
-     */
-    public ClientDeferredAnswer evictAccount(BattleAlliance alliance, Account account) {
-        evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
-        return configuration.getNetwork().sendSynchronousMessage(
-                new EvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer);
-    }
-
-    /**
      * Послать сообщение-уведомление о заполненности боевой группы бойцами.
      * @param group    заполняемая боевая группа
      * @param warriors массив бойцов, которые должны войти в боевую группу.
      * @return         сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
     public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {
-answer.setDeSerializedMessage(confirmationAnswer);
+        answer.setDeSerializedMessage(completeGroupAnswer);
         configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),answer);
         return answer;
     }
@@ -108,9 +96,10 @@ answer.setDeSerializedMessage(confirmationAnswer);
      * @return      сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
     public ClientDeferredAnswer disbandGroup(BattleGroup group) {
+        answer.setDeSerializedMessage(completeGroupAnswer);
         completeGroupAnswer.setBattle(group.getAlliance().getBattle());
-        return configuration.getNetwork().sendSynchronousMessage(
-                new BattleGroupDisbandRequest(configuration, group), completeGroupAnswer);
+        configuration.getNetwork().sendSynchronousMessage(new BattleGroupDisbandRequest(configuration, group), answer);
+        return answer;
     }
 
     public void doNotListenToBattle(Battle battle) {

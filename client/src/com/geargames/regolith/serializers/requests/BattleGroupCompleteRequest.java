@@ -36,5 +36,4 @@ public class BattleGroupCompleteRequest extends ClientSerializedMessage {
             SerializeHelper.serializeEntityReference(warriors[i], buffer);
         }
     }
-
 }
