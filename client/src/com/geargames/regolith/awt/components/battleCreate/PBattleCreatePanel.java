@@ -175,7 +175,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 cbRandomMap = new PEntitledToggleButton((PObject) index.getPrototype());
                 cbRandomMap.setText(LocalizedStrings.BATTLE_CREATE_BUTTON_USE_RANDOM_MAP);
                 cbRandomMap.setFont(PFontCollection.getFontButtonCaption());
-                cbRandomMap.setChecked(true);
+//                cbRandomMap.setChecked(true);
                 addActiveChild(cbRandomMap, index);
                 break;
 

@@ -26,4 +26,9 @@ public class LocalizedStrings {
     public static final String BROWSE_MAPS_PANEL_TITLE = String.valueOfC("ВЫБОР КАРТЫ");
     public static final String BROWSE_MAPS_LIST_TITLE  = String.valueOfC("ЩЕЛКНИТЕ ПО ИЗОБРАЖЕНИЮ КАРТЫ ДЛЯ ВЫБОРА");
 
+    // ----- Select warriors -------------------------------------------------------------------------------------------
+
+    public static final String SELECT_WARRIORS_PANEL_TITLE = String.valueOfC("ВЫБОР БОЙЦОВ");
+    public static final String SELECT_WARRIORS_LIST_TITLE  = String.valueOfC("ВЫБЕРИТЕ БОЙЦОВ");
+
 }
