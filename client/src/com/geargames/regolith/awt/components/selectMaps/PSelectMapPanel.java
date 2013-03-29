@@ -166,7 +166,8 @@ public class PSelectMapPanel extends PContentPanel {
             battleMapList.setMapList(battleMaps);
 
             //todo: Выбрать по умолчанию первую карту, или предыдущую, которую юзер использовал в предыдущей создаваемой битве
-//          setSelectedMap();
+            battleMapList.getItem(0).setChecked(true);
+            //setSelectedMap(battleMapList.getItem(0).getMap());
 
             PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
             currentPanel = panelManager.getSelectMap();
