@@ -1,6 +1,5 @@
 package com.geargames.regolith.battleConnectionTest;
 
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
@@ -15,7 +14,6 @@ import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import junit.framework.Assert;
 import org.junit.Test;
-import java.util.concurrent.BrokenBarrierException;
 
 /**
  * Users: mikhail v. kutuzov, abarakov
@@ -26,24 +24,7 @@ public class BattleConnectionTest {
     private static final int NEXT_WAINTING = 2000;  // 20 сек
     private static final int BROWSE_CREATED_BATTLES_WAINTING = 200;  // 20 сек
 
-//    private static void await(CyclicBarrier barrier) {
-//        try {
-//            barrier.await();
-//        } catch (InterruptedException e1) {
-//            e1.printStackTrace();
-//        } catch (BrokenBarrierException e1) {
-//            e1.printStackTrace();
-//        }
-//    }
 
-    private static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        try {
-            return answer.retrieve(1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     // Ожидаем асинхронного сообщения и возвращаем true, если сообщение получено.
     private static boolean waitForAsyncAnswer(ClientDeSerializedMessage answer, short msgType, int attemptCount) {
@@ -63,7 +44,7 @@ public class BattleConnectionTest {
     }
 
     @Test
-    public void client() throws com.geargames.regolith.RegolithException, BrokenBarrierException, InterruptedException {
+    public void client() throws Exception {
         ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
@@ -87,9 +68,8 @@ public class BattleConnectionTest {
         ClientTestHelper.hireWarriorForClient(selfAccount);
 
         System.out.println("The client go to the battle market...");
-        ClientDeferredAnswer answer = baseManager.goBattleManager();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
+
+        ClientConfirmationAnswer confirm = baseManager.goBattleManager();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
 //        System.out.println("Browsing battles...");
@@ -104,9 +84,7 @@ public class BattleConnectionTest {
 //        }
 
         System.out.println("Listening created battles...");
-        answer = battleMarketManager.listenToCreatedBattles();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue(confirm.isConfirm());
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
@@ -126,9 +104,8 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #1a ==============================");
         System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientListenToBattleAnswer listen = (ClientListenToBattleAnswer) answer.getAnswer();
+
+        ClientListenToBattleAnswer listen = battleMarketManager.listenToBattle(battle);;
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         System.out.println("'Client C' listens to the battle (battle id=" + battle.getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
@@ -140,9 +117,8 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #1b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+
+        ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);;
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         BattleGroup battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
@@ -154,9 +130,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #1c ==============================");
         System.out.println("The client is trying to get out of the battle (by himself)...");
-        answer = battleCreationManager.evictAccount(alliance, selfAccount);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
+        ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer = battleCreationManager.evictAccount(alliance, selfAccount);;
 //        BattleGroup battleGroup = evictAccountFromAllianceAnswer.getBattleGroup();
         Assert.assertTrue("The client could not be evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client accounts", selfAccount.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
@@ -169,9 +143,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #2a ==============================");
         System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         System.out.println("'Client C' listens to the battle (battle id=" + battle.getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
@@ -180,9 +152,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #2b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
@@ -208,9 +178,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #3a ==============================");
         System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
@@ -219,9 +187,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #3b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
@@ -239,9 +205,7 @@ public class BattleConnectionTest {
         for (int i = 0; i < groupSize; i++) {
             warriors[i] = selfAccount.getWarriors().get(i);
         }
-        answer = battleCreationManager.completeGroup(battleGroup, warriors);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientCompleteGroupAnswer completeGroupAnswer = (ClientCompleteGroupAnswer) answer.getAnswer();
+        ClientCompleteGroupAnswer completeGroupAnswer = battleCreationManager.completeGroup(battleGroup, warriors);
         Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
@@ -260,9 +224,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #3d ==============================");
         System.out.println("The client is trying to get out of the battle (by himself)...");
-        answer = battleCreationManager.evictAccount(alliance, selfAccount);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
+        evictAccountFromAllianceAnswer = battleCreationManager.evictAccount(alliance, selfAccount);
         Assert.assertTrue("The client could not be evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client accounts", selfAccount.getId() == evictAccountFromAllianceAnswer.getAccount().getId());
         System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
@@ -274,9 +236,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #4a ==============================");
         System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
@@ -285,9 +245,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #4b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
@@ -305,9 +263,7 @@ public class BattleConnectionTest {
         for (int i = 0; i < groupSize; i++) {
             warriors[i] = selfAccount.getWarriors().get(i);
         }
-        answer = battleCreationManager.completeGroup(battleGroup, warriors);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        completeGroupAnswer = (ClientCompleteGroupAnswer) answer.getAnswer();
+        completeGroupAnswer = battleCreationManager.completeGroup(battleGroup, warriors);
         Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
@@ -331,9 +287,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #5a ==============================");
         System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
@@ -342,9 +296,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #5b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
@@ -381,15 +333,11 @@ public class BattleConnectionTest {
 
         //todo: goBattleManager - надо ли?
         System.out.println("The client go to the battle market...");
-        answer = baseManager.goBattleManager();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = baseManager.goBattleManager();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
-        answer = battleMarketManager.listenToCreatedBattles();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue(confirm.isConfirm());
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
@@ -407,9 +355,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #6c ==============================");
         System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
@@ -421,9 +367,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #6d ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
@@ -441,9 +385,7 @@ public class BattleConnectionTest {
         for (int i = 0; i < groupSize; i++) {
             warriors[i] = selfAccount.getWarriors().get(i);
         }
-        answer = battleCreationManager.completeGroup(battleGroup, warriors);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        completeGroupAnswer = (ClientCompleteGroupAnswer) answer.getAnswer();
+        completeGroupAnswer = battleCreationManager.completeGroup(battleGroup, warriors);
         Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
@@ -469,15 +411,11 @@ public class BattleConnectionTest {
 
         //todo: goBattleManager - надо ли?
         System.out.println("The client go to the battle market...");
-        answer = baseManager.goBattleManager();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = baseManager.goBattleManager();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
-        answer = battleMarketManager.listenToCreatedBattles();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue(confirm.isConfirm());
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
@@ -495,9 +433,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #7c ==============================");
         System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
@@ -510,9 +446,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #7d ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
         Assert.assertNotNull("The client could not join to the alliance", battleGroup);
@@ -530,9 +464,7 @@ public class BattleConnectionTest {
         for (int i = 0; i < groupSize; i++) {
             warriors[i] = selfAccount.getWarriors().get(i);
         }
-        answer = battleCreationManager.completeGroup(battleGroup, warriors);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        completeGroupAnswer = (ClientCompleteGroupAnswer) answer.getAnswer();
+        completeGroupAnswer = battleCreationManager.completeGroup(battleGroup, warriors);
         Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
@@ -568,9 +500,7 @@ public class BattleConnectionTest {
 
         System.out.println("========== scenario: #7i ==============================");
         System.out.println("'Client C' informs about the disbandment the battle group (battle group id = " + battleGroup.getId() + ")...");
-        answer = battleCreationManager.disbandGroup(battleGroup);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        completeGroupAnswer = (ClientCompleteGroupAnswer) answer.getAnswer();
+        completeGroupAnswer = battleCreationManager.disbandGroup(battleGroup);
         Assert.assertTrue("'Client C' could not disband the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
@@ -586,9 +516,7 @@ public class BattleConnectionTest {
         for (int i = 0; i < groupSize; i++) {
             warriors[i] = selfAccount.getWarriors().get(i);
         }
-        answer = battleCreationManager.completeGroup(battleGroup, warriors);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        completeGroupAnswer = (ClientCompleteGroupAnswer) answer.getAnswer();
+        completeGroupAnswer = battleCreationManager.completeGroup(battleGroup, warriors);
         Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +

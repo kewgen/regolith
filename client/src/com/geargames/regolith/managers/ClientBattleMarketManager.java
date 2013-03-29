@@ -19,7 +19,6 @@ public class ClientBattleMarketManager {
     private ClientBrowseRandomBattleMapRequest browseRandomBattleMapRequest;
     private ClientBrowseBattleMapsRequest browseBattleMapsRequest;
 
-    private ClientDeferredAnswer answer;
     private ClientConfiguration configuration;
     private ClientListenToBattleAnswer listenToBattleAnswer;
     private ClientConfirmationAnswer confirmationAnswer;
@@ -32,12 +31,10 @@ public class ClientBattleMarketManager {
         browseRandomBattleMapRequest = new ClientBrowseRandomBattleMapRequest(configuration);
         browseBattleMapsRequest = new ClientBrowseBattleMapsRequest(configuration);
 
-        answer = new RegolithDeferredAnswer();
         listenToBattleAnswer = new ClientListenToBattleAnswer();
         confirmationAnswer = new ClientConfirmationAnswer();
         battleMapAnswer = new ClientBattleMapAnswer();
         battleMapListAnswer = new ClientBattleMapListAnswer(configuration);
-        browseBattleMapsAnswer = new ClientBrowseBattleMapsAnswer(configuration);
     }
 
     // todo: использовать battleTypeId вместо battleTypeIndex?
@@ -67,25 +64,16 @@ public class ClientBattleMarketManager {
         return confirmationAnswer;
     }
 
-//    public ClientDeferredAnswer browseBattleMaps() {
-//        answer.setDeSerializedMessage(confirmationAnswer);
-//        configuration.getNetwork().sendSynchronousMessage(
-//                new SimpleRequest(configuration, Packets.BROWSE_BATTLE_MAPS), answer);
-//        return answer;
-//    }
-
-    public ClientDeferredAnswer browseRandomBattleMap(BattleType battleType) {
+    public ClientBattleMapAnswer browseRandomBattleMap(BattleType battleType) throws Exception {
         browseRandomBattleMapRequest.setBattleType(battleType);
-        answer.setDeSerializedMessage(battleMapAnswer);
-        configuration.getNetwork().sendSynchronousMessage(browseRandomBattleMapRequest, answer);
-        return answer;
+        configuration.getNetwork().sendSynchronousMessage(browseRandomBattleMapRequest, battleMapAnswer, 100);
+        return battleMapAnswer;
     }
 
-    public ClientBrowseBattleMapsAnswer browseBattleMaps(BattleType battleType) throws Exception {
+    public ClientBattleMapListAnswer browseBattleMaps(BattleType battleType) throws Exception {
         browseBattleMapsRequest.setBattleType(battleType);
-        answer.setDeSerializedMessage(battleMapListAnswer);
-        configuration.getNetwork().sendSynchronousMessage(browseBattleMapsRequest, answer);
-        return answer;
+        configuration.getNetwork().sendSynchronousMessage(browseBattleMapsRequest, battleMapListAnswer, 100);
+        return battleMapListAnswer;
     }
 
     public void goToBase() {

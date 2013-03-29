@@ -2,7 +2,6 @@ package com.geargames.regolith;
 
 import com.geargames.common.network.Network;
 import com.geargames.regolith.managers.ClientCommonManager;
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
 import com.geargames.regolith.service.MainServiceManager;
@@ -24,17 +23,14 @@ public class SimpleServiceTest {
     }
 
     @Test
-    public void client(){
+    public void client() throws Exception {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         Network network = clientConfiguration.getNetwork();
         ClientCommonManager managerInterface = clientConfiguration.getCommonManager();
         clientConfiguration.setCommonManager(managerInterface);
         network.connect(clientConfiguration.getServer(), clientConfiguration.getPort());
 
-        ClientDeferredAnswer answer = managerInterface.checkForName("супер пупс с горы1");
-        while(answer.getAnswer() == null);
-
-        ClientConfirmationAnswer message = (ClientConfirmationAnswer)answer.getAnswer();
+        ClientConfirmationAnswer message = managerInterface.checkForName("супер пупс с горы1");
         try {
             message.deSerialize();
         } catch (Exception e) {
@@ -46,27 +42,12 @@ public class SimpleServiceTest {
         Login login = new Login();
         login.setName("супер пупс с горы1");
         login.setPassword("супер");
-        answer = managerInterface.create(login);
-        while(answer.getAnswer() == null);
 
-        message = (ClientConfirmationAnswer)answer.getAnswer();
-        try {
-            message.deSerialize();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        message = managerInterface.create(login);
         Assert.assertTrue(message.isConfirm());
 
-        answer = managerInterface.login(login);
-        while(answer.getAnswer() == null);
 
-        ClientLoginAnswer loginAnswer = (ClientLoginAnswer)answer.getAnswer();
-        try {
-            loginAnswer.deSerialize();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        ClientLoginAnswer loginAnswer = managerInterface.login(login);;
         Assert.assertNull(loginAnswer.getError());
 
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());

@@ -37,7 +37,7 @@ public class ClientBattleCreationManager {
      * @param alliance
      * @param account
      */
-    public ClientDeSerializedMessage evictAccount(BattleAlliance alliance, Account account) throws Exception {
+    public ClientEvictAccountFromAllianceAnswer evictAccount(BattleAlliance alliance, Account account) throws Exception {
         evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
         configuration.getNetwork().sendSynchronousMessage(
                 new EvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer, 100);

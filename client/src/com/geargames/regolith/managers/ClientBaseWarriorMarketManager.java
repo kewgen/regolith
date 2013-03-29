@@ -22,7 +22,7 @@ public class ClientBaseWarriorMarketManager {
     /**
      * Послать сообщение о найме текущим аккаунтом списка бойцов.
      */
-    public ClientDeSerializedMessage hireWarrior(Warrior[] warriors) throws Exception {
+    public ClientJoinBaseWarriorsAnswer hireWarrior(Warrior[] warriors) throws Exception {
         joinBaseWarriorsAnswer.setWarriors(warriors);
         configuration.getNetwork().sendSynchronousMessage(
                 new ClientJoinBaseWarriorsRequest(configuration, warriors), joinBaseWarriorsAnswer, 100);

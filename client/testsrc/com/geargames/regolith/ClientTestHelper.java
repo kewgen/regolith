@@ -9,7 +9,6 @@ import com.geargames.regolith.units.map.BattleMap;
 
 import com.geargames.regolith.managers.ClientBaseWarriorMarketManager;
 import com.geargames.regolith.managers.ClientCommonManager;
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinBaseWarriorsAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
@@ -29,19 +28,10 @@ import java.util.Vector;
  */
 public class ClientTestHelper {
 
-    private static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        try {
-            return answer.retrieve(100);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     /**
      * Залогинить клиента.
      */
-    public static ClientLoginAnswer clientLogon(String accountName, String accountPassword, boolean createIfNotExist) {
+    public static ClientLoginAnswer clientLogon(String accountName, String accountPassword, boolean createIfNotExist) throws Exception {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         ClientCommonManager commonManager = clientConfiguration.getCommonManager();
 
@@ -51,18 +41,12 @@ public class ClientTestHelper {
 
         System.out.println("Is checking for a login name");
 
-        ClientDeferredAnswer answer = commonManager.checkForName(accountName);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        ClientConfirmationAnswer confirm = commonManager.checkForName(accountName);
         if (createIfNotExist) {
             if (confirm.isConfirm()) {
                 System.out.println("Trying to create an account");
 
-                answer = commonManager.create(login);
-                Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-                confirm = (ClientConfirmationAnswer) answer.getAnswer();
+                confirm = commonManager.create(login);
                 Assert.assertTrue("Could not create the account", confirm.isConfirm());
             }
         } else {
@@ -72,10 +56,7 @@ public class ClientTestHelper {
 
         System.out.println("Going to login");
 
-        answer = commonManager.login(login);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-
-        ClientLoginAnswer loginAnswer = (ClientLoginAnswer) answer.getAnswer();
+        ClientLoginAnswer loginAnswer = commonManager.login(login);
         Assert.assertNull("Cannot login to account: " + loginAnswer.getError(), loginAnswer.getError());
 
         return loginAnswer;
@@ -100,7 +81,7 @@ public class ClientTestHelper {
     /**
      * Нанять для игрока доступных бойцов.
      */
-    public static void hireWarriorForClient(Account account) {
+    public static void hireWarriorForClient(Account account) throws Exception {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
 
         if (account.getWarriors().size() <= 0) {
@@ -121,9 +102,7 @@ public class ClientTestHelper {
                 ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
 
                 System.out.println("We are trying to hire warriors");
-                ClientDeferredAnswer answer = baseWarriorMarketManager.hireWarrior(initWarriors);
-                Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-                ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();
+                ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = baseWarriorMarketManager.hireWarrior(initWarriors);
                 Assert.assertTrue("The client could not get a set of base warriors", clientJoinBaseWarriorsAnswer.isSuccess());
 
                 ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
