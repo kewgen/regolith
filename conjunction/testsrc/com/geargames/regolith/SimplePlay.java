@@ -1,6 +1,5 @@
 package com.geargames.regolith;
 
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
@@ -13,7 +12,6 @@ import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.map.BattleMap;
 
 import java.util.Vector;
 
@@ -27,17 +25,6 @@ import java.util.Vector;
 public class SimplePlay {
     private static SimpleService service;
 
-    private static void retrieving(ClientDeferredAnswer answer, int count) throws Exception {
-        int i = 0;
-        while (answer.getAnswer() == null) {
-            Thread.sleep(100);
-            if (i++ == count) {
-                throw new RegolithException("server is not answering");
-            }
-        }
-        answer.getAnswer().deSerialize();
-    }
-
     public static void main(String[] args) throws Exception {
         service = MainServiceManager.runMainService();
 
@@ -48,15 +35,11 @@ public class SimplePlay {
         login.setName("автор");
         login.setPassword("секрет");
         System.out.println("checking for a login name");
-        ClientDeferredAnswer answer = commonManager.checkForName(login.getName());
-        retrieving(answer, 1000);
 
-        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        ClientConfirmationAnswer confirm = commonManager.checkForName(login.getName());
         if (confirm.isConfirm()) {
             System.out.println("trying to createAmmunitionBag the login name");
-            answer = commonManager.create(login);
-            retrieving(answer, 1000);
-            confirm = (ClientConfirmationAnswer) answer.getAnswer();
+            confirm = commonManager.create(login);
             if (!confirm.isConfirm()) {
                 System.out.println("could not createAmmunitionBag an account");
                 return;
@@ -65,10 +48,7 @@ public class SimplePlay {
 
         System.out.println("going to log in");
 
-        answer = commonManager.login(login);
-        retrieving(answer, 1000);
-
-        ClientLoginAnswer loginAnswer = (ClientLoginAnswer) answer.getAnswer();
+        ClientLoginAnswer loginAnswer = commonManager.login(login);
         if (loginAnswer.getError() != null) {
             System.err.println(loginAnswer.getError());
             return;
@@ -96,9 +76,7 @@ public class SimplePlay {
                 initWarriors[i] = warriors[i];
             }
             System.out.println("We are trying to hire warriors");
-            answer = baseWarriorMarketManager.hireWarrior(initWarriors);
-            retrieving(answer, 1000);
-            ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();
+            ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = baseWarriorMarketManager.hireWarrior(initWarriors);
             ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
             if (clientJoinBaseWarriorsAnswer.isSuccess()) {
                 for (Warrior warrior : clientJoinBaseWarriorsAnswer.getWarriors()) {
@@ -113,10 +91,7 @@ public class SimplePlay {
 
         System.out.println("lets go to the battle market");
 
-        answer = baseManager.goBattleManager();
-        retrieving(answer, 1000);
-
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = baseManager.goBattleManager();
 
         if (!confirm.isConfirm()) {
             System.err.println("could not go to the battle market");
@@ -128,53 +103,41 @@ public class SimplePlay {
         BattleType battleType = BaseConfigurationHelper.findBattleTypeByArgs(2, 1, 1,
                 ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
 
-        answer = battleMarketManager.browseRandomBattleMap(battleType);
-        retrieving(answer, 1000);
 
-        ClientBattleMapListAnswer battleMapList = (ClientBattleMapListAnswer) answer.getAnswer();
+        ClientBattleMapAnswer battleMap = battleMarketManager.browseRandomBattleMap(battleType);
 
-        BattleMap[] maps = battleMapList.getBattleMaps();
-        if (maps.length > 0) {
-            answer = battleMarketManager.createBattle(maps[0], battleType);
-            retrieving(answer, 1000);
-            ClientListenToBattleAnswer listenToBattle = (ClientListenToBattleAnswer) answer.getAnswer();
-            Battle battle = listenToBattle.getBattle();
-            if (battle == null) {
-                System.err.println("could not createAmmunitionBag his own battle.");
-            }
+        ClientListenToBattleAnswer listenToBattle = battleMarketManager.createBattle(battleMap.getBattleMap(), battleType);
+        ;
+        Battle battle = listenToBattle.getBattle();
+        if (battle == null) {
+            System.err.println("could not createAmmunitionBag his own battle.");
+        }
 
-            BattleGroup group;
-            answer = battleCreationManager.joinToAlliance(battle.getAlliances()[0]);
-            retrieving(answer, 1000);
+        BattleGroup group;
 
-            group = ((ClientJoinToBattleAllianceAnswer) answer.getAnswer()).getBattleGroup();
-            if (group == null) {
-                System.err.println("could not joint to his own battle.");
-                return;
-            }
+        group = battleCreationManager.joinToAlliance(battle.getAlliances()[0]).getBattleGroup();
+        if (group == null) {
+            System.err.println("could not joint to his own battle.");
+            return;
+        }
 
-            if (battle.getBattleType().getGroupSize() > account.getWarriors().size()) {
-                System.out.println(account.getName() + " has no enough warriors for this battle.");
-                return;
-            }
+        if (battle.getBattleType().getGroupSize() > account.getWarriors().size()) {
+            System.out.println(account.getName() + " has no enough warriors for this battle.");
+            return;
+        }
 
-            Warrior[] warriors = new Warrior[battle.getBattleType().getGroupSize()];
-            for (int i = 0; i < warriors.length; i++) {
-                warriors[i] = account.getWarriors().get(i);
-            }
-
-            answer = battleCreationManager.completeGroup(group, warriors);
-            retrieving(answer, 1000);
-
-            confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        Warrior[] warriors = new Warrior[battle.getBattleType().getGroupSize()];
+        for (int i = 0; i < warriors.length; i++) {
+            warriors[i] = account.getWarriors().get(i);
+        }
 
 
-            if (!confirm.isConfirm()) {
-                System.err.println("could not put a group into his own battle.");
-                return;
-            }
-        } else {
-            System.out.print("there are no maps");
+        ClientCompleteGroupAnswer complete = battleCreationManager.completeGroup(group, warriors);
+
+
+        if (complete.getBattleGroup() == null) {
+            System.err.println("could not put a group into his own battle.");
+            return;
         }
 
         service.stopService();

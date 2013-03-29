@@ -7,27 +7,26 @@ import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Battle;
 
 /**
- * User: mkutuzov
- * Date: 05.08.12
- * Time: 15:32
+ * User: m.v.kutuzov
+ * Date: 28.03.13
  */
-public class ServerStopListenAnswer extends SerializedMessage {
+public class ServerListenToDeletedBattleAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
     private Battle battle;
 
+    public ServerListenToDeletedBattleAnswer(MicroByteBuffer buffer, Battle battle) {
+        this.buffer = buffer;
+        this.battle = battle;
+    }
+
     @Override
     public short getType() {
-        return Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE;
+        return Packets.LISTEN_TO_DELETED_BATTLE;
     }
 
     @Override
     protected MicroByteBuffer getBuffer() {
         return buffer;
-    }
-
-    public ServerStopListenAnswer(MicroByteBuffer buffer, Battle battle){
-        this.buffer = buffer;
-        this.battle = battle;
     }
 
     @Override

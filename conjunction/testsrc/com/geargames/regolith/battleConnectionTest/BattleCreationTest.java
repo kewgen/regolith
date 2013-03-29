@@ -1,6 +1,5 @@
 package com.geargames.regolith.battleConnectionTest;
 
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.*;
@@ -32,15 +31,6 @@ public class BattleCreationTest {
     private static final int NEXT_WAINTING  = 2000;  // 20 сек
     private static final int BROWSE_CREATED_BATTLES_WAINTING = 200; // 20 сек
 
-    private static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        try {
-            return answer.retrieve(1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     // Ожидаем асинхронного сообщения и возвращаем true, если сообщение получено.
     private static boolean waitForAsyncAnswer(ClientDeSerializedMessage answer, short msgType, int attemptCount) {
         int i = 0;
@@ -69,7 +59,7 @@ public class BattleCreationTest {
     }
 
     @Test
-    public void client() throws com.geargames.regolith.RegolithException, BrokenBarrierException, InterruptedException {
+    public void client() throws Exception {
         ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
@@ -93,9 +83,7 @@ public class BattleCreationTest {
         ClientTestHelper.hireWarriorForClient(selfAccount);
 
         System.out.println("The client go to the battle market...");
-        ClientDeferredAnswer answer = baseManager.goBattleManager();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        ClientConfirmationAnswer confirm = baseManager.goBattleManager();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Find the appropriate type of battle...");
@@ -103,9 +91,7 @@ public class BattleCreationTest {
                 ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
 
         System.out.println("Browsing maps...");
-        answer = battleMarketManager.browseRandomBattleMap(battleType);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientBattleMapAnswer battleMap = (ClientBattleMapAnswer) answer.getAnswer();
+        ClientBattleMapAnswer battleMap = battleMarketManager.browseRandomBattleMap(battleType);
         BattleMap map = battleMap.getBattleMap();
         Assert.assertNotNull("There are no maps", map);
         Manager.pause(300);
@@ -118,9 +104,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #0a ==============================");
         System.out.println("Creating a battle (map id = " + map.getId() + ")...");
-        answer = battleMarketManager.createBattle(map, battleType);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientListenToBattleAnswer listenToBattleAnswer = (ClientListenToBattleAnswer) answer.getAnswer();
+        ClientListenToBattleAnswer listenToBattleAnswer = battleMarketManager.createBattle(map, battleType);
         Battle battle = listenToBattleAnswer.getBattle();
         System.out.println("Created battle (battle id=" + battle.getId() + ")");
         //todo: battle.getAuthor() == null
@@ -173,9 +157,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #2c ==============================");
         System.out.println("Trying to eviction the client from the battle (by author)...");
-        answer = battleCreationManager.evictAccount(joinToBattleAllianceAnswer.getBattleGroup().getAlliance(), accountClientC);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
+        evictAccountFromAllianceAnswer = battleCreationManager.evictAccount(joinToBattleAllianceAnswer.getBattleGroup().getAlliance(), accountClientC);
 //        BattleGroup battleGroup = evictAccountFromAllianceAnswer.getBattleGroup();
         Assert.assertTrue("The client could not be evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
         System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
@@ -264,9 +246,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #4d ==============================");
         System.out.println("Trying to eviction the client from the battle (by author)...");
-        answer = battleCreationManager.evictAccount(joinToBattleAllianceAnswer.getBattleGroup().getAlliance(), accountClientC);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) answer.getAnswer();
+        evictAccountFromAllianceAnswer = battleCreationManager.evictAccount(joinToBattleAllianceAnswer.getBattleGroup().getAlliance(), accountClientC);
         Assert.assertTrue("The client could not be evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
         System.out.println("Client '" + evictAccountFromAllianceAnswer.getAccount().getName() +
                 "' evicted from the alliance (id = " + evictAccountFromAllianceAnswer.getAlliance().getId() + ")");
@@ -289,9 +269,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #5e ==============================");
         System.out.println("Trying to cancelation the battle (by author)...");
-        answer = battleCreationManager.cancelBattle();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientCancelBattleAnswer cancelBattleAnswer = (ClientCancelBattleAnswer) answer.getAnswer();
+        ClientCancelBattleAnswer cancelBattleAnswer = battleCreationManager.cancelBattle();
         Assert.assertTrue("The client is not able to cancel the battle", cancelBattleAnswer.isSuccess());
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
@@ -301,24 +279,18 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #6a ==============================");
 
         System.out.println("The client go to the battle market...");
-        answer = baseManager.goBattleManager(); //todo: надо ли?
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = baseManager.goBattleManager(); //todo: надо ли?
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
-        answer = battleMarketManager.browseRandomBattleMap(battleType);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        battleMap = (ClientBattleMapAnswer) answer.getAnswer();
+        battleMap = battleMarketManager.browseRandomBattleMap(battleType);
         map = battleMap.getBattleMap();
         Assert.assertNotNull("There are no maps", map);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Creating a battle (map id = " + map.getId() + ")...");
-        answer = battleMarketManager.createBattle(map, battleType);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listenToBattleAnswer = (ClientListenToBattleAnswer) answer.getAnswer();
+        listenToBattleAnswer = battleMarketManager.createBattle(map, battleType);
         Assert.assertNotNull("Could not create his own battle.", listenToBattleAnswer.getBattle());
 //        Assert.assertTrue("Different references to the battles", battle == listenToBattleAnswer.getBattle());
         battle = listenToBattleAnswer.getBattle();
@@ -353,9 +325,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #6f ==============================");
         System.out.println("Trying to cancelation the battle (by author)...");
-        answer = battleCreationManager.cancelBattle();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        cancelBattleAnswer = (ClientCancelBattleAnswer) answer.getAnswer();
+        cancelBattleAnswer = battleCreationManager.cancelBattle();
         Assert.assertTrue("The client is not able to cancel the battle", cancelBattleAnswer.isSuccess());
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
@@ -365,24 +335,18 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #7a ==============================");
 
         System.out.println("The client go to the battle market...");
-        answer = baseManager.goBattleManager(); //todo: надо ли?
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = baseManager.goBattleManager(); //todo: надо ли?
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
-        answer = battleMarketManager.browseRandomBattleMap(battleType);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        battleMap = (ClientBattleMapAnswer) answer.getAnswer();
+        battleMap = battleMarketManager.browseRandomBattleMap(battleType);
         map = battleMap.getBattleMap();
         Assert.assertNotNull("There are no maps", map);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("Creating a battle (map id = " + map.getId() + ")...");
-        answer = battleMarketManager.createBattle(map, battleType);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listenToBattleAnswer = (ClientListenToBattleAnswer) answer.getAnswer();
+        listenToBattleAnswer = battleMarketManager.createBattle(map, battleType);
         Assert.assertNotNull("Could not create his own battle.", listenToBattleAnswer.getBattle());
 //        Assert.assertTrue("Different references to the battles", battle == listenToBattleAnswer.getBattle());
         battle = listenToBattleAnswer.getBattle();
@@ -420,9 +384,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #7f ==============================");
         System.out.println("The author of battle is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertTrue("'Client A' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         BattleGroup battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
         Assert.assertNotNull("'Client A' could not join to the alliance", battleGroup);
@@ -440,9 +402,7 @@ public class BattleCreationTest {
         for (int i = 0; i < groupSize; i++) {
             warriors[i] = selfAccount.getWarriors().get(i);
         }
-        answer = battleCreationManager.completeGroup(battleGroup, warriors);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        completeGroupAnswer = (ClientCompleteGroupAnswer) answer.getAnswer();
+        completeGroupAnswer = battleCreationManager.completeGroup(battleGroup, warriors);
         Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client A'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
@@ -465,9 +425,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #7j ==============================");
         System.out.println("Trying to fake start a battle (by Author)...");
-        answer = battleCreationManager.startBattle(selfAccount);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientStartBattleAnswer startBattleAnswer = (ClientStartBattleAnswer) answer.getAnswer();
+        ClientStartBattleAnswer startBattleAnswer = battleCreationManager.startBattle(selfAccount);
         Assert.assertFalse("The client should not start the battle", startBattleAnswer.isSuccess());
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
@@ -487,9 +445,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #7p ==============================");
         System.out.println("Trying to start a battle (by Author)...");
-        answer = battleCreationManager.startBattle(selfAccount);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        startBattleAnswer = (ClientStartBattleAnswer) answer.getAnswer();
+        startBattleAnswer = battleCreationManager.startBattle(selfAccount);
         Assert.assertTrue("The client can not start the battle", startBattleAnswer.isSuccess());
         Assert.assertNotNull("Battle can not be null", startBattleAnswer.getBattle());
         Assert.assertTrue("Different ID of the client accounts", selfAccount.getId() == startBattleAnswer.getBattle().getAuthor().getId());

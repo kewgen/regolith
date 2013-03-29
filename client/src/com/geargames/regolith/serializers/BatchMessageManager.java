@@ -4,10 +4,6 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.Packets;
-import com.geargames.common.network.ClientDeferredAnswer;
-import com.geargames.common.network.MessageLock;
-import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.requests.ClientSerializedMessage;
 
 /**
@@ -20,8 +16,6 @@ public class BatchMessageManager {
     private ClientConfiguration configuration;
     private BatchRequest request;
     private SimpleBatchAnswer answer;
-
-    private ClientDeferredAnswer deferredAnswer;
 
     public static BatchMessageManager getInstance() {
         if (instance == null) {
@@ -36,28 +30,13 @@ public class BatchMessageManager {
         request.setRequests(new ArrayList(20));
         answer = new SimpleBatchAnswer();
         answer.setAnswers(new ArrayList(20));
-        deferredAnswer = new RegolithDeferredAnswer();
-        deferredAnswer.setDeSerializedMessage(answer);
     }
 
     /**
      * Отослать стопку сообщений скопом и настроить.
      */
-    public void commitMessages() {
-        configuration.getNetwork().sendSynchronousMessage(request, deferredAnswer);
-    }
-
-    /**
-     * Ожидать ответа с сервера count раз.
-     *
-     * @param count количество циклов ожидания.
-     * @return если ответ пришёл вернуть true
-     */
-    public boolean retrieve(int count) throws Exception {
-        return deferredAnswer.retrieve(count);
-    }
-
-    public SimpleBatchAnswer getAnswer() {
+    public BatchAnswer commitMessages() throws Exception {
+        configuration.getNetwork().sendSynchronousMessage(request, answer, 100);
         return answer;
     }
 

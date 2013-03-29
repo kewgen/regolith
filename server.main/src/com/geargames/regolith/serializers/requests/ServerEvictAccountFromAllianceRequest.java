@@ -73,7 +73,7 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
 
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
                     recipients.add(serverContext.getChannel(victim));
-					schedulerService.addBattle(battle);
+					schedulerService.updateBattle(battle);
                     message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victim, alliance);
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);

@@ -54,9 +54,8 @@ public class ServerBattleMarketManager {
         return true;
     }
 
-    public Battle[] battlesJoinTo() {
-        Collection<Battle> collection = configuration.getServerContext().getBattleManagerContext().getCreatedBattles().values();
-        return collection.toArray(new Battle[collection.size()]);
+    public Collection<Battle> battlesJoinTo() {
+        return configuration.getServerContext().getBattleManagerContext().getCreatedBattles().values();
     }
 
     public List<BattleMap> browseBattleMaps() {

@@ -1,6 +1,7 @@
 package com.geargames.regolith.application;
 
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.dictionaries.BattleCollection;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 
 import java.util.Vector;
@@ -34,6 +35,28 @@ public class ObjectManager {
             instance = new ObjectManager();
         }
         return instance;
+    }
+
+    public Battle findBattleById(int id) {
+        BattleCollection collection = ObjectManager.getInstance().getBattleCollection();
+        for (int i = 0; i < collection.size(); i++) {
+            if (collection.get(i).getId() == id) {
+                return collection.get(i);
+            }
+        }
+        return null;
+    }
+
+    public Battle removeBattleById(int id) {
+        BattleCollection collection = ObjectManager.getInstance().getBattleCollection();
+        for (int i = 0; i < collection.size(); i++) {
+            if (collection.get(i).getId() == id) {
+                Battle battle = collection.get(i);
+                collection.remove(i);
+                return battle;
+            }
+        }
+        return null;
     }
 
 }

@@ -20,7 +20,7 @@ public class ListenToBattleRequest extends ClientSerializedMessage {
     }
 
     public short getType() {
-        return Packets.LISTEN_TO_BATTLE;
+        return Packets.LISTEN_TO_CREATED_BATTLE;
     }
 
     public void serialize(MicroByteBuffer buffer) {

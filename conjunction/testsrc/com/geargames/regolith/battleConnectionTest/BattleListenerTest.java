@@ -1,6 +1,5 @@
 package com.geargames.regolith.battleConnectionTest;
 
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.ClientConfiguration;
@@ -28,15 +27,6 @@ public class BattleListenerTest {
     private static final int NEXT_WAINTING  = 2000;  // 20 сек
     private static final int BROWSE_CREATED_BATTLES_WAINTING = 200;  // 20 сек
 
-    private static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        try {
-            return answer.retrieve(1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     // Ожидаем асинхронного сообщения и возвращаем true, если сообщение получено.
     private static boolean waitForAsyncAnswer(ClientDeSerializedMessage answer, short msgType, int attemptCount) {
         int i = 0;
@@ -55,7 +45,7 @@ public class BattleListenerTest {
     }
 
     @Test
-    public void client() throws com.geargames.regolith.RegolithException, BrokenBarrierException, InterruptedException {
+    public void client() throws Exception {
         ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
@@ -79,15 +69,11 @@ public class BattleListenerTest {
         ClientTestHelper.hireWarriorForClient(selfAccount);
 
         System.out.println("The client go to the battle market...");
-        ClientDeferredAnswer answer = baseManager.goBattleManager();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        ClientConfirmationAnswer confirm = baseManager.goBattleManager();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
-        answer = battleMarketManager.listenToCreatedBattles();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue(confirm.isConfirm());
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
@@ -107,9 +93,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #0b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        ClientListenToBattleAnswer listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        ClientListenToBattleAnswer listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
@@ -309,15 +293,11 @@ public class BattleListenerTest {
 
         //todo: goBattleManager - надо ли?
         System.out.println("The client go to the battle market...");
-        answer = baseManager.goBattleManager();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = baseManager.goBattleManager();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
-        answer = battleMarketManager.listenToCreatedBattles();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue(confirm.isConfirm());
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
@@ -335,9 +315,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #6b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
@@ -387,15 +365,11 @@ public class BattleListenerTest {
 
         //todo: goBattleManager - надо ли?
         System.out.println("The client go to the battle market...");
-        answer = baseManager.goBattleManager();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = baseManager.goBattleManager();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
-        answer = battleMarketManager.listenToCreatedBattles();
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        confirm = battleMarketManager.listenToCreatedBattles();
         Assert.assertTrue(confirm.isConfirm());
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
@@ -413,9 +387,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #7b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
-        answer = battleMarketManager.listenToBattle(battle);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        listen = (ClientListenToBattleAnswer) answer.getAnswer();
+        listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
         Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Account accountClientA = battle.getAuthor();
@@ -464,9 +436,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #7g ==============================");
         System.out.println("'Client B' is trying join to an alliance (id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        answer = battleCreationManager.joinToAlliance(alliance);
-        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-        joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) answer.getAnswer();
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);;
         Assert.assertFalse("'Client B' should not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();

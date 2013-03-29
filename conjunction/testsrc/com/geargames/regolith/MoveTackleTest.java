@@ -1,6 +1,5 @@
 package com.geargames.regolith;
 
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.util.ArrayList;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.managers.*;
@@ -32,14 +31,6 @@ import java.util.concurrent.BrokenBarrierException;
 public class MoveTackleTest {
     private static SimpleService service;
 
-    private static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        try {
-            return answer.retrieve(1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     @BeforeClass
     public static void service() throws Exception {
@@ -47,7 +38,7 @@ public class MoveTackleTest {
     }
 
     @Test
-    public void client() throws RegolithException, BrokenBarrierException, InterruptedException {
+    public void client() throws Exception  {
         ConsoleMainHelper.appInitialize();
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
@@ -63,7 +54,6 @@ public class MoveTackleTest {
 
         ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();
 
-        ClientDeferredAnswer answer;
         ClientConfirmationAnswer confirm;
 
         if (account.getWarriors().size() <= 0) {
@@ -78,10 +68,8 @@ public class MoveTackleTest {
                     initWarriors[i] = warriors[i];
                 }
                 System.out.println("We are trying to hire warriors");
-                answer = baseWarriorMarketManager.hireWarrior(initWarriors);
-                Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
 
-                ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = (ClientJoinBaseWarriorsAnswer) answer.getAnswer();
+                ClientJoinBaseWarriorsAnswer clientJoinBaseWarriorsAnswer = baseWarriorMarketManager.hireWarrior(initWarriors);;
                 Assert.assertTrue("Could not get a set base warriors", clientJoinBaseWarriorsAnswer.isSuccess());
 
                 ClientWarriorCollection clientWarriorCollection = new ClientWarriorCollection(new Vector());
@@ -109,21 +97,19 @@ public class MoveTackleTest {
         BatchMessageManager messanger = BatchMessageManager.getInstance();
 
         messanger.deferredSend(move, confirm);
-        messanger.commitMessages();
         try {
-            Assert.assertTrue("Waiting time answer has expired", messanger.retrieve(1000));
+            ArrayList answers = messanger.commitMessages().getAnswers();
+
+            for (int i = 0; i < answers.size(); i++) {
+                confirm = (ClientConfirmationAnswer) answers.get(i);
+                Assert.assertTrue(confirm.isConfirm());
+            }
+
+            System.out.println("Tackle was moved. The test was completed successfully.");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        ArrayList answers = messanger.getAnswer().getAnswers();
-
-        for (int i = 0; i < answers.size(); i++) {
-            confirm = (ClientConfirmationAnswer) answers.get(i);
-            Assert.assertTrue(confirm.isConfirm());
-        }
-
-        System.out.println("Tackle was moved. The test was completed successfully.");
     }
 
     @AfterClass

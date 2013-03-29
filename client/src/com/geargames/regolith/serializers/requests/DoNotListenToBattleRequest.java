@@ -3,7 +3,6 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.common.serialization.MicroByteBuffer;
-import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Battle;
 
@@ -20,7 +19,7 @@ public class DoNotListenToBattleRequest extends ClientSerializedMessage {
     }
 
     public short getType() {
-        return Packets.DO_NOT_LISTEN_TO_BATTLE;
+        return Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE;
     }
 
     public void serialize(MicroByteBuffer buffer) {

@@ -1,6 +1,7 @@
 package com.geargames.regolith;
 
 import com.geargames.regolith.helpers.AmmunitionBagHelper;
+import com.geargames.regolith.helpers.ClientHelper;
 import com.geargames.regolith.units.AmmunitionBag;
 import com.geargames.regolith.units.tackle.Projectile;
 import org.junit.Assert;

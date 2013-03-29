@@ -1,8 +1,6 @@
 package com.geargames.regolith.managers;
 
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
 import com.geargames.regolith.serializers.requests.CheckForNameRequest;
@@ -20,14 +18,10 @@ public class ClientCommonManager {
     private ClientLoginAnswer loginAnswer;
     private ClientConfirmationAnswer confirmationAnswer;
 
-    private ClientDeferredAnswer answer;
-
     public ClientCommonManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         loginAnswer = new ClientLoginAnswer();
         confirmationAnswer = new ClientConfirmationAnswer();
-
-        answer = new RegolithDeferredAnswer();
     }
 
     /**
@@ -35,10 +29,9 @@ public class ClientCommonManager {
      * @param login
      * @return
      */
-    public ClientDeferredAnswer login(Login login) {
-        answer.setDeSerializedMessage(loginAnswer);
-        configuration.getNetwork().sendSynchronousMessage(new LoginRequest(configuration, login), answer);
-        return answer;
+    public ClientLoginAnswer login(Login login) throws Exception {
+        configuration.getNetwork().sendSynchronousMessage(new LoginRequest(configuration, login), loginAnswer, 100);
+        return loginAnswer;
     }
 
     /**
@@ -53,19 +46,17 @@ public class ClientCommonManager {
      * Послать сообщение-запрос для проверки того, что имя аккаунта (пользователя) "свободно", иными словами его можно
      * использовать при создании нового аккаунта.
      */
-    public ClientDeferredAnswer checkForName(String login) {
-        answer.setDeSerializedMessage(confirmationAnswer);
-        configuration.getNetwork().sendSynchronousMessage(new CheckForNameRequest(configuration, login), answer);
-        return answer;
+    public ClientConfirmationAnswer checkForName(String login) throws Exception {
+        configuration.getNetwork().sendSynchronousMessage(new CheckForNameRequest(configuration, login), confirmationAnswer, 100);
+        return confirmationAnswer;
     }
 
     /**
      * Послать сообщение-запрос о создании нового аккаунта.
      */
-    public ClientDeferredAnswer create(Login account) {
-        answer.setDeSerializedMessage(confirmationAnswer);
-        configuration.getNetwork().sendSynchronousMessage(new CreateAccountRequest(configuration, account), answer);
-        return answer;
+    public ClientConfirmationAnswer create(Login account) throws Exception {
+        configuration.getNetwork().sendSynchronousMessage(new CreateAccountRequest(configuration, account), confirmationAnswer, 100);
+        return confirmationAnswer;
     }
 
 }
