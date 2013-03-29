@@ -30,4 +30,5 @@ public class ClientBrowseRandomBattleMapRequest extends ClientSerializedMessage 
     public void serialize(MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(battleType, buffer);
     }
+
 }

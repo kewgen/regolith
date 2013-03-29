@@ -575,7 +575,7 @@ public class BattleConnectionTest {
         Assert.assertTrue("Different ID of the client 'Client C'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
                 "' disbanded the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
-        Manager.pause(800 + 1000); // +1 секунда, т.к. в это время выполняется сценарий #7j у клиента A
+        Manager.pause(800 + 2000); // +2 секунды, т.к. в это время выполняется сценарий #7j у клиента A
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #7k ==============================");
@@ -622,30 +622,6 @@ public class BattleConnectionTest {
         ClientTestHelper.checkAsyncMessages();
 
         // -------------------------------------------------------------------------------------------------------------
-
-//        int groupSize = battle.getBattleType().getGroupSize();
-//        Assert.assertTrue("The selfAccount " + selfAccount.getName() + " does not have enough warriors", groupSize <= selfAccount.getWarriors().size());
-//
-//        Warrior[] warriors = new Warrior[groupSize];
-//        for (int i = 0; i < groupSize; i++) {
-//            warriors[i] = selfAccount.getWarriors().get(i);
-//        }
-//
-//        System.out.println("The client is trying to complete group (battle group id = " + battleGroup.getId() + ")");
-//        answer = battleCreationManager.completeGroup(battleGroup, warriors);
-//        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-//        ClientConfirmationAnswer clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
-//        Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", clientConfirmationAnswer.isConfirm());
-//
-//        System.out.println("The client has completed a group");
-//
-//        System.out.println("The client is trying to confirm a group...");
-//        answer = battleCreationManager.isReady(battleGroup);
-//        Assert.assertTrue("Waiting time answer has expired", waitForAnswer(answer));
-//        clientConfirmationAnswer = (ClientConfirmationAnswer) answer.getAnswer();
-//        Assert.assertTrue("The client has not confirmed the group", clientConfirmationAnswer.isConfirm());
-//
-//        System.out.println("The client has confirmed the group.");
 
         System.out.println("The test was completed successfully.");
     }

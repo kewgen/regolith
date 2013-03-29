@@ -25,7 +25,7 @@ public class ServerBrowseBattleMapsRequest extends MainOneToClientRequest {
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         BattleType type = ServerDataBaseHelper.getBattleTypeById(SimpleDeserializer.deserializeInt(from));
-        if(type != null){
+        if (type != null) {
             return new ServerBrowseBattleMapsAnswer(writeBuffer, battleMarketManager.browseBattleMaps(type).toArray(new BattleMap[]{}));
         }else{
             return new ServerBrowseBattleMapsAnswer(writeBuffer, new BattleMap[]{});

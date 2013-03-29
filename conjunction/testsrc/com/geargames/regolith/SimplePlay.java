@@ -1,6 +1,7 @@
 package com.geargames.regolith;
 
 import com.geargames.common.network.ClientDeferredAnswer;
+import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.service.MainServiceManager;
@@ -9,6 +10,7 @@ import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
+import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
@@ -123,14 +125,17 @@ public class SimplePlay {
 
         System.out.println("browsing maps");
 
-        answer = battleMarketManager.browseBattleMaps();
+        BattleType battleType = BaseConfigurationHelper.findBattleTypeByArgs(2, 1, 1,
+                ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
+
+        answer = battleMarketManager.browseRandomBattleMap(battleType);
         retrieving(answer, 1000);
 
-        ClientBrowseBattleMapsAnswer browseMaps = (ClientBrowseBattleMapsAnswer) answer.getAnswer();
+        ClientBattleMapListAnswer battleMapList = (ClientBattleMapListAnswer) answer.getAnswer();
 
-        BattleMap[] maps = browseMaps.getBattleMaps();
+        BattleMap[] maps = battleMapList.getBattleMaps();
         if (maps.length > 0) {
-            answer = battleMarketManager.createBattle(maps[0], 0);
+            answer = battleMarketManager.createBattle(maps[0], battleType);
             retrieving(answer, 1000);
             ClientListenToBattleAnswer listenToBattle = (ClientListenToBattleAnswer) answer.getAnswer();
             Battle battle = listenToBattle.getBattle();

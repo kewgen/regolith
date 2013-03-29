@@ -1,6 +1,7 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleTypeHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.*;
@@ -27,9 +28,9 @@ public class ServerBattleMarketManager {
         random = new Random();
     }
 
-    public Battle createBattle(BattleMap battleMap, int battleTypeIndex, Account author) throws RegolithException {
-        BattleType type = battleMap.getPossibleBattleTypes()[battleTypeIndex];
-        Battle battle = BattleHelper.createBattle(battleMap.getName() + "_" + author.getName(), battleMap, battleTypeIndex);
+    public Battle createBattle(BattleMap battleMap, int battleTypeId, Account author) throws RegolithException {
+        BattleType battleType = BattleTypeHelper.findBattleTypeById(battleTypeId, battleMap.getPossibleBattleTypes());
+        Battle battle = BattleHelper.createBattle(battleMap.getName() + "_" + author.getName(), battleMap, battleType);
         battle.setAuthor(author);
         Session session = configuration.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
@@ -44,7 +45,7 @@ public class ServerBattleMarketManager {
         battleManagerContext.getBattleListeners().put(battle, listeners);
         battleManagerContext.getCreatedBattles().put(author, battle);
         battleManagerContext.getBattlesById().put(id, battle);
-        battleManagerContext.getCompleteGroups().put(battle, new HashSet<BattleGroup>(type.getAllianceSize() * type.getAllianceAmount()));
+        battleManagerContext.getCompleteGroups().put(battle, new HashSet<BattleGroup>(battleType.getAllianceSize() * battleType.getAllianceAmount()));
         return battle;
     }
 
@@ -69,9 +70,9 @@ public class ServerBattleMarketManager {
         LinkedList<BattleMap> maps = new LinkedList<BattleMap>();
         for (BattleMap map : browseBattleMaps()) {
             for (BattleType type : map.getPossibleBattleTypes()) {
-                if (type == battleType) {
+                if (type.getId() == battleType.getId()) { //todo: сравнивать ссылки, а не id
                     maps.add(map);
-                    continue;
+                    break;
                 }
             }
         }
@@ -81,7 +82,7 @@ public class ServerBattleMarketManager {
     public BattleMap getRandomBattleMap(BattleType type) {
         List<BattleMap> maps = browseBattleMaps(type);
         if (maps.size() > 0) {
-            return maps.get(random.nextInt() % maps.size());
+            return maps.get(random.nextInt(maps.size()));
         } else {
             return null;
         }

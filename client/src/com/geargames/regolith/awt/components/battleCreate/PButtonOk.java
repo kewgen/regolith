@@ -20,7 +20,7 @@ public class PButtonOk extends PEntitledTouchButton {
         PBattleCreatePanel battleCreatePanel = panelManager.getBattleCreatePanel();
         panelManager.getSelectMapPanel().showPanel(
                 battleCreatePanel.getAllianceAmount(), battleCreatePanel.getAllianceSize(),
-                battleCreatePanel.getGroupSize(), battleCreatePanel.getIsRandomMap(), panelManager.getSelectMap());
+                battleCreatePanel.getGroupSize(), battleCreatePanel.getIsRandomMap(), panelManager.getBattleCreate());
     }
 
 }

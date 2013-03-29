@@ -81,7 +81,7 @@ public class ObserverTest {
 
         battleMap.setPossibleBattleTypes(battleTypes);
 
-        Battle battle = BattleHelper.createBattle("test", battleMap, 0);
+        Battle battle = BattleHelper.createBattle("test", battleMap, battleType);
         BattleHelper.prepareBattle(battle);
 
         BattleAlliance battleAlliance = battle.getAlliances()[0];

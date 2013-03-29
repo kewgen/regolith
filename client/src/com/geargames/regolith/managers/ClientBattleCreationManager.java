@@ -77,7 +77,8 @@ public class ClientBattleCreationManager {
      * @return         сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
     public ClientCompleteGroupAnswer completeGroup(BattleGroup group, Warrior[] warriors) throws Exception{
-        configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),completeGroupAnswer, 100);
+        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
+		configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),completeGroupAnswer, 100);
         return completeGroupAnswer;
     }
 

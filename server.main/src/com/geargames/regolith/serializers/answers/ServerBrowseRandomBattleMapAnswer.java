@@ -35,7 +35,7 @@ public class ServerBrowseRandomBattleMapAnswer extends SerializedMessage {
 
     @Override
     public short getType() {
-        return Packets.BROWSE_RANDOM_BATTLE_MAP ;
+        return Packets.BROWSE_RANDOM_BATTLE_MAP;
     }
 
     @Override
@@ -46,15 +46,16 @@ public class ServerBrowseRandomBattleMapAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
-        if(success){
+        if (success) {
             SerializeHelper.serializeEntityReference(map, buffer);
             BattleType[] possibilities = map.getPossibleBattleTypes();
-            SimpleSerializer.serialize((byte) possibilities.length, buffer);
-            int length = possibilities.length;
+            byte length = (byte)possibilities.length;
+            SimpleSerializer.serialize(length, buffer);
             for (int i = 0; i < length; i++) {
                 SerializeHelper.serializeEntityReference(possibilities[i], buffer);
             }
             SimpleSerializer.serialize(map.getName(), buffer);
         }
     }
+
 }

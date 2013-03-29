@@ -789,8 +789,8 @@ public class ServerDBTest {
 
     @Test
     public void battleTest() throws Exception {
-        BattleMap map = BattleHelper.createBattleMap(10);
-        map.setName("карта");
+        BattleMap map1 = BattleHelper.createBattleMap(10);
+        map1.setName("КАРТА1");
         ExitZone[] exits = new ExitZone[2];
         ExitZone exit = new ExitZone();
         exit.setX((short) 2);
@@ -805,21 +805,21 @@ public class ServerDBTest {
         exit.setyRadius((byte) 2);
         exits[1] = exit;
 
-        map.setExits(exits);
+        map1.setExits(exits);
 
         Session session = sessionFactory.openSession();
         BaseConfiguration baseConfiguration = (BaseConfiguration) session.createQuery("from BaseConfiguration").list().get(0);
         session.close();
 
         BattleType[] types = new BattleType[1];
-        map.setPossibleBattleTypes(types);
+        map1.setPossibleBattleTypes(types);
         types[0] = baseConfiguration.getBattleTypes().get(0);
 
-        Battle battle = BattleHelper.createBattle("qqq", map, 0);
+        Battle battle = BattleHelper.createBattle("qqq", map1, types[0]);
         BattleHelper.prepareBattle(battle);
 
         Border border = baseConfiguration.getBorders().get(0);
-        map.getCells()[3][3].setElement(border);
+        map1.getCells()[3][3].setElement(border);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -839,12 +839,12 @@ public class ServerDBTest {
         rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
 
         box.getTackles().add(rifle);
-        map.getCells()[1][1].setElement(box);
-        map.setContent(BattleHelper.serializeBattleCells(map.getCells()));
+        map1.getCells()[1][1].setElement(box);
+        map1.setContent(BattleHelper.serializeBattleCells(map1.getCells()));
 
         session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        session.save(map);
+        session.save(map1);
         session.save(battle);
         Serializable battle_id = session.getIdentifier(battle);
         tx.commit();
@@ -863,4 +863,83 @@ public class ServerDBTest {
 
         Assert.assertEquals(newBox.getTackles().get(0).getName(), rifle.getName());
     }
+
+    @Test
+    public void addMap2() throws Exception {
+        BattleMap map2 = BattleHelper.createBattleMap(10);
+        map2.setName("КАРТА2");
+        ExitZone[] exits = new ExitZone[2];
+        ExitZone exit = new ExitZone();
+        exit.setX((short) 2);
+        exit.setY((short) 4);
+        exit.setxRadius((byte) 2);
+        exit.setyRadius((byte) 2);
+        exits[0] = exit;
+        exit = new ExitZone();
+        exit.setX((short) 9);
+        exit.setY((short) 8);
+        exit.setxRadius((byte) 2);
+        exit.setyRadius((byte) 2);
+        exits[1] = exit;
+
+        map2.setExits(exits);
+
+        Session session = sessionFactory.openSession();
+        BaseConfiguration baseConfiguration = (BaseConfiguration) session.createQuery("from BaseConfiguration").list().get(0);
+        session.close();
+
+        BattleType[] types = new BattleType[2];
+        map2.setPossibleBattleTypes(types);
+        types[0] = baseConfiguration.getBattleTypes().get(0); // 1x1
+        types[1] = baseConfiguration.getBattleTypes().get(1); // 1x1x1
+
+//        Battle battle = BattleHelper.createBattle("qqq", map2, types[0]);
+//        BattleHelper.prepareBattle(battle);
+
+        Border border = baseConfiguration.getBorders().get(0);
+        map2.getCells()[3][3].setElement(border);
+
+        Box box = new Box();
+        ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
+        serverMagazineCollection.setMagazines(new LinkedList<Magazine>());
+        box.setMagazines(serverMagazineCollection);
+        ServerStateTackleCollection serverStateTackleCollection = new ServerStateTackleCollection();
+        serverStateTackleCollection.setTackles(new LinkedList<StateTackle>());
+        box.setTackles(serverStateTackleCollection);
+        ServerMedikitCollection serverMedikitCollection = new ServerMedikitCollection();
+        serverMedikitCollection.setMedikits(new LinkedList<Medikit>());
+        box.setMedikits(serverMedikitCollection);
+
+        Weapon rifle = new Weapon();
+        rifle.setLoad((short) 10);
+        Projectile projectile = baseConfiguration.getProjectiles().get(0);
+        rifle.setProjectile(projectile);
+        rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
+
+        box.getTackles().add(rifle);
+        map2.getCells()[1][1].setElement(box);
+        map2.setContent(BattleHelper.serializeBattleCells(map2.getCells()));
+
+        session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(map2);
+//        session.save(battle);
+//        Serializable battle_id = session.getIdentifier(battle);
+        tx.commit();
+        session.close();
+
+//        session = sessionFactory.openSession();
+//        Battle newBattle = (Battle) session.load(Battle.class, battle_id);
+//        newBattle.getMap().getContent();
+//        session.close();
+//
+//        newBattle.getMap().setCells(BattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
+//        Assert.assertTrue(battle.getMap().getCells()[1][1].getElement() instanceof Box);
+//        Assert.assertTrue(battle.getMap().getCells()[3][3].getElement() instanceof Border);
+//
+//        Box newBox = (Box) battle.getMap().getCells()[1][1].getElement();
+//
+//        Assert.assertEquals(newBox.getTackles().get(0).getName(), rifle.getName());
+    }
+
 }

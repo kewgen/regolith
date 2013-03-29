@@ -32,6 +32,7 @@ public class MenuTest {
             e.printStackTrace();
         } finally {
             //service.stopService();
+//            service.stopService();
         }
     }
 

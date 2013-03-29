@@ -13,8 +13,11 @@ import com.geargames.regolith.units.battle.BattleType;
 public class ClientBrowseBattleMapsRequest extends ClientSerializedMessage {
     private BattleType battleType;
 
-    public ClientBrowseBattleMapsRequest(ClientConfiguration configuration, BattleType battleType) {
+    public ClientBrowseBattleMapsRequest(ClientConfiguration configuration) {
         super(configuration);
+    }
+
+    public void setBattleType(BattleType battleType) {
         this.battleType = battleType;
     }
 

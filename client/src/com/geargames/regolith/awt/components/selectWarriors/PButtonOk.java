@@ -15,7 +15,7 @@ import com.geargames.regolith.units.battle.Battle;
 /**
  * User: abarakov
  * Date: 26.03.13
- * Кнопка Ok для ...
+ * Кнопка Ok для подтверждения выбора списка бойцов.
  */
 public class PButtonOk extends PEntitledTouchButton {
 

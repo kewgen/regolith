@@ -68,18 +68,16 @@ public class BattleHelper {
      * Создать битву с именем name.
      *
      * @param name
-     * @param battleMap      карта
-     * @param battleTypeIndex индекс типа битвы(выбирается из карты)
+     * @param battleMap  карта
+     * @param battleType тип битвы (выбирается из карты)
      * @return
      */
-    public static Battle createBattle(String name, BattleMap battleMap, int battleTypeIndex) throws RegolithException {
+    public static Battle createBattle(String name, BattleMap battleMap, BattleType battleType) throws RegolithException {
         int exitsAmount = battleMap.getExits().length;
 
-        BattleType type = battleMap.getPossibleBattleTypes()[battleTypeIndex];
-
-        int allianceAmount = type.getAllianceAmount();
-        int allianceSize = type.getAllianceSize();
-        int groupSize = type.getGroupSize();
+        int allianceAmount = battleType.getAllianceAmount();
+        int allianceSize = battleType.getAllianceSize();
+        int groupSize = battleType.getGroupSize();
 
         if (exitsAmount < allianceAmount) {
             throw new RegolithException();
@@ -92,7 +90,7 @@ public class BattleHelper {
 
         Battle battle = new Battle();
         battle.setName(name);
-        battle.setBattleType(type);
+        battle.setBattleType(battleType);
         battle.setAlliances(new BattleAlliance[allianceAmount]);
         for (int i = 0; i < battle.getAlliances().length; i++) {
             BattleAlliance alliance = new BattleAlliance();

@@ -17,7 +17,6 @@ public class ClientCompleteGroupAnswer extends ClientDeSerializedMessage {
     private Battle battle;
     private BattleGroup battleGroup;
 
-    @Deprecated
     public void setBattle(Battle battle) {
         this.battle = battle;
     }
