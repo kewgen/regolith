@@ -18,6 +18,7 @@ public class DefaultDrawablePPanel extends DrawablePPanel {
         ((DefaultPContentPanel) getElement()).onHide();
     }
 
+    @Override
     public void onShow() {
         ((DefaultPContentPanel) getElement()).onShow();
     }

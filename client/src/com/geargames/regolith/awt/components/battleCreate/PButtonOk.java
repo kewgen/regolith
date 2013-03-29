@@ -1,6 +1,7 @@
 package com.geargames.regolith.awt.components.battleCreate;
 
 import com.geargames.awt.components.PEntitledTouchButton;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
@@ -18,9 +19,13 @@ public class PButtonOk extends PEntitledTouchButton {
     public void onClick() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         PBattleCreatePanel battleCreatePanel = panelManager.getBattleCreatePanel();
-        panelManager.getSelectMapPanel().showPanel(
-                battleCreatePanel.getAllianceAmount(), battleCreatePanel.getAllianceSize(),
-                battleCreatePanel.getGroupSize(), battleCreatePanel.getIsRandomMap(), panelManager.getBattleCreate());
+        try {
+            panelManager.getSelectMapPanel().showPanel(
+                    battleCreatePanel.getAllianceAmount(), battleCreatePanel.getAllianceSize(),
+                    battleCreatePanel.getGroupSize(), battleCreatePanel.getIsRandomMap(), panelManager.getBattleCreate());
+        } catch (Exception e) {
+            Debug.critical("Could not get the map to create a battle", e);
+        }
     }
 
 }

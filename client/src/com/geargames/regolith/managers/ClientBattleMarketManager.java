@@ -37,7 +37,6 @@ public class ClientBattleMarketManager {
         battleMapListAnswer = new ClientBattleMapListAnswer(configuration);
     }
 
-    // todo: использовать battleTypeId вместо battleTypeIndex?
     public ClientListenToBattleAnswer createBattle(BattleMap battleMap, BattleType battleType) throws Exception {
         listenToBattleAnswer.setBattle(null);
         configuration.getNetwork().sendSynchronousMessage(

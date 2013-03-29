@@ -106,7 +106,7 @@ public class PSelectMapPanel extends DefaultPContentPanel {
         mapDescription.setText(String.valueOfC(map.getName()));
     }
 
-    public void showPanel(int allianceAmount, int allianceSize, int groupSize, boolean isRandomMap, DrawablePPanel callerPanel) {
+    public void showPanel(int allianceAmount, int allianceSize, int groupSize, boolean isRandomMap, DrawablePPanel callerPanel) throws Exception {
         Debug.debug("Dialog 'Select map'");
 
         Debug.debug("Find battle type...");
@@ -124,32 +124,20 @@ public class PSelectMapPanel extends DefaultPContentPanel {
         ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
 
         Debug.debug("The client go to the battle market...");
-        ClientDeferredAnswer answer = baseManager.goBattleManager();
-        if (!waitForAnswer(answer)) {
-            Debug.critical("Waiting time answer has expired");
-        }
-        ClientConfirmationAnswer confirm = (ClientConfirmationAnswer) answer.getAnswer();
+        ClientConfirmationAnswer confirm = baseManager.goBattleManager();
         if (!confirm.isConfirm()) {
             Debug.critical("The client could not go to the battle market");
         }
 
         if (isRandomMap) {
             Debug.debug("Browsing a random map...");
-            answer = battleMarketManager.browseRandomBattleMap(battleType);
-            if (!waitForAnswer(answer)) {
-                Debug.critical("Waiting time answer has expired");
-            }
-            ClientBattleMapAnswer battleMapAnswer = (ClientBattleMapAnswer) answer.getAnswer();
+            ClientBattleMapAnswer battleMapAnswer = battleMarketManager.browseRandomBattleMap(battleType);
             selectedMap = battleMapAnswer.getBattleMap();
             currentPanel = callerPanel;
             createBattle();
         } else {
             Debug.debug("Browsing maps...");
-            answer = battleMarketManager.browseBattleMaps(battleType);
-            if (!waitForAnswer(answer)) {
-                Debug.critical("Waiting time answer has expired");
-            }
-            ClientBattleMapListAnswer battleMapListAnswer = (ClientBattleMapListAnswer) answer.getAnswer();
+            ClientBattleMapListAnswer battleMapListAnswer = battleMarketManager.browseBattleMaps(battleType);
             BattleMap[] battleMaps = battleMapListAnswer.getBattleMaps();
             Debug.debug("Received a list of maps (count = " + battleMaps.length + ")");
             if (battleMaps.length == 0) {
@@ -170,7 +158,7 @@ public class PSelectMapPanel extends DefaultPContentPanel {
         }
     }
 
-    public void createBattle() {
+    public void createBattle() throws Exception {
         //todo: может вывести панельку, в которой сообщить пользователю о текущем состоянии обмена сообщениями между клиентов и сервером
         // Ожидаем ответа от игроков/сервера. Пожалуйста подождите.
 
@@ -188,11 +176,7 @@ public class PSelectMapPanel extends DefaultPContentPanel {
 
         Debug.debug("Creating a battle (map id = " + selectedMap.getId() + ")...");
 
-        ClientDeferredAnswer answer = battleMarketManager.createBattle(selectedMap, battleType);
-        if (!waitForAnswer(answer)) {
-            Debug.critical("Waiting time answer has expired");
-        }
-        ClientListenToBattleAnswer listenToBattleAnswer = (ClientListenToBattleAnswer) answer.getAnswer();
+        ClientListenToBattleAnswer listenToBattleAnswer = battleMarketManager.createBattle(selectedMap, battleType);
         Battle battle = listenToBattleAnswer.getBattle();
         Debug.debug("The battle was created (battle id = " + battle.getId() + ")");
 //        ObjectManager.getInstance().setClientBattle(battle);
