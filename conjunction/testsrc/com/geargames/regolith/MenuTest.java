@@ -31,7 +31,7 @@ public class MenuTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            service.stopService();
+            //service.stopService();
         }
     }
 

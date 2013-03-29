@@ -1,6 +1,9 @@
-package com.geargames.regolith;
+package com.geargames.regolith.helpers;
 
 import com.geargames.common.network.Network;
+import com.geargames.regolith.BaseConfiguration;
+import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
 import com.geargames.regolith.units.AmmunitionBag;
 import com.geargames.regolith.units.Bag;

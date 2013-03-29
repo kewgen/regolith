@@ -2,26 +2,18 @@ package com.geargames.regolith.awt.components.battles;
 
 import com.geargames.awt.components.PVerticalScrollView;
 import com.geargames.common.logging.Debug;
-import com.geargames.common.network.DataMessage;
-import com.geargames.common.network.DataMessageListener;
-import com.geargames.common.network.MessageDispatcher;
-import com.geargames.common.network.Network;
+import com.geargames.common.network.*;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
-import com.geargames.common.timers.TimerListener;
-import com.geargames.common.timers.TimerManager;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
-import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.serializers.answers.ClientBrowseBattlesAnswer;
-import com.geargames.regolith.serializers.answers.ClientEvictAccountFromAllianceAnswer;
-import com.geargames.regolith.serializers.answers.ClientJoinToBattleAllianceAnswer;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
-import com.geargames.regolith.units.battle.Battle;
-import com.geargames.regolith.units.dictionaries.BattleCollection;
+import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 
 import java.util.Vector;
 
@@ -30,19 +22,14 @@ import java.util.Vector;
  * Список текущих боёв.
  */
 public class PBattlesList extends PVerticalScrollView implements DataMessageListener {
-    private ClientBrowseBattlesAnswer browseBattlesAnswer;
     private PBattleListItemVector items;
-    private MicroByteBuffer buffer;
     private short[] types;
 
     public PBattlesList(PObject listPrototype) {
         super(listPrototype);
         IndexObject index = (IndexObject) listPrototype.getIndexBySlot(0);
         items = new PBattleListItemVector((PObject) index.getPrototype(), getShownItemsAmount());
-        browseBattlesAnswer = new ClientBrowseBattlesAnswer();
-        types = new short[]{Packets.BROWSE_CREATED_BATTLES, Packets.LISTEN_TO_BROWSED_CREATED_BATTLES, Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES};
-        buffer = new MicroByteBuffer();
-        browseBattlesAnswer.setBuffer(buffer);
+        types = new short[]{Packets.BROWSE_CREATED_BATTLES};
     }
 
     public int getInterval() {
@@ -54,34 +41,22 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
     }
 
     @Override
-    public void onReceive(DataMessage dataMessage) {
+    public void onReceive(ClientDeSerializedMessage message, short type) {
         try {
-            switch (dataMessage.getMessageType()) {
+            switch (type) {
                 case Packets.BROWSE_CREATED_BATTLES:
-                    buffer.initiate(dataMessage.getData(), dataMessage.getLength());
-                    browseBattlesAnswer.deSerialize();
-                    ArrayList answers = browseBattlesAnswer.getAnswers();
-                    int size = answers.size();
-                    BattleCollection battles = ObjectManager.getInstance().getBattleCollection();
-                    //battles.
-                    for (int i = 0; i < size; i++ ){
-
-
-
-                        ((ClientListenToBattleAnswer)answers.get(i)).getBattle();
-
+                    ClientBattleCollection newBattles = ((ClientBrowseBattlesAnswer) message).getBattles();
+                    int size = newBattles.size();
+                    ClientBattleCollection oldBattles = ObjectManager.getInstance().getBattleCollection();
+                    for (int i = 0; i < size; i++) {
+                        oldBattles.add(newBattles.get(i));
                     }
                     break;
-                case Packets.LISTEN_TO_BROWSED_CREATED_BATTLES:
-                    break;
-                case Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES:
-                    break;
                 default:
-                    Debug.error("There is a message of type " + dataMessage.getMessageType());
-
+                    Debug.error("There is a message of type " + type);
             }
         } catch (Exception e) {
-            Debug.error("Could not deserialize a message of type " + dataMessage.getMessageType(), e);
+            Debug.error("Could not deserialize a message of type " + type, e);
         }
     }
 

@@ -9,6 +9,8 @@ import com.geargames.common.packer.PObject;
  * Панель на которой отображены текущие битвы + кнопка [создать битву].
  */
 public class PBattlesPanel extends PContentPanel {
+    private PBattlesList battleList;
+    private PBattleCreateButton createButton;
 
     public PBattlesPanel(PObject prototype) {
         super(prototype);
@@ -17,12 +19,21 @@ public class PBattlesPanel extends PContentPanel {
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
             case 0:
-                addActiveChild(new PBattlesList((PObject)index.getPrototype()), index);
+                battleList = new PBattlesList((PObject)index.getPrototype());
+                addActiveChild(battleList, index);
                 break;
             case 1:
-                addActiveChild(new PBattleCreateButton((PObject)index.getPrototype()), index);
+                createButton = new PBattleCreateButton((PObject)index.getPrototype());
+                addActiveChild(createButton, index);
                 break;
         }
     }
 
+    public PBattlesList getBattleList() {
+        return battleList;
+    }
+
+    public PBattleCreateButton getCreateButton() {
+        return createButton;
+    }
 }

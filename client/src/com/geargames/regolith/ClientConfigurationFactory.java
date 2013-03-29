@@ -6,6 +6,7 @@ import com.geargames.platform.network.ConsoleNetwork;
 import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.managers.*;
 import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.regolith.network.RegolithMessageDispatcher;
 
 /**
  * @author Mikhail_Kutuzov
@@ -39,7 +40,7 @@ public class ClientConfigurationFactory {
         configuration.setPort(1237);
         configuration.setServer("localhost");
 
-        configuration.setMessageDispatcher(new MessageDispatcher(configuration.getNetwork(), Packets.BATTLE_SERVICE_NEW_CLIENT_LOGIN));
+        configuration.setMessageDispatcher(new RegolithMessageDispatcher(configuration.getNetwork(), Packets.BATTLE_SERVICE_NEW_CLIENT_LOGIN));
         configuration.setBattleCreationManager(new ClientBattleCreationManager(configuration));
         configuration.setCommonManager(new ClientCommonManager(configuration));
         configuration.setBattleMarketManager(new ClientBattleMarketManager(configuration));

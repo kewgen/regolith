@@ -109,21 +109,19 @@ public class MoveTackleTest {
         BatchMessageManager messanger = BatchMessageManager.getInstance();
 
         messanger.deferredSend(move, confirm);
-        messanger.commitMessages();
         try {
-            Assert.assertTrue("Waiting time answer has expired", messanger.retrieve(1000));
+            ArrayList answers = messanger.commitMessages().getAnswers();
+
+            for (int i = 0; i < answers.size(); i++) {
+                confirm = (ClientConfirmationAnswer) answers.get(i);
+                Assert.assertTrue(confirm.isConfirm());
+            }
+
+            System.out.println("Tackle was moved. The test was completed successfully.");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        ArrayList answers = messanger.getAnswer().getAnswers();
-
-        for (int i = 0; i < answers.size(); i++) {
-            confirm = (ClientConfirmationAnswer) answers.get(i);
-            Assert.assertTrue(confirm.isConfirm());
-        }
-
-        System.out.println("Tackle was moved. The test was completed successfully.");
     }
 
     @AfterClass

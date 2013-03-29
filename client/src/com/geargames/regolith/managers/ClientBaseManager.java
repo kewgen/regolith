@@ -1,9 +1,7 @@
 package com.geargames.regolith.managers;
 
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.requests.ChangeBaseLocation;
 
@@ -14,33 +12,28 @@ import com.geargames.regolith.serializers.requests.ChangeBaseLocation;
 public class ClientBaseManager {
     private ClientConfiguration configuration;
     private ClientConfirmationAnswer confirmation;
-    private ClientDeferredAnswer answer;
 
     public ClientBaseManager(ClientConfiguration clientConfiguration){
         configuration = clientConfiguration;
         confirmation = new ClientConfirmationAnswer();
-        answer = new RegolithDeferredAnswer();
     }
 
-    public ClientDeferredAnswer goWarriorMarket() {
-        answer.setDeSerializedMessage(confirmation);
+    public ClientConfirmationAnswer goWarriorMarket() throws Exception {
         configuration.getNetwork().sendSynchronousMessage(
-                new ChangeBaseLocation(configuration, Packets.GO_TO_WARRIOR_MARKET), answer);
-        return answer;
+                new ChangeBaseLocation(configuration, Packets.GO_TO_WARRIOR_MARKET), confirmation, 100);
+        return confirmation;
     }
 
-    public ClientDeferredAnswer goTackleMarket() {
-        answer.setDeSerializedMessage(confirmation);
-        configuration.getNetwork().sendSynchronousMessage(
-                new ChangeBaseLocation(configuration, Packets.GO_TO_TACKLE_MARKET), answer);
-        return answer;
+    public ClientConfirmationAnswer goTackleMarket() throws Exception {
+       configuration.getNetwork().sendSynchronousMessage(
+                new ChangeBaseLocation(configuration, Packets.GO_TO_TACKLE_MARKET), confirmation, 100);
+       return confirmation;
     }
 
-    public ClientDeferredAnswer goBattleManager() {
-        answer.setDeSerializedMessage(confirmation);
+    public ClientConfirmationAnswer goBattleManager() throws Exception{
         configuration.getNetwork().sendSynchronousMessage(
-                new ChangeBaseLocation(configuration, Packets.GO_TO_BATTLE_MARKET), answer);
-        return answer;
+                new ChangeBaseLocation(configuration, Packets.GO_TO_BATTLE_MARKET), confirmation, 100);
+        return confirmation;
     }
 
 }

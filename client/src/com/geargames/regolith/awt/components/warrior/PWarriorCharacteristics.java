@@ -5,7 +5,7 @@ import com.geargames.common.Render;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.ClientHelper;
+import com.geargames.regolith.helpers.ClientHelper;
 import com.geargames.regolith.application.Application;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.menues.HorizontalFaces;

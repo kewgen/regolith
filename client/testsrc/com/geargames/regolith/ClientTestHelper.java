@@ -1,6 +1,6 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.units.ClientBattleHelper;
+import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleType;

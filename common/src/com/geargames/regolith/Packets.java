@@ -61,16 +61,18 @@ public interface Packets {
     short CANCEL_BATTLE = 12;
     short START_BATTLE = 13;
 
-    short LISTEN_TO_BATTLE = 14;
-    short DO_NOT_LISTEN_TO_BATTLE = 15;
+    short LISTEN_TO_CREATED_BATTLE = 14;
+    short LISTEN_TO_UPDATED_BATTLE = 15;
+    short LISTEN_TO_DELETED_BATTLE = 16;
+    short DO_NOT_LISTEN_TO_CREATED_BATTLE = 17;
 
-    short JOIN_TO_BATTLE_ALLIANCE = 16;
-    short EVICT_ACCOUNT_FROM_ALLIANCE = 17;
+    short JOIN_TO_BATTLE_ALLIANCE = 18;
+    short EVICT_ACCOUNT_FROM_ALLIANCE = 19;
 
-    short GROUP_COMPLETE = 18;
-    short GROUP_DISBAND = 19;
+    short GROUP_COMPLETE = 20;
+    short GROUP_DISBAND = 21;
 
-    short JOIN_BASE_WARRIORS_TO_ACCOUNT = 20;
+    short JOIN_BASE_WARRIORS_TO_ACCOUNT = 22;
 
 
 

@@ -32,7 +32,7 @@ public class ClientAtBattleMarket extends MainState {
             case Packets.CREATE_BATTLE:
                 request = new ServerCreateBattleRequest(serverConfiguration, battleMarketManager, schedulerService);
                 break;
-            case Packets.LISTEN_TO_BATTLE:
+            case Packets.LISTEN_TO_CREATED_BATTLE:
                 request = new ServerListenToBattleRequest(battleManagerContext, battleMarketManager, schedulerService);
                 break;
             case Packets.GO_TO_BASE:

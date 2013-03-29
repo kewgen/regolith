@@ -30,12 +30,14 @@ public class ServerStartBattleRequest extends ServerRequest {
     private BattleManagerContext battleManagerContext;
     private ServerTrainingBattleCreationManager battleCreationManager;
     private ServerContext serverContext;
+    private BrowseBattlesSchedulerService schedulerService;
 
     public ServerStartBattleRequest() {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         this.battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         this.battleCreationManager = configuration.getBattleCreationManager();
         this.serverContext = configuration.getServerContext();
+        this.schedulerService = configuration.getBrowseBattlesSchedulerService();
     }
 
     @Override
@@ -84,6 +86,7 @@ public class ServerStartBattleRequest extends ServerRequest {
                 battleManagerContext.getBattleListeners().remove(battle);
                 battleManagerContext.getCompleteGroups().remove(battle);
 
+                schedulerService.deleteBattle(battle);
             } else {
                 recipients = new ArrayList<SocketChannel>(1);
                 recipients.add(serverContext.getChannel(client.getAccount()));

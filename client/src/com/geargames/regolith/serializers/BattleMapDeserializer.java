@@ -6,7 +6,7 @@ import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.ClientBattleHelper;
+import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.BattleCell;

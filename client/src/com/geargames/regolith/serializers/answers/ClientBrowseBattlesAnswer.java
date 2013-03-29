@@ -2,6 +2,7 @@ package com.geargames.regolith.serializers.answers;
 
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.util.ArrayList;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.BatchAnswer;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 
@@ -21,8 +22,22 @@ public class ClientBrowseBattlesAnswer extends BatchAnswer {
     }
 
     protected ClientDeSerializedMessage getTypedAnswer(int i, short type) {
-        ClientListenToBattleAnswer answer = new ClientListenToBattleAnswer();
-        answers.add(answer);
+        ClientDeSerializedMessage answer;
+        switch (type) {
+            case Packets.LISTEN_TO_CREATED_BATTLE:
+                answer = new ClientListenToBattleAnswer();
+                answers.add(answer);
+                break;
+            case Packets.LISTEN_TO_UPDATED_BATTLE:
+                answer = new ClientListenToUpdatedBattles();
+                break;
+            case Packets.LISTEN_TO_DELETED_BATTLE:
+                answer = new ClientListenToDeletedBattle();
+                break;
+            default:
+                //todo потенциальный NPE
+                answer = null;
+        }
         return answer;
     }
 
@@ -36,7 +51,7 @@ public class ClientBrowseBattlesAnswer extends BatchAnswer {
     public ClientBattleCollection getBattles() {
         ClientBattleCollection battles = new ClientBattleCollection();
         battles.setBattles(new Vector(answers.size()));
-        for (int i = 0 ; i < answers.size(); i++) {
+        for (int i = 0; i < answers.size(); i++) {
             battles.add(((ClientListenToBattleAnswer) answers.get(i)).getBattle());
         }
         return battles;

@@ -24,13 +24,15 @@ public class ServerCancelBattleRequest extends ServerRequest {
     protected BattleManagerContext battleManagerContext;
     protected ServerContext serverContext;
     protected Battle battle;
+    private  BrowseBattlesSchedulerService schedulerService;
 
     public ServerCancelBattleRequest(Account account) {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         this.battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         this.serverContext = configuration.getServerContext();
-        this.battle = MainServerConfigurationFactory.getConfiguration().getServerContext().getBattleManagerContext().getCreatedBattles().get(account);
-        this.battleCreationManager = MainServerConfigurationFactory.getConfiguration().getBattleCreationManager();
+        this.battle = configuration.getServerContext().getBattleManagerContext().getCreatedBattles().get(account);
+        this.battleCreationManager = configuration.getBattleCreationManager();
+        this.schedulerService = configuration.getBrowseBattlesSchedulerService();
     }
 
     @Override
@@ -52,6 +54,7 @@ public class ServerCancelBattleRequest extends ServerRequest {
             throw new RegolithException();
         }
 
+        schedulerService.deleteBattle(battle);
         messages.add(new MainMessageToClient(recipients, message.serialize()));
         return messages;
     }

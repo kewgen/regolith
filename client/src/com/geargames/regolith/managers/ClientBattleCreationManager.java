@@ -1,8 +1,7 @@
 package com.geargames.regolith.managers;
 
-import com.geargames.common.network.ClientDeferredAnswer;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.network.RegolithDeferredAnswer;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.Account;
@@ -23,8 +22,6 @@ public class ClientBattleCreationManager {
     private ClientCompleteGroupAnswer completeGroupAnswer;
     private ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer;
 
-    private ClientDeferredAnswer answer;
-
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
         startBattleAnswer = new ClientStartBattleAnswer(configuration.getAccount(), configuration);
@@ -32,7 +29,6 @@ public class ClientBattleCreationManager {
         joinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
         completeGroupAnswer = new ClientCompleteGroupAnswer();
         evictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
-        answer = new RegolithDeferredAnswer();
     }
 
     /**
@@ -41,41 +37,37 @@ public class ClientBattleCreationManager {
      * @param alliance
      * @param account
      */
-    public ClientDeferredAnswer evictAccount(BattleAlliance alliance, Account account) {
-        answer.setDeSerializedMessage(evictAccountFromAllianceAnswer);
+    public ClientDeSerializedMessage evictAccount(BattleAlliance alliance, Account account) throws Exception {
         evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
         configuration.getNetwork().sendSynchronousMessage(
-                new EvictAccountRequest(configuration, account, alliance), answer);
-        return answer;
+                new EvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer, 100);
+        return evictAccountFromAllianceAnswer;
     }
 
     /**
      * Послать сообщение-запрос о начале битвы.
      * @param author ссылка на аккаунт пользователя - инициатора начала битвы.
      */
-    public ClientDeferredAnswer startBattle(Account author) {
-        answer.setDeSerializedMessage(startBattleAnswer);
-        configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), answer);
-        return answer;
+    public ClientStartBattleAnswer startBattle(Account author) throws Exception{
+        configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), startBattleAnswer, 100);
+        return startBattleAnswer;
     }
 
     /**
      * Послать сообщение-запрос об отмене пользователем битвы.
      */
-    public ClientDeferredAnswer cancelBattle() {
-        answer.setDeSerializedMessage(cancelBattleAnswer);
-        configuration.getNetwork().sendSynchronousMessage(new ClientCancelBattleRequest(configuration), answer);
-        return answer;
+    public ClientCancelBattleAnswer cancelBattle() throws Exception {
+        configuration.getNetwork().sendSynchronousMessage(new ClientCancelBattleRequest(configuration), cancelBattleAnswer, 100);
+        return cancelBattleAnswer;
     }
 
     /**
      * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
      */
-    public ClientDeferredAnswer joinToAlliance(BattleAlliance alliance) {
-        answer.setDeSerializedMessage(joinToBattleAllianceAnswer);
+    public ClientJoinToBattleAllianceAnswer joinToAlliance(BattleAlliance alliance) throws Exception {
         joinToBattleAllianceAnswer.setBattle(alliance.getBattle());
-        configuration.getNetwork().sendSynchronousMessage(new ClientJoinToBattleAllianceRequest(configuration, alliance), answer);
-        return answer;
+        configuration.getNetwork().sendSynchronousMessage(new ClientJoinToBattleAllianceRequest(configuration, alliance), joinToBattleAllianceAnswer, 100);
+        return joinToBattleAllianceAnswer;
     }
 
     /**
@@ -84,10 +76,9 @@ public class ClientBattleCreationManager {
      * @param warriors массив бойцов, которые должны войти в боевую группу.
      * @return         сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
-    public ClientDeferredAnswer completeGroup(BattleGroup group, Warrior[] warriors) {
-        answer.setDeSerializedMessage(completeGroupAnswer);
-        configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),answer);
-        return answer;
+    public ClientCompleteGroupAnswer completeGroup(BattleGroup group, Warrior[] warriors) throws Exception{
+        configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),completeGroupAnswer, 100);
+        return completeGroupAnswer;
     }
 
     /**
@@ -95,11 +86,10 @@ public class ClientBattleCreationManager {
      * @param group распускаемая боевая группа
      * @return      сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
-    public ClientDeferredAnswer disbandGroup(BattleGroup group) {
-        answer.setDeSerializedMessage(completeGroupAnswer);
+    public ClientCompleteGroupAnswer disbandGroup(BattleGroup group) throws Exception {
         completeGroupAnswer.setBattle(group.getAlliance().getBattle());
-        configuration.getNetwork().sendSynchronousMessage(new BattleGroupDisbandRequest(configuration, group), answer);
-        return answer;
+        configuration.getNetwork().sendSynchronousMessage(new BattleGroupDisbandRequest(configuration, group), completeGroupAnswer, 100);
+        return completeGroupAnswer;
     }
 
     public void doNotListenToBattle(Battle battle) {

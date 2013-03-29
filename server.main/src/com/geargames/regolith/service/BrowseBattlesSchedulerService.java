@@ -2,7 +2,7 @@ package com.geargames.regolith.service;
 
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.managers.ServerBattleMarketManager;
-import com.geargames.regolith.serializers.answers.ServerBrowseCreatedBattlesAnswer;
+import com.geargames.regolith.serializers.answers.ServerBrowseBattlesAnswer;
 import com.geargames.regolith.units.battle.Battle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,9 @@ public class BrowseBattlesSchedulerService {
     private ServerBattleMarketManager battleMarketManager;
     private MicroByteBuffer buffer;
 
-    private Set<Battle> battles;
+    private Set<Battle> newBattles;
+    private Set<Battle> deletedBattles;
+    private Set<Battle> updatedBattles;
 
     private Set<SocketChannel> newListeners;
     private Set<SocketChannel> oldListeners;
@@ -40,7 +42,33 @@ public class BrowseBattlesSchedulerService {
 
         @Override
         public void run() {
-            battles.add(battle);
+            newBattles.add(battle);
+        }
+    }
+
+    private class DeleteBattle implements Runnable {
+        private Battle battle;
+
+        private DeleteBattle(Battle battle) {
+            this.battle = battle;
+        }
+
+        @Override
+        public void run() {
+            deletedBattles.add(battle);
+        }
+    }
+
+    private class UpdateBattle implements Runnable {
+        private Battle battle;
+
+        private UpdateBattle(Battle battle) {
+            this.battle = battle;
+        }
+
+        @Override
+        public void run() {
+            updatedBattles.add(battle);
         }
     }
 
@@ -105,6 +133,14 @@ public class BrowseBattlesSchedulerService {
         executor.execute(new AddBattle(battle));
     }
 
+    public void deleteBattle(Battle battle){
+        executor.execute(new DeleteBattle(battle));
+    }
+
+    public void updateBattle(Battle battle){
+        executor.execute(new UpdateBattle(battle));
+    }
+
     public BrowseBattlesSchedulerService() {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         writer = configuration.getWriter();
@@ -112,7 +148,7 @@ public class BrowseBattlesSchedulerService {
         buffer = new MicroByteBuffer(new byte[configuration.getMessageBufferSize()]);
         oldListeners = new HashSet<SocketChannel>();
         newListeners = new HashSet<SocketChannel>();
-        battles = new HashSet<Battle>();
+        newBattles = new HashSet<Battle>();
     }
 
     public void start() {
@@ -122,21 +158,20 @@ public class BrowseBattlesSchedulerService {
             @Override
             public void run() {
                     if (newListeners.size() != 0) {
-                        Battle[] battles = battleMarketManager.battlesJoinTo();
+                        Collection<Battle> battlesList = battleMarketManager.battlesJoinTo();
                         writer.addMessageToClient(new MainMessageToClient(new LinkedList<SocketChannel>(newListeners),
-                                new ServerBrowseCreatedBattlesAnswer(buffer, battles).serialize()));
-                        logger.debug("an amount of new listeners =" + newListeners.size() + " an amount of battles =" + battles.length);
+                                ServerBrowseBattlesAnswer.answerNew(buffer, battlesList).serialize()));
+                        logger.debug("an amount of new listeners =" + newListeners.size() + " an amount of battles =" + battlesList.size());
                     }
 
                     if (oldListeners.size() != 0) {
-                        Battle[] battleArray = battles.toArray(new Battle[]{});
                         writer.addMessageToClient(new MainMessageToClient(oldListeners,
-                                new ServerBrowseCreatedBattlesAnswer(buffer, battleArray).serialize()));
-                        logger.debug("an amount of old listeners =" + oldListeners.size() + " an amount of battles =" + battleArray.length);
+                                ServerBrowseBattlesAnswer.answerOld(buffer, newBattles, updatedBattles, deletedBattles).serialize()));
+                        logger.debug("an amount of old listeners =" + oldListeners.size() + " an amount of new battles =" + newBattles.size());
                     }
                     oldListeners.addAll(newListeners);
                     newListeners.clear();
-                    battles.clear();
+                    newBattles.clear();
             }
         }, MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
                 MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),

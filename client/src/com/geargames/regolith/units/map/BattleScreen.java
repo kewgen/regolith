@@ -9,7 +9,7 @@ import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.Event;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
-import com.geargames.regolith.units.ClientBattleHelper;
+import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.map.Pair;
 import com.geargames.regolith.units.Element;

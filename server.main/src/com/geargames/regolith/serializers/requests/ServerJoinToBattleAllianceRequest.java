@@ -54,7 +54,7 @@ public class ServerJoinToBattleAllianceRequest extends ServerRequest {
                 BattleGroup group = battleCreationManager.joinToAlliance(alliance, client.getAccount());
                 if (group != null) {
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
-                    browseBattlesSchedulerService.addBattle(battle);
+                    browseBattlesSchedulerService.updateBattle(battle);
                     message = ServerJoinToBattleAllianceAnswer.AnswerSuccess(to, group, client.getAccount());
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);

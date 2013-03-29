@@ -36,9 +36,9 @@ public class ServerListenToBattleRequest extends MainOneToClientRequest {
             battleMarketManager.listenToBattle(battle, client.getAccount());
             browseBattlesSchedulerService.removeListener(client);
             client.setState(new ClientAtBattleCreation());
-            return ServerListenToBattleAnswer.AnswerSuccess(writeBuffer, battle, Packets.LISTEN_TO_BATTLE);
+            return ServerListenToBattleAnswer.AnswerSuccess(writeBuffer, battle, Packets.LISTEN_TO_CREATED_BATTLE);
         } else {
-            return ServerListenToBattleAnswer.AnswerFailure(writeBuffer, Packets.LISTEN_TO_BATTLE);
+            return ServerListenToBattleAnswer.AnswerFailure(writeBuffer, Packets.LISTEN_TO_CREATED_BATTLE);
         }
     }
 

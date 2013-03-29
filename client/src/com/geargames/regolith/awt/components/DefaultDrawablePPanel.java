@@ -16,7 +16,6 @@ public class DefaultDrawablePPanel extends DrawablePPanel {
     public void onHide() {
     }
 
-    @Override
     public void onShow() {
     }
 }
