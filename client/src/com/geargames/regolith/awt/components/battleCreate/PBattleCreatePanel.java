@@ -53,6 +53,14 @@ public class PBattleCreatePanel extends DefaultPContentPanel {
 
             // ----- Количество команд на битву ------------------------------------------------------------------------
 
+            case 15: {
+                // Заголовок группы кнопок
+                PSimpleLabel label = new PSimpleLabel(index);
+                label.setText(LocalizedStrings.BATTLE_CREATE_GROUP_SIDES);
+                label.setFont(PFontCollection.getFontLabel());
+                addPassiveChild(label, index);
+                break;
+            }
             case 1:
                 // Кнопка выбора количества команд - 1 команда
                 if (groupSide == null) {
@@ -94,6 +102,14 @@ public class PBattleCreatePanel extends DefaultPContentPanel {
 
             // ----- Количество игроков на команду ---------------------------------------------------------------------
 
+            case 16: {
+                // Заголовок группы кнопок
+                PSimpleLabel label = new PSimpleLabel(index);
+                label.setText(LocalizedStrings.BATTLE_CREATE_GROUP_PLAYERS);
+                label.setFont(PFontCollection.getFontLabel());
+                addPassiveChild(label, index);
+                break;
+            }
             case 5:
                 // Кнопка выбора количества игроков в каждой команде - 1 игрок
                 if (groupPlayer == null) {
@@ -134,6 +150,14 @@ public class PBattleCreatePanel extends DefaultPContentPanel {
 
             // ----- Количество бойцов на игрока -----------------------------------------------------------------------
 
+            case 17: {
+                // Заголовок группы кнопок
+                PSimpleLabel label = new PSimpleLabel(index);
+                label.setText(LocalizedStrings.BATTLE_CREATE_GROUP_WARRIORS);
+                label.setFont(PFontCollection.getFontLabel());
+                addPassiveChild(label, index);
+                break;
+            }
             case 9:
                 // Кнопка выбора количества бойцов на каждого игрока - 1 боец
                 if (groupFighter == null) {

@@ -20,6 +20,9 @@ public class LocalizedStrings {
 
     public static final String BATTLE_CREATE_PANEL_TITLE           = String.valueOfC("СОЗДАТЬ БИТВУ");
     public static final String BATTLE_CREATE_BUTTON_USE_RANDOM_MAP = String.valueOfC("СЛУЧАЙНАЯ КАРТА");
+    public static final String BATTLE_CREATE_GROUP_SIDES           = String.valueOfC("КОЛИЧЕСТВО КОМАНД НА БИТВУ");
+    public static final String BATTLE_CREATE_GROUP_PLAYERS         = String.valueOfC("КОЛИЧЕСТВО ИГРОКОВ НА КОМАНДУ");
+    public static final String BATTLE_CREATE_GROUP_WARRIORS        = String.valueOfC("КОЛИЧЕСТВО БОЙЦОВ НА ИГРОКА");
 
     // ----- Browse maps -----------------------------------------------------------------------------------------------
 
