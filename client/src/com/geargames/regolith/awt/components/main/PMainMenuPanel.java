@@ -1,15 +1,15 @@
 package com.geargames.regolith.awt.components.main;
 
-import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PElement;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.awt.components.DefaultPContentPanel;
 
 /**
  * User: mikhail v. kutuzov
  * Начальная панель.
  */
-public class PMainMenuPanel extends PContentPanel {
+public class PMainMenuPanel extends DefaultPContentPanel {
 
     public PMainMenuPanel(PObject object) {
         super(object);
@@ -40,4 +40,15 @@ public class PMainMenuPanel extends PContentPanel {
             addActiveChild(element, index);
         }
     }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+
+    }
+
 }

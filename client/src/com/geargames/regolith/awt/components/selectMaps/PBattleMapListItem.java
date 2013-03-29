@@ -13,21 +13,21 @@ import com.geargames.regolith.units.map.BattleMap;
  * Date: 28.03.13
  * Элемент-кнопка списка игровых карт.
  */
-public class BattleMapListItem extends PRadioButton { // PPrototypeElement
-    private PFrame battleMapPreview;
+public class PBattleMapListItem extends PRadioButton { // PPrototypeElement
+//    private PFrame battleMapPreview;
     private BattleMap battleMap;
 
-    public BattleMapListItem(PObject prototype) {
+    public PBattleMapListItem(PObject prototype) {
         super(prototype);
     }
 
-    public PFrame getMapPreview() {
-        return battleMapPreview;
-    }
-
-    public void setMapPreview(PFrame mapPreview) {
-        this.battleMapPreview = mapPreview;
-    }
+//    public PFrame getMapPreview() {
+//        return battleMapPreview;
+//    }
+//
+//    public void setMapPreview(PFrame mapPreview) {
+//        this.battleMapPreview = mapPreview;
+//    }
 
     public BattleMap getMap() {
         return battleMap;
@@ -51,6 +51,7 @@ public class BattleMapListItem extends PRadioButton { // PPrototypeElement
 
     public boolean onEvent(int code, int param, int xTouch, int yTouch) {
         if (code == Event.EVENT_SYNTHETIC_CLICK) {
+            setChecked(true);
             onClick();
         }
         return false;

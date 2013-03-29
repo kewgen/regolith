@@ -5,6 +5,7 @@ import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.PFontCollection;
+import com.geargames.regolith.awt.components.DefaultPContentPanel;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.common.String;
 
@@ -13,7 +14,7 @@ import com.geargames.common.String;
  * Date: 04.03.13
  * Панель создания битвы.
  */
-public class PBattleCreatePanel extends PContentPanel {
+public class PBattleCreatePanel extends DefaultPContentPanel {
 
     private PRadioGroup groupSide;
     private PRadioGroup groupPlayer;
@@ -188,7 +189,7 @@ public class PBattleCreatePanel extends PContentPanel {
                 buttonOk.setFont(PFontCollection.getFontButtonCaption());
                 addActiveChild(buttonOk, index);
                 break;
-            case 19:
+            case 109:
                 // Заголовок окна
                 PSimpleLabel labelTitle = new PSimpleLabel(index);
                 labelTitle.setText(LocalizedStrings.BATTLE_CREATE_PANEL_TITLE);
@@ -280,6 +281,16 @@ public class PBattleCreatePanel extends PContentPanel {
 
     public boolean getIsRandomMap() {
         return cbRandomMap.getChecked();
+    }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+
     }
 
 }

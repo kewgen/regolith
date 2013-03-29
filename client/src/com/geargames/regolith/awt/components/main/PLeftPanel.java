@@ -1,14 +1,14 @@
 package com.geargames.regolith.awt.components.main;
 
-import com.geargames.awt.components.PContentPanel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.awt.components.DefaultPContentPanel;
 
 /**
  * User: mikhail v. kutuzov
  * Панелька висит в левом верхнем углу, на ней примостилась кнопка перехода "назад".
  */
-public class PLeftPanel extends PContentPanel {
+public class PLeftPanel extends DefaultPContentPanel {
     private PBackButton button;
 
     public PLeftPanel(PObject prototype) {
@@ -23,4 +23,15 @@ public class PLeftPanel extends PContentPanel {
                 break;
         }
     }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+
+    }
+
 }

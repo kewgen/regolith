@@ -1,18 +1,18 @@
 package com.geargames.regolith.awt.components.main;
 
-import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PLabel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.Region;
+import com.geargames.regolith.awt.components.DefaultPContentPanel;
 
 /**
  * User: mikhail v. kutuzov
  * Date: 11.01.13
  * Time: 11:39
  */
-public class PMoneyRegolithPanel extends PContentPanel {
+public class PMoneyRegolithPanel extends DefaultPContentPanel {
     private PLabel money;
     private PLabel regolith;
 
@@ -48,4 +48,15 @@ public class PMoneyRegolithPanel extends PContentPanel {
                 break;
         }
     }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+
+    }
+
 }

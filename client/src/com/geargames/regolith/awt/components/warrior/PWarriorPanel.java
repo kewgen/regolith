@@ -1,10 +1,10 @@
 package com.geargames.regolith.awt.components.warrior;
 
-import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PRadioGroup;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.awt.components.DefaultPContentPanel;
 import com.geargames.regolith.awt.components.menues.BagVerticalTackles;
 import com.geargames.regolith.awt.components.menues.StoreHouseVerticalTackles;
 import com.geargames.regolith.awt.components.menues.WarriorVerticalTackles;
@@ -14,7 +14,7 @@ import com.geargames.regolith.units.Account;
  * User: mikhail v. kutuzov
  * Панель бойца. Отображение основных характеристик, содержимого сумки и склада пользователя.
  */
-public class PWarriorPanel extends PContentPanel {
+public class PWarriorPanel extends DefaultPContentPanel {
     private PWarriorCharacteristics characteristics;
 
     private BagVerticalTackles bagTacklesElement;
@@ -87,4 +87,15 @@ public class PWarriorPanel extends PContentPanel {
     public StoreHouseVerticalTackles getStoreTacklesElement() {
         return storeTacklesElement;
     }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+
+    }
+
 }

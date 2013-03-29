@@ -1,11 +1,11 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
-import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PValueComponent;
 import com.geargames.common.Event;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.awt.components.DefaultPContentPanel;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.units.battle.Warrior;
@@ -15,7 +15,7 @@ import com.geargames.regolith.units.tackle.AbstractTackle;
  * User: mikhail.kutuzov
  * Базовая панель для перемещения вещей.
  */
-public abstract class PExchangePanel extends PContentPanel {
+public abstract class PExchangePanel extends DefaultPContentPanel {
     private int number;
     private boolean initiated;
 
@@ -106,6 +106,16 @@ public abstract class PExchangePanel extends PContentPanel {
         this.tackle = tackle;
         this.amount = amount;
         initiated = false;
+    }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+
     }
 
 }

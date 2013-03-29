@@ -12,6 +12,7 @@ import com.geargames.common.String;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.PFontCollection;
+import com.geargames.regolith.awt.components.DefaultPContentPanel;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
@@ -31,14 +32,13 @@ import com.geargames.regolith.units.map.BattleMap;
  * Панель просмотра доступных карт и выбора одной из них для битвы.
  */
 // PBrowseMapsPanel
-public class PSelectMapPanel extends PContentPanel {
+public class PSelectMapPanel extends DefaultPContentPanel {
 
     private BattleType battleType;
-    private BattleMap[] battleMaps;
     private BattleMap selectedMap;
     private DrawablePPanel currentPanel;
 
-    private BattleMapList battleMapList;
+    private PBattleMapList battleMapList;
     private PSimpleLabel mapDescription;
 
     public PSelectMapPanel(PObject prototype) {
@@ -48,12 +48,6 @@ public class PSelectMapPanel extends PContentPanel {
     @Override
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
-            case 0:
-//                IndexObject view = (IndexObject) prototype.getIndexBySlot(53);
-//
-//                Account account = ClientConfigurationFactory.getConfiguration().getAccount();
-//                PObject object = (PObject) view.getPrototype();
-                break;
             case 1: {
                 // Заголовок списка карт
                 PSimpleLabel labelTitle = new PSimpleLabel(index);
@@ -64,7 +58,7 @@ public class PSelectMapPanel extends PContentPanel {
             }
             case 2:
                 // Список карт
-                battleMapList = new BattleMapList((PObject) index.getPrototype());
+                battleMapList = new PBattleMapList((PObject) index.getPrototype());
                 addActiveChild(battleMapList, index);
 
                 CenteredElasticInertMotionListener motionListener = new CenteredElasticInertMotionListener();
@@ -83,7 +77,7 @@ public class PSelectMapPanel extends PContentPanel {
                 // Название карты
                 mapDescription = new PSimpleLabel(index);
                 mapDescription.setFont(PFontCollection.getFontLabel());
-                mapDescription.setText(String.valueOfC("<NONE>"));
+                mapDescription.setText(String.valueOfC("<NAME>"));
                 addPassiveChild(mapDescription, index);
                 break;
 
@@ -96,7 +90,7 @@ public class PSelectMapPanel extends PContentPanel {
                 buttonOk.setFont(PFontCollection.getFontButtonCaption());
                 addActiveChild(buttonOk, index);
                 break;
-            case 19: {
+            case 109: {
                 // Заголовок окна
                 PSimpleLabel labelTitle = new PSimpleLabel(index);
                 labelTitle.setText(LocalizedStrings.BROWSE_MAPS_PANEL_TITLE);
@@ -156,14 +150,14 @@ public class PSelectMapPanel extends PContentPanel {
                 Debug.critical("Waiting time answer has expired");
             }
             ClientBattleMapListAnswer battleMapListAnswer = (ClientBattleMapListAnswer) answer.getAnswer();
-            battleMaps = battleMapListAnswer.getBattleMaps();
+            BattleMap[] battleMaps = battleMapListAnswer.getBattleMaps();
             Debug.debug("Received a list of maps (count = " + battleMaps.length + ")");
             if (battleMaps.length == 0) {
                 Debug.critical("There are no maps to use");
             }
             selectedMap = null;
 
-            battleMapList.setMapList(battleMaps);
+            battleMapList.setMapItems(battleMaps);
 
             //todo: Выбрать по умолчанию первую карту, или предыдущую, которую юзер использовал в предыдущей создаваемой битве
             battleMapList.getItem(0).setChecked(true);
@@ -215,6 +209,16 @@ public class PSelectMapPanel extends PContentPanel {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+
     }
 
 }
