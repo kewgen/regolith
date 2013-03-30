@@ -1,7 +1,6 @@
 package com.geargames.regolith.application;
 
 import com.geargames.common.logging.Debug;
-import com.geargames.common.String;
 import com.geargames.platform.MIDlet;
 
 public final class Regolith extends MIDlet {
@@ -14,7 +13,7 @@ public final class Regolith extends MIDlet {
             }
             manager.startApp();
         } catch (Exception e) {
-            Debug.error(String.valueOfC("Start application problem"), e);
+            Debug.error("Start application problem", e);
         }
     }
 

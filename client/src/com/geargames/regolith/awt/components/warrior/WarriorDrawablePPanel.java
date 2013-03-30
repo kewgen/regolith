@@ -2,7 +2,6 @@ package com.geargames.regolith.awt.components.warrior;
 
 import com.geargames.awt.DrawablePPanel;
 import com.geargames.common.logging.Debug;
-import com.geargames.common.String;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
@@ -20,7 +19,7 @@ public class WarriorDrawablePPanel extends DrawablePPanel {
                 ArrayList answers = manager.commitMessages().getAnswers();
                 for (int i = 0; i < answers.size(); i++) {
                     if (!((ClientConfirmationAnswer) answers.get(i)).isConfirm()) {
-                        Debug.error(String.valueOfC("A FATAL ERROR: bad server operation"));
+                        Debug.error("A FATAL ERROR: bad server operation");
                         System.exit(1);
                     }
                 }

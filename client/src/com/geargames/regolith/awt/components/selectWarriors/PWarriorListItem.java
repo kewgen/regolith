@@ -3,13 +3,11 @@ package com.geargames.regolith.awt.components.selectWarriors;
 import com.geargames.awt.components.PRadioButton;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.*;
-import com.geargames.common.String;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.PFontCollection;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
@@ -30,7 +28,7 @@ public class PWarriorListItem extends PRadioButton { // PPrototypeElement
         // Воинское звание бойца
         Index index = prototype.getIndexBySlot(11);
         labelRank = new PSimpleLabel((IndexObject) index);
-        labelRank.setText(String.valueOfC("<RANK>"));
+        labelRank.setText("<RANK>");
         labelRank.setFont(PFontCollection.getFont8());
         labelRank.setX(index.getX());
         labelRank.setY(index.getY());
@@ -38,7 +36,7 @@ public class PWarriorListItem extends PRadioButton { // PPrototypeElement
         // Имя бойца
         index = prototype.getIndexBySlot(109);
         labelName = new PSimpleLabel((IndexObject) index);
-        labelName.setText(String.valueOfC("<NAME>"));
+        labelName.setText("<NAME>");
         labelName.setFont(PFontCollection.getFont8());
         labelName.setX(index.getX());
         labelName.setY(index.getY());

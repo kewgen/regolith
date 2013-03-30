@@ -2,7 +2,6 @@ package com.geargames.regolith.awt.components.menues;
 
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.String;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.awt.components.warrior.PAbstractTacklePanel;
 import com.geargames.regolith.units.AmmunitionBag;
@@ -63,7 +62,7 @@ public class BagVerticalTackleItemsVector extends Vector {
                 panel.setTackle(packet.getAmmunition(), packet.getCount());
             }
         } else {
-            Debug.error(String.valueOfC("A NOT EXISTED REQUISITE HAS BEEN RETRIEVED"));
+            Debug.error("A NOT EXISTED REQUISITE HAS BEEN RETRIEVED");
         }
     }
 

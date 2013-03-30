@@ -1,7 +1,6 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
 import com.geargames.awt.components.PEntitledTouchButton;
-import com.geargames.common.String;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 

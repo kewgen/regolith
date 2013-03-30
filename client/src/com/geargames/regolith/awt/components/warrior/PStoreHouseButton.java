@@ -12,7 +12,7 @@ public class PStoreHouseButton extends PEntitledRadioButton {
 
     public PStoreHouseButton(PObject prototype, PWarriorPanel panel) {
         super(prototype);
-        setText(com.geargames.common.String.valueOfC("СКЛАД"));
+        setText("СКЛАД");
         this.panel = panel;
     }
 

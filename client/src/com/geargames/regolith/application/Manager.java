@@ -2,7 +2,6 @@ package com.geargames.regolith.application;
 
 import com.geargames.common.logging.Debug;
 import com.geargames.platform.MIDlet;
-import com.geargames.common.String;
 import com.geargames.platform.packer.Canvas;
 import com.geargames.platform.packer.Display;
 import com.geargames.common.Graphics;
@@ -76,7 +75,7 @@ public final class Manager extends com.geargames.platform.Manager implements Run
                 g.drawImage(app.getBuffer(), Port.SCREEN_DX, Port.SCREEN_DY);
             }
         } catch (Exception e) {
-            Debug.error(String.valueOfC("Could not draw an image"), e);
+            Debug.error("Could not draw an image", e);
         }
         app.setIsDrawing(false);
     }
@@ -138,17 +137,17 @@ public final class Manager extends com.geargames.platform.Manager implements Run
     public void stopMainThread() {
         running = false;
         thread = null;
-        Debug.debug(String.valueOfC("Manager.stopMainThread"));
+        Debug.debug("Manager.stopMainThread");
     }
 
     public void run_() {
-        Debug.debug(String.valueOfC("Manager.run_"));
+        Debug.debug("Manager.run_");
         running = true;
         runStart();
     }
 
     public void run() {
-        Debug.debug(String.valueOfC("Manager.run - Main thread running"));
+        Debug.debug("Manager.run - Main thread running");
         running = true;
         try {
             runStart();
@@ -158,7 +157,7 @@ public final class Manager extends com.geargames.platform.Manager implements Run
             runStop();
         } catch (Exception e) {
             stopMainThread();
-            Debug.error(String.valueOfC("Main loop problems"), e);
+            Debug.error("Main loop problems", e);
         }
     }
 
@@ -179,18 +178,18 @@ public final class Manager extends com.geargames.platform.Manager implements Run
             Display.getDisplay(midlet).setCurrent(this);
         } catch (Exception e) {
             e.printStackTrace();
-            Debug.debug(String.valueOfC("onStart error [FILELINE]"));
+            Debug.debug("onStart error [FILELINE]");
         }
     }
 
     protected final void runStop() {
         try {
-            Debug.debug(String.valueOfC("runStop"));
+            Debug.debug("runStop");
             app.onStop(true);
             //midlet.notifyDestroyed();
         } catch (Exception e) {
 
-            Debug.error(String.valueOfC("Error during stop [FILELINE]"), e);
+            Debug.error("Error during stop [FILELINE]", e);
         }
     }
 
@@ -237,7 +236,7 @@ public final class Manager extends com.geargames.platform.Manager implements Run
                 pressedKey = 0;
             }
         } catch (Exception e) {
-            Debug.error(String.valueOfC("keyReleased [FILELINE]"), e);
+            Debug.error("keyReleased [FILELINE]", e);
         }
     }
 
@@ -284,7 +283,7 @@ public final class Manager extends com.geargames.platform.Manager implements Run
     }
 
     public void menuPressed() {
-        Debug.debug(String.valueOfC("Manager.menuPressed"));
+        Debug.debug("Manager.menuPressed");
     }
 
     // ------------------ SERVICES ------------------------

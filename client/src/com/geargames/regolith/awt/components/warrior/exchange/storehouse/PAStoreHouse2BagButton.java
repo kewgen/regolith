@@ -1,6 +1,5 @@
 package com.geargames.regolith.awt.components.warrior.exchange.storehouse;
 
-import com.geargames.common.String;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfiguration;
@@ -27,7 +26,7 @@ public class PAStoreHouse2BagButton extends PExchangeButton {
 
     public PAStoreHouse2BagButton(PObject prototype) {
         super(prototype);
-        setText(String.valueOfC("В СУМКУ"));
+        setText("В СУМКУ");
     }
 
     public void doAction() {

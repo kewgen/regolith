@@ -15,12 +15,12 @@ public class DefaultDrawablePPanel extends DrawablePPanel {
 
     @Override
     public void onHide() {
-        ((DefaultPContentPanel) getElement()).onHide();
+        ((PRootContentPanel) getElement()).onHide();
     }
 
     @Override
     public void onShow() {
-        ((DefaultPContentPanel) getElement()).onShow();
+        ((PRootContentPanel) getElement()).onShow();
     }
 
 }

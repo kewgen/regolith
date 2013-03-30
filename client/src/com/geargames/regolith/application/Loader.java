@@ -1,7 +1,6 @@
 package com.geargames.regolith.application;
 
 import com.geargames.common.Port;
-import com.geargames.common.String;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PManager;
 import com.geargames.common.Graphics;
@@ -32,25 +31,25 @@ public class Loader {
 
 
     public void loadPacker(Graphics g, PManager packer) {
-        String name = String.valueOfC("/d0");
+        String name = "/d0";
         try {
             InputStream is = Manager.getInstance().getMidlet().getResourceAsStream(name);
             packer.loadData(is);
             is.close();
 
-            String pack_name = String.valueOfC("/i0");
+            String pack_name = "/i0";
             if (Port.IS_DOUBLE_GRAPHIC) {
-                pack_name = pack_name.concatC("_x2");
+                pack_name = "_x2";
             }
             else if (Port.IS_FOURTHIRDS_GRAPHIC) {
-                pack_name = pack_name.concatC("_x4_3");
+                pack_name = "_x4_3";
             }
             is = manager.getMidlet().getResourceAsStream(pack_name);
             packer.loadImages(g, is);
             is.close();
 
         } catch (Exception e) {
-            Debug.error(String.valueOfC("Could not load packer resources"), e);
+            Debug.error("Could not load packer resources", e);
         }
     }
 }

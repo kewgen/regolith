@@ -19,7 +19,7 @@ import com.geargames.regolith.units.tackle.*;
 public class PABag2WarriorButton extends PExchangeButton {
     public PABag2WarriorButton(PObject prototype) {
         super(prototype);
-        setText(com.geargames.common.String.valueOfC("ЗАРЯДИТЬ"));
+        setText("ЗАРЯДИТЬ");
     }
 
     public void doAction() {

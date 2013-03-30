@@ -12,7 +12,6 @@ import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.helpers.WeaponHelper;
 import com.geargames.regolith.units.tackle.AbstractTackle;
 import com.geargames.regolith.units.tackle.TackleType;
-import com.geargames.common.String;
 import com.geargames.regolith.units.tackle.Weapon;
 
 /**
@@ -157,41 +156,41 @@ public abstract class PAbstractTacklePanel extends PContentPanel {
             switch (tackle.getType()) {
                 case TackleType.WEAPON:
                     Weapon weapon = (Weapon) tackle;
-                    paramName1.setText(String.valueOfC("ТОЧНОСТЬ"));
+                    paramName1.setText("ТОЧНОСТЬ");
                     paramName1.setFont(PFontCollection.getFont8());
-                    paramName2.setText(String.valueOfC("ДАЛЬНОСТЬ"));
+                    paramName2.setText("ДАЛЬНОСТЬ");
                     paramName2.setFont(PFontCollection.getFont8());
-                    paramName3.setText(String.valueOfC("УРОН"));
+                    paramName3.setText("УРОН");
                     paramName3.setFont(PFontCollection.getFont8());
-                    paramName4.setText(String.valueOfC("ВЕС"));
+                    paramName4.setText("ВЕС");
                     paramName4.setFont(PFontCollection.getFont8());
 
                     BaseConfiguration baseConfiguration = ClientConfigurationFactory.getConfiguration().getBaseConfiguration();
 
                     int value = WeaponHelper.getWeaponAccuracy(weapon, baseConfiguration) * indicator1.getCardinality() / 100;
                     indicator1.setValue(value);
-                    paramValue1.setText(String.valueOfI(value));
+                    paramValue1.setText("" + value);
                     paramValue1.setFont(PFontCollection.getFont8());
                     value = weapon.getWeaponType().getMaxDamage().getMaxDistance() * indicator2.getCardinality() / baseConfiguration.getMaxDistance();
                     indicator2.setValue(value);
-                    paramValue2.setText(String.valueOfI(value));
+                    paramValue2.setText("" +value);
                     paramValue2.setFont(PFontCollection.getFont8());
                     value = WeaponHelper.getMaxWeaponDamage(weapon, weapon.getWeaponType().getMaxDamage().getOptDistance(), baseConfiguration) * indicator3.getCardinality() / baseConfiguration.getMaxDamage();
                     indicator3.setValue(value);
-                    paramValue3.setText(String.valueOfI(value));
+                    paramValue3.setText(""+value);
                     paramValue3.setFont(PFontCollection.getFont8());
                     value = weapon.getWeight() * indicator4.getCardinality() / baseConfiguration.getMaxWeight();
                     indicator4.setValue(value);
-                    paramValue4.setText(String.valueOfI(value));
+                    paramValue4.setText(""+value);
                     paramValue4.setFont(PFontCollection.getFont8());
 
-                    label1.setText(String.valueOfC(weapon.getName()));
+                    label1.setText(""+weapon.getName());
                     label1.setFont(PFontCollection.getFont10());
-                    label2.setText(String.valueOfI(weapon.getUpgrade()));
+                    label2.setText(""+weapon.getUpgrade());
                     label2.setFont(PFontCollection.getFont8());
-                    label3.setText(String.valueOfC(weapon.getLoad() + "/" + weapon.getWeaponType().getCapacity()));
+                    label3.setText(weapon.getLoad() + "/" + weapon.getWeaponType().getCapacity());
                     label3.setFont(PFontCollection.getFont8());
-                    label4.setText(String.valueOfC(weapon.getState() + "/" + weapon.getFirmness()));
+                    label4.setText(weapon.getState() + "/" + weapon.getFirmness());
                     label4.setFont(PFontCollection.getFont8());
 
                     break;

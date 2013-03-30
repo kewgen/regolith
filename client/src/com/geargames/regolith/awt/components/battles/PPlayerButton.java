@@ -4,7 +4,6 @@ import com.geargames.awt.components.PPrototypeElement;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.awt.components.PRadioButton;
 import com.geargames.common.*;
-import com.geargames.common.String;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
@@ -45,7 +44,7 @@ public class PPlayerButton extends PRadioButton {
 
     protected void initiate(Render render) {
         if (account != null) {
-            title.setText(String.valueOfC(account.getName()));
+            title.setText(account.getName());
         } else {
             title.setText(null);
         }

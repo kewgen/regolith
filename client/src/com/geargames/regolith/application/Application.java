@@ -2,7 +2,6 @@ package com.geargames.regolith.application;
 
 import com.geargames.awt.TextHint;
 import com.geargames.common.timers.TimerManager;
-import com.geargames.common.String;
 import com.geargames.common.env.Environment;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PFont;
@@ -68,17 +67,17 @@ public final class Application extends com.geargames.common.Application {
             }
 
             if (splash == null) {
-                splash = Image.createImage(String.valueOfC("/s1.png"), Manager.getInstance());
+                splash = Image.createImage("/s1.png", Manager.getInstance());
             }
             graphicsBuffer.drawImage(splash, splash.getWidth() / 2, splash.getHeight() / 2);
             graphicsBuffer.setColor(0);
             //todo установить фонт!
-            graphicsBuffer.drawString(String.valueOfC(loadLog), 5, Port.getH() - 20, 0);
+            graphicsBuffer.drawString(loadLog, 5, Port.getH() - 20, 0);
             Manager.getInstance().repaintStart();
             Thread.yield();
             Manager.pause(10);
         } catch (Exception ex) {
-            Debug.error(String.valueOfC("A splash drawing problems"), ex);
+            Debug.error("A splash drawing problems", ex);
         }
     }
 
@@ -90,7 +89,7 @@ public final class Application extends com.geargames.common.Application {
                 getGraphics().setRender(render);
             }
         } catch (Exception ex) {
-            Debug.critical(String.valueOfC("Exception during the creation of screen buffer"), ex);
+            Debug.critical("Exception during the creation of screen buffer", ex);
         }
     }
 
@@ -103,7 +102,7 @@ public final class Application extends com.geargames.common.Application {
     public void loading() {
         tSleep = Environment.currentTimeMillis();
 
-        Debug.config(String.valueOfC("Memory total, free: ").concatL(Environment.totalMemory()).concatC(", ").concatL(Environment.freeMemory()));
+        Debug.config("Memory total, free: "+Environment.totalMemory()+", "+Environment.freeMemory());
 
         loader = new Loader(Manager.getInstance());
         render = new Render();
@@ -125,7 +124,7 @@ public final class Application extends com.geargames.common.Application {
         PFont baseFont = fontManager.getFont(0);
         PFontCollection.initiate(fontManager, baseFont);
 
-        drawSplash(String.valueOfC("Init network..."));
+        drawSplash("Init network...");
 
         initPreferenceOnStart();
         isLoading = false;
@@ -160,15 +159,15 @@ public final class Application extends com.geargames.common.Application {
     }
 
     protected void onStop(boolean correct) {
-        Debug.debug(String.valueOfC("onStop.disconnect"));
+        Debug.debug("onStop.disconnect");
         if (correct) {
             saveOptionsRMS();
         }
-        Debug.debug(String.valueOfC("Application.onStop"));
+        Debug.debug("Application.onStop");
     }
 
     public void destroy(boolean correct) {
-        Debug.debug(String.valueOfC("destroy ").concatC(correct ? "correct" : "uncorrect"));
+        Debug.debug("destroy "+(correct ? "correct" : "uncorrect"));
         Manager.getInstance().destroy(correct);
     }
 
@@ -182,9 +181,9 @@ public final class Application extends com.geargames.common.Application {
             Recorder.storeIntegerProperty("client_id", clientId);
             Recorder.storeIntegerProperty("midlet", userMidletId);
 
-            Debug.debug(String.valueOfC("Rms.Prefs saved: vibra:").concatC(vibrationEnabled ? "On" : "Off").concatC(" sound:").concatC(soundEnabled ? "On" : "Off").concatC(" userId:").concatI(userId).concatC(" clientId:").concatI(clientId));
+            Debug.debug("Rms.Prefs saved: vibra:" + (vibrationEnabled ? "On" : "Off")+" sound:"+(soundEnabled ? "On" : "Off")+" userId:"+userId+" clientId:"+clientId);
         } catch (Exception e) {
-            Debug.error(String.valueOfC("Save prefs "), e);
+            Debug.error("Save prefs ", e);
             result = false;
         }
         return result;
@@ -204,17 +203,17 @@ public final class Application extends com.geargames.common.Application {
                         userMidletId = Recorder.loadIntegerProperty("midlet");
                         result = true;
 
-                        Debug.debug(String.valueOfC("Rms.Prefs load:"));
-                        Debug.debug(String.valueOfC(" id:").concatI(userId));
+                        Debug.debug("Rms.Prefs load:");
+                        Debug.debug(" id:"+userId);
                     }
                 } catch (Exception e) {
-                    Debug.error(String.valueOfC("RMSLoad prefs "), e);
+                    Debug.error("RMSLoad prefs ", e);
                     return false;
                 }
 
             return result;
         } catch (Exception e) {
-            Debug.error(String.valueOfC("RMSLoad stream "), e);
+            Debug.error("RMSLoad stream ", e);
             return false;
         }
     }

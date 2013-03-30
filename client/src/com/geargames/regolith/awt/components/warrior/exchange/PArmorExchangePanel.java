@@ -1,15 +1,9 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
 import com.geargames.awt.components.*;
-import com.geargames.common.*;
-import com.geargames.common.String;
-import com.geargames.common.packer.Index;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.UIUtils;
-import com.geargames.regolith.awt.components.warrior.exchange.storehouse.PTStoreHouse2BagButton;
-import com.geargames.regolith.awt.components.warrior.exchange.storehouse.PTStoreHouse2WarriorButton;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.ArmorType;
 
@@ -107,24 +101,24 @@ public abstract class PArmorExchangePanel extends PExchangePanel {
     protected void initiate() {
         Armor tackle = (Armor)getTackle();
 
-        caption.setText(String.valueOfC(tackle.getName()));
+        caption.setText(tackle.getName());
         weight.setText(UIUtils.getWeightRepresentation(tackle.getWeight()));
-        firmness.setText(String.valueOfI(tackle.getFirmness()));
-        state.setText(String.valueOfI(tackle.getState()));
-        upgrade.setText(String.valueOfI(tackle.getUpgrade()));
+        firmness.setText(""+tackle.getFirmness());
+        state.setText(""+tackle.getState());
+        upgrade.setText(""+tackle.getUpgrade());
 
         ArmorType armorType = tackle.getArmorType();
-        armor.setText(String.valueOfI(armorType.getArmor()));
-        baseFirmness.setText(String.valueOfI(armorType.getBaseFirmness()));
+        armor.setText(""+armorType.getArmor());
+        baseFirmness.setText(""+armorType.getBaseFirmness());
 
-        craftinessBonus.setText(String.valueOfI(armorType.getCraftinessBonus()));
-        marksmanshipBonus.setText(String.valueOfI(armorType.getMarksmanshipBonus()));
-        regenerationBonus.setText(String.valueOfI(armorType.getRegenerationBonus()));
+        craftinessBonus.setText(""+armorType.getCraftinessBonus());
+        marksmanshipBonus.setText(""+armorType.getMarksmanshipBonus());
+        regenerationBonus.setText(""+armorType.getRegenerationBonus());
 /*
         speedBonus.setText(String.valueOfI(armorType.getSpeedBonus()));
         strengthBonus.setText(UIUtils.getWeightRepresentation(armorType.getStrengthBonus()));
 */
-        visibilityBonus.setText(String.valueOfI(armorType.getVisibilityBonus()));
+        visibilityBonus.setText(""+armorType.getVisibilityBonus());
     }
 
     public PStepSpinBox getAmountBox() {

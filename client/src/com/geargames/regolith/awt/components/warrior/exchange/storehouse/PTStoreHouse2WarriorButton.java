@@ -1,6 +1,5 @@
 package com.geargames.regolith.awt.components.warrior.exchange.storehouse;
 
-import com.geargames.common.String;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.ClientConfiguration;
@@ -25,7 +24,7 @@ public class PTStoreHouse2WarriorButton extends PExchangeButton {
 
     public PTStoreHouse2WarriorButton(PObject prototype) {
         super(prototype);
-        setText(String.valueOfC("НАДЕТЬ"));
+        setText("НАДЕТЬ");
     }
 
     public void doAction() {

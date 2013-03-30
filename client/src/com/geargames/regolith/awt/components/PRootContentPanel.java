@@ -7,9 +7,9 @@ import com.geargames.common.packer.PObject;
  * User: abarakov
  * Date: 29.03.13
  */
-public abstract class DefaultPContentPanel extends PContentPanel {
+public abstract class PRootContentPanel extends PContentPanel {
 
-    public DefaultPContentPanel(PObject prototype) {
+    public PRootContentPanel(PObject prototype) {
         super(prototype);
     }
 
