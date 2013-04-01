@@ -109,4 +109,9 @@ public class HorizontalFaces extends HorizontalScrollView {
     public PPrototypeElement getPrototype() {
         return prototype;
     }
+
+    @Override
+    public int getItemOffsetY() {
+        return 0;
+    }
 }

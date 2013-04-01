@@ -81,4 +81,8 @@ public class PHorizontalAccountWarriors extends HorizontalScrollView {
         return region;
     }
 
+    @Override
+    public int getItemOffsetY() {
+        return 0;
+    }
 }
