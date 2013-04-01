@@ -12,7 +12,7 @@ import com.geargames.regolith.units.battle.Battle;
  * Панель для отображения текущих битв.
  */
 public class PBattleListItem extends PContentPanel {
-    private PBattleButtons battleButtons;
+    private PBattlePannels battleButtons;
     private PLabel battleTypeLabel;
     private PLabel composition;
     private PLabel level;
@@ -24,7 +24,7 @@ public class PBattleListItem extends PContentPanel {
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
             case 0:
-                battleButtons = new PBattleButtons((PObject) index.getPrototype(), this);
+                battleButtons = new PBattlePannels((PObject) index.getPrototype(), this);
                 break;
             case 1:
                 battleTypeLabel = new PSimpleLabel(index);

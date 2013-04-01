@@ -49,7 +49,6 @@ public class ClientBrowseBattlesAnswer extends BatchAnswer {
         return answers;
     }
 
-    @Override
     public void deSerialize() throws Exception {
         super.deSerialize();
         ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();
@@ -59,12 +58,7 @@ public class ClientBrowseBattlesAnswer extends BatchAnswer {
     }
 
     public ClientBattleCollection getBattles() {
-        ClientBattleCollection battles = new ClientBattleCollection();
-        battles.setBattles(new Vector(answers.size()));
-        for (int i = 0; i < answers.size(); i++) {
-            battles.add(((ClientListenToBattleAnswer) answers.get(i)).getBattle());
-        }
-        return battles;
+        return ObjectManager.getInstance().getBattleCollection();
     }
 
 }
