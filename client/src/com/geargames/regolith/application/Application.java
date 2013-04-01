@@ -134,7 +134,7 @@ public final class Application extends com.geargames.common.Application {
         Manager.getInstance().setRSK(Manager.SK_EXIT);
 
         TextHint textHint = TextHint.getInstance();
-        textHint.setSkinObject(render.getFrame(Graph.OBJ_HINT), render, 16, 24, 16, 24); //todo: Установить правильный скин и размеры
+        textHint.setSkinObject(render.getObject(Graph.OBJ_HINT));
 //        textHint.setDefaultFont(PFontCollection.getFontHint());
 
         panels = PRegolithPanelManager.getInstance();
