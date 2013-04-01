@@ -5,6 +5,7 @@ import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.PFontCollection;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.localization.LocalizedStrings;
 
@@ -314,6 +315,15 @@ public class PBattleCreatePanel extends PRootContentPanel {
     @Override
     public void onHide() {
 
+    }
+
+    /**
+     * Обработчик нажатия на кнопку Ok.
+     */
+    public void onButtonOkClick() {
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.getSelectMapPanel().showPanel(
+                getAllianceAmount(), getAllianceSize(), getGroupSize(), getIsRandomMap(), panelManager.getBattleCreate());
     }
 
 }

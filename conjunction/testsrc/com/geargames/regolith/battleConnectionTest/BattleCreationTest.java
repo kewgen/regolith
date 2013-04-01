@@ -188,7 +188,7 @@ public class BattleCreationTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -240,7 +240,7 @@ public class BattleCreationTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #4c
         ClientTestHelper.checkAsyncMessages();
 
@@ -271,6 +271,7 @@ public class BattleCreationTest {
         System.out.println("Trying to cancelation the battle (by author)...");
         ClientCancelBattleAnswer cancelBattleAnswer = battleCreationManager.cancelBattle();
         Assert.assertTrue("The client is not able to cancel the battle", cancelBattleAnswer.isSuccess());
+        System.out.println("The client canceled battle (battle id = " + battle.getId() + ")");
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
@@ -319,7 +320,7 @@ public class BattleCreationTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #6e
         ClientTestHelper.checkAsyncMessages();
 
@@ -327,6 +328,7 @@ public class BattleCreationTest {
         System.out.println("Trying to cancelation the battle (by author)...");
         cancelBattleAnswer = battleCreationManager.cancelBattle();
         Assert.assertTrue("The client is not able to cancel the battle", cancelBattleAnswer.isSuccess());
+        System.out.println("The client canceled battle (battle id = " + battle.getId() + ")");
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
@@ -375,7 +377,7 @@ public class BattleCreationTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300 + 1000); // +1 секунда, чтобы клиент C успел выполнить свой сценарий #7e
         ClientTestHelper.checkAsyncMessages();
 
@@ -406,7 +408,7 @@ public class BattleCreationTest {
         Assert.assertTrue("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client A'", selfAccount.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
@@ -419,7 +421,7 @@ public class BattleCreationTest {
         Assert.assertTrue("'Client C' could not disband the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' disbanded the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' disbanded the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300 + 1000); // +1 секунда, т.к. в это время выполняется сценарий #7i у клиента C
         ClientTestHelper.checkAsyncMessages();
 
@@ -439,7 +441,7 @@ public class BattleCreationTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300 + 3000); // +3 секунды, т.к. в это время выполняются сценарии #7l - #7o у клиентов B и C
         ClientTestHelper.checkAsyncMessages();
 

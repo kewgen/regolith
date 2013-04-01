@@ -1,6 +1,5 @@
 package com.geargames.regolith.localization;
 
-
 /**
  * Список строковых констант.
  * User: abarakov
@@ -31,6 +30,17 @@ public class LocalizedStrings {
     // ----- Select warriors -------------------------------------------------------------------------------------------
 
     public static final String SELECT_WARRIORS_PANEL_TITLE = "ВЫБОР БОЙЦОВ";
-    public static final String SELECT_WARRIORS_LIST_TITLE  = "ВЫБЕРИТЕ БОЙЦОВ";
+    public static final String SELECT_WARRIORS_LIST_TITLE  = "ВЫБЕРИТЕ БОЙЦОВ ДЛЯ БИТВЫ";
+    public static final String SELECT_WARRIORS_MSG_JOIN_TO_ALLIANCE_EXCEPTION = "НЕ УДАЛОСЬ ПРИСОЕДИНИТЬСЯ К ВОЕННОМУ СОЮЗУ. ПОВТОРИТЕ СВОЕ ДЕЙСТВИЕ ЕЩЕ РАЗ.";
+    public static final String SELECT_WARRIORS_MSG_COMPLETE_GROUP_EXCEPTION   = "ПРОИЗОШЛА НЕПРЕДВИДЕННАЯ ОШИБКА. ПОВТОРИТЕ СВОЕ ДЕЙСТВИЕ ЕЩЕ РАЗ.";
+    public static final String SELECT_WARRIORS_MSG_NOT_ENOUGH_WARRIORS        = "ДЛЯ УЧАСТИЯ В БИТВЕ ВАМ ТРЕБУЕТСЯ ВЫБРАТЬ %s БОЙЦОВ";
+
+    public static final String SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION    = "НЕ УДАЛОСЬ ОТМЕНИТЬ БИТВУ.";
+
+    // -----  ----------------------------------------------------------------------------------------------------------
+
+    public static final String INFO_MESSAGE_1 = "Для присоединения к битве требуется 3 бойца, у вас доступно только 2";
+
+    // -----  ----------------------------------------------------------------------------------------------------------
 
 }

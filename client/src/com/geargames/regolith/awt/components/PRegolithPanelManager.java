@@ -4,10 +4,8 @@ import com.geargames.awt.*;
 import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
-import com.geargames.regolith.awt.components.battles.PBattlesPanel;
-import com.geargames.regolith.awt.components.battles.PBattlesPanelWindow;
 import com.geargames.regolith.awt.components.battles.PWarriorInformation;
-import com.geargames.regolith.awt.components.selectMaps.PSelectMapPanel;
+import com.geargames.regolith.awt.components.selectMap.PSelectMapPanel;
 import com.geargames.regolith.awt.components.main.PHeadlinePanel;
 import com.geargames.regolith.awt.components.main.PLeftPanel;
 import com.geargames.regolith.awt.components.main.PMainMenuPanel;
@@ -163,10 +161,10 @@ public class PRegolithPanelManager extends PPanelManager {
         selectWarriors.setAnchor(Anchors.CENTER_ANCHOR);
         selectWarriors.setElement(selectWarriorsPanel);
 
-        PBattlesPanel battlesPanel = new PBattlesPanel(render.getObject(Graph.PAN_BATTLE_LIST));
-        battlesWindow = new PBattlesPanelWindow();
-        battlesWindow.setAnchor(Anchors.CENTER_ANCHOR);
-        battlesWindow.setElement(battlesPanel);
+//        PBattlesPanel battlesPanel = new PBattlesPanel(render.getObject(Graph.PAN_BATTLE_LIST));
+//        battlesWindow = new PBattlesPanelWindow();
+//        battlesWindow.setAnchor(Anchors.CENTER_ANCHOR);
+//        battlesWindow.setElement(battlesPanel);
     }
 
     public DrawablePPanel getBattlesWindow() {
@@ -255,6 +253,10 @@ public class PRegolithPanelManager extends PPanelManager {
 
     public DrawablePPanel getSelectWarriors() {
         return selectWarriors;
+    }
+
+    public PSelectWarriorsPanel getSelectWarriorsPanel() {
+        return (PSelectWarriorsPanel) selectWarriors.getElement();
     }
 
 }

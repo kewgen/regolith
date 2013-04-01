@@ -1,11 +1,9 @@
-package com.geargames.regolith.awt.components.selectMaps;
+package com.geargames.regolith.awt.components.selectMap;
 
 import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.components.*;
-import com.geargames.awt.utils.ScrollHelper;
-import com.geargames.awt.utils.motions.CenteredElasticInertMotionListener;
+import com.geargames.awt.utils.motions.ElasticInertMotionListener;
 import com.geargames.common.logging.Debug;
-import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfiguration;
@@ -60,17 +58,19 @@ public class PSelectMapPanel extends PRootContentPanel {
                 battleMapList = new PBattleMapList((PObject) index.getPrototype());
                 addActiveChild(battleMapList, index);
 
-                CenteredElasticInertMotionListener motionListener = new CenteredElasticInertMotionListener();
-                motionListener.setInstinctPosition(false);
-                battleMapList.setMotionListener(
-                        ScrollHelper.adjustHorizontalCenteredMenuMotionListener(
-                                motionListener,
-                                battleMapList.getDrawRegion(),
-                                battleMapList.getItemsAmount(),
-                                battleMapList.getItemSize(),
-                                battleMapList.getPrototype().getDrawRegion().getMinX()
-                        )
-                );
+                ElasticInertMotionListener motionListener = new ElasticInertMotionListener();
+                battleMapList.setMotionListener(motionListener);
+//                CenteredElasticInertMotionListener motionListener = new CenteredElasticInertMotionListener();
+//                motionListener.setInstinctPosition(false);
+//                battleMapList.setMotionListener(
+//                        ScrollHelper.adjustHorizontalCenteredMenuMotionListener(
+//                                motionListener,
+//                                battleMapList.getDrawRegion(),
+//                                battleMapList.getItemsAmount(),
+//                                battleMapList.getItemSize(),
+//                                battleMapList.getPrototype().getDrawRegion().getMinX()
+//                        )
+//                );
                 break;
             case 5:
                 // Название карты
@@ -105,7 +105,7 @@ public class PSelectMapPanel extends PRootContentPanel {
         mapDescription.setText(map.getName());
     }
 
-    public void showPanel(int allianceAmount, int allianceSize, int groupSize, boolean isRandomMap, DrawablePPanel callerPanel) throws Exception {
+    public void showPanel(int allianceAmount, int allianceSize, int groupSize, boolean isRandomMap, DrawablePPanel callerPanel) {
         Debug.debug("Dialog 'Select map'");
 
         Debug.debug("Find battle type...");
@@ -122,42 +122,47 @@ public class PSelectMapPanel extends PRootContentPanel {
         ClientBaseManager baseManager = clientConfiguration.getBaseManager();
         ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
 
-        Debug.debug("The client go to the battle market...");
-        ClientConfirmationAnswer confirm = baseManager.goBattleManager();
-        if (!confirm.isConfirm()) {
-            Debug.critical("The client could not go to the battle market");
-        }
-
-        if (isRandomMap) {
-            Debug.debug("Browsing a random map...");
-            ClientBattleMapAnswer battleMapAnswer = battleMarketManager.browseRandomBattleMap(battleType);
-            selectedMap = battleMapAnswer.getBattleMap();
-            currentPanel = callerPanel;
-            createBattle();
-        } else {
-            Debug.debug("Browsing maps...");
-            ClientBattleMapListAnswer battleMapListAnswer = battleMarketManager.browseBattleMaps(battleType);
-            BattleMap[] battleMaps = battleMapListAnswer.getBattleMaps();
-            Debug.debug("Received a list of maps (count = " + battleMaps.length + ")");
-            if (battleMaps.length == 0) {
-                Debug.critical("There are no maps to use");
+        try {
+            Debug.debug("The client go to the battle market...");
+            ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+            if (!confirm.isConfirm()) {
+                Debug.critical("The client could not go to the battle market");
             }
-            selectedMap = null;
 
-            battleMapList.setMapItems(battleMaps);
+            if (isRandomMap) {
+                Debug.debug("Browsing a random map...");
+                ClientBattleMapAnswer battleMapAnswer = battleMarketManager.browseRandomBattleMap(battleType);
+                selectedMap = battleMapAnswer.getBattleMap();
+                currentPanel = callerPanel;
+                createBattle();
+            } else {
+                Debug.debug("Browsing maps...");
+                ClientBattleMapListAnswer battleMapListAnswer = battleMarketManager.browseBattleMaps(battleType);
+                BattleMap[] battleMaps = battleMapListAnswer.getBattleMaps();
+                Debug.debug("Received a list of maps (count = " + battleMaps.length + ")");
+                if (battleMaps.length == 0) {
+                    Debug.critical("There are no maps to use");
+                }
+                selectedMap = null;
 
-            //todo: Выбрать по умолчанию первую карту, или предыдущую, которую юзер использовал в предыдущей создаваемой битве
-            battleMapList.getItem(0).setChecked(true);
-            //setSelectedMap(battleMapList.getItem(0).getMap());
+                battleMapList.setMapItems(battleMaps);
 
-            PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-            currentPanel = panelManager.getSelectMap();
-            panelManager.hide(callerPanel);
-            panelManager.show(currentPanel);
+                //todo: Выбрать по умолчанию первую карту, или предыдущую, которую юзер использовал в предыдущей создаваемой битве
+                battleMapList.getItem(0).setChecked(true);
+                battleMapList.getItem(0).onClick(); //todo: должно выполняться автоматически
+                //setSelectedMap(battleMapList.getItem(0).getMap());
+
+                PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+                currentPanel = panelManager.getSelectMap();
+                panelManager.hide(callerPanel);
+                panelManager.show(currentPanel);
+            }
+        } catch (Exception e) {
+            Debug.critical("Could not get the map to create a battle", e);
         }
     }
 
-    public void createBattle() throws Exception {
+    public void createBattle() {
         //todo: может вывести панельку, в которой сообщить пользователю о текущем состоянии обмена сообщениями между клиентов и сервером
         // Ожидаем ответа от игроков/сервера. Пожалуйста подождите.
 
@@ -175,23 +180,26 @@ public class PSelectMapPanel extends PRootContentPanel {
 
         Debug.debug("Creating a battle (map id = " + selectedMap.getId() + ")...");
 
-        ClientListenToBattleAnswer listenToBattleAnswer = battleMarketManager.createBattle(selectedMap, battleType);
+        ClientListenToBattleAnswer listenToBattleAnswer;
+        try {
+            listenToBattleAnswer = battleMarketManager.createBattle(selectedMap, battleType);
+        } catch (Exception e) {
+            Debug.critical("Failed to create the battle", e);
+            return;
+        }
         Battle battle = listenToBattleAnswer.getBattle();
         Debug.debug("The battle was created (battle id = " + battle.getId() + ")");
 //        ObjectManager.getInstance().setClientBattle(battle);
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        panelManager.hide(currentPanel);
-        panelManager.show(panelManager.getSelectWarriors());
+        panelManager.getSelectWarriorsPanel().showPanel(battle.getAlliances()[0].getAllies().get(0), currentPanel);
     }
 
-    public static boolean waitForAnswer(ClientDeferredAnswer answer) {
-        try {
-            return answer.retrieve(100);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    /**
+     * Обработчик нажатия на кнопку Ok.
+     */
+    public void onButtonOkClick() {
+        createBattle();
     }
 
     @Override

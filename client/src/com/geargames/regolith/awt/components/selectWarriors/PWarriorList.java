@@ -1,12 +1,12 @@
 package com.geargames.regolith.awt.components.selectWarriors;
 
 import com.geargames.awt.components.PHorizontalScrollView;
-import com.geargames.awt.components.PRadioGroup;
 import com.geargames.common.packer.Index;
-import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
+import com.geargames.common.packer.PSprite;
 import com.geargames.common.util.Math;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
 import java.util.Vector;
 
@@ -27,26 +27,26 @@ public class PWarriorList extends PHorizontalScrollView {
         warriorItems = new Vector(16);
     }
 
-    public void setMapList(Warrior[] collection) {
-        warriorAmount = collection.length;
+    public void setWarriorList(WarriorCollection collection) {
+        warriorAmount = collection.size();
         int oldSize = warriorItems.size();
         warriorItems.ensureCapacity(warriorAmount);
 
         // Сначало изменяем уже существующие элементы списка
         int minSize = Math.min(oldSize, warriorAmount);
         for (int i = 0; i < minSize; i++) {
-            Warrior warrior = collection[i];
+            Warrior warrior = collection.get(i);
             PWarriorListItem item = (PWarriorListItem) warriorItems.get(i);
             item.setWarrior(warrior);
         }
 
         // Если список карт увеличился - создаем новые элементы
-        for (int i = minSize; i < collection.length; i++) {
-            Warrior map = collection[i];
+        for (int i = minSize; i < collection.size(); i++) {
+            Warrior map = collection.get(i);
             PWarriorListItem item = new PWarriorListItem(buttonObject);
             warriorItems.add(item);
             item.setWarrior(map);
-            item.setWarriorAvatar((PFrame) buttonObject.getIndexBySlot(0).getPrototype());
+            item.setWarriorAvatar((PSprite) buttonObject.getIndexBySlot(0).getPrototype());
         }
     }
 

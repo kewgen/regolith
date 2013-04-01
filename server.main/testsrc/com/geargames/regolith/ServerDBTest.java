@@ -96,7 +96,7 @@ public class ServerDBTest {
         rank.setName("РЕКРУТ");
         ranks.add(rank);
         rank = new Rank();
-        rank.setName("СТАЖЁР");
+        rank.setName("СТАЖЕР");
         rank.setExperience((short) 50);
         ranks.add(rank);
         rank = new Rank();
@@ -587,7 +587,7 @@ public class ServerDBTest {
         bag2.setTackles(new ServerStateTackleCollection(new LinkedList<StateTackle>()));
         AmmunitionBag ammunitionBag2 = ServerHelper.createAmmunitionBag(baseConfiguration);
         Warrior warrior2 = WarriorHelper.createWarrior(baseConfiguration, bag2, ammunitionBag2, "ВОИН2", 12);
-        warrior2.setRank(baseConfiguration.getRanks().get(0));
+        warrior2.setRank(baseConfiguration.getRanks().get(1));
         warrior2.setFrameId(50);
         warrior2.setVitality((byte) 50);
         warrior2.setHealth(30);
