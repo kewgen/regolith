@@ -3,6 +3,7 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.serializers.BatchAnswer;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 
@@ -46,6 +47,15 @@ public class ClientBrowseBattlesAnswer extends BatchAnswer {
      */
     public ArrayList getAnswers() {
         return answers;
+    }
+
+    @Override
+    public void deSerialize() throws Exception {
+        super.deSerialize();
+        ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();
+        for (int i = 0; i < answers.size(); i++) {
+            battles.add(((ClientListenToBattleAnswer) answers.get(i)).getBattle());
+        }
     }
 
     public ClientBattleCollection getBattles() {

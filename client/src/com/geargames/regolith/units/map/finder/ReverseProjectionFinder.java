@@ -7,7 +7,7 @@ import com.geargames.regolith.map.Pair;
 /**
  * User: mkutuzov
  * Date: 20.02.12
- * Предназначен для поиска координат середины ячейки.
+ * Предназначен для поиска экранных координат середины ячейки.
  */
 public class ReverseProjectionFinder extends Finder {
     private Pair map;

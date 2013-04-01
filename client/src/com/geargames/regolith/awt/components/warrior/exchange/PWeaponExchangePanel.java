@@ -5,7 +5,7 @@ import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.awt.components.PStepSpinBox;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.UIUtils;
+import com.geargames.regolith.helpers.ClientGUIHelper;
 import com.geargames.regolith.units.tackle.Weapon;
 import com.geargames.regolith.units.tackle.WeaponDistances;
 import com.geargames.regolith.units.tackle.WeaponType;
@@ -44,7 +44,7 @@ public abstract class PWeaponExchangePanel extends PExchangePanel {
             case 1:
                 addButton2((PObject)index.getPrototype(), index);
                 break;
-            case 2:
+            case 109:
                 caption = new PSimpleLabel(index);
                 addPassiveChild(caption, index);
                 break;
@@ -95,11 +95,11 @@ public abstract class PWeaponExchangePanel extends PExchangePanel {
     protected void initiate() {
         Weapon weapon = (Weapon)getTackle();
         caption.setText(weapon.getName());
-        weight.setText(UIUtils.getWeightRepresentation(weapon.getWeight()));
+        weight.setText(ClientGUIHelper.getWeightRepresentation(weapon.getWeight()));
         firmness.setText(""+weapon.getFirmness());
         state.setText(""+weapon.getState());
         upgrade.setText(""+weapon.getUpgrade());
-        load.setText(UIUtils.getWeightRepresentation(weapon.getLoad()));
+        load.setText(ClientGUIHelper.getWeightRepresentation(weapon.getLoad()));
         WeaponType weaponType = weapon.getWeaponType();
 
         capacity.setText(""+weaponType.getCapacity());

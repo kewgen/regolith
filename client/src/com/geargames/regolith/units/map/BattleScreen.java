@@ -24,13 +24,13 @@ import java.util.Vector;
  * Date: 13.02.12
  */
 public class BattleScreen extends Eventable implements TimerListener {
-    public static final int GROUNR_WIDTH = 348;
-    public static final int GROUNR_HEIGHT = 174;
-    public static final int HORIZONTAL_DIAGONAL = 116;
-    public static final int VERTICAL_DIAGONAL = 58;
+    public static final int GROUND_WIDTH = 348;
+    public static final int GROUND_HEIGHT = 174;
+    public static final int HORIZONTAL_DIAGONAL = GROUND_WIDTH / 3;
+    public static final int VERTICAL_DIAGONAL = GROUND_HEIGHT / 3;
     public static final int SPOT = 10;
-    public static int HORIZONTAL_RADIUS = 58;
-    public static int VERTICAL_RADIUS = 29;
+    public static int HORIZONTAL_RADIUS = HORIZONTAL_DIAGONAL / 2;
+    public static int VERTICAL_RADIUS = VERTICAL_DIAGONAL / 2;
     public static double TANGENS = (VERTICAL_RADIUS + 0.0) / (HORIZONTAL_RADIUS + 0.0);
 
     private Unit[] enemies;
@@ -148,6 +148,7 @@ public class BattleScreen extends Eventable implements TimerListener {
 
     /**
      * Рисуем бойцов которые принадлежат клиентскому приложению.
+     *
      * @param graphics
      */
     private void drawGroup(Graphics graphics) {
@@ -163,28 +164,29 @@ public class BattleScreen extends Eventable implements TimerListener {
      * Рисуем бойца исходя из следующих предпосылок:
      * Боец имеет базовый идентификатор изображения warrior.getFrameId.
      * Состояние бойца отражено на рисунках сдвинутых одинакого относительно базового для всех юнитов.
+     *
      * @param graphics
      * @param unit
      */
-    private void drawUnit(Graphics graphics, Unit unit){
+    private void drawUnit(Graphics graphics, Unit unit) {
         Warrior warrior = unit.getWarrior();
         int offset = 0;
-        if(warrior.isMoving()){
+        if (warrior.isMoving()) {
             offset = Warrior.MOVING_OFFSET;
-        }else{
-            if(warrior.isShooting()){
-                if(warrior.isSitting()){
+        } else {
+            if (warrior.isShooting()) {
+                if (warrior.isSitting()) {
                     offset = Warrior.SITTING_SHOOTING_OFFSET;
-                }else{
+                } else {
                     offset = Warrior.STANDING_SHOOTING_OFFSET;
                 }
-            }else{
-                if(warrior.isSitting()){
+            } else {
+                if (warrior.isSitting()) {
                     offset = Warrior.SITTING_OFFSET;
                 }
             }
         }
-        offset += (unit.getWarrior().getDirection().getNumber() + 1)%8;
+        offset += (unit.getWarrior().getDirection().getNumber() + 1) % 8;
         graphics.getRender().getUnit(unit.getWarrior().getFrameId() + offset).draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY, null);
     }
 
@@ -211,15 +213,15 @@ public class BattleScreen extends Eventable implements TimerListener {
     }
 
     private void drawGround(Graphics graphics) {
-        int x = -mapX % GROUNR_WIDTH - HORIZONTAL_RADIUS;
-        int tmp = -mapY % GROUNR_HEIGHT - VERTICAL_RADIUS;
+        int x = -mapX % GROUND_WIDTH - HORIZONTAL_RADIUS;
+        int tmp = -mapY % GROUND_HEIGHT - VERTICAL_RADIUS;
         while (x < Port.getScreenW()) {
             int y = tmp;
             while (y < Port.getScreenH()) {
                 graphics.getRender().getSprite(1).draw(graphics, x, y);
-                y += GROUNR_HEIGHT;
+                y += GROUND_HEIGHT;
             }
-            x += GROUNR_WIDTH;
+            x += GROUND_WIDTH;
         }
     }
 
@@ -302,7 +304,7 @@ public class BattleScreen extends Eventable implements TimerListener {
                 if (isMyTurn()) {
                     if (isOnTheMap(x, y)) {
                         Pair cell = cellFinder.find(x + mapX, y + mapY, this);
-                        if(BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getWarrior())){
+                        if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getWarrior())) {
                             //ClientBattleHelper.move(this, cell.getX(), cell.getY());
                             System.out.println("move an user " + user.getWarrior().getNumber());
                             moveUser(cell.getX(), cell.getY());
@@ -314,31 +316,31 @@ public class BattleScreen extends Eventable implements TimerListener {
         return true;
     }
 
-    private Unit getGroupUnitByWarrior(Warrior warrior){
-        for(int i = 0 ; i < group.length; i++){
-            if(warrior == group[i].getWarrior()){
+    private Unit getGroupUnitByWarrior(Warrior warrior) {
+        for (int i = 0; i < group.length; i++) {
+            if (warrior == group[i].getWarrior()) {
                 return group[i];
             }
         }
-        throw new IllegalArgumentException();
+        return null;
     }
 
-    private Unit getAllyUnitByWarrior(Warrior warrior){
-        for(int i = 0 ; i < allies.length; i++){
-            if(warrior == allies[i].getWarrior()){
+    private Unit getAllyUnitByWarrior(Warrior warrior) {
+        for (int i = 0; i < allies.length; i++) {
+            if (warrior == allies[i].getWarrior()) {
                 return allies[i];
             }
         }
-        throw new IllegalArgumentException();
+        return null;
     }
 
-    private Unit getEnemyUnitByWarrior(Warrior warrior){
-        for(int i = 0 ; i < enemies.length; i++){
-            if(warrior == enemies[i].getWarrior()){
+    private Unit getEnemyUnitByWarrior(Warrior warrior) {
+        for (int i = 0; i < enemies.length; i++) {
+            if (warrior == enemies[i].getWarrior()) {
                 return enemies[i];
             }
         }
-        throw new IllegalArgumentException();
+        return null;
     }
 
 
@@ -351,7 +353,7 @@ public class BattleScreen extends Eventable implements TimerListener {
         return null;
     }
 
-    public void moveUser(int x, int y){
+    public void moveUser(int x, int y) {
         System.out.println(x + ":" + y);
         getStep(user).init();
     }

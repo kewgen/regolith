@@ -25,11 +25,6 @@ public class BagVerticalTackles extends VerticalTackles {
         setMotionListener(ScrollHelper.adjustVerticalInertMotionListener((InertMotionListener)getMotionListener(), getDrawRegion(), getItemsAmount(), getItemSize()));
     }
 
-    public void initiate(Graphics graphics) {
-        initiateMotionListener();
-        setInitiated(true);
-    }
-
     public void setWarrior(Warrior warrior){
         items.reset(warrior);
     }
