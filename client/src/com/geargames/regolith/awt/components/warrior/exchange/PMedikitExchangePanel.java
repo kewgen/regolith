@@ -1,7 +1,6 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
 import com.geargames.awt.components.*;
-import com.geargames.common.String;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.UIUtils;
@@ -75,13 +74,13 @@ public abstract class PMedikitExchangePanel extends PExchangePanel {
     protected void initiate() {
         Medikit medikit =(Medikit) getTackle();
 
-        caption.setText(String.valueOfC(medikit.getName()));
+        caption.setText(medikit.getName());
         weight.setText(UIUtils.getWeightRepresentation(medikit.getWeight()));
 
-        minSkill.setText(String.valueOfI(medikit.getMinSkill().getAction()).concatI(medikit.getMinSkill().getExperience()));
-        actionScores.setText(String.valueOfI(medikit.getActionScores()));
-        value.setText(String.valueOfI(medikit.getValue()));
-        category.setText(String.valueOfC(medikit.getCategory().getName()));
-        amount.setText(String.valueOfI(getAmount()));
+        minSkill.setText(""+medikit.getMinSkill().getAction()+""+medikit.getMinSkill().getExperience());
+        actionScores.setText(""+medikit.getActionScores());
+        value.setText(""+medikit.getValue());
+        category.setText(medikit.getCategory().getName());
+        amount.setText(""+getAmount());
     }
 }

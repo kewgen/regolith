@@ -5,16 +5,15 @@ import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.PFontCollection;
-import com.geargames.regolith.awt.components.DefaultPContentPanel;
+import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.localization.LocalizedStrings;
-import com.geargames.common.String;
 
 /**
  * User: abarakov
  * Date: 04.03.13
  * Панель создания битвы.
  */
-public class PBattleCreatePanel extends DefaultPContentPanel {
+public class PBattleCreatePanel extends PRootContentPanel {
 
     private PRadioGroup groupSide;
     private PRadioGroup groupPlayer;
@@ -252,7 +251,7 @@ public class PBattleCreatePanel extends DefaultPContentPanel {
             allianceAmount = 4;
         }
         if (allianceAmount < 2) {
-            Debug.warning(String.valueOfC("allianceAmount is an invalid value (allianceAmount=").concatI(allianceAmount).concatC(")"));
+            Debug.warning("allianceAmount is an invalid value (allianceAmount="+allianceAmount+")");
         }
         return allianceAmount;
     }
@@ -275,7 +274,7 @@ public class PBattleCreatePanel extends DefaultPContentPanel {
         if (buttonPlayer4.getChecked()) {
             allianceSize = 4;
         } else {
-            Debug.warning(String.valueOfC("allianceSize is an invalid value (allianceSize=0)"));
+            Debug.warning("allianceSize is an invalid value (allianceSize=0)");
         }
         return allianceSize;
     }
@@ -298,7 +297,7 @@ public class PBattleCreatePanel extends DefaultPContentPanel {
         if (buttonFighter4.getChecked()) {
             groupSize = 4;
         } else {
-            Debug.warning(String.valueOfC("groupSize is an invalid value (groupSize=0)"));
+            Debug.warning("groupSize is an invalid value (groupSize=0)");
         }
         return groupSize;
     }

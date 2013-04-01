@@ -2,7 +2,6 @@ package com.geargames.regolith.awt.components.battles;
 
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.String;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
@@ -47,7 +46,7 @@ public class PHorizontalAccountWarriorItemVector extends Vector {
         if (index < warriors.size()) {
             panel.setWarrior(warriors.get(index));
         } else {
-            Debug.error(String.valueOfC("A NOT EXISTED BATTLE HAS BEEN RETRIEVED"));
+            Debug.error("A NOT EXISTED BATTLE HAS BEEN RETRIEVED");
         }
     }
 

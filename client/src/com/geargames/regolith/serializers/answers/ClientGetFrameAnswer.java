@@ -27,7 +27,7 @@ public class ClientGetFrameAnswer extends ClientDeSerializedMessage {
             frame.setImage(image);
             frame.setPid(id);
         } catch (Exception e) {
-            Debug.error(com.geargames.common.String.valueOfC("Could not read a server frame"), e);
+            Debug.error("Could not read a server frame", e);
         }
     }
 }

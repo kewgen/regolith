@@ -16,7 +16,6 @@ import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
-import com.geargames.common.String;
 
 import java.util.Vector;
 
@@ -200,9 +199,9 @@ public class BattleScreen extends Eventable implements TimerListener {
             for (int i = 0; i < length; i++) {
                 if (isOnTheScreen(x, y)) {
                     if (BattleMapHelper.isShortestPathCell(cells[j][i], user.getWarrior())) {
-                        drawCell(String.valueOfC("*"), graphics, x - mapX, y - mapY);
+                        drawCell("*", graphics, x - mapX, y - mapY);
                     } else {
-                        drawCell(String.valueOfC("" + cells[j][i].getOrder()), graphics, x - mapX, y - mapY);
+                        drawCell("" + cells[j][i].getOrder(), graphics, x - mapX, y - mapY);
                     }
                 }
                 x -= HORIZONTAL_RADIUS;

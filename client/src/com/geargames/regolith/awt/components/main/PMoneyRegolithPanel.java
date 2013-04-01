@@ -5,14 +5,14 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.Region;
-import com.geargames.regolith.awt.components.DefaultPContentPanel;
+import com.geargames.regolith.awt.components.PRootContentPanel;
 
 /**
  * User: mikhail v. kutuzov
  * Date: 11.01.13
  * Time: 11:39
  */
-public class PMoneyRegolithPanel extends DefaultPContentPanel {
+public class PMoneyRegolithPanel extends PRootContentPanel {
     private PLabel money;
     private PLabel regolith;
 

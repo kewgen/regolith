@@ -1,13 +1,12 @@
 package com.geargames.regolith.awt.components.selectWarriors;
 
-import com.geargames.awt.components.PContentPanel;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.awt.utils.ScrollHelper;
 import com.geargames.awt.utils.motions.CenteredElasticInertMotionListener;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.PFontCollection;
-import com.geargames.regolith.awt.components.DefaultPContentPanel;
+import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.localization.LocalizedStrings;
 
 /**
@@ -15,7 +14,7 @@ import com.geargames.regolith.localization.LocalizedStrings;
  * Date: 26.03.13
  * Панель просмотра доступных для найма бойцов и выбора одного или нескольких из них для битвы.
  */
-public class PSelectWarriorsPanel extends DefaultPContentPanel {
+public class PSelectWarriorsPanel extends PRootContentPanel {
 
     private PWarriorList warriorList;
 

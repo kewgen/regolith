@@ -1,7 +1,6 @@
 package com.geargames.regolith.application;
 
 
-import com.geargames.common.String;
 import com.geargames.common.logging.Debug;
 import com.geargames.platform.MIDlet;
 
@@ -49,7 +48,7 @@ public class TablesLoader extends com.geargames.common.TablesLoader {
                     break;
             }
         } catch (IOException ex) {
-            Debug.error(String.valueOfC(""), ex);
+            Debug.error("", ex);
         }
     }
 

@@ -3,13 +3,13 @@ package com.geargames.regolith.awt.components.main;
 import com.geargames.awt.components.PElement;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.awt.components.DefaultPContentPanel;
+import com.geargames.regolith.awt.components.PRootContentPanel;
 
 /**
  * User: mikhail v. kutuzov
  * Начальная панель.
  */
-public class PMainMenuPanel extends DefaultPContentPanel {
+public class PMainMenuPanel extends PRootContentPanel {
 
     public PMainMenuPanel(PObject object) {
         super(object);

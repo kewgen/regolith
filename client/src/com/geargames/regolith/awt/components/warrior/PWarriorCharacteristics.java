@@ -11,7 +11,6 @@ import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.menues.HorizontalFaces;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.common.String;
 import com.geargames.regolith.units.dictionaries.ClientWeaponCategoryCollection;
 
 /**
@@ -159,7 +158,7 @@ public class PWarriorCharacteristics extends PContentPanel {
         panel.getWarriorTacklesElement().setWarrior(warrior);
 
         healthIndicator.setWarrior(warrior);
-        fighter.setText(String.valueOfC(warrior.getName()));
+        fighter.setText(warrior.getName());
         vitality.setWarrior(warrior);
         strength.setWarrior(warrior);
         speed.setWarrior(warrior);

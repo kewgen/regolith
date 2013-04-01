@@ -6,12 +6,12 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.NullRegion;
 import com.geargames.common.util.Region;
-import com.geargames.regolith.awt.components.DefaultPContentPanel;
+import com.geargames.regolith.awt.components.PRootContentPanel;
 
 /**
  * Панель "заголовок" висит посредине верхней стороны экрана.
  */
-public class PHeadlinePanel extends DefaultPContentPanel {
+public class PHeadlinePanel extends PRootContentPanel {
     private PLabel label;
 
     public PHeadlinePanel(PObject prototype) {

@@ -1,11 +1,9 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
 import com.geargames.awt.components.*;
-import com.geargames.common.String;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.UIUtils;
-import com.geargames.regolith.application.Application;
 import com.geargames.regolith.units.dictionaries.WeaponTypeCollection;
 import com.geargames.regolith.units.tackle.Projectile;
 
@@ -69,16 +67,15 @@ public abstract class PProjectileExchangePanel extends PExchangePanel {
 
     protected void initiate() {
         Projectile projectile = (Projectile)getTackle();
-        caption.setText(String.valueOfC(projectile.getName()));
+        caption.setText(""+projectile.getName());
         weight.setText(UIUtils.getWeightRepresentation(projectile.getWeight()));
-        category.setText(String.valueOfC(projectile.getCategory().getName()));
+        category.setText(projectile.getCategory().getName());
         WeaponTypeCollection types = projectile.getWeaponTypes();
-        String weapons = String.valueOfC("");
+        String weapons = "";
         for (int i = 0; i < types.size(); i++) {
-            weapons = weapons.concatC(types.get(i).getName());
+            weapons = weapons + types.get(i).getName();
         }
         weaponTypes.setText(weapons);
-        amount.setText(String.valueOfI(getAmount()));
-
+        amount.setText(""+getAmount());
     }
 }

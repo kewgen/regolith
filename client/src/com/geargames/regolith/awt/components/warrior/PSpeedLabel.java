@@ -3,7 +3,6 @@ package com.geargames.regolith.awt.components.warrior;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.common.String;
 
 /**
  * User: mikhail v. kutuzov
@@ -14,7 +13,7 @@ public class PSpeedLabel extends PSimpleLabel {
     private Warrior warrior;
 
     public void draw(Graphics graphics, int x, int y) {
-        setText(String.valueOfI(warrior.getSpeed()));
+        setText(""+warrior.getSpeed());
         super.draw(graphics, x, y);
     }
 

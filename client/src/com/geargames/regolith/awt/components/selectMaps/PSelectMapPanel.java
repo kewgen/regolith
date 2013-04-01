@@ -8,11 +8,10 @@ import com.geargames.common.logging.Debug;
 import com.geargames.common.network.ClientDeferredAnswer;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.String;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.PFontCollection;
-import com.geargames.regolith.awt.components.DefaultPContentPanel;
+import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
@@ -32,7 +31,7 @@ import com.geargames.regolith.units.map.BattleMap;
  * Панель просмотра доступных карт и выбора одной из них для битвы.
  */
 // PBrowseMapsPanel
-public class PSelectMapPanel extends DefaultPContentPanel {
+public class PSelectMapPanel extends PRootContentPanel {
 
     private BattleType battleType;
     private BattleMap selectedMap;
@@ -77,7 +76,7 @@ public class PSelectMapPanel extends DefaultPContentPanel {
                 // Название карты
                 mapDescription = new PSimpleLabel(index);
                 mapDescription.setFont(PFontCollection.getFontLabel());
-                mapDescription.setText(String.valueOfC("<NAME>"));
+                mapDescription.setText("<NAME>");
                 addPassiveChild(mapDescription, index);
                 break;
 
@@ -103,7 +102,7 @@ public class PSelectMapPanel extends DefaultPContentPanel {
 
     public void setSelectedMap(BattleMap map) {
         selectedMap = map;
-        mapDescription.setText(String.valueOfC(map.getName()));
+        mapDescription.setText(map.getName());
     }
 
     public void showPanel(int allianceAmount, int allianceSize, int groupSize, boolean isRandomMap, DrawablePPanel callerPanel) throws Exception {

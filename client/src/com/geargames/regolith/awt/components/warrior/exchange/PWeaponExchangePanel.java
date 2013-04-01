@@ -3,10 +3,8 @@ package com.geargames.regolith.awt.components.warrior.exchange;
 import com.geargames.awt.components.PLabel;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.awt.components.PStepSpinBox;
-import com.geargames.common.String;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.UIUtils;
 import com.geargames.regolith.units.tackle.Weapon;
 import com.geargames.regolith.units.tackle.WeaponDistances;
@@ -96,22 +94,22 @@ public abstract class PWeaponExchangePanel extends PExchangePanel {
 
     protected void initiate() {
         Weapon weapon = (Weapon)getTackle();
-        caption.setText(String.valueOfC(weapon.getName()));
+        caption.setText(weapon.getName());
         weight.setText(UIUtils.getWeightRepresentation(weapon.getWeight()));
-        firmness.setText(String.valueOfI(weapon.getFirmness()));
-        state.setText(String.valueOfI(weapon.getState()));
-        upgrade.setText(String.valueOfI(weapon.getUpgrade()));
+        firmness.setText(""+weapon.getFirmness());
+        state.setText(""+weapon.getState());
+        upgrade.setText(""+weapon.getUpgrade());
         load.setText(UIUtils.getWeightRepresentation(weapon.getLoad()));
         WeaponType weaponType = weapon.getWeaponType();
 
-        capacity.setText(String.valueOfI(weaponType.getCapacity()));
-        accuracy.setText(String.valueOfI(weaponType.getAccuracy()));
-        accurateAction.setText(String.valueOfI(weaponType.getAccurateAction()));
-        baseFirmness.setText(String.valueOfI(weaponType.getBaseFirmness()));
+        capacity.setText(""+weaponType.getCapacity());
+        accuracy.setText(""+weaponType.getAccuracy());
+        accurateAction.setText(""+weaponType.getAccurateAction());
+        baseFirmness.setText(""+weaponType.getBaseFirmness());
         /*category.setText(String.valueOfC(weaponType.getCategory().getName()));*/
         WeaponDistances distances = weaponType.getDistance();
         /*distance.setText(String.valueOfC(distances.getMin() + "/" + distances.getMinOptimal() + "/" + distances.getMaxOptimal() + "/" + distances.getMax()));*/
-        ammunitionPerShoot.setText(String.valueOfI(weaponType.getAmmunitionPerShoot()));
+        ammunitionPerShoot.setText(""+weaponType.getAmmunitionPerShoot());
     }
 
     public int getNumber() {

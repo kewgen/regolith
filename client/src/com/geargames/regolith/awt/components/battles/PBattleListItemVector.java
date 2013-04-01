@@ -1,7 +1,6 @@
 package com.geargames.regolith.awt.components.battles;
 
 import com.geargames.common.logging.Debug;
-import com.geargames.common.String;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.application.ObjectManager;
@@ -39,7 +38,7 @@ public class PBattleListItemVector extends Vector {
         if (index < battles.size()) {
             panel.setBattle(battles.get(index));
         } else {
-            Debug.error(String.valueOfC("A NOT EXISTED BATTLE HAS BEEN RETRIEVED"));
+            Debug.error("A NOT EXISTED BATTLE HAS BEEN RETRIEVED");
         }
     }
 
