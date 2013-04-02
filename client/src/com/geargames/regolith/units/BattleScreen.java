@@ -17,6 +17,7 @@ import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.*;
+import com.geargames.regolith.units.tackle.WeaponCategory;
 
 import java.util.Vector;
 
@@ -158,40 +159,11 @@ public class BattleScreen extends Eventable implements TimerListener {
         for (int i = 0; i < group.length; i++) {
             Unit unit = group[i];
             if (isOnTheScreen(unit.getMapX(), unit.getMapY())) {
-                drawUnit(graphics, unit);
+                //drawUnit(graphics, unit);
             }
         }
     }
 
-    /**
-     * Рисуем бойца исходя из следующих предпосылок:
-     * Боец имеет базовый идентификатор изображения warrior.getFrameId.
-     * Состояние бойца отражено на рисунках сдвинутых одинакого относительно базового для всех юнитов.
-     *
-     * @param graphics
-     * @param unit
-     */
-    private void drawUnit(Graphics graphics, Unit unit) {
-        Warrior warrior = unit.getWarrior();
-        int offset = 0;
-        if (warrior.isMoving()) {
-            offset = Warrior.MOVING_OFFSET;
-        } else {
-            if (warrior.isShooting()) {
-                if (warrior.isSitting()) {
-                    offset = Warrior.SITTING_SHOOTING_OFFSET;
-                } else {
-                    offset = Warrior.STANDING_SHOOTING_OFFSET;
-                }
-            } else {
-                if (warrior.isSitting()) {
-                    offset = Warrior.SITTING_OFFSET;
-                }
-            }
-        }
-        offset += (unit.getWarrior().getDirection().getNumber() + 1) % 8;
-        graphics.getRender().getUnit(unit.getWarrior().getFrameId() + offset).draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY, null);
-    }
 
     private void drawGrid(Graphics graphics) {
         graphics.setColor(netColor);

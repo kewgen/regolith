@@ -3,9 +3,6 @@ package com.geargames.regolith.units.battle;
 import com.geargames.regolith.units.AmmunitionBag;
 import com.geargames.regolith.units.Bag;
 import com.geargames.regolith.units.Skill;
-import com.geargames.regolith.units.dictionaries.AllyCollection;
-import com.geargames.regolith.units.tackle.Armor;
-import com.geargames.regolith.units.tackle.Weapon;
 
 import java.util.Date;
 import java.util.Hashtable;
@@ -15,10 +12,6 @@ import java.util.Hashtable;
  * Date: 03.02.12
  */
 public class Warrior extends Ally {
-    public static final int MOVING_OFFSET = 8;
-    public static final int STANDING_SHOOTING_OFFSET = 16;
-    public static final int SITTING_OFFSET = 24;
-    public static final int SITTING_SHOOTING_OFFSET = 32;
     private short strength;
     private byte speed;
     private byte marksmanship;
