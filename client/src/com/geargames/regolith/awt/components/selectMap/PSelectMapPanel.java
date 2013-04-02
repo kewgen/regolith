@@ -2,22 +2,22 @@ package com.geargames.regolith.awt.components.selectMap;
 
 import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.components.*;
+import com.geargames.awt.utils.ScrollHelper;
 import com.geargames.awt.utils.motions.ElasticInertMotionListener;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
-import com.geargames.regolith.managers.ClientBaseManager;
 import com.geargames.regolith.managers.ClientBattleMarketManager;
 import com.geargames.regolith.serializers.answers.ClientBattleMapAnswer;
 import com.geargames.regolith.serializers.answers.ClientBattleMapListAnswer;
-import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleType;
@@ -60,6 +60,7 @@ public class PSelectMapPanel extends PRootContentPanel {
 
                 ElasticInertMotionListener motionListener = new ElasticInertMotionListener();
                 battleMapList.setMotionListener(motionListener);
+//                ScrollHelper.adjustStubMotionListener();
 //                CenteredElasticInertMotionListener motionListener = new CenteredElasticInertMotionListener();
 //                motionListener.setInstinctPosition(false);
 //                battleMapList.setMotionListener(
@@ -116,18 +117,22 @@ public class PSelectMapPanel extends PRootContentPanel {
             Debug.critical("", e); //todo: Текст ошибки
             //todo: Сообщить пользователю об ошибке
             //todo: Перенести пользователя в одно из диалоговых окон, от куда он может продолжить игру
+            NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_FIND_BATTLE_TYPE_EXCEPTION, this);
+            return;
         }
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
-        ClientBaseManager baseManager = clientConfiguration.getBaseManager();
+//        ClientBaseManager baseManager = clientConfiguration.getBaseManager();
         ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
 
         try {
-            Debug.debug("The client go to the battle market...");
-            ClientConfirmationAnswer confirm = baseManager.goBattleManager();
-            if (!confirm.isConfirm()) {
-                Debug.critical("The client could not go to the battle market");
-            }
+//            Debug.debug("The client go to the battle market...");
+//            ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+//            if (!confirm.isConfirm()) {
+//                Debug.critical("The client could not go to the battle market");
+//                //todo: Сообщить пользователю об ошибке
+//                return;
+//            }
 
             if (isRandomMap) {
                 Debug.debug("Browsing a random map...");
@@ -142,6 +147,8 @@ public class PSelectMapPanel extends PRootContentPanel {
                 Debug.debug("Received a list of maps (count = " + battleMaps.length + ")");
                 if (battleMaps.length == 0) {
                     Debug.critical("There are no maps to use");
+                    NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_GET_BATTLE_MAP_EXCEPTION, this);
+                    return;
                 }
                 selectedMap = null;
 
@@ -185,6 +192,7 @@ public class PSelectMapPanel extends PRootContentPanel {
             listenToBattleAnswer = battleMarketManager.createBattle(selectedMap, battleType);
         } catch (Exception e) {
             Debug.critical("Failed to create the battle", e);
+            NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_CREATE_BATTLE_EXCEPTION, this);
             return;
         }
         Battle battle = listenToBattleAnswer.getBattle();
