@@ -44,18 +44,16 @@ public class BatchAnswer extends SerializedMessage {
 
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        if (messages.size() != 0) {
-            SimpleSerializer.serialize(messages.size(), buffer);
-            for (SerializedMessage message : messages) {
-                int position = buffer.getPosition();
-                buffer.setPosition(position + Packets.HEAD_SIZE);
-                message.serialize(buffer);
-                int newPosition = buffer.getPosition();
-                buffer.setPosition(position);
-                SimpleSerializer.serialize((short) (newPosition - position - Packets.HEAD_SIZE), buffer);
-                SimpleSerializer.serialize(message.getType(), buffer);
-                buffer.setPosition(newPosition);
-            }
+        SimpleSerializer.serialize(messages.size(), buffer);
+        for (SerializedMessage message : messages) {
+            int position = buffer.getPosition();
+            buffer.setPosition(position + Packets.HEAD_SIZE);
+            message.serialize(buffer);
+            int newPosition = buffer.getPosition();
+            buffer.setPosition(position);
+            SimpleSerializer.serialize((short) (newPosition - position - Packets.HEAD_SIZE), buffer);
+            SimpleSerializer.serialize(message.getType(), buffer);
+            buffer.setPosition(newPosition);
         }
     }
 
