@@ -1,13 +1,13 @@
 package com.geargames.regolith.units.map.finder;
 
-import com.geargames.regolith.units.map.BattleScreen;
+import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.map.Finder;
 import com.geargames.regolith.map.Pair;
 
 /**
  * User: mkutuzov
  * Date: 20.02.12
- * Предназначен для поиска координат середины ячейки.
+ * Предназначен для поиска экранных координат середины ячейки.
  */
 public class ReverseProjectionFinder extends Finder {
     private Pair map;

@@ -7,6 +7,7 @@ import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.ClientTestHelper;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.Manager;
+import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
@@ -15,6 +16,8 @@ import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import junit.framework.Assert;
 import org.junit.Test;
+
+import java.util.Vector;
 import java.util.concurrent.BrokenBarrierException;
 
 /**
@@ -78,11 +81,14 @@ public class BattleListenerTest {
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
         System.out.println("Waiting receiving a list of battles...");
+        ObjectManager objectManager = ObjectManager.getInstance();
+        Vector battleVector = objectManager.getBattleCollection().getBattles();
+        battleVector.clear();
         ClientBrowseBattlesAnswer browseBattlesAnswer = new ClientBrowseBattlesAnswer();
         Assert.assertTrue("'Client C' does not receive a list of battles",
                 waitForAsyncAnswer(browseBattlesAnswer, Packets.BROWSE_CREATED_BATTLES, BROWSE_CREATED_BATTLES_WAINTING));
         Assert.assertNotNull("??? The client does not receive a list of battles", browseBattlesAnswer.getAnswers());
-        ClientBattleCollection battles = browseBattlesAnswer.getBattles();
+        ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();
         Assert.assertNotNull("??? The client does not receive a list of battles", battles);
         Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         Battle battle = battles.get(0);
@@ -302,11 +308,12 @@ public class BattleListenerTest {
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
         System.out.println("Waiting receiving a list of battles...");
+        battleVector.clear();
         browseBattlesAnswer = new ClientBrowseBattlesAnswer();
         Assert.assertTrue("'Client C' does not receive a list of battles",
                 waitForAsyncAnswer(browseBattlesAnswer, Packets.BROWSE_CREATED_BATTLES, BROWSE_CREATED_BATTLES_WAINTING));
         Assert.assertNotNull("??? The client does not receive a list of battles", browseBattlesAnswer.getAnswers());
-        battles = browseBattlesAnswer.getBattles();
+        battles = ObjectManager.getInstance().getBattleCollection();
         Assert.assertNotNull("??? The client does not receive a list of battles", battles);
         Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         battle = battles.get(0);
@@ -374,11 +381,12 @@ public class BattleListenerTest {
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
         System.out.println("Waiting receiving a list of battles...");
+        battleVector.clear();
         browseBattlesAnswer = new ClientBrowseBattlesAnswer();
         Assert.assertTrue("'Client C' does not receive a list of battles",
                 waitForAsyncAnswer(browseBattlesAnswer, Packets.BROWSE_CREATED_BATTLES, BROWSE_CREATED_BATTLES_WAINTING));
         Assert.assertNotNull("??? The client does not receive a list of battles", browseBattlesAnswer.getAnswers());
-        battles = browseBattlesAnswer.getBattles();
+        battles = ObjectManager.getInstance().getBattleCollection();
         Assert.assertNotNull("??? The client does not receive a list of battles", battles);
         Assert.assertTrue("Battle available to play should be one (battle count = " + battles.size() + ")", battles.size() == 1);
         battle = battles.get(0);

@@ -1,11 +1,11 @@
-package com.geargames.regolith;
+package com.geargames.regolith.helpers;
 
 /**
  * User: mikhail v. kutuzov
  * Date: 18.12.12
  * Time: 13:50
  */
-public class UIUtils {
+public class ClientGUIHelper {
 
     public static String getWeightRepresentation(short grams, String kg, String g) {
         int kilos = grams / 1000;

@@ -4,6 +4,7 @@ import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.helpers.ClientBattleHelper;
+import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.Direction;
 

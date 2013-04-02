@@ -3,7 +3,7 @@ package com.geargames.regolith.awt.components.warrior.exchange;
 import com.geargames.awt.components.*;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.UIUtils;
+import com.geargames.regolith.helpers.ClientGUIHelper;
 import com.geargames.regolith.units.tackle.Medikit;
 
 /**
@@ -31,7 +31,7 @@ public abstract class PMedikitExchangePanel extends PExchangePanel {
             case 1:
                 addButton2((PObject) index.getPrototype(), index);
                 break;
-            case 2:
+            case 109:
                 caption = new PSimpleLabel(index);
                 addPassiveChild(caption, index);
                 break;
@@ -75,7 +75,7 @@ public abstract class PMedikitExchangePanel extends PExchangePanel {
         Medikit medikit =(Medikit) getTackle();
 
         caption.setText(medikit.getName());
-        weight.setText(UIUtils.getWeightRepresentation(medikit.getWeight()));
+        weight.setText(ClientGUIHelper.getWeightRepresentation(medikit.getWeight()));
 
         minSkill.setText(""+medikit.getMinSkill().getAction()+""+medikit.getMinSkill().getExperience());
         actionScores.setText(""+medikit.getActionScores());

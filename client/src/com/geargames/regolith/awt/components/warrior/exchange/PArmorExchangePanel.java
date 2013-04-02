@@ -3,7 +3,7 @@ package com.geargames.regolith.awt.components.warrior.exchange;
 import com.geargames.awt.components.*;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.UIUtils;
+import com.geargames.regolith.helpers.ClientGUIHelper;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.ArmorType;
 
@@ -41,7 +41,7 @@ public abstract class PArmorExchangePanel extends PExchangePanel {
             case 1:
                 addButton2((PObject) index.getPrototype(), index);
                 break;
-            case 2:
+            case 109:
                 caption = new PSimpleLabel(index);
                 addPassiveChild(caption, index);
                 break;
@@ -102,7 +102,7 @@ public abstract class PArmorExchangePanel extends PExchangePanel {
         Armor tackle = (Armor)getTackle();
 
         caption.setText(tackle.getName());
-        weight.setText(UIUtils.getWeightRepresentation(tackle.getWeight()));
+        weight.setText(ClientGUIHelper.getWeightRepresentation(tackle.getWeight()));
         firmness.setText(""+tackle.getFirmness());
         state.setText(""+tackle.getState());
         upgrade.setText(""+tackle.getUpgrade());
@@ -116,7 +116,7 @@ public abstract class PArmorExchangePanel extends PExchangePanel {
         regenerationBonus.setText(""+armorType.getRegenerationBonus());
 /*
         speedBonus.setText(String.valueOfI(armorType.getSpeedBonus()));
-        strengthBonus.setText(UIUtils.getWeightRepresentation(armorType.getStrengthBonus()));
+        strengthBonus.setText(ClientGUIHelper.getWeightRepresentation(armorType.getStrengthBonus()));
 */
         visibilityBonus.setText(""+armorType.getVisibilityBonus());
     }

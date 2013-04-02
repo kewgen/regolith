@@ -114,4 +114,5 @@ public class HorizontalFaces extends HorizontalScrollView {
     public int getItemOffsetY() {
         return 0;
     }
+
 }
