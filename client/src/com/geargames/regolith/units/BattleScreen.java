@@ -1,7 +1,8 @@
-package com.geargames.regolith.units.map;
+package com.geargames.regolith.units;
 
 import com.geargames.awt.Eventable;
 import com.geargames.common.timers.TimerListener;
+import com.geargames.common.timers.TimerManager;
 import com.geargames.regolith.Port;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
@@ -10,12 +11,12 @@ import com.geargames.regolith.application.Event;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
-import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.map.Pair;
-import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
+import com.geargames.regolith.units.map.*;
 
 import java.util.Vector;
 
@@ -73,14 +74,16 @@ public class BattleScreen extends Eventable implements TimerListener {
 
 
     public void initAllies() {
+        TimerManager.setPeriodicTimer(100, this);
         BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
         BattleAlliance alliance = group[0].getWarrior().getBattleGroup().getAlliance();
         ExitZone exit = alliance.getExit();
         setCellCenter(exit.getX(), exit.getY());
         BattleGroupCollection clients = alliance.getAllies();
         for (int j = 0; j < clients.size(); j++) {
-            for (int i = 0; i < clients.get(j).getWarriors().size(); i++) {
-                user = getGroupUnitByWarrior(clients.get(j).getWarriors().get(i));
+            WarriorCollection warriors = clients.get(j).getWarriors();
+            for (int i = 0; i < warriors.size(); i++) {
+                user = getGroupUnitByWarrior(warriors.get(i));
                 ClientBattleHelper.observe(user.getWarrior(), battleConfiguration);
                 ClientBattleHelper.initMapXY(this, user);
                 Step step = new Step();
@@ -554,10 +557,14 @@ public class BattleScreen extends Eventable implements TimerListener {
         return battle;
     }
 
-    public void setBattleMap(Battle battle) {
+    public void setBattle(Battle battle) {
         this.battle = battle;
     }
 
+    /**
+     * Моя ли очередь ходить?
+     * @return
+     */
     public boolean isMyTurn() {
         return myTurn;
     }
@@ -566,6 +573,10 @@ public class BattleScreen extends Eventable implements TimerListener {
         this.myTurn = myTurn;
     }
 
+    /**
+     * Вернуть группу своих бойцов участвующих в битве.
+     * @return
+     */
     public Unit[] getGroup() {
         return group;
     }
@@ -574,6 +585,10 @@ public class BattleScreen extends Eventable implements TimerListener {
         this.group = group;
     }
 
+    /**
+     * Вернуть своего активного бойца.
+     * @return
+     */
     public Unit getUser() {
         return user;
     }

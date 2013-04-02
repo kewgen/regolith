@@ -17,7 +17,7 @@ public class MenuTest {
 
     public static void main(String[] args) {
         try {
-            service = MainServiceManager.runMainService();
+            //service = MainServiceManager.runMainService();
             client();
         } catch (Exception e) {
             e.printStackTrace();

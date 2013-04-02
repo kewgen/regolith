@@ -1,5 +1,7 @@
 package com.geargames.regolith.units.map;
 
+import com.geargames.regolith.units.BattleScreen;
+
 /**
  * User: mkutuzov
  * Date: 15.02.12

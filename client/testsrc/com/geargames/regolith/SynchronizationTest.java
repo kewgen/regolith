@@ -3,11 +3,11 @@ package com.geargames.regolith;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.ClientBorder;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.map.finder.ProjectionFinder;
 import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
 import com.geargames.regolith.units.map.verifier.CubeBorderCorrector;
@@ -109,14 +109,14 @@ public class SynchronizationTest {
         screen.setCellFinder(new ProjectionFinder());
         screen.setCorrector(new CubeBorderCorrector());
         screen.setMyTurn(true);
-        screen.setBattleMap(battle);
+        screen.setBattle(battle);
         screen.setGroup(group);
         screen.initMap();
         screen.initAllies();
 
         screen.moveUser(10,10);
         while (warrior.isMoving()) {
-            screen.onTimer(0); //todo: Должен быть запущен таймер штатными средствами
+            screen.onTimer(0);
         }
 
         Assert.assertEquals(valO, manager.getObserve());

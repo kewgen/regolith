@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.map.finder;
 
-import com.geargames.regolith.units.map.BattleScreen;
+import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.map.Finder;
 import com.geargames.regolith.map.Pair;
 

@@ -3,7 +3,6 @@ package com.geargames.regolith.awt.components.battles;
 import com.geargames.awt.components.PContentPanel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.ArrayList;
 
 /**
  * @author Mikhail_Kutuzov

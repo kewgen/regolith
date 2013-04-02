@@ -1,6 +1,7 @@
 package com.geargames.regolith.units.map;
 
 import com.geargames.regolith.map.Pair;
+import com.geargames.regolith.units.BattleScreen;
 
 /**
  * User: mkutuzov

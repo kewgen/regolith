@@ -45,11 +45,8 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
         try {
             switch (type) {
                 case Packets.BROWSE_CREATED_BATTLES:
-                    ClientBattleCollection newBattles = ((ClientBrowseBattlesAnswer) message).getBattles();
-                    int size = newBattles.size();
-                    ClientBattleCollection oldBattles = ObjectManager.getInstance().getBattleCollection();
-                    for (int i = 0; i < size; i++) {
-                        oldBattles.add(newBattles.get(i));
+                    for (int i = 0; i < items.size(); i++) {
+                        ((PBattleListItem) items.get(i)).update();
                     }
                     break;
                 default:

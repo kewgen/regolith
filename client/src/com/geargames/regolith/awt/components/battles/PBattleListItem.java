@@ -12,7 +12,7 @@ import com.geargames.regolith.units.battle.Battle;
  * Панель для отображения текущих битв.
  */
 public class PBattleListItem extends PContentPanel {
-    private PBattlePanels battleButtons;
+    private PBattlePanels playersPanel;
     private PLabel battleTypeLabel;
     private PLabel composition;
     private PLabel level;
@@ -24,7 +24,7 @@ public class PBattleListItem extends PContentPanel {
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
             case 0:
-                battleButtons = new PBattlePanels((PObject) index.getPrototype(), this);
+                playersPanel = new PBattlePanels((PObject) index.getPrototype(), this);
                 break;
             case 1:
                 battleTypeLabel = new PSimpleLabel(index);
@@ -42,13 +42,13 @@ public class PBattleListItem extends PContentPanel {
     }
 
     public void setBattle(Battle battle) {
-        if (battleButtons.getBattle() != battle) {
-            battleButtons.setBattle(battle);
+        if (playersPanel.getBattle() != battle) {
+            playersPanel.setBattle(battle);
         }
     }
 
     public Battle getBattle() {
-        return battleButtons.getBattle();
+        return playersPanel.getBattle();
     }
 
     /**
@@ -59,7 +59,7 @@ public class PBattleListItem extends PContentPanel {
         int groupSize = getBattle().getBattleType().getAllianceSize();
         for (int i = 0; i < allianceAmount; i++) {
             for (int j = 0; j < groupSize; j++) {
-                battleButtons.resetButtonAccount(i, j);
+                playersPanel.resetButtonAccount(i, j);
             }
         }
     }
@@ -71,6 +71,6 @@ public class PBattleListItem extends PContentPanel {
      * @param groupNumber  нормер группы морды
      */
     public void update(int allianceNumber, int groupNumber) {
-        battleButtons.resetButtonAccount(allianceNumber, groupNumber);
+        playersPanel.resetButtonAccount(allianceNumber, groupNumber);
     }
 }

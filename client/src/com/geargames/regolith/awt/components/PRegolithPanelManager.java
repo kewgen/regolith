@@ -4,6 +4,7 @@ import com.geargames.awt.*;
 import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
+import com.geargames.regolith.awt.components.battles.PBattlesPanel;
 import com.geargames.regolith.awt.components.selectMaps.PSelectMapPanel;
 import com.geargames.regolith.awt.components.main.PHeadlinePanel;
 import com.geargames.regolith.awt.components.main.PLeftPanel;
@@ -157,12 +158,12 @@ public class PRegolithPanelManager extends PPanelManager {
         selectWarriors.setAnchor(Anchors.CENTER_ANCHOR);
         selectWarriors.setElement(selectWarriorsPanel);
 
-/*
+
         PBattlesPanel battlesPanel = new PBattlesPanel(render.getObject(Graph.PAN_BATTLE_LIST));
         battlesWindow = new DefaultDrawablePPanel();
         battlesWindow.setAnchor(Anchors.CENTER_ANCHOR);
         battlesWindow.setElement(battlesPanel);
-*/
+
     }
 
     public DrawablePPanel getBattlesWindow() {
