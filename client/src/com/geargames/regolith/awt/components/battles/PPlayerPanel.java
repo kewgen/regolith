@@ -15,7 +15,9 @@ public class PPlayerPanel extends PContentPanel {
     }
 
     protected void createSlotElementByIndex(IndexObject index, PObject parentPrototype) {
-        addActiveChild(new PPlayerButton((PObject)index.getPrototype()), index);
+        if(index.getSlot() != 110){
+            addActiveChild(new PPlayerButton((PObject)index.getPrototype()), index);
+        }
     }
 
     public PPlayerButton getPlayerButton(int index){

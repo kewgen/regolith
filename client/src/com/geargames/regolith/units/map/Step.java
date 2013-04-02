@@ -15,11 +15,6 @@ import com.geargames.regolith.units.battle.Direction;
  * бойца по игровому полю.
  */
 public class Step {
-/*
-    private static int speed = ClientConfigurationFactory.getConfiguration().getBattleConfiguration().getWalkSpeed();
-    private static double shiftOnTickX = (double) BattleScreen.HORIZONTAL_RADIUS / (double) speed;
-    private static double shiftOnTickY = (double) BattleScreen.VERTICAL_RADIUS / (double) speed;
-*/
     private BattleScreen screen;
     private Unit unit;
     private Direction step;
