@@ -15,7 +15,7 @@ import java.util.Hashtable;
  * User: mikhail v. kutuzov
  * Класс управляет отображением кнопок на родительской панели, учитывая тип битвы отображённый сейчас на ней.
  */
-public class PBattlePannels {
+public class PBattlePanels {
     private Battle battle;
     private ArrayList activeAlliances;
 
@@ -33,7 +33,7 @@ public class PBattlePannels {
     private ArrayList type4x4;
     private Hashtable table;
 
-    public PBattlePannels(PObject prototype, PContentPanel container) {
+    public PBattlePanels(PObject prototype, PContentPanel container) {
         type1x1 = new ArrayList();
         type1x1x1 = new ArrayList();
         type1x1x1x1 = new ArrayList();
