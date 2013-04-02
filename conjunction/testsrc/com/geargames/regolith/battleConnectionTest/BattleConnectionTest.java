@@ -88,11 +88,9 @@ public class BattleConnectionTest {
 
         System.out.println("Listening created battles...");
         confirm = battleMarketManager.listenToCreatedBattles();
-        Assert.assertTrue(confirm.isConfirm());
         Assert.assertTrue("The client can not start listening to created battles", confirm.isConfirm());
 
         System.out.println("Waiting receiving a list of battles...");
-
         ObjectManager objectManager = ObjectManager.getInstance();
         Vector battleVector = objectManager.getBattleCollection().getBattles();
         battleVector.clear();

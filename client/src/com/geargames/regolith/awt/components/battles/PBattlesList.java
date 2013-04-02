@@ -4,16 +4,10 @@ import com.geargames.awt.components.PVerticalScrollView;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.network.*;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
-import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.application.ObjectManager;
-import com.geargames.regolith.serializers.answers.ClientBrowseBattlesAnswer;
-import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
-import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 
 import java.util.Vector;
 
@@ -32,10 +26,12 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
         types = new short[]{Packets.BROWSE_CREATED_BATTLES};
     }
 
+    @Override
     public int getInterval() {
         return 1000;
     }
 
+    @Override
     public short[] getTypes() {
         return types;
     }
@@ -43,24 +39,27 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
     @Override
     public void onReceive(ClientDeSerializedMessage message, short type) {
         try {
+            Debug.debug("PBattlesList.onReceive(): type = " + type);
             switch (type) {
                 case Packets.BROWSE_CREATED_BATTLES:
                     for (int i = 0; i < items.size(); i++) {
-                        ((PBattleListItem) items.get(i)).update();
+                        ((PBattleListItem) items.elementAt(i)).update();
                     }
                     break;
                 default:
-                    Debug.error("There is a message of type " + type);
+                    Debug.error("There is a message of type = " + type);
             }
         } catch (Exception e) {
-            Debug.error("Could not deserialize a message of type " + type, e);
+            Debug.error("Could not deserialize a message of type = " + type, e);
         }
     }
 
+    @Override
     public void initiate(Graphics graphics) {
         setInitiated(true);
     }
 
+    @Override
     public Vector getItems() {
         return items;
     }

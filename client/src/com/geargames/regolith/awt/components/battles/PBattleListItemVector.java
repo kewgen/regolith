@@ -84,4 +84,5 @@ public class PBattleListItemVector extends Vector {
     public int size() {
         return battles.size();
     }
+
 }
