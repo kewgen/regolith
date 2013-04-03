@@ -14,6 +14,11 @@ import java.util.List;
  * Date: 21.06.12
  */
 public class ClientAtBattleCreation extends MainState {
+    private BrowseBattlesSchedulerService schedulerService;
+
+    public ClientAtBattleCreation() {
+        schedulerService = MainServerConfigurationFactory.getConfiguration().getBrowseBattlesSchedulerService();
+    }
 
     @Override
     protected void execute(MicroByteBuffer from, Client client, short type) throws RegolithException {
@@ -39,6 +44,12 @@ public class ClientAtBattleCreation extends MainState {
                 break;
             case Packets.FRAME_MESSAGE:
                 request = new ServerGetFrameRequest();
+                break;
+            case Packets.LISTEN_TO_BROWSED_CREATED_BATTLES:
+                request = new ServerListenToBrowsedCreatedBattlesRequest(schedulerService);
+                break;
+            case Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES:
+                request = new ServerDoNotListenToCreatedBattlesRequest(schedulerService);
                 break;
             default:
                 throw new RegolithException("Invalid message type (" + type + ")");

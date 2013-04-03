@@ -41,7 +41,6 @@ public class ServerCreateBattleRequest extends MainOneToClientRequest {
         int battleTypeId = SimpleDeserializer.deserializeInt(from);
         Battle battle = battleMarketManager.createBattle(battleMap, battleTypeId, client.getAccount());
         client.setState(new ClientAtBattleCreation());
-        schedulerService.removeListener(client);
         schedulerService.addBattle(battle);
         return ServerListenToBattleAnswer.AnswerSuccess(writeBuffer, battle, Packets.CREATE_BATTLE);
     }
