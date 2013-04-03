@@ -1,6 +1,6 @@
 package com.geargames.regolith.units;
 
-import com.geargames.awt.Eventable;
+import com.geargames.awt.Drawable;
 import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
 import com.geargames.regolith.Port;
@@ -8,6 +8,7 @@ import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.Event;
+import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
@@ -25,7 +26,7 @@ import java.util.Vector;
  * User: mkutuzov
  * Date: 13.02.12
  */
-public class BattleScreen extends Eventable implements TimerListener {
+public class BattleScreen extends Drawable implements TimerListener {
     public static final int GROUND_WIDTH = 348;
     public static final int GROUND_HEIGHT = 174;
     public static final int HORIZONTAL_DIAGONAL = GROUND_WIDTH / 3;
@@ -35,13 +36,13 @@ public class BattleScreen extends Eventable implements TimerListener {
     public static int VERTICAL_RADIUS = VERTICAL_DIAGONAL / 2;
     public static double TANGENS = (VERTICAL_RADIUS + 0.0) / (HORIZONTAL_RADIUS + 0.0);
 
-    private Unit[] enemies;
-    private Unit[] allies;
+    private BattleUnit[] enemies;
+    private BattleUnit[] allies;
 
     private Vector steps;
     private Battle battle;
-    private Unit[] group;
-    private Unit user;
+    private BattleUnit[] group;
+    private BattleUnit user;
     private MapCorrector corrector;
     private Finder cellFinder;
     private Finder coordinateFinder;
@@ -71,11 +72,11 @@ public class BattleScreen extends Eventable implements TimerListener {
 
     public BattleScreen() {
         steps = new Vector();
+        TimerManager.setPeriodicTimer(100, this);
     }
 
 
     public void initAllies() {
-        TimerManager.setPeriodicTimer(100, this);
         BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
         BattleAlliance alliance = group[0].getWarrior().getBattleGroup().getAlliance();
         ExitZone exit = alliance.getExit();
@@ -134,6 +135,28 @@ public class BattleScreen extends Eventable implements TimerListener {
         drawGroup(graphics);
     }
 
+    public int getX() {
+        return 0;
+    }
+
+    public void setX(int x) {
+    }
+
+    public int getY() {
+        return 0;
+    }
+
+    public void setY(int y) {
+    }
+
+    public int getHeight() {
+        return Port.getScreenH();
+    }
+
+    public int getWidth() {
+        return Port.getScreenW();
+    }
+
     /**
      * Прорисовываем изометрическую клетку карты, по координатам её центра(x;y) на
      * графическом контексте graphics.
@@ -142,12 +165,14 @@ public class BattleScreen extends Eventable implements TimerListener {
      * @param x
      * @param y
      */
-    private void drawCell(String data, Graphics graphics, int x, int y) {
+    private void drawCell(Graphics graphics, int x, int y, boolean path) {
         graphics.drawLine(x, y - VERTICAL_RADIUS, x + HORIZONTAL_RADIUS, y);
         graphics.drawLine(x + HORIZONTAL_RADIUS, y, x, y + VERTICAL_RADIUS);
         graphics.drawLine(x, y + VERTICAL_RADIUS, x - HORIZONTAL_RADIUS, y);
         graphics.drawLine(x - HORIZONTAL_RADIUS, y, x, y - VERTICAL_RADIUS);
-        graphics.drawString(data, x, y, 0);
+        if (path) {
+            graphics.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x, y);
+        }
     }
 
     /**
@@ -157,11 +182,21 @@ public class BattleScreen extends Eventable implements TimerListener {
      */
     private void drawGroup(Graphics graphics) {
         for (int i = 0; i < group.length; i++) {
-            Unit unit = group[i];
+            BattleUnit unit = group[i];
             if (isOnTheScreen(unit.getMapX(), unit.getMapY())) {
-                //drawUnit(graphics, unit);
+                drawUnit(graphics, unit);
             }
         }
+    }
+
+
+    /**
+     * Рисуем бойца.
+     *
+     * @param graphics
+     */
+    private void drawUnit(Graphics graphics, BattleUnit unit) {
+        unit.getState().getPUnit(unit, graphics.getRender()).draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY, unit.getWarrior());
     }
 
 
@@ -176,9 +211,9 @@ public class BattleScreen extends Eventable implements TimerListener {
             for (int i = 0; i < length; i++) {
                 if (isOnTheScreen(x, y)) {
                     if (BattleMapHelper.isShortestPathCell(cells[j][i], user.getWarrior())) {
-                        drawCell("*", graphics, x - mapX, y - mapY);
+                        drawCell(graphics, x - mapX, y - mapY, true);
                     } else {
-                        drawCell("" + cells[j][i].getOrder(), graphics, x - mapX, y - mapY);
+                        drawCell(graphics, x - mapX, y - mapY, false);
                     }
                 }
                 x -= HORIZONTAL_RADIUS;
@@ -207,8 +242,8 @@ public class BattleScreen extends Eventable implements TimerListener {
      * @param y координата карты
      */
     public void setCenter(int x, int y) {
-        setMapX(x - (Port.getScreenW() >> 1));
-        setMapY(y - (Port.getScreenH() >> 1));
+        setMapX(x - (getWidth() >> 1));
+        setMapY(y - (getHeight() >> 1));
         center.setX(x);
         center.setY(y);
         corrector.correct(getMapX(), getMapY(), this);
@@ -230,6 +265,17 @@ public class BattleScreen extends Eventable implements TimerListener {
         //todo: Реализовать функциональноть, стартующую и останавливающую таймер
         for (int i = 0; i < steps.size(); i++) {
             ((Step) steps.elementAt(i)).onTick();
+        }
+        if (isMyTurn()) {
+            for (int i = 0; i < group.length; i++) {
+                group[i].getState().onTime();
+            }
+        }
+        for (int i = 0; i < allies.length; i++) {
+            allies[i].getState().onTime();
+        }
+        for (int i = 0; i < enemies.length; i++) {
+            enemies[i].getState().onTime();
         }
     }
 
@@ -291,7 +337,7 @@ public class BattleScreen extends Eventable implements TimerListener {
         return true;
     }
 
-    private Unit getGroupUnitByWarrior(Warrior warrior) {
+    private BattleUnit getGroupUnitByWarrior(Warrior warrior) {
         for (int i = 0; i < group.length; i++) {
             if (warrior == group[i].getWarrior()) {
                 return group[i];
@@ -300,7 +346,7 @@ public class BattleScreen extends Eventable implements TimerListener {
         return null;
     }
 
-    private Unit getAllyUnitByWarrior(Warrior warrior) {
+    private BattleUnit getAllyUnitByWarrior(Warrior warrior) {
         for (int i = 0; i < allies.length; i++) {
             if (warrior == allies[i].getWarrior()) {
                 return allies[i];
@@ -309,7 +355,7 @@ public class BattleScreen extends Eventable implements TimerListener {
         return null;
     }
 
-    private Unit getEnemyUnitByWarrior(Warrior warrior) {
+    private BattleUnit getEnemyUnitByWarrior(Warrior warrior) {
         for (int i = 0; i < enemies.length; i++) {
             if (warrior == enemies[i].getWarrior()) {
                 return enemies[i];
@@ -319,7 +365,7 @@ public class BattleScreen extends Eventable implements TimerListener {
     }
 
 
-    private Step getStep(Unit unit) {
+    private Step getStep(BattleUnit unit) {
         for (int i = 0; i < steps.size(); i++) {
             if (((Step) steps.elementAt(i)).getUnit() == unit) {
                 return (Step) steps.elementAt(i);
@@ -535,6 +581,7 @@ public class BattleScreen extends Eventable implements TimerListener {
 
     /**
      * Моя ли очередь ходить?
+     *
      * @return
      */
     public boolean isMyTurn() {
@@ -547,21 +594,23 @@ public class BattleScreen extends Eventable implements TimerListener {
 
     /**
      * Вернуть группу своих бойцов участвующих в битве.
+     *
      * @return
      */
-    public Unit[] getGroup() {
+    public BattleUnit[] getGroup() {
         return group;
     }
 
-    public void setGroup(Unit[] group) {
+    public void setGroup(BattleUnit[] group) {
         this.group = group;
     }
 
     /**
      * Вернуть своего активного бойца.
+     *
      * @return
      */
-    public Unit getUser() {
+    public BattleUnit getUser() {
         return user;
     }
 }
