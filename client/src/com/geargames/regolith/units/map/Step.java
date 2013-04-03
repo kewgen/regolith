@@ -5,7 +5,7 @@ import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.units.BattleScreen;
-import com.geargames.regolith.units.Unit;
+import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.battle.Direction;
 
 /**
@@ -16,7 +16,7 @@ import com.geargames.regolith.units.battle.Direction;
  */
 public class Step {
     private BattleScreen screen;
-    private Unit unit;
+    private BattleUnit unit;
     private Direction step;
     private int ticks;
     private boolean initiated;
@@ -99,11 +99,11 @@ public class Step {
      *
      * @return
      */
-    public Unit getUnit() {
+    public BattleUnit getUnit() {
         return unit;
     }
 
-    public void setUnit(Unit unit) {
+    public void setUnit(BattleUnit unit) {
         this.unit = unit;
     }
 }

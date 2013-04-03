@@ -20,12 +20,10 @@ import com.geargames.regolith.units.battle.Battle;
 public class ServerListenToBattleRequest extends MainOneToClientRequest {
     private BattleManagerContext battleManagerContext;
     private ServerBattleMarketManager battleMarketManager;
-    private BrowseBattlesSchedulerService browseBattlesSchedulerService;
 
     public ServerListenToBattleRequest(BattleManagerContext battleManagerContext, ServerBattleMarketManager battleMarketManager, BrowseBattlesSchedulerService browseBattlesSchedulerService) {
         this.battleManagerContext = battleManagerContext;
         this.battleMarketManager = battleMarketManager;
-        this.browseBattlesSchedulerService = browseBattlesSchedulerService;
     }
 
     @Override
@@ -34,7 +32,6 @@ public class ServerListenToBattleRequest extends MainOneToClientRequest {
         Battle battle = battleManagerContext.getBattlesById().get(battleId);
         if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) == battle) {
             battleMarketManager.listenToBattle(battle, client.getAccount());
-            browseBattlesSchedulerService.removeListener(client);
             client.setState(new ClientAtBattleCreation());
             return ServerListenToBattleAnswer.AnswerSuccess(writeBuffer, battle, Packets.LISTEN_TO_CREATED_BATTLE);
         } else {

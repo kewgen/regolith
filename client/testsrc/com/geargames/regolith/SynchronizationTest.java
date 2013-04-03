@@ -4,8 +4,8 @@ import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
+import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.ClientBorder;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.finder.ProjectionFinder;
@@ -100,8 +100,8 @@ public class SynchronizationTest {
         BattleMapHelper.clearRoutes(warrior, 0, 0);
         BattleMapHelper.clearViewAround(warrior);
 
-        Unit[] group = new Unit[1];
-        Unit unit = new Unit();
+        BattleUnit[] group = new BattleUnit[1];
+        BattleUnit unit = new BattleUnit();
         group[0] = unit;
         unit.setWarrior(warrior);
         BattleScreen screen = new BattleScreen();

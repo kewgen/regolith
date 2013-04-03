@@ -4,7 +4,7 @@ import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
-import com.geargames.regolith.units.Unit;
+import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
@@ -52,7 +52,7 @@ public class ClientBattleHelper {
      * @param screen
      * @param unit
      */
-    public static void initMapXY(BattleScreen screen, Unit unit){
+    public static void initMapXY(BattleScreen screen, BattleUnit unit){
         Pair pair = screen.getCoordinateFinder().find(unit.getWarrior().getY(), unit.getWarrior().getX(), screen);
         unit.setMapX(pair.getX());
         unit.setMapY(pair.getY());
