@@ -1,4 +1,4 @@
-package com.geargames.regolith.awt.components.selectMaps;
+package com.geargames.regolith.awt.components.selectMap;
 
 import com.geargames.awt.components.PHorizontalScrollView;
 import com.geargames.awt.components.PRadioGroup;

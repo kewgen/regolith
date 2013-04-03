@@ -1,12 +1,9 @@
 package com.geargames.regolith.awt.components.selectWarriors;
 
-import com.geargames.awt.components.PRadioButton;
 import com.geargames.awt.components.PSimpleLabel;
+import com.geargames.awt.components.PToggleButton;
 import com.geargames.common.*;
-import com.geargames.common.packer.Index;
-import com.geargames.common.packer.IndexObject;
-import com.geargames.common.packer.PFrame;
-import com.geargames.common.packer.PObject;
+import com.geargames.common.packer.*;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.units.battle.Warrior;
 
@@ -15,8 +12,8 @@ import com.geargames.regolith.units.battle.Warrior;
  * Date: 29.03.13
  * Элемент-кнопка списка бойцов.
  */
-public class PWarriorListItem extends PRadioButton { // PPrototypeElement
-    private PFrame warriorAvatar;
+public class PWarriorListItem extends PToggleButton { // PPrototypeElement
+    private PSprite warriorAvatar;
     private Warrior warrior;
 
     private PSimpleLabel labelRank;
@@ -42,12 +39,12 @@ public class PWarriorListItem extends PRadioButton { // PPrototypeElement
         labelName.setY(index.getY());
     }
 
-    public PFrame getWarriorAvatar() {
+    public PSprite getWarriorAvatar() {
         return warriorAvatar;
     }
 
-    public void setWarriorAvatar(PFrame frame) {
-        this.warriorAvatar = frame;
+    public void setWarriorAvatar(PSprite avatar) {
+        this.warriorAvatar = avatar;
     }
 
     public Warrior getWarrior() {
@@ -59,6 +56,9 @@ public class PWarriorListItem extends PRadioButton { // PPrototypeElement
 
         //todo: Использовать FrameId для получения изображения бойца
 //        warrior.getFrameId();
+
+        labelName.setText(warrior.getName());
+        labelRank.setText(warrior.getRank().getName());
     }
 
     @Override
@@ -77,6 +77,7 @@ public class PWarriorListItem extends PRadioButton { // PPrototypeElement
 
     public boolean onEvent(int code, int param, int xTouch, int yTouch) {
         if (code == Event.EVENT_SYNTHETIC_CLICK) {
+            setChecked(!getChecked());
             onClick();
         }
         return false;

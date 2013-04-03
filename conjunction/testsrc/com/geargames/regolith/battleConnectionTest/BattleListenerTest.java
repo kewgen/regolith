@@ -185,7 +185,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -239,7 +239,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -350,7 +350,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -424,7 +424,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -458,7 +458,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client A' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client A'", accountClientA.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -471,7 +471,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' could not disband the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' disbanded the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' disbanded the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -484,7 +484,7 @@ public class BattleListenerTest {
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
         Assert.assertTrue("Different ID of the client 'Client C'", accountClientC.getId() == completeGroupAnswer.getBattleGroup().getAccount().getId());
         System.out.println("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getAlliance().getBattle().getId() + ")");
+                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 

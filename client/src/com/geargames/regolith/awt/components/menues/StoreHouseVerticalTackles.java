@@ -28,4 +28,9 @@ public class StoreHouseVerticalTackles extends VerticalTackles {
     public Vector getItems() {
         return items;
     }
+
+    @Override
+    public int getItemOffsetX() {
+        return 0;
+    }
 }

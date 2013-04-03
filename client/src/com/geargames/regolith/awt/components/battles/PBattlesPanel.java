@@ -41,17 +41,16 @@ public class PBattlesPanel extends PRootContentPanel {
         ClientBattleMarketManager battleMarket = configuration.getBattleMarketManager();
 
         try {
-            ClientConfirmationAnswer answer = battleMarket.listenToCreatedBattles();
-
-                if (answer.isConfirm()) {
-                    ObjectManager.getInstance().getBattleCollection().getBattles().clear();
-                    MessageDispatcher dispatcher = configuration.getMessageDispatcher();
-                    dispatcher.register(battleList);
-                } else {
-                    Debug.error("Server has not confirmed [listen to created battles]");
-                }
+            ClientConfirmationAnswer confirmationAnswer = battleMarket.listenToCreatedBattles();
+            if (confirmationAnswer.isConfirm()) {
+                ObjectManager.getInstance().getBattleCollection().getBattles().clear();
+                MessageDispatcher dispatcher = configuration.getMessageDispatcher();
+                dispatcher.register(battleList);
+            } else {
+                Debug.error("Server has not confirmed [listen to created battles]");
+            }
         } catch (Exception e) {
-            Debug.error("Could not serialize [listen to created battles] answer", e);
+            Debug.error("Could not deserialize [listen to created battles] answer", e);
         }
 
     }
@@ -61,15 +60,15 @@ public class PBattlesPanel extends PRootContentPanel {
         ClientBattleMarketManager battleMarket = configuration.getBattleMarketManager();
 
         try {
-            ClientConfirmationAnswer answer = battleMarket.doNotListenToCreatedBattles();
-                if (answer.isConfirm()) {
-                    MessageDispatcher dispatcher = ClientConfigurationFactory.getConfiguration().getMessageDispatcher();
-                    dispatcher.unregister(battleList);
-                } else {
-                    Debug.error("Server has not confirmed [do not listen to created battles]");
-                }
+            ClientConfirmationAnswer confirmationAnswer = battleMarket.doNotListenToCreatedBattles();
+            if (!confirmationAnswer.isConfirm()) {
+                Debug.error("Server has not confirmed [do not listen to created battles]");
+            }
+            MessageDispatcher dispatcher = ClientConfigurationFactory.getConfiguration().getMessageDispatcher();
+            dispatcher.unregister(battleList);
         } catch (Exception e) {
             Debug.error("Could not serialize [do listen to created battles] answer", e);
         }
     }
+
 }

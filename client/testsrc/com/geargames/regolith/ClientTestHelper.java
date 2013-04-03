@@ -96,7 +96,7 @@ public class ClientTestHelper {
                 for (int i = 0; i < amount; i++) {
                     Warrior warrior = warriors[i];
                     initWarriors[i] = warrior;
-                    warrior.setName(warrior.getName() + "i");
+                    warrior.setName(warrior.getName() + "I");
                 }
 
                 ClientBaseWarriorMarketManager baseWarriorMarketManager = clientConfiguration.getBaseWarriorMarketManager();

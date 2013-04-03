@@ -4,9 +4,15 @@ import com.geargames.awt.components.*;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.PFontCollection;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.localization.LocalizedStrings;
+import com.geargames.regolith.managers.ClientBaseManager;
+import com.geargames.regolith.managers.ClientBattleMarketManager;
+import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 
 /**
  * User: abarakov
@@ -238,9 +244,9 @@ public class PBattleCreatePanel extends PRootContentPanel {
      */
     public byte getAllianceAmount() {
         byte allianceAmount = 0;
-//        if (buttonSide1.getChecked()) {
-//            allianceAmount = 1;
-//        } else
+        if (buttonSide1.getChecked()) {
+            allianceAmount = 1;
+        } else
         if (buttonSide2.getChecked()) {
             allianceAmount = 2;
         } else
@@ -251,7 +257,7 @@ public class PBattleCreatePanel extends PRootContentPanel {
             allianceAmount = 4;
         }
         if (allianceAmount < 2) {
-            Debug.warning("allianceAmount is an invalid value (allianceAmount="+allianceAmount+")");
+            Debug.warning("allianceAmount is an invalid value (allianceAmount = "+allianceAmount+")");
         }
         return allianceAmount;
     }
@@ -274,7 +280,7 @@ public class PBattleCreatePanel extends PRootContentPanel {
         if (buttonPlayer4.getChecked()) {
             allianceSize = 4;
         } else {
-            Debug.warning("allianceSize is an invalid value (allianceSize=0)");
+            Debug.warning("allianceSize is an invalid value (allianceSize = 0)");
         }
         return allianceSize;
     }
@@ -297,7 +303,7 @@ public class PBattleCreatePanel extends PRootContentPanel {
         if (buttonFighter4.getChecked()) {
             groupSize = 4;
         } else {
-            Debug.warning("groupSize is an invalid value (groupSize=0)");
+            Debug.warning("groupSize is an invalid value (groupSize = 0)");
         }
         return groupSize;
     }
@@ -308,12 +314,34 @@ public class PBattleCreatePanel extends PRootContentPanel {
 
     @Override
     public void onShow() {
+        ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
+        ClientBaseManager baseManager = clientConfiguration.getBaseManager();
 
+        try {
+            Debug.debug("The client go to the battle market...");
+            ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+            if (!confirm.isConfirm()) {
+                Debug.critical("The client could not go to the battle market");
+                //todo: Сообщить пользователю об ошибке
+                return;
+            }
+        } catch (Exception e) {
+            Debug.critical("Could not get the map to create a battle", e);
+        }
     }
 
     @Override
     public void onHide() {
 
+    }
+
+    /**
+     * Обработчик нажатия на кнопку Ok.
+     */
+    public void onButtonOkClick() {
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.getSelectMapPanel().showPanel(
+                getAllianceAmount(), getAllianceSize(), getGroupSize(), getIsRandomMap(), panelManager.getBattleCreate());
     }
 
 }

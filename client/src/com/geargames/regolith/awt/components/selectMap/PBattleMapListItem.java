@@ -1,9 +1,8 @@
-package com.geargames.regolith.awt.components.selectMaps;
+package com.geargames.regolith.awt.components.selectMap;
 
 import com.geargames.awt.components.PRadioButton;
 import com.geargames.common.Event;
 import com.geargames.common.Graphics;
-import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.map.BattleMap;

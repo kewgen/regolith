@@ -5,6 +5,12 @@ import com.geargames.platform.MIDlet;
 
 public final class Regolith extends MIDlet {
 
+    public Regolith() {
+        super();
+        setLocationRelativeTo(null);
+    }
+
+    @Override
     public void startApp() {
         Manager manager = (Manager)getManager();
         try {

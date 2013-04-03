@@ -18,14 +18,7 @@ public class PButtonOk extends PEntitledTouchButton {
 
     public void onClick() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        PBattleCreatePanel battleCreatePanel = panelManager.getBattleCreatePanel();
-        try {
-            panelManager.getSelectMapPanel().showPanel(
-                    battleCreatePanel.getAllianceAmount(), battleCreatePanel.getAllianceSize(),
-                    battleCreatePanel.getGroupSize(), battleCreatePanel.getIsRandomMap(), panelManager.getBattleCreate());
-        } catch (Exception e) {
-            Debug.critical("Could not get the map to create a battle", e);
-        }
+        panelManager.getBattleCreatePanel().onButtonOkClick();
     }
 
 }
