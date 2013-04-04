@@ -18,7 +18,6 @@ import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.*;
-import com.geargames.regolith.units.tackle.WeaponCategory;
 
 import java.util.Vector;
 
@@ -196,7 +195,10 @@ public class BattleScreen extends Drawable implements TimerListener {
      * @param graphics
      */
     private void drawUnit(Graphics graphics, BattleUnit unit) {
-        unit.getState().getPUnit(unit, graphics.getRender()).draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY, unit.getWarrior());
+/*
+        unit.getState().getPUnitScript(unit.getWarrior(), graphics.getRender()).draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY, unit.getWarrior());
+        Graph.UN_MAN_DOWN_SHOT_RIFLE_1
+*/
     }
 
 
@@ -268,14 +270,14 @@ public class BattleScreen extends Drawable implements TimerListener {
         }
         if (isMyTurn()) {
             for (int i = 0; i < group.length; i++) {
-                group[i].getState().onTime();
+                group[i].getState().next();
             }
         }
         for (int i = 0; i < allies.length; i++) {
-            allies[i].getState().onTime();
+            allies[i].getState().next();
         }
         for (int i = 0; i < enemies.length; i++) {
-            enemies[i].getState().onTime();
+            enemies[i].getState().next();
         }
     }
 

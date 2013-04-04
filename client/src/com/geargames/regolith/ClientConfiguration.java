@@ -12,11 +12,12 @@ import com.geargames.regolith.units.battle.Warrior;
  * Date: 25.05.12
  */
 public class ClientConfiguration {
+    private BaseConfiguration baseConfiguration;
+    private BattleConfiguration battleConfiguration;
+
     private ClientBattleServiceManager battleServiceManager;
     private ClientBaseWarriorMarketManager baseWarriorMarketManager;
     private ClientCommonManager commonManager;
-    private BaseConfiguration baseConfiguration;
-    private BattleConfiguration battleConfiguration;
     private ClientBattleMarketManager battleMarketManager;
     private ClientBattleCreationManager battleCreationManager;
     private ClientBaseManager baseManager;

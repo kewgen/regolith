@@ -1,15 +1,14 @@
 package com.geargames.regolith.units.map.states;
 
 import com.geargames.common.Render;
-import com.geargames.common.packer.PUnit;
-import com.geargames.regolith.units.BattleUnit;
+import com.geargames.common.packer.PUnitScript;
+import com.geargames.regolith.units.map.Unit;
 
 /**
  * User: m.v.kutuzov
  * Date: 02.04.13
  */
 public abstract class UnitState {
-    public abstract void init(Render render, byte base);
-    public abstract PUnit getPUnit(BattleUnit unit, Render render);
-    public abstract void onTime();
+    protected abstract PUnitScript getPUnitScript(Render render, Unit unit, int action);
+    public abstract void next();
 }
