@@ -221,25 +221,29 @@ public final class Application extends com.geargames.common.Application {
     // --------------- Main loop ---------------------------------------------------------------------------------------
 
     public void mainLoop() {
-        if (Manager.getInstance().isSuspended() || isLoading) {
-            Manager.pause(10);
-            return;
-        }
-        eventProcess();
-        TimerManager.update();
-
-        draw(graphicsBuffer);
-
-        if (true/* || this.equals(manager.getDisplay())*/) {
-            isDrawing = true;
-                /*ObjC uncomment*///is_drawing = false;
-            Manager.getInstance().repaintStart();
-            Thread.yield();
-            while (isDrawing) {
-                Manager.pause(5);
+        try {
+            if (Manager.getInstance().isSuspended() || isLoading) {
+                Manager.pause(10);
+                return;
             }
+            eventProcess();
+            TimerManager.update();
+
+            draw(graphicsBuffer);
+
+            if (true/* || this.equals(manager.getDisplay())*/) {
+                isDrawing = true;
+                    /*ObjC uncomment*///is_drawing = false;
+                Manager.getInstance().repaintStart();
+                Thread.yield();
+                while (isDrawing) {
+                    Manager.pause(5);
+                }
+            }
+            manageFPS(FPS_MAXIMUM);
+        } catch (Exception e) {
+            Debug.error("Main loop exception.", e);
         }
-        manageFPS(FPS_MAXIMUM);
     }
 
     private int arr_tick = 0;
