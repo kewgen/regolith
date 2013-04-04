@@ -19,10 +19,12 @@ public abstract class BatchAnswer extends ClientDeSerializedMessage {
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         int count = SimpleDeserializer.deserializeInt(buffer);
+        Debug.debug("BatchAnswer.deSerialize: count=" + count);
         for (int i = 0; i < count; i++) {
             int position = buffer.getPosition();
             short messageLength = SimpleDeserializer.deserializeShort(buffer);
             short messageType = SimpleDeserializer.deserializeShort(buffer);
+            Debug.debug("BatchAnswer.deSerialize: index=" + i + "; type=" + messageType + "; length=" + messageLength);
             getTypedAnswer(i, messageType).deSerialize(buffer);
             // Проверка того, что сообщение было считано полностью и не считано лишних данных
             int expectedPosition = position + Packets.HEAD_SIZE + messageLength;

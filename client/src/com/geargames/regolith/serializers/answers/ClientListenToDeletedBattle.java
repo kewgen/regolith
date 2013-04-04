@@ -14,6 +14,8 @@ public class ClientListenToDeletedBattle extends ClientDeSerializedMessage {
 
     @Override
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        ObjectManager.getInstance().removeBattleById(SimpleDeserializer.deserializeInt(buffer));
+        int battleId = SimpleDeserializer.deserializeInt(buffer);
+        ObjectManager.getInstance().removeBattleById(battleId);
     }
+
 }

@@ -38,7 +38,8 @@ public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
             int battleId = SimpleDeserializer.deserializeInt(buffer);
             battle.setId(battleId);
             battle.setName(SimpleDeserializer.deserializeString(buffer));
-            BattleType battleType = BaseConfigurationHelper.findBattleTypeById(SimpleDeserializer.deserializeInt(buffer), ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
+            int battleTypeId = SimpleDeserializer.deserializeInt(buffer);
+            BattleType battleType = BaseConfigurationHelper.findBattleTypeById(battleTypeId, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
             battle.setBattleType(battleType);
             Account battleAuthor = AccountDeserializer.deserializeAnother(buffer);
             battle.setAuthor(battleAuthor);
@@ -46,18 +47,19 @@ public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
             battle.setAlliances(new BattleAlliance[allianceAmount]);
             for (int i = 0; i < allianceAmount; i++) {
                 BattleAlliance alliance = new BattleAlliance();
-                alliance.setId(SimpleDeserializer.deserializeInt(buffer));
+                int allianceId = SimpleDeserializer.deserializeInt(buffer);
+                alliance.setId(allianceId);
                 alliance.setAllies(new ClientBattleGroupCollection(new Vector()));
                 alliance.setNumber((byte) i);
                 for (int j = 0; j < battle.getBattleType().getAllianceSize(); j++) {
                     BattleGroup group = new BattleGroup();
-                    int id = SimpleDeserializer.deserializeInt(buffer);
-                    group.setId(id);
-                    id = SimpleDeserializer.deserializeInt(buffer);
-                    if (id != SerializeHelper.NULL_REFERENCE) {
+                    int battleGroupId = SimpleDeserializer.deserializeInt(buffer);
+                    group.setId(battleGroupId);
+                    int accountId = SimpleDeserializer.deserializeInt(buffer);
+                    if (accountId != SerializeHelper.NULL_REFERENCE) {
                         Account account = new Account();
-                        account.setId(id);
                         group.setAccount(account);
+                        account.setId(accountId);
                         account.setName(SimpleDeserializer.deserializeString(buffer));
                         account.setFrameId(SimpleDeserializer.deserializeInt(buffer));
                     }

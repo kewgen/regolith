@@ -7,6 +7,7 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.units.battle.Battle;
 
@@ -24,7 +25,7 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
         super(listPrototype);
         IndexObject index = (IndexObject) listPrototype.getIndexBySlot(0);
         items = new PBattleListItemVector((PObject) index.getPrototype(), getShownItemsAmount());
-        types = new short[]{
+        types = new short[] {
                 Packets.BROWSE_CREATED_BATTLES
 //                Packets.JOIN_TO_BATTLE_ALLIANCE,
 //                Packets.EVICT_ACCOUNT_FROM_ALLIANCE
@@ -42,6 +43,24 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
     @Override
     public short[] getTypes() {
         return types;
+    }
+
+    @Override
+    public void initiate(Graphics graphics) {
+        setInitiated(true);
+    }
+
+    @Override
+    public Vector getItems() {
+        return items;
+    }
+
+    public Battle getListenedBattle() {
+        return items.getListenedBattle();
+    }
+
+    public void setListenedBattle(Battle battle) {
+        items.setListenedBattle(battle);
     }
 
     @Override
@@ -80,22 +99,12 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
         }
     }
 
-    @Override
-    public void initiate(Graphics graphics) {
-        setInitiated(true);
+    public void registerMessageListener() {
+        ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
     }
 
-    @Override
-    public Vector getItems() {
-        return items;
-    }
-
-    public Battle getListenedBattle() {
-        return items.getListenedBattle();
-    }
-
-    public void setListenedBattle(Battle battle) {
-        items.setListenedBattle(battle);
+    public void unregisterMessageListener() {
+        ClientConfigurationFactory.getConfiguration().getMessageDispatcher().unregister(this);
     }
 
 }

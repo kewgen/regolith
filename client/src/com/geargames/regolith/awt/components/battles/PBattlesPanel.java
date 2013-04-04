@@ -21,7 +21,6 @@ import com.geargames.regolith.units.battle.Battle;
  */
 public class PBattlesPanel extends PRootContentPanel {
     private PBattlesList battleList;
-    private PBattleCreateButton createButton;
 
     public PBattlesPanel(PObject prototype) {
         super(prototype);
@@ -38,7 +37,7 @@ public class PBattlesPanel extends PRootContentPanel {
                 addActiveChild(battleList, index);
                 break;
             case 1:
-                createButton = new PBattleCreateButton((PObject)index.getPrototype());
+                PBattleCreateButton createButton = new PBattleCreateButton((PObject)index.getPrototype());
                 addActiveChild(createButton, index);
                 break;
         }
@@ -52,7 +51,7 @@ public class PBattlesPanel extends PRootContentPanel {
             ClientConfirmationAnswer confirmationAnswer = battleMarket.listenToCreatedBattles();
             if (confirmationAnswer.isConfirm()) {
                 ObjectManager.getInstance().getBattleCollection().getBattles().clear();
-                configuration.getMessageDispatcher().register(battleList);
+                battleList.registerMessageListener();
             } else {
                 Debug.error("Server has not confirmed [listen to created battles]");
             }
@@ -70,7 +69,7 @@ public class PBattlesPanel extends PRootContentPanel {
             if (!confirmationAnswer.isConfirm()) {
                 Debug.error("Server has not confirmed [do not listen to created battles]");
             }
-            configuration.getMessageDispatcher().unregister(battleList);
+            battleList.unregisterMessageListener();
         } catch (Exception e) {
             Debug.error("Could not serialize [do listen to created battles] answer", e);
         }
