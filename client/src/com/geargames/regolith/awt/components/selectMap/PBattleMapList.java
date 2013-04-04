@@ -2,6 +2,9 @@ package com.geargames.regolith.awt.components.selectMap;
 
 import com.geargames.awt.components.PHorizontalScrollView;
 import com.geargames.awt.components.PRadioGroup;
+import com.geargames.awt.utils.ScrollHelper;
+import com.geargames.awt.utils.motions.ElasticInertMotionListener;
+import com.geargames.awt.utils.motions.StubMotionListener;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.units.map.BattleMap;
@@ -18,6 +21,8 @@ public class PBattleMapList extends PHorizontalScrollView {
     private int mapAmount;
     private PObject buttonObject;
     private PRadioGroup radioGroup;
+    private ElasticInertMotionListener inertMotionListener;
+    private StubMotionListener stubMotionListener;
 
     public PBattleMapList(PObject prototype) {
         super(prototype);
@@ -25,6 +30,14 @@ public class PBattleMapList extends PHorizontalScrollView {
         buttonObject = (PObject) frameButtonIndex.getPrototype();
         mapItems = new Vector(16);
         radioGroup = new PRadioGroup(16);
+        inertMotionListener = new ElasticInertMotionListener();
+        stubMotionListener = new StubMotionListener();
+        initiateMotionListener();
+    }
+
+    private void initiateMotionListener() {
+        setMotionListener(ScrollHelper.adjustHorzCenteredListElasticInertMotionListener(
+                inertMotionListener, stubMotionListener, this));
     }
 
     public void setMapItems(BattleMap[] collection) {
@@ -49,6 +62,7 @@ public class PBattleMapList extends PHorizontalScrollView {
             item.setMap(map);
 //            item.setMapPreview((PSprite) buttonObject.getIndexBySlot(0).getPrototype());
         }
+        initiateMotionListener();
     }
 
     @Override

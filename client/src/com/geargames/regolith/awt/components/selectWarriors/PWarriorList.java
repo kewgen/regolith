@@ -1,6 +1,9 @@
 package com.geargames.regolith.awt.components.selectWarriors;
 
 import com.geargames.awt.components.PHorizontalScrollView;
+import com.geargames.awt.utils.ScrollHelper;
+import com.geargames.awt.utils.motions.ElasticInertMotionListener;
+import com.geargames.awt.utils.motions.StubMotionListener;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.packer.PSprite;
@@ -19,12 +22,23 @@ public class PWarriorList extends PHorizontalScrollView {
     private Vector warriorItems;
     private int warriorAmount;
     private PObject buttonObject;
+    private ElasticInertMotionListener inertMotionListener;
+    private StubMotionListener stubMotionListener;
+
 
     public PWarriorList(PObject prototype) {
         super(prototype);
         Index frameButtonIndex = prototype.getIndexBySlot(0);
         buttonObject = (PObject) frameButtonIndex.getPrototype();
         warriorItems = new Vector(16);
+        inertMotionListener = new ElasticInertMotionListener();
+        stubMotionListener = new StubMotionListener();
+        initiateMotionListener();
+    }
+
+    private void initiateMotionListener() {
+        setMotionListener(ScrollHelper.adjustHorzCenteredListElasticInertMotionListener(
+                inertMotionListener, stubMotionListener, this));
     }
 
     public void setWarriorList(WarriorCollection collection) {
@@ -48,6 +62,7 @@ public class PWarriorList extends PHorizontalScrollView {
             item.setWarrior(map);
             item.setWarriorAvatar((PSprite) buttonObject.getIndexBySlot(0).getPrototype());
         }
+        initiateMotionListener();
     }
 
     @Override

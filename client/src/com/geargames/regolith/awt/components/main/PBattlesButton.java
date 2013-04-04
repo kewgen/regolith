@@ -8,24 +8,21 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 
 /**
- * User: mikhail v. kutuzov
+ * User: mikhail v. kutuzov, abarakov
  * Кнопка для входа в меню битв.
  */
-public class PBattleButton extends PTouchButton {
+public class PBattlesButton extends PTouchButton {
 
-
-    public PBattleButton(PObject prototype) {
+    public PBattlesButton(PObject prototype) {
         super(prototype);
     }
 
     public void onClick() {
-        PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
-
         try {
             ClientConfirmationAnswer answer = ClientConfigurationFactory.getConfiguration().getBaseManager().goBattleManager();
             if (answer.isConfirm()) {
-                manager.hide(manager.getMainMenu());
-                manager.show(manager.getBattlesWindow());
+                PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+                panelManager.getBattlesPanel().showPanel(null, panelManager.getMainMenu(), false);
             } else {
                 Debug.error("the server has not confirmed a transmission into the [battle market] state");
             }
@@ -33,4 +30,5 @@ public class PBattleButton extends PTouchButton {
             Debug.error("could not retrieve synchronous answer for a message: [go to battle market]", e);
         }
     }
+
 }

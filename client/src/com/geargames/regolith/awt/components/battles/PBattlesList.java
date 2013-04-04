@@ -8,11 +8,12 @@ import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.units.battle.Battle;
 
 import java.util.Vector;
 
 /**
- * User: mikhail v. kutuzov
+ * User: mikhail v. kutuzov, abarakov
  * Список текущих боёв.
  */
 public class PBattlesList extends PVerticalScrollView implements DataMessageListener {
@@ -23,7 +24,14 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
         super(listPrototype);
         IndexObject index = (IndexObject) listPrototype.getIndexBySlot(0);
         items = new PBattleListItemVector((PObject) index.getPrototype(), getShownItemsAmount());
-        types = new short[]{Packets.BROWSE_CREATED_BATTLES};
+        types = new short[]{
+                Packets.BROWSE_CREATED_BATTLES
+//                Packets.JOIN_TO_BATTLE_ALLIANCE,
+//                Packets.EVICT_ACCOUNT_FROM_ALLIANCE
+//                Packets.,
+//                Packets.,
+//                Packets.
+        };
     }
 
     @Override
@@ -42,15 +50,33 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
             Debug.debug("PBattlesList.onReceive(): type = " + type);
             switch (type) {
                 case Packets.BROWSE_CREATED_BATTLES:
-                    for (int i = 0; i < items.size(); i++) {
-                        ((PBattleListItem) items.elementAt(i)).update();
-                    }
+                    items.update();
+//                    for (int i = 0; i < items.size(); i++) {
+//                        ((PBattleListItem) items.elementAt(i)).update();
+//                    }
                     break;
+//                case Packets.JOIN_TO_BATTLE_ALLIANCE:
+//                    ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) message;
+//                    BattleGroup battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
+//                    if (items.getListenedBattle() != null) {
+//                        ((PBattleListItem) items.elementAt(0)).resetButtonAccount(
+//                                battleGroup.getAlliance().getNumber(),
+//                                battleGroup.getAlliance().getAllies().indexById(battleGroup.getId()));
+//                    }
+//                    break;
+//                case Packets.EVICT_ACCOUNT_FROM_ALLIANCE:
+//                    ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) message;
+//                    if (items.getListenedBattle() != null) {
+//                        ((PBattleListItem) items.elementAt(0)).resetButtonAccount(
+//                        );
+//                        evictAccountFromAllianceAnswer.getAlliance();
+//                    }
+//                    break;
                 default:
                     Debug.error("There is a message of type = " + type);
             }
         } catch (Exception e) {
-            Debug.error("Could not deserialize a message of type = " + type, e);
+            Debug.error("Exception while processing a message of type = " + type, e);
         }
     }
 
@@ -62,6 +88,14 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
     @Override
     public Vector getItems() {
         return items;
+    }
+
+    public Battle getListenedBattle() {
+        return items.getListenedBattle();
+    }
+
+    public void setListenedBattle(Battle battle) {
+        items.setListenedBattle(battle);
     }
 
 }

@@ -20,14 +20,14 @@ public class PMainMenuPanel extends PRootContentPanel {
         PElement element = null;
         switch (index.getSlot()) {
             case 10:
-                element = new PBattleButton((PObject) index.getPrototype());
+                element = new PBattlesButton((PObject) index.getPrototype());
                 break;
             case 11:
                 element = new PMerсenaryButton((PObject) index.getPrototype());
                 break;
             case 12:
-                element = new PBattleCreateButton((PObject) index.getPrototype());
-                break;
+//                element = new PBattleCreateButton((PObject) index.getPrototype());
+//                break;
             case 13:
             case 14:
             case 15:

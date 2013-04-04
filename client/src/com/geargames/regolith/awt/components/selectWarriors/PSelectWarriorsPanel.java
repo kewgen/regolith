@@ -1,8 +1,6 @@
 package com.geargames.regolith.awt.components.selectWarriors;
 
-import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.components.PSimpleLabel;
-import com.geargames.awt.utils.motions.ElasticInertMotionListener;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
@@ -15,9 +13,11 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.managers.ClientBattleCreationManager;
-import com.geargames.regolith.serializers.answers.ClientCancelBattleAnswer;
+import com.geargames.regolith.managers.ClientBattleMarketManager;
 import com.geargames.regolith.serializers.answers.ClientCompleteGroupAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinToBattleAllianceAnswer;
+import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
+import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 
@@ -50,20 +50,6 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
                 // Список бойцов
                 warriorList = new PWarriorList((PObject) index.getPrototype());
                 addActiveChild(warriorList, index);
-
-                ElasticInertMotionListener motionListener = new ElasticInertMotionListener();
-                warriorList.setMotionListener(motionListener);
-//                CenteredElasticInertMotionListener motionListener = new CenteredElasticInertMotionListener();
-//                motionListener.setInstinctPosition(false);
-//                warriorList.setMotionListener(
-//                        ScrollHelper.adjustHorizontalCenteredMenuMotionListener(
-//                                motionListener,
-//                                warriorList.getDrawRegion(),
-//                                warriorList.getItemsAmount(),
-//                                warriorList.getItemSize(),
-//                                warriorList.getPrototype().getDrawRegion().getMinX()
-//                        )
-//                );
                 break;
             }
 
@@ -98,34 +84,53 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
 
     }
 
-    public void showPanel(BattleGroup battleGroup, DrawablePPanel callerPanel) {
+    public void showPanel(BattleGroup battleGroup/*, DrawablePPanel callerPanel*/) {
         this.battleGroup = battleGroup;
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
+        ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
         ClientBattleCreationManager battleCreationManager = clientConfiguration.getBattleCreationManager();
 
-        Debug.debug("The client is trying join to an alliance (alliance id = " + battleGroup.getAlliance().getId() + "; number = " + battleGroup.getAlliance().getNumber() + ")...");
-        ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer;
+        Battle battle = battleGroup.getAlliance().getBattle();
+        if (battle.getAuthor().getId() != clientConfiguration.getAccount().getId()) {
+            // Клиент не является владельцем битвы, потому, сначало нужно подписаться на нее
+            try {
+                Debug.debug("Trying to connect to the battle for listening (battle id = " + battle.getId() + ")...");
+                ClientListenToBattleAnswer listenToBattleAnswer = battleMarketManager.listenToBattle(battle);
+                if (!listenToBattleAnswer.isSuccess()) {
+                    Debug.error("The client could not listen to the battle (battle id = " + battle.getId() + ")");
+                    NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_LISTEN_TO_BATTLE_EXCEPTION, this);
+                    return;
+                }
+                Debug.debug("The client listens to the battle (battle id = " + battle.getId() + ")");
+            } catch (Exception e) {
+                Debug.error("ListenToBattle: deserialization exception (battle id = " + battle.getId() + ")", e);
+                NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_LISTEN_TO_BATTLE_EXCEPTION, this);
+                return;
+            }
+        }
+
         try {
-            joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(battleGroup.getAlliance());
+            Debug.debug("The client is trying join to an alliance (alliance id = " + battleGroup.getAlliance().getId() + "; number = " + battleGroup.getAlliance().getNumber() + ")...");
+            ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(battleGroup.getAlliance());
+            if (!joinToBattleAllianceAnswer.isSuccess()) {
+                Debug.error("The client could not join to the alliance (alliance id = " + battleGroup.getAlliance().getId() + ")");
+                NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_JOIN_TO_ALLIANCE_EXCEPTION, this);
+                return;
+            }
+            //todo: battleGroup и joinToBattleAllianceAnswer.getBattleGroup() разные объекты, потому battleGroup может иметь устаревшее содержимое после десериализации ответа
+//            battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
+            Debug.debug("Client '" + battleGroup.getAccount().getName() +
+                    "' joined to the alliance (alliance id = " + battleGroup.getAlliance().getId() + ")");
         } catch (Exception e) {
-            Debug.error("The client could not join to the alliance (alliance id = " + battleGroup.getAlliance().getId() + ")", e);
+            Debug.error("JoinToAlliance: deserialization exception (alliance id = " + battleGroup.getAlliance().getId() + ")", e);
             NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_JOIN_TO_ALLIANCE_EXCEPTION, this);
             return;
         }
-        if (!joinToBattleAllianceAnswer.isSuccess()) {
-            Debug.error("The client could not join to the alliance (alliance id = " + battleGroup.getAlliance().getId() + ")");
-            NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_JOIN_TO_ALLIANCE_EXCEPTION, this);
-            return;
-        }
-        //todo: battleGroup и joinToBattleAllianceAnswer.getBattleGroup() разные объекты, потому battleGroup может иметь устаревшее содержимое после десериализации ответа
-//        battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
-        Debug.debug("Client '" + battleGroup.getAccount().getName() +
-                "' joined to the alliance (alliance id = " + battleGroup.getAlliance().getId() + ")");
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        panelManager.hide(callerPanel);
-        panelManager.show(panelManager.getSelectWarriors());
+//        panelManager.hide(callerPanel);
+        panelManager.showModal(panelManager.getSelectWarriorsWindow());
     }
 
     /**
@@ -159,42 +164,44 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
             }
         }
 
-        Debug.debug("The client is trying to complete the battle group (battle group id = " + battleGroup.getId() + ")...");
-        ClientCompleteGroupAnswer completeGroupAnswer;
         try {
-            completeGroupAnswer = battleCreationManager.completeGroup(battleGroup, initWarriors);
+            Debug.debug("The client is trying to complete the battle group (battle group id = " + battleGroup.getId() + ")...");
+            ClientCompleteGroupAnswer completeGroupAnswer = battleCreationManager.completeGroup(battleGroup, initWarriors);
+            if (!completeGroupAnswer.isSuccess()) {
+                Debug.critical("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")");
+                NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_COMPLETE_GROUP_EXCEPTION, this);
+                return;
+            }
+            Debug.debug("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
+                    "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
         } catch (Exception e) {
-            Debug.error("Failed attempt to complete the group", e);
+            Debug.error("CompleteGroup: deserialization exception (battle group id = " + battleGroup.getId() + ")", e);
             NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_COMPLETE_GROUP_EXCEPTION, this);
             return;
         }
-        if (!completeGroupAnswer.isSuccess()) {
-            Debug.critical("The client could not complete the battle group (battle group id = " + battleGroup.getId() + ")");
-            NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_COMPLETE_GROUP_EXCEPTION, this);
-            return;
-        }
-        Debug.debug("Client '" + completeGroupAnswer.getBattleGroup().getAccount().getName() +
-                "' completed the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
 
-        Debug.debug("Trying to cancelation the battle (battle id = " + battleGroup.getAlliance().getBattle().getId() + ")...");
-        ClientCancelBattleAnswer cancelBattleAnswer;
-        try {
-            cancelBattleAnswer = battleCreationManager.cancelBattle();
-        } catch (Exception e) {
-            Debug.error("The client is not able to cancel the battle (battle id = " + battleGroup.getAlliance().getBattle().getId() + ")", e);
-            NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION, this);
-            return;
-        }
-        if (!cancelBattleAnswer.isSuccess()) {
-            Debug.critical("The client is not able to cancel the battle (battle id = " + battleGroup.getAlliance().getBattle().getId() + ")");
-            NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION, this);
-            return;
-        }
-        Debug.debug("The client canceled battle (battle id = " + battleGroup.getAlliance().getBattle().getId() + ")");
+//        Debug.debug("Trying to cancelation the battle (battle id = " + battleGroup.getAlliance().getBattle().getId() + ")...");
+//        ClientCancelBattleAnswer cancelBattleAnswer;
+//        try {
+//            cancelBattleAnswer = battleCreationManager.cancelBattle();
+//        } catch (Exception e) {
+//            Debug.error("The client is not able to cancel the battle (battle id = " + battleGroup.getAlliance().getBattle().getId() + ")", e);
+//            NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION, this);
+//            return;
+//        }
+//        if (!cancelBattleAnswer.isSuccess()) {
+//            Debug.critical("The client is not able to cancel the battle (battle id = " + battleGroup.getAlliance().getBattle().getId() + ")");
+//            NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION, this);
+//            return;
+//        }
+//        Debug.debug("The client canceled battle (battle id = " + battleGroup.getAlliance().getBattle().getId() + ")");
+//
+//        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+//        panelManager.hide(panelManager.getSelectWarriorsWindow());
+//        panelManager.show(panelManager.getMainMenu());
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        panelManager.hide(panelManager.getSelectWarriors());
-        panelManager.show(panelManager.getMainMenu());
+        panelManager.getBattlesPanel().showPanel(battleGroup.getAlliance().getBattle(), panelManager.getSelectWarriorsWindow(), true);
     }
 
 }

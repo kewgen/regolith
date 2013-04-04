@@ -19,6 +19,6 @@ public class PButtonPlayer extends PRadioButton {
     }
 
     public void onClick() {
-//        ((PBattleCreatePanel)PRegolithPanelManager.getInstance().getBattleCreate().getElement()).setPlayerCount(playerCount);
+//        ((PBattleCreatePanel)PRegolithPanelManager.getInstance().getBattleCreateWindow().getElement()).setPlayerCount(playerCount);
     }
 }

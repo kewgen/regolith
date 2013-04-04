@@ -17,7 +17,7 @@ public class PBattleCreateButton extends PTouchButton {
     public void onClick() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.hide(panelManager.getMainMenu());
-        panelManager.show(panelManager.getBattleCreate());
+        panelManager.show(panelManager.getBattleCreateWindow());
     }
 
 }
