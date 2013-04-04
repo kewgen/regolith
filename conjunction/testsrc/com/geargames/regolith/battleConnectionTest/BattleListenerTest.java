@@ -95,13 +95,19 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
+        System.out.println("Do not listening created battles...");
+        confirm = battleMarketManager.doNotListenToCreatedBattles();
+        Assert.assertTrue("The client can not stop listening to created battles", confirm.isConfirm());
+        Manager.pause(300);
+        ClientTestHelper.checkAsyncMessages();
+
         // -------------------------------------------------------------------------------------------------------------
 
         System.out.println("========== scenario: #0b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
         ClientListenToBattleAnswer listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+//        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -320,11 +326,17 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
+        System.out.println("Do not listening created battles...");
+        confirm = battleMarketManager.doNotListenToCreatedBattles();
+        Assert.assertTrue("The client can not stop listening to created battles", confirm.isConfirm());
+        Manager.pause(300);
+        ClientTestHelper.checkAsyncMessages();
+
         System.out.println("========== scenario: #6b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
         listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+//        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -393,11 +405,17 @@ public class BattleListenerTest {
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
+        System.out.println("Do not listening created battles...");
+        confirm = battleMarketManager.doNotListenToCreatedBattles();
+        Assert.assertTrue("The client can not stop listening to created battles", confirm.isConfirm());
+        Manager.pause(300);
+        ClientTestHelper.checkAsyncMessages();
+
         System.out.println("========== scenario: #7b ==============================");
         System.out.println("Trying to connect to the battle for listening...");
         listen = battleMarketManager.listenToBattle(battle);
         Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+//        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
         Account accountClientA = battle.getAuthor();
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();

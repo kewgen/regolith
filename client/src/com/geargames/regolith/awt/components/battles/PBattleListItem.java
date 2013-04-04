@@ -8,14 +8,14 @@ import com.geargames.common.packer.PObject;
 import com.geargames.regolith.units.battle.Battle;
 
 /**
- * User: mikhail v. kutuzov
+ * User: mikhail v. kutuzov, abarakov
  * Панель для отображения текущих битв.
  */
 public class PBattleListItem extends PContentPanel {
     private PBattlePanels playersPanel;
     private PLabel battleTypeLabel;
-    private PLabel composition;
-    private PLabel level;
+    private PLabel compositionLabel;
+    private PLabel levelLabel;
 
     public PBattleListItem(PObject prototype) {
         super(prototype);
@@ -26,24 +26,21 @@ public class PBattleListItem extends PContentPanel {
             case 0:
                 playersPanel = new PBattlePanels((PObject) index.getPrototype(), this);
                 break;
-            case 1:
-                battleTypeLabel = new PSimpleLabel(index);
-                addPassiveChild(battleTypeLabel, index);
-                break;
             case 2:
-                composition = new PSimpleLabel(index);
-                addPassiveChild(composition, index);
+                compositionLabel = new PSimpleLabel(index);
+//                compositionLabel.setFont(PFontCollection.getFontListTitle());
+                addPassiveChild(compositionLabel, index);
                 break;
             case 3:
-                level = new PSimpleLabel(index);
-                addPassiveChild(level, index);
+                levelLabel = new PSimpleLabel(index);
+//                levelLabel.setFont(PFontCollection.getFontListTitle());
+                addPassiveChild(levelLabel, index);
                 break;
-        }
-    }
-
-    public void setBattle(Battle battle) {
-        if (playersPanel.getBattle() != battle) {
-            playersPanel.setBattle(battle);
+            case 109:
+                battleTypeLabel = new PSimpleLabel(index);
+//                battleTypeLabel.setFont(PFontCollection.getFontListTitle());
+                addPassiveChild(battleTypeLabel, index);
+                break;
         }
     }
 
@@ -51,18 +48,34 @@ public class PBattleListItem extends PContentPanel {
         return playersPanel.getBattle();
     }
 
-    /**
-     * Обновить морды игроков на панели битвы, по содержимому getBattle().
-     */
-    public void update() {
-        int allianceAmount = getBattle().getBattleType().getAllianceAmount();
-        int groupSize = getBattle().getBattleType().getAllianceSize();
-        for (int i = 0; i < allianceAmount; i++) {
-            for (int j = 0; j < groupSize; j++) {
-                playersPanel.resetButtonAccount(i, j);
-            }
-        }
+//    public void setBattle(Battle battle) {
+//        if (getBattle() != battle) { //todo: id или ссылки на объекты?
+//            playersPanel.setBattle(battle);
+//        }
+//    }
+
+    public void updateBattle(Battle battle) {
+        playersPanel.updateBattle(battle);
+
+        battleTypeLabel.setText(getBattle().getName());
+        compositionLabel.setText(getBattle().getBattleType().getName());
+//        levelLabel.setText(getBattle().);
     }
+
+//   /**
+//     * Обновить морды игроков на панели битвы, по содержимому getBattle().
+//     */
+//    public void update() {
+//        int allianceAmount = getBattle().getBattleType().getAllianceAmount();
+//        int allianceSize = getBattle().getBattleType().getAllianceSize();
+//        for (int i = 0; i < allianceAmount; i++) {
+//            for (int j = 0; j < allianceSize; j++) {
+//                playersPanel.resetButtonAccount(i, j);
+//            }
+//        }
+//
+
+//    }
 
     /**
      * Обновить конкретную морду на панели битв.
@@ -70,7 +83,8 @@ public class PBattleListItem extends PContentPanel {
      * @param allianceNumber номер боевой стороны морды
      * @param groupNumber  нормер группы морды
      */
-    public void update(int allianceNumber, int groupNumber) {
+    public void resetButtonAccount(int allianceNumber, int groupNumber) {
         playersPanel.resetButtonAccount(allianceNumber, groupNumber);
     }
+
 }

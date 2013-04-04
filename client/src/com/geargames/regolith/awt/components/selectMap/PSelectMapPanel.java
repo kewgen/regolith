@@ -2,8 +2,6 @@ package com.geargames.regolith.awt.components.selectMap;
 
 import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.components.*;
-import com.geargames.awt.utils.ScrollHelper;
-import com.geargames.awt.utils.motions.ElasticInertMotionListener;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
@@ -57,21 +55,6 @@ public class PSelectMapPanel extends PRootContentPanel {
                 // Список карт
                 battleMapList = new PBattleMapList((PObject) index.getPrototype());
                 addActiveChild(battleMapList, index);
-
-                ElasticInertMotionListener motionListener = new ElasticInertMotionListener();
-                battleMapList.setMotionListener(motionListener);
-//                ScrollHelper.adjustStubMotionListener();
-//                CenteredElasticInertMotionListener motionListener = new CenteredElasticInertMotionListener();
-//                motionListener.setInstinctPosition(false);
-//                battleMapList.setMotionListener(
-//                        ScrollHelper.adjustHorizontalCenteredMenuMotionListener(
-//                                motionListener,
-//                                battleMapList.getDrawRegion(),
-//                                battleMapList.getItemsAmount(),
-//                                battleMapList.getItemSize(),
-//                                battleMapList.getPrototype().getDrawRegion().getMinX()
-//                        )
-//                );
                 break;
             case 5:
                 // Название карты
@@ -160,7 +143,7 @@ public class PSelectMapPanel extends PRootContentPanel {
                 //setSelectedMap(battleMapList.getItem(0).getMap());
 
                 PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-                currentPanel = panelManager.getSelectMap();
+                currentPanel = panelManager.getSelectMapWindow();
                 panelManager.hide(callerPanel);
                 panelManager.show(currentPanel);
             }
@@ -184,23 +167,24 @@ public class PSelectMapPanel extends PRootContentPanel {
 
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
-
-        Debug.debug("Creating a battle (map id = " + selectedMap.getId() + ")...");
-
-        ClientListenToBattleAnswer listenToBattleAnswer;
+        Battle battle;
         try {
-            listenToBattleAnswer = battleMarketManager.createBattle(selectedMap, battleType);
+            Debug.debug("Creating a battle (map id = " + selectedMap.getId() + "; battle type id = " + battleType.getId() + ")...");
+            ClientListenToBattleAnswer listenToBattleAnswer = battleMarketManager.createBattle(selectedMap, battleType);
+            battle = listenToBattleAnswer.getBattle();
+            Debug.debug("The battle was created (battle id = " + battle.getId() + ")");
+//            ObjectManager.getInstance().setClientBattle(battle);
         } catch (Exception e) {
-            Debug.critical("Failed to create the battle", e);
+            Debug.critical("CreateBattle: deserialization exception (map id = " + selectedMap.getId() + "; battle type id = " + battleType.getId() + ")", e);
             NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_CREATE_BATTLE_EXCEPTION, this);
             return;
         }
-        Battle battle = listenToBattleAnswer.getBattle();
-        Debug.debug("The battle was created (battle id = " + battle.getId() + ")");
-//        ObjectManager.getInstance().setClientBattle(battle);
+
+//        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+//        panelManager.getSelectWarriorsPanel().showPanel(battle.getAlliances()[0].getAllies().get(0), currentPanel);
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        panelManager.getSelectWarriorsPanel().showPanel(battle.getAlliances()[0].getAllies().get(0), currentPanel);
+        panelManager.getBattlesPanel().showPanel(battle, panelManager.getSelectMapWindow(), false);
     }
 
     /**

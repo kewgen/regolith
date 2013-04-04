@@ -38,14 +38,12 @@ public class ClientBattleMarketManager {
     }
 
     public ClientListenToBattleAnswer createBattle(BattleMap battleMap, BattleType battleType) throws Exception {
-        listenToBattleAnswer.setBattle(null);
         configuration.getNetwork().sendSynchronousMessage(
                 new CreateBattleRequest(configuration, battleMap, battleType), listenToBattleAnswer, 100);
         return listenToBattleAnswer;
     }
 
     public ClientListenToBattleAnswer listenToBattle(Battle battle) throws Exception {
-        listenToBattleAnswer.setBattle(battle);
         configuration.getNetwork().sendSynchronousMessage(
                 new ListenToBattleRequest(configuration, battle), listenToBattleAnswer, 100);
         return listenToBattleAnswer;

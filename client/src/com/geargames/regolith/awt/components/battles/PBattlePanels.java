@@ -4,7 +4,6 @@ import com.geargames.awt.components.PContentPanel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
-import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
@@ -111,38 +110,51 @@ public class PBattlePanels {
         }
     }
 
+    public Battle getBattle() {
+        return battle;
+    }
+
     /**
      * Установить битву для отображения на панели.
      *
      * @param battle
      */
     public void setBattle(Battle battle) {
-        if (activeAlliances != null) {
-            visibility(activeAlliances, false);
-        }
-        ArrayList list = (ArrayList) table.get(battle.getBattleType().getName());
-        visibility(list, true);
-        activeAlliances = list;
-
-        BattleAlliance[] alliances = battle.getAlliances();
-        for (int i = 0; i < alliances.length; i++) {
-            if (alliances[i] != null) {
-                PPlayerPanel alliancePanel = (PPlayerPanel)activeAlliances.get(i);
-                BattleGroupCollection groups = alliances[i].getAllies();
-                for (int j = 0; j < groups.size(); j++) {
-                    if (groups.get(j) != null) {
-                        alliancePanel.getPlayerButton(j).setAccount(groups.get(j).getAccount());
-                    } else {
-                        alliancePanel.getPlayerButton(j).setAccount(null);
-                    }
-                }
-            }
-        }
         this.battle = battle;
+        ArrayList list = (ArrayList) table.get(battle.getBattleType().getName());
+        if (activeAlliances != list) {
+            if (activeAlliances != null) {
+                setVisibility(activeAlliances, false);
+            }
+            activeAlliances = list;
+            setVisibility(list, true);
+        }
     }
 
-    public Battle getBattle() {
-        return battle;
+    private void update() {
+        BattleAlliance[] alliances = battle.getAlliances();
+        for (int i = 0; i < alliances.length; i++) {
+//            if (alliances[i] != null) { //todo: разве может быть равен null?
+                PPlayerPanel alliancePanel = (PPlayerPanel) activeAlliances.get(i);
+                BattleGroupCollection groups = alliances[i].getAllies();
+                for (int j = 0; j < groups.size(); j++) {
+                    PPlayerButton playerButton = alliancePanel.getPlayerButton(j);
+//                    if (groups.get(j) != null) { //todo: разве может быть равен null?
+                        playerButton.setBattleGroup(groups.get(j));
+//                    } else {
+//                        playerButton.setAccount(null);
+//                    }
+//                    playerButton.setNumber(i);
+                }
+//            }
+        }
+    }
+
+    public void updateBattle(Battle battle) {
+        if (this.battle != battle) { //todo: id или ссылки на объекты?
+            setBattle(battle);
+        }
+        update();
     }
 
     /**
@@ -152,20 +164,18 @@ public class PBattlePanels {
      */
     public void resetButtonAccount(int allianceNumber, int groupNumber) {
         PPlayerPanel panel = (PPlayerPanel)activeAlliances.get(allianceNumber);
-        panel.getPlayerButton(groupNumber)
-            .setAccount(battle.getAlliances()[allianceNumber].getAllies().get(groupNumber).getAccount());
+        panel.getPlayerButton(groupNumber).setBattleGroup(battle.getAlliances()[allianceNumber].getAllies().get(groupNumber));
     }
 
+//    public Account getButtonAccount(int allianceNumber, int groupNumber){
+//        PPlayerPanel panel = (PPlayerPanel)activeAlliances.get(allianceNumber);
+//        return panel.getPlayerButton(groupNumber).getAccount();
+//    }
 
-    public Account getButtonAccount(int allianceNumber, int groupNumber){
-        PPlayerPanel panel = (PPlayerPanel)activeAlliances.get(allianceNumber);
-        return panel.getPlayerButton(groupNumber).getAccount();
-    }
-
-
-    private void visibility(ArrayList list, boolean visible) {
+    private void setVisibility(ArrayList list, boolean visible) {
         for (int i = 0; i < list.size(); i++) {
             ((PPlayerPanel) list.get(i)).setVisible(visible);
         }
     }
+
 }

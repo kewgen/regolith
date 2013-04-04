@@ -129,6 +129,7 @@ public class ClientTestHelper {
             BattleAlliance alliance = new BattleAlliance();
             alliance.setAllies(new ClientBattleGroupCollection());
             alliance.setBattle(battle);
+            alliance.setNumber((byte) i);
             battle.getAlliances()[i] = alliance;
         }
         BattleMap battleMap = ClientBattleHelper.createBattleMap(20);

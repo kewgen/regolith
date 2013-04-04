@@ -1,6 +1,6 @@
 package com.geargames.regolith.awt.components.menues;
 
-import com.geargames.awt.DrawablePElement;
+import com.geargames.awt.DrawablePPanel;
 import com.geargames.common.Port;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
@@ -38,7 +38,7 @@ public class StoreHouseVerticalTackleItem extends PAbstractTacklePanel {
         StateTackle tackle = StoreHouseHelper.getStateTackle(storeHouse, number);
         PRegolithPanelManager panels = PRegolithPanelManager.getInstance();
 
-        DrawablePElement drawable;
+        DrawablePPanel drawable;
         PExchangePanel panel;
         if (tackle != null) {
             switch (tackle.getType()) {

@@ -18,6 +18,6 @@ public class PButtonFighter extends PRadioButton {
     }
 
     public void onClick() {
-//        ((PBattleCreatePanel)PRegolithPanelManager.getInstance().getBattleCreate().getElement()).setFighterCount(fighterCount);
+//        ((PBattleCreatePanel)PRegolithPanelManager.getInstance().getBattleCreateWindow().getElement()).setFighterCount(fighterCount);
     }
 }

@@ -20,6 +20,6 @@ public class PButtonSide extends PRadioButton {
 
     public void onClick() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ((PBattleCreatePanel)panelManager.getBattleCreate().getElement()).setSideCount(sideCount);
+        ((PBattleCreatePanel)panelManager.getBattleCreateWindow().getElement()).setSideCount(sideCount);
     }
 }

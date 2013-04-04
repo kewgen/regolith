@@ -27,8 +27,8 @@ import java.util.concurrent.BrokenBarrierException;
 public class BattleCreationTest {
     private static SimpleService service;
 
-    private static final int FIRST_WAINTING = 1000; // 100 сек
-    private static final int NEXT_WAINTING  = 2000;  // 20 сек
+    private static final int FIRST_WAINTING = 20000; // 2000 сек
+    private static final int NEXT_WAINTING  = 20000;  // 200 сек
     private static final int BROWSE_CREATED_BATTLES_WAINTING = 200; // 20 сек
 
     // Ожидаем асинхронного сообщения и возвращаем true, если сообщение получено.

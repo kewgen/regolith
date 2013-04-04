@@ -1,7 +1,6 @@
 package com.geargames.regolith.awt.components.menues;
 
-import com.geargames.awt.Drawable;
-import com.geargames.awt.DrawablePElement;
+import com.geargames.awt.DrawablePPanel;
 import com.geargames.common.Event;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
@@ -30,7 +29,7 @@ public class BagVerticalTackleItem extends PAbstractTacklePanel {
     private void click(int number) {
         AbstractTackle tackle = getTackle();
         PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
-        DrawablePElement element;
+        DrawablePPanel element;
         switch (tackle.getType()) {
             case TackleType.ARMOR:
                 element = fabric.getArmorFromBag();

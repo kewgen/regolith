@@ -6,7 +6,6 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.serializers.AccountDeserializer;
-import com.geargames.regolith.serializers.BattleDeserializer;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
@@ -23,12 +22,9 @@ import java.util.Vector;
  */
 public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
     private Battle battle;
+    private boolean success;
 
     public ClientListenToBattleAnswer() {
-    }
-
-    public void setBattle(Battle battle) {
-        this.battle = battle;
     }
 
     public Battle getBattle() {
@@ -36,12 +32,11 @@ public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
     }
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        boolean success = SimpleDeserializer.deserializeBoolean(buffer);
+        success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
-            if (battle == null) {
-                battle = new Battle();
-            }
-            battle.setId(SimpleDeserializer.deserializeInt(buffer));
+            battle = new Battle();
+            int battleId = SimpleDeserializer.deserializeInt(buffer);
+            battle.setId(battleId);
             battle.setName(SimpleDeserializer.deserializeString(buffer));
             BattleType battleType = BaseConfigurationHelper.findBattleTypeById(SimpleDeserializer.deserializeInt(buffer), ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
             battle.setBattleType(battleType);
@@ -53,6 +48,7 @@ public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
                 BattleAlliance alliance = new BattleAlliance();
                 alliance.setId(SimpleDeserializer.deserializeInt(buffer));
                 alliance.setAllies(new ClientBattleGroupCollection(new Vector()));
+                alliance.setNumber((byte) i);
                 for (int j = 0; j < battle.getBattleType().getAllianceSize(); j++) {
                     BattleGroup group = new BattleGroup();
                     int id = SimpleDeserializer.deserializeInt(buffer);
@@ -71,7 +67,13 @@ public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
                 alliance.setBattle(battle);
                 battle.getAlliances()[i] = alliance;
             }
+        } else {
+            battle = null;
         }
+    }
+
+    public boolean isSuccess() {
+        return success;
     }
 
 }

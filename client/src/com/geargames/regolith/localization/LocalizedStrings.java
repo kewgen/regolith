@@ -36,9 +36,11 @@ public class LocalizedStrings {
 
     public static final String SELECT_WARRIORS_PANEL_TITLE = "ВЫБОР БОЙЦОВ";
     public static final String SELECT_WARRIORS_LIST_TITLE  = "ВЫБЕРИТЕ БОЙЦОВ ДЛЯ БИТВЫ";
+    public static final String SELECT_WARRIORS_MSG_LISTEN_TO_BATTLE_EXCEPTION = "НЕ УДАЛОСЬ ПОДПИСАТЬСЯ НА БИТВУ.";
     public static final String SELECT_WARRIORS_MSG_JOIN_TO_ALLIANCE_EXCEPTION = "НЕ УДАЛОСЬ ПРИСОЕДИНИТЬСЯ К ВОЕННОМУ СОЮЗУ.";
     public static final String SELECT_WARRIORS_MSG_COMPLETE_GROUP_EXCEPTION   = "ПРОИЗОШЛА НЕПРЕДВИДЕННАЯ ОШИБКА.";
-    public static final String SELECT_WARRIORS_MSG_NOT_ENOUGH_WARRIORS        = "ДЛЯ УЧАСТИЯ В БИТВЕ ВАМ ТРЕБУЕТСЯ ВЫБРАТЬ БОЙЦОВ: %s.\nСОВЕТ: ЩЕЛКНИТЕ ПО ИКОНКЕ БОЙЦА ДЛЯ ЕГО ВЫБОРА";
+    public static final String SELECT_WARRIORS_MSG_NOT_ENOUGH_WARRIORS        = "ДЛЯ УЧАСТИЯ В БИТВЕ ВАМ ТРЕБУЕТСЯ ВЫБРАТЬ БОЙЦОВ: %s.";
+    // "ДЛЯ УЧАСТИЯ В БИТВЕ ВАМ ТРЕБУЕТСЯ ВЫБРАТЬ БОЙЦОВ: %s.\nСОВЕТ: ЩЕЛКНИТЕ ПО ИКОНКЕ БОЙЦА ДЛЯ ЕГО ВЫБОРА";
 
     public static final String SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION    = "НЕ УДАЛОСЬ ОТМЕНИТЬ БИТВУ.";
 

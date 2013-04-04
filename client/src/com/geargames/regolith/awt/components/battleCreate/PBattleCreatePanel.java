@@ -1,18 +1,14 @@
 package com.geargames.regolith.awt.components.battleCreate;
 
+import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.components.*;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.localization.LocalizedStrings;
-import com.geargames.regolith.managers.ClientBaseManager;
-import com.geargames.regolith.managers.ClientBattleMarketManager;
-import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 
 /**
  * User: abarakov
@@ -314,25 +310,35 @@ public class PBattleCreatePanel extends PRootContentPanel {
 
     @Override
     public void onShow() {
-        ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
-        ClientBaseManager baseManager = clientConfiguration.getBaseManager();
 
-        try {
-            Debug.debug("The client go to the battle market...");
-            ClientConfirmationAnswer confirm = baseManager.goBattleManager();
-            if (!confirm.isConfirm()) {
-                Debug.critical("The client could not go to the battle market");
-                //todo: Сообщить пользователю об ошибке
-                return;
-            }
-        } catch (Exception e) {
-            Debug.critical("Could not get the map to create a battle", e);
-        }
     }
 
     @Override
     public void onHide() {
 
+    }
+
+    public void showPanel(DrawablePPanel callerPanel) {
+        Debug.debug("Dialog 'Create battle'");
+
+//        ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
+//        ClientBaseManager baseManager = clientConfiguration.getBaseManager();
+//
+//        try {
+//            Debug.debug("The client go to the battle market...");
+//            ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+//            if (!confirm.isConfirm()) {
+//                Debug.critical("The client could not go to the battle market");
+//                //to do: Сообщить пользователю об ошибке
+//                return;
+//            }
+//        } catch (Exception e) {
+//            Debug.critical("Could not get the map to create a battle", e);
+//        }
+
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.hide(callerPanel);
+        panelManager.show(panelManager.getBattleCreateWindow());
     }
 
     /**
@@ -341,7 +347,7 @@ public class PBattleCreatePanel extends PRootContentPanel {
     public void onButtonOkClick() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.getSelectMapPanel().showPanel(
-                getAllianceAmount(), getAllianceSize(), getGroupSize(), getIsRandomMap(), panelManager.getBattleCreate());
+                getAllianceAmount(), getAllianceSize(), getGroupSize(), getIsRandomMap(), panelManager.getBattleCreateWindow());
     }
 
 }
