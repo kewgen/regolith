@@ -1,5 +1,7 @@
 package com.geargames.regolith.helpers;
 
+import com.geargames.regolith.units.battle.Direction;
+
 /**
  * User: mikhail v. kutuzov
  * Date: 18.12.12
@@ -23,6 +25,12 @@ public class ClientGUIHelper {
 
     public static String getWeightRepresentation(short grams){
         return getWeightRepresentation(grams, "kg", "g");
+    }
+
+
+    public static int getPackerScriptsDirection(Direction direction){
+        int number = direction.getNumber();
+        return number < 7 ? number + 1 : 0;
     }
 
 }

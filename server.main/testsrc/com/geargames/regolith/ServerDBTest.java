@@ -196,6 +196,7 @@ public class ServerDBTest {
         weaponCategories.setCategories(new LinkedList<WeaponCategory>());
 
         WeaponCategory weaponCategory = new WeaponCategory();
+        weaponCategory.setPackerId(32);
         weaponCategory.setName("ХОЛОДНОЕ");
         ServerWeaponTypeCollection blades = new ServerWeaponTypeCollection();
         blades.setWeaponTypes(new LinkedList<WeaponType>());
@@ -240,18 +241,21 @@ public class ServerDBTest {
 
 
         weaponCategory = new WeaponCategory();
+        weaponCategory.setPackerId(32);
         weaponCategories.add(weaponCategory);
         weaponCategory.setName("МЕТАТЕЛЬНЫЕ");
         ServerWeaponTypeCollection thrown = new ServerWeaponTypeCollection();
         thrown.setWeaponTypes(new LinkedList<WeaponType>());
 
         weaponCategory = new WeaponCategory();
+        weaponCategory.setPackerId(32);
         weaponCategories.add(weaponCategory);
         weaponCategory.setName("ЛЕГКОЕ");
         ServerWeaponTypeCollection light = new ServerWeaponTypeCollection();
         light.setWeaponTypes(new LinkedList<WeaponType>());
 
         weaponCategory = new WeaponCategory();
+        weaponCategory.setPackerId(32);
         weaponCategories.add(weaponCategory);
         weaponCategory.setName("ТЯЖЕЛОЕ");
         ServerWeaponTypeCollection heavy = new ServerWeaponTypeCollection();
@@ -259,6 +263,7 @@ public class ServerDBTest {
 
 
         weaponCategory = new WeaponCategory();
+        weaponCategory.setPackerId(32);
         weaponCategories.add(weaponCategory);
         weaponCategory.setName("ДАЛЬНОБОЙНОЕ");
 
@@ -372,6 +377,7 @@ public class ServerDBTest {
         baseConfiguration.setAmmunitionCategories(ammunitionCategoryCollection);
 
         weaponCategory = new WeaponCategory();
+        weaponCategory.setPackerId(32);
         weaponCategories.add(weaponCategory);
         weaponCategory.setName("АВТОМАТИЧЕСКОЕ");
         ServerWeaponTypeCollection automatic = new ServerWeaponTypeCollection();
