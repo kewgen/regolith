@@ -7,9 +7,6 @@ import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.serializers.BatchAnswer;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 
-import java.util.Vector;
-
-
 /**
  * User: mkutuzov
  * Date: 06.07.12

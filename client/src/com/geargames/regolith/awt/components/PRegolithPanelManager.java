@@ -47,9 +47,9 @@ public class PRegolithPanelManager extends PPanelManager {
 
     private DrawablePPanel warrior;
     private DrawablePPanel mainMenu;
-    private DrawablePPanel battleCreate;
-    private DrawablePPanel selectMap;
-    private DrawablePPanel selectWarriors;
+    private DrawablePPanel battleCreateWindow;
+    private DrawablePPanel selectMapWindow;
+    private DrawablePPanel selectWarriorsWindow;
     private DrawablePPanel battlesWindow;
 
     private PRegolithPanelManager() {
@@ -144,19 +144,19 @@ public class PRegolithPanelManager extends PPanelManager {
         mainMenu.setElement(mainMenuPanel);
 
         PBattleCreatePanel battleCreatePanel = new PBattleCreatePanel(render.getObject(Graph.PAN_BATTLE_CREATE));
-        battleCreate = new DefaultDrawablePPanel();
-        battleCreate.setAnchor(Anchors.CENTER_ANCHOR);
-        battleCreate.setElement(battleCreatePanel);
+        battleCreateWindow = new DefaultDrawablePPanel();
+        battleCreateWindow.setAnchor(Anchors.CENTER_ANCHOR);
+        battleCreateWindow.setElement(battleCreatePanel);
 
         PSelectMapPanel selectMapPanel = new PSelectMapPanel(render.getObject(Graph.PAN_MAP_SELECT));
-        selectMap = new DefaultDrawablePPanel();
-        selectMap.setAnchor(Anchors.CENTER_ANCHOR);
-        selectMap.setElement(selectMapPanel);
+        selectMapWindow = new DefaultDrawablePPanel();
+        selectMapWindow.setAnchor(Anchors.CENTER_ANCHOR);
+        selectMapWindow.setElement(selectMapPanel);
 
         PSelectWarriorsPanel selectWarriorsPanel = new PSelectWarriorsPanel(render.getObject(Graph.PAN_FIGHTER_SELECT));
-        selectWarriors = new DefaultDrawablePPanel();
-        selectWarriors.setAnchor(Anchors.CENTER_ANCHOR);
-        selectWarriors.setElement(selectWarriorsPanel);
+        selectWarriorsWindow = new DefaultDrawablePPanel();
+        selectWarriorsWindow.setAnchor(Anchors.CENTER_ANCHOR);
+        selectWarriorsWindow.setElement(selectWarriorsPanel);
 
         PBattlesPanel battlesPanel = new PBattlesPanel(render.getObject(Graph.PAN_BATTLE_LIST));
         battlesWindow = new DefaultDrawablePPanel();
@@ -166,6 +166,10 @@ public class PRegolithPanelManager extends PPanelManager {
 
     public DrawablePPanel getBattlesWindow() {
         return battlesWindow;
+    }
+
+    public PBattlesPanel getBattlesPanel() {
+        return (PBattlesPanel) battlesWindow.getElement();
     }
 
     public DrawablePPanel getWeaponFromStoreHouse() {
@@ -228,28 +232,28 @@ public class PRegolithPanelManager extends PPanelManager {
         return right;
     }
 
-    public DrawablePPanel getBattleCreate() {
-        return battleCreate;
+    public DrawablePPanel getBattleCreateWindow() {
+        return battleCreateWindow;
     }
 
     public PBattleCreatePanel getBattleCreatePanel() {
-        return (PBattleCreatePanel) battleCreate.getElement();
+        return (PBattleCreatePanel) battleCreateWindow.getElement();
     }
 
-    public DrawablePPanel getSelectMap() {
-        return selectMap;
+    public DrawablePPanel getSelectMapWindow() {
+        return selectMapWindow;
     }
 
     public PSelectMapPanel getSelectMapPanel() {
-        return (PSelectMapPanel) selectMap.getElement();
+        return (PSelectMapPanel) selectMapWindow.getElement();
     }
 
-    public DrawablePPanel getSelectWarriors() {
-        return selectWarriors;
+    public DrawablePPanel getSelectWarriorsWindow() {
+        return selectWarriorsWindow;
     }
 
     public PSelectWarriorsPanel getSelectWarriorsPanel() {
-        return (PSelectWarriorsPanel) selectWarriors.getElement();
+        return (PSelectWarriorsPanel) selectWarriorsWindow.getElement();
     }
 
 }

@@ -7,8 +7,6 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.Packets;
 
-
-
 /**
  * Users: mikhail v. kutuzov, abarakov
  * Ответ на связку сообщений возвращает список ответов в том порядке, в котором были отосланы соответствующие запросы.
@@ -20,8 +18,8 @@ public abstract class BatchAnswer extends ClientDeSerializedMessage {
     public abstract ArrayList getAnswers();
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        int size = SimpleDeserializer.deserializeInt(buffer);
-        for (int i = 0; i < size; i++) {
+        int count = SimpleDeserializer.deserializeInt(buffer);
+        for (int i = 0; i < count; i++) {
             int position = buffer.getPosition();
             short messageLength = SimpleDeserializer.deserializeShort(buffer);
             short messageType = SimpleDeserializer.deserializeShort(buffer);
@@ -33,13 +31,13 @@ public abstract class BatchAnswer extends ClientDeSerializedMessage {
                         "expected=" + expectedPosition +
                         "; actual=" + buffer.getPosition() +
                         "; index=" + i +
-                        "; msg count=" + size +
+                        "; msg count=" + count +
                         "; msg length=" + messageLength +
                         "; msg type=" + messageType +
                         ")");
+                // Перемещаем позицию буфера туда, где должно начинаться следующее сообщение
+                buffer.setPosition(expectedPosition);
             }
-            // На всякий случай перемещаем позицию буфера туда, где начинается следующее сообщение
-            buffer.setPosition(expectedPosition);
         }
     }
 

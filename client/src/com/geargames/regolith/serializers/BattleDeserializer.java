@@ -142,11 +142,13 @@ public class BattleDeserializer {
         if (length > 0) {
             BattleAlliance[] battleAlliances = new BattleAlliance[length];
             for (int i = 0; i < length; i++) {
-                battleAlliances[i] = new BattleAlliance();
+                BattleAlliance alliance = new BattleAlliance();
+                battleAlliances[i] = alliance;
+                alliance.setNumber((byte) i);
                 if (buffer.get() == SimpleSerializer.ALLY) {
-                    deserializeAllies(battleAlliances[i], buffer, baseConfiguration, battle, account);
+                    deserializeAllies(alliance, buffer, baseConfiguration, battle, account);
                 } else {
-                    deserializeEnemies(battleAlliances[i], buffer, baseConfiguration, battle, account);
+                    deserializeEnemies(alliance, buffer, baseConfiguration, battle, account);
                 }
             }
             battle.setAlliances(battleAlliances);
