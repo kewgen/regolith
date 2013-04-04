@@ -10,7 +10,24 @@ import com.geargames.regolith.units.dictionaries.WeaponTypeCollection;
 public class WeaponCategory extends Entity {
     private String name;
     private WeaponTypeCollection weaponTypes;
+    private int packerId;
 
+    /**
+     * Иденитификатор в пакере первого скрипта из списка скриптов, где использована данная разновидность оружия.
+     * @return
+     */
+    public int getPackerId() {
+        return packerId;
+    }
+
+    public void setPackerId(int packerId) {
+        this.packerId = packerId;
+    }
+
+    /**
+     * Наименование разновидности оружия.
+     * @return
+     */
     public String getName() {
         return name;
     }
@@ -19,6 +36,10 @@ public class WeaponCategory extends Entity {
         this.name = name;
     }
 
+    /**
+     * Типы оружия которые попадают под данную разновидность.
+     * @return
+     */
     public WeaponTypeCollection getWeaponTypes() {
         return weaponTypes;
     }

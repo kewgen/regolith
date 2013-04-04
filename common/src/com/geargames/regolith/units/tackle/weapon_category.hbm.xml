@@ -8,6 +8,7 @@
             </generator>
         </id>
         <property name="name" column="name" type="string"/>
+        <property name="packerId" />
         <component name="weaponTypes" class="com.geargames.regolith.units.dictionaries.ServerWeaponTypeCollection">
             <bag name="weaponTypes" cascade="save-update">
                 <key column="category_id"/>
@@ -16,3 +17,4 @@
         </component>
     </class>
 </hibernate-mapping>
+
