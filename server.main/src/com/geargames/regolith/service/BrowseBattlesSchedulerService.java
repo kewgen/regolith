@@ -133,11 +133,11 @@ public class BrowseBattlesSchedulerService {
         executor.execute(new AddBattle(battle));
     }
 
-    public void deleteBattle(Battle battle){
+    public void deleteBattle(Battle battle) {
         executor.execute(new DeleteBattle(battle));
     }
 
-    public void updateBattle(Battle battle){
+    public void updateBattle(Battle battle) {
         executor.execute(new UpdateBattle(battle));
     }
 
@@ -148,6 +148,8 @@ public class BrowseBattlesSchedulerService {
         buffer = new MicroByteBuffer(new byte[configuration.getMessageBufferSize()]);
         oldListeners = new HashSet<SocketChannel>();
         newListeners = new HashSet<SocketChannel>();
+        deletedBattles = new HashSet<Battle>();
+        updatedBattles = new HashSet<Battle>();
         newBattles = new HashSet<Battle>();
     }
 
@@ -157,21 +159,25 @@ public class BrowseBattlesSchedulerService {
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                    if (newListeners.size() != 0) {
-                        Collection<Battle> battlesList = battleMarketManager.battlesJoinTo();
-                        writer.addMessageToClient(new MainMessageToClient(new LinkedList<SocketChannel>(newListeners),
-                                ServerBrowseBattlesAnswer.answerNew(buffer, battlesList).serialize()));
-                        logger.debug("an amount of new listeners =" + newListeners.size() + " an amount of battles =" + battlesList.size());
-                    }
+                if (newListeners.size() != 0) {
+                    Collection<Battle> battlesList = battleMarketManager.battlesJoinTo();
+                    writer.addMessageToClient(new MainMessageToClient(new LinkedList<SocketChannel>(newListeners),
+                            ServerBrowseBattlesAnswer.answerNew(buffer, battlesList).serialize()));
+                    logger.debug("an amount of new listeners =" + newListeners.size() + " an amount of battles =" + battlesList.size());
+                }
 
-                    if (oldListeners.size() != 0) {
+                if (oldListeners.size() != 0) {
+                    if (newBattles.size() > 0 || updatedBattles.size() > 0 || deletedBattles.size() > 0) {
                         writer.addMessageToClient(new MainMessageToClient(oldListeners,
                                 ServerBrowseBattlesAnswer.answerOld(buffer, newBattles, updatedBattles, deletedBattles).serialize()));
                         logger.debug("an amount of old listeners =" + oldListeners.size() + " an amount of new battles =" + newBattles.size());
                     }
-                    oldListeners.addAll(newListeners);
-                    newListeners.clear();
-                    newBattles.clear();
+                }
+                oldListeners.addAll(newListeners);
+                newListeners.clear();
+                newBattles.clear();
+                updatedBattles.clear();
+                deletedBattles.clear();
             }
         }, MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
                 MainServerConfigurationFactory.getConfiguration().getBrowseBattlesTimeInterval(),
