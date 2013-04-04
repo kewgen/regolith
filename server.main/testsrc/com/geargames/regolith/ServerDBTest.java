@@ -868,7 +868,7 @@ public class ServerDBTest {
     public void addMap2() throws Exception {
         BattleMap map2 = BattleHelper.createBattleMap(10);
         map2.setName("КАРТА2");
-        ExitZone[] exits = new ExitZone[2];
+        ExitZone[] exits = new ExitZone[3];
         ExitZone exit = new ExitZone();
         exit.setX((short) 2);
         exit.setY((short) 4);
@@ -881,6 +881,12 @@ public class ServerDBTest {
         exit.setxRadius((byte) 2);
         exit.setyRadius((byte) 2);
         exits[1] = exit;
+        exit = new ExitZone();
+        exit.setX((short) 8);
+        exit.setY((short) 2);
+        exit.setxRadius((byte) 2);
+        exit.setyRadius((byte) 2);
+        exits[2] = exit;
 
         map2.setExits(exits);
 

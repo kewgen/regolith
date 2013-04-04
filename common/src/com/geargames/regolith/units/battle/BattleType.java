@@ -83,9 +83,9 @@ public class BattleType extends Entity {
     public String toString() {
         String res = super.toString() + "; type=";
         for (int i = 0; i < allianceAmount - 1; i++) {
-            res += allianceSize + ":";
+            res += allianceSize + "x";
         }
-        return res + allianceSize + "x" + groupSize + "; name='" + name + "'";
+        return res + allianceSize + "*" + groupSize + "; name='" + name + "'";
     }
 
 }

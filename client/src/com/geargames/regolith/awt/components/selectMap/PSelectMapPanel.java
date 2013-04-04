@@ -160,6 +160,10 @@ public class PSelectMapPanel extends PRootContentPanel {
             Debug.critical("PSelectMapPanel.createBattle(): selectedMap == null");
             return;
         }
+        if (battleType == null) {
+            Debug.critical("PSelectMapPanel.createBattle(): battleType == null");
+            return;
+        }
         if (currentPanel == null) {
             Debug.critical("PSelectMapPanel.createBattle(): currentPanel == null");
             return;
