@@ -11,18 +11,18 @@ import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 05.07.12
  * Сообщение-ответ о присоединении пользователя к военному союзу (альянсу). Рассылается всем слушателям битвы.
  */
 public class ClientJoinToBattleAllianceAnswer extends ClientDeSerializedMessage {
-    private Battle battle;
+//    private Battle battle;
     private BattleGroup battleGroup;
     private boolean isSuccess;
 
-    public void setBattle(Battle battle) {
-        this.battle = battle;
-    }
+//    public void setBattle(Battle battle) {
+//        this.battle = battle;
+//    }
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         battleGroup = null;
@@ -31,6 +31,7 @@ public class ClientJoinToBattleAllianceAnswer extends ClientDeSerializedMessage 
             int id = SimpleDeserializer.deserializeInt(buffer);
             Account account = AccountDeserializer.deserialize(
                     buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
+            Battle battle = ClientConfigurationFactory.getConfiguration().getBattle();
             battleGroup = ClientBattleHelper.findBattleGroupById(battle, id);
             battleGroup.setAccount(account);
             battleGroup.setWarriors(null);

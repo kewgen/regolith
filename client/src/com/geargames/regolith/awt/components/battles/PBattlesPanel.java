@@ -100,7 +100,8 @@ public class PBattlesPanel extends PRootContentPanel {
     // activatePanel
     public void showPanel(Battle listenedBattle, DrawablePPanel callerPanel, boolean isModalCallerPanel) {
         Debug.debug("Dialog 'Battles'");
-        battleList.setListenedBattle(listenedBattle);
+        ClientConfigurationFactory.getConfiguration().setBattle(listenedBattle);
+        battleList.updateList();
         ScrollHelper.adjustVerticalInertMotionListener((ElasticInertMotionListener)battleList.getMotionListener(), battleList);
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
@@ -118,7 +119,7 @@ public class PBattlesPanel extends PRootContentPanel {
     public void onBattleCreateButtonClick() {
         ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
         ClientBattleCreationManager battleCreationManager = configuration.getBattleCreationManager();
-        Battle listenedBattle = battleList.getListenedBattle();
+        Battle listenedBattle = configuration.getBattle();
         if (listenedBattle == null) {
             // Нет битв, которую я создал или в которую вступил => можно смело создавать битву
             // Особой реакции на этот случай не требуется
@@ -128,7 +129,8 @@ public class PBattlesPanel extends PRootContentPanel {
             // Этой ситуации вообще происходить недолжно
             Debug.error("There was an attempt to create a battle, when there are already created battle");
             cancelBattle(listenedBattle);
-            battleList.setListenedBattle(null);
+            ClientConfigurationFactory.getConfiguration().setBattle(null);
+            battleList.updateList();
         } else {
             BattleGroup myBattleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(listenedBattle, configuration.getAccount().getId());
             if (myBattleGroup != null) {
@@ -140,7 +142,8 @@ public class PBattlesPanel extends PRootContentPanel {
                     Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAccount().getId() != configuration.getAccount().getId()");
                 }
                 evictAccountFromBattleGroup(myBattleGroup);
-                battleList.setListenedBattle(null);
+                ClientConfigurationFactory.getConfiguration().setBattle(null);
+                battleList.updateList();
             } else {
                 // Я просто подписался на обновления битвы => нужно отписаться от обновлений
                 //todo: Вероятно, этот случай никогда не наступит
@@ -150,7 +153,8 @@ public class PBattlesPanel extends PRootContentPanel {
 //                if (!doNotListenToBattleAnswer.isSuccess()) {
 //                }
                 Debug.debug("The client unsubscribe from battle (battle id = " + listenedBattle.getId() + ")");
-                battleList.setListenedBattle(null);
+                ClientConfigurationFactory.getConfiguration().setBattle(null);
+                battleList.updateList();
             }
         }
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
@@ -163,14 +167,15 @@ public class PBattlesPanel extends PRootContentPanel {
      */
     public void onPlayerButtonClick(BattleGroup battleGroup) {
         ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
-        Battle listenedBattle = battleList.getListenedBattle();
+        Battle listenedBattle = configuration.getBattle();
         if (listenedBattle != null && listenedBattle.getAuthor().getId() == configuration.getAccount().getId() &&
                 listenedBattle.getId() != battleGroup.getAlliance().getBattle().getId()) { //todo: id или ссылка?
             // Я щелкнул по иконке боевой группы чужой битвы, при этом у меня есть своя созданная битва => нужно заканселить свою битву
             if (cancelBattle(listenedBattle)) {
                 battleCreateButton.setVisible(true);
             }
-            battleList.setListenedBattle(null);
+            ClientConfigurationFactory.getConfiguration().setBattle(null);
+            battleList.updateList();
         } else {
             Account accountInBattleGroup = battleGroup.getAccount();
             if (accountInBattleGroup == null) {

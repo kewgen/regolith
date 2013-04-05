@@ -3,7 +3,8 @@ package com.geargames.regolith.awt.components.battles;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
-import com.geargames.common.util.Math;
+//import com.geargames.common.util.Math;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
@@ -16,7 +17,7 @@ import java.util.Vector;
  */
 public class PBattleListItemVector extends Vector {
     private ClientBattleCollection battles;
-    private Battle listenedBattle;
+//    private Battle listenedBattle;
 
     private ArrayList items;
     private int amount;
@@ -98,20 +99,21 @@ public class PBattleListItemVector extends Vector {
         return size;
     }
 
-    public Battle getListenedBattle() {
-        return listenedBattle;
-    }
-
-    public void setListenedBattle(Battle battle) {
-        listenedBattle = battle;
-        update();
-    }
+//    public Battle getListenedBattle() {
+//        return listenedBattle;
+//    }
+//
+//    public void setListenedBattle(Battle battle) {
+//        listenedBattle = battle;
+//        update();
+//    }
 
     public void update() {
         Debug.debug("PBattleListItemVector.update: size=" + battles.size());
         size = battles.size();
         int iItem = 0;
         int iBattle = upIndex;
+        Battle listenedBattle = ClientConfigurationFactory.getConfiguration().getBattle();
         if (listenedBattle != null) {
             PBattleListItem item = (PBattleListItem) items.get(0);
             item.updateBattle(listenedBattle);

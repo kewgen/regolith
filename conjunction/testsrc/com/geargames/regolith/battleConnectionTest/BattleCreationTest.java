@@ -18,8 +18,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.concurrent.BrokenBarrierException;
-
 /**
  * Users: mikhail v. kutuzov, abarakov
  * Date: 27.06.12
@@ -110,6 +108,7 @@ public class BattleCreationTest {
         //todo: battle.getAuthor() == null
         //todo: battle.getMap() == null
         Assert.assertNotNull("Could not create his own battle.", battle);
+        clientConfiguration.setBattle(battle);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
@@ -118,7 +117,7 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #1b ==============================");
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
         ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
-        joinToBattleAllianceAnswer.setBattle(battle);
+//        joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, FIRST_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
@@ -131,7 +130,7 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #1c ==============================");
         System.out.println("Waiting for a client's eviction from the alliance (Client C)...");
         ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
-        evictAccountFromAllianceAnswer.setBattle(battle);
+//        evictAccountFromAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not evicted from the alliance",
                 waitForAsyncAnswer(evictAccountFromAllianceAnswer, Packets.EVICT_ACCOUNT_FROM_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' has not evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
@@ -145,7 +144,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #2b ==============================");
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
-        joinToBattleAllianceAnswer.setBattle(battle);
+//        joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
@@ -169,7 +168,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #3b ==============================");
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
-        joinToBattleAllianceAnswer.setBattle(battle);
+//        joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
@@ -182,7 +181,7 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #3c ==============================");
         System.out.println("Waiting of completion the battle group (Client C)...");
         ClientCompleteGroupAnswer completeGroupAnswer = new ClientCompleteGroupAnswer();
-        completeGroupAnswer.setBattle(battle);
+//        completeGroupAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' could not complete the battle group",
                 waitForAsyncAnswer(completeGroupAnswer, Packets.GROUP_COMPLETE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
@@ -207,7 +206,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #3d ==============================");
         System.out.println("Waiting for a client's eviction from the alliance (Client C)...");
-        evictAccountFromAllianceAnswer.setBattle(battle);
+//        evictAccountFromAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not evicted from the alliance",
                 waitForAsyncAnswer(evictAccountFromAllianceAnswer, Packets.EVICT_ACCOUNT_FROM_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' has not evicted from the alliance", evictAccountFromAllianceAnswer.isSuccess());
@@ -221,7 +220,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #4b ==============================");
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
-        joinToBattleAllianceAnswer.setBattle(battle);
+//        joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
@@ -234,7 +233,7 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #4c ==============================");
         System.out.println("Waiting of completion the battle group (Client C)...");
         completeGroupAnswer = new ClientCompleteGroupAnswer();
-        completeGroupAnswer.setBattle(battle);
+//        completeGroupAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' could not complete the battle group",
                 waitForAsyncAnswer(completeGroupAnswer, Packets.GROUP_COMPLETE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
@@ -257,7 +256,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #5b ==============================");
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
-        joinToBattleAllianceAnswer.setBattle(battle);
+//        joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
@@ -272,6 +271,7 @@ public class BattleCreationTest {
         ClientCancelBattleAnswer cancelBattleAnswer = battleCreationManager.cancelBattle();
         Assert.assertTrue("The client is not able to cancel the battle", cancelBattleAnswer.isSuccess());
         System.out.println("The client canceled battle (battle id = " + battle.getId() + ")");
+        clientConfiguration.setBattle(null);
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
@@ -296,12 +296,13 @@ public class BattleCreationTest {
 //        Assert.assertTrue("Different references to the battles", battle == listenToBattleAnswer.getBattle());
         battle = listenToBattleAnswer.getBattle();
         System.out.println("Created battle (battle id=" + battle.getId() + ")");
+        clientConfiguration.setBattle(battle);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #6d ==============================");
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
-        joinToBattleAllianceAnswer.setBattle(battle);
+//        joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING + BROWSE_CREATED_BATTLES_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
@@ -314,7 +315,7 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #6e ==============================");
         System.out.println("Waiting of completion the battle group (Client C)...");
         completeGroupAnswer = new ClientCompleteGroupAnswer();
-        completeGroupAnswer.setBattle(battle);
+//        completeGroupAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' could not complete the battle group",
                 waitForAsyncAnswer(completeGroupAnswer, Packets.GROUP_COMPLETE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
@@ -329,6 +330,7 @@ public class BattleCreationTest {
         cancelBattleAnswer = battleCreationManager.cancelBattle();
         Assert.assertTrue("The client is not able to cancel the battle", cancelBattleAnswer.isSuccess());
         System.out.println("The client canceled battle (battle id = " + battle.getId() + ")");
+        clientConfiguration.setBattle(null);
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
 
@@ -353,12 +355,13 @@ public class BattleCreationTest {
 //        Assert.assertTrue("Different references to the battles", battle == listenToBattleAnswer.getBattle());
         battle = listenToBattleAnswer.getBattle();
         System.out.println("Created battle (battle id=" + battle.getId() + ")");
+        clientConfiguration.setBattle(battle);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #7d ==============================");
         System.out.println("Waiting for a client's joining to the alliance (Client C)...");
-        joinToBattleAllianceAnswer.setBattle(battle);
+//        joinToBattleAllianceAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' has not joined to the alliance",
                 waitForAsyncAnswer(joinToBattleAllianceAnswer, Packets.JOIN_TO_BATTLE_ALLIANCE, NEXT_WAINTING + BROWSE_CREATED_BATTLES_WAINTING));
         Assert.assertTrue("'Client C' could not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
@@ -371,7 +374,7 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #7e ==============================");
         System.out.println("Waiting of completion the battle group (Client C)...");
         completeGroupAnswer = new ClientCompleteGroupAnswer();
-        completeGroupAnswer.setBattle(battle);
+//        completeGroupAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' could not complete the battle group",
                 waitForAsyncAnswer(completeGroupAnswer, Packets.GROUP_COMPLETE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());
@@ -415,7 +418,7 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #7i ==============================");
         System.out.println("Waiting of disbandment the battle group (Client C)...");
         completeGroupAnswer = new ClientCompleteGroupAnswer();
-        completeGroupAnswer.setBattle(battle);
+//        completeGroupAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' could not disband the battle group",
                 waitForAsyncAnswer(completeGroupAnswer, Packets.GROUP_DISBAND, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not disband the battle group", completeGroupAnswer.isSuccess());
@@ -435,7 +438,7 @@ public class BattleCreationTest {
         System.out.println("========== scenario: #7k ==============================");
         System.out.println("Waiting of completion the battle group (Client C)...");
         completeGroupAnswer = new ClientCompleteGroupAnswer();
-        completeGroupAnswer.setBattle(battle);
+//        completeGroupAnswer.setBattle(battle);
         Assert.assertTrue("'Client C' could not complete the battle group",
                 waitForAsyncAnswer(completeGroupAnswer, Packets.GROUP_COMPLETE, NEXT_WAINTING));
         Assert.assertTrue("'Client C' could not complete the battle group", completeGroupAnswer.isSuccess());

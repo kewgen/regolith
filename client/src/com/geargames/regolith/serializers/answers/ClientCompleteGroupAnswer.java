@@ -3,6 +3,7 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
@@ -14,18 +15,19 @@ import com.geargames.regolith.units.battle.BattleGroup;
  */
 // ClientGroupReadyStateAnswer, ClientGroupIsReadyAnswer, ClientGroupIsNotReadyAnswer
 public class ClientCompleteGroupAnswer extends ClientDeSerializedMessage {
-    private Battle battle;
+//    private Battle battle;
     private BattleGroup battleGroup;
 
-    public void setBattle(Battle battle) {
-        this.battle = battle;
-    }
+//    public void setBattle(Battle battle) {
+//        this.battle = battle;
+//    }
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         battleGroup = null;
         boolean success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             int battleGroupId = SimpleDeserializer.deserializeInt(buffer);
+            Battle battle = ClientConfigurationFactory.getConfiguration().getBattle();
             battleGroup = ClientBattleHelper.findBattleGroupById(battle, battleGroupId);
         }
     }

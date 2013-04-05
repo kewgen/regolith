@@ -5,6 +5,7 @@ import com.geargames.common.network.Network;
 import com.geargames.regolith.managers.*;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
@@ -24,6 +25,7 @@ public class ClientConfiguration {
 
     private Network network;
     private Account account;
+    private Battle battle;
     private MicroByteBuffer messageBuffer;
     private int maxErrorsAmount;
     private String server;
@@ -32,6 +34,10 @@ public class ClientConfiguration {
     private int outgoingMessageSize;
     private Warrior[] baseWarriors;
     private MessageDispatcher messageDispatcher;
+    private boolean ready;
+
+    public ClientConfiguration() {
+    }
 
     public MessageDispatcher getMessageDispatcher() {
         return messageDispatcher;
@@ -39,9 +45,6 @@ public class ClientConfiguration {
 
     public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
         this.messageDispatcher = messageDispatcher;
-    }
-
-    public ClientConfiguration() {
     }
 
     public BattleConfiguration getBattleConfiguration() {
@@ -75,8 +78,6 @@ public class ClientConfiguration {
     public void setBaseWarriors(Warrior[] baseWarriors) {
         this.baseWarriors = baseWarriors;
     }
-
-    private boolean ready;
 
     public boolean isReady() {
         return ready;
@@ -140,6 +141,14 @@ public class ClientConfiguration {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Battle getBattle() {
+        return battle;
+    }
+
+    public void setBattle(Battle battle) {
+        this.battle = battle;
     }
 
     public MicroByteBuffer getMessageBuffer() {

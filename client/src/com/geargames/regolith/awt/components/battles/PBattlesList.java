@@ -59,16 +59,21 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
         return items;
     }
 
-    public Battle getListenedBattle() {
-        return items.getListenedBattle();
-    }
+//    public Battle getListenedBattle() {
+//        return items.getListenedBattle();
+//    }
+//
+//    public void setListenedBattle(Battle battle) {
+//        items.setListenedBattle(battle);
+//    }
 
-    public void setListenedBattle(Battle battle) {
-        items.setListenedBattle(battle);
+    public void updateList() {
+        items.update();
     }
 
     private void updateButtonAccount(BattleGroup battleGroup) {
-        if (items.getListenedBattle() != null && battleGroup.getAlliance().getBattle().getId() == items.getListenedBattle().getId()) {
+        Battle listenedBattle = ClientConfigurationFactory.getConfiguration().getBattle();
+        if (listenedBattle != null && battleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
             ((PBattleListItem) items.elementAt(0)).resetButtonAccount(battleGroup);
         }
     }
@@ -80,7 +85,7 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
             switch (type) {
                 case Packets.BROWSE_CREATED_BATTLES: {
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): BROWSE_CREATED_BATTLES");
-                    items.update();
+                    updateList();
                     break;
                 }
                 case Packets.GROUP_COMPLETE: {

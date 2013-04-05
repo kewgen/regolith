@@ -38,7 +38,7 @@ public class ClientBattleCreationManager {
      */
     public ClientEvictAccountFromAllianceAnswer evictAccount(BattleAlliance alliance, Account account) throws Exception {
         //todo: Передавать не alliance + account, а только battleGroup
-        evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
+//        evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
         configuration.getNetwork().sendSynchronousMessage(
                 new EvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer, 100);
         return evictAccountFromAllianceAnswer;
@@ -65,7 +65,7 @@ public class ClientBattleCreationManager {
      * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
      */
     public ClientJoinToBattleAllianceAnswer joinToAlliance(BattleAlliance alliance) throws Exception {
-        joinToBattleAllianceAnswer.setBattle(alliance.getBattle());
+//        joinToBattleAllianceAnswer.setBattle(alliance.getBattle());
         configuration.getNetwork().sendSynchronousMessage(new ClientJoinToBattleAllianceRequest(configuration, alliance), joinToBattleAllianceAnswer, 100);
         return joinToBattleAllianceAnswer;
     }
@@ -77,7 +77,7 @@ public class ClientBattleCreationManager {
      * @return         сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
     public ClientCompleteGroupAnswer completeGroup(BattleGroup group, Warrior[] warriors) throws Exception{
-        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
+//        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
 		configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),completeGroupAnswer, 100);
         return completeGroupAnswer;
     }
@@ -88,7 +88,7 @@ public class ClientBattleCreationManager {
      * @return      сообщение-подтверждение класса ClientCompleteGroupAnswer
      */
     public ClientCompleteGroupAnswer disbandGroup(BattleGroup group) throws Exception {
-        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
+//        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
         configuration.getNetwork().sendSynchronousMessage(new BattleGroupDisbandRequest(configuration, group), completeGroupAnswer, 100);
         return completeGroupAnswer;
     }
