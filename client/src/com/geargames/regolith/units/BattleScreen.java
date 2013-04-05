@@ -1,12 +1,11 @@
 package com.geargames.regolith.units;
 
-import com.geargames.awt.Drawable;
+import com.geargames.awt.Screen;
 import com.geargames.common.env.Environment;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
 import com.geargames.common.util.Mathematics;
-import com.geargames.regolith.Port;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
@@ -28,7 +27,7 @@ import java.util.Vector;
  * User: mkutuzov
  * Date: 13.02.12
  */
-public class BattleScreen extends Drawable implements TimerListener {
+public class BattleScreen extends Screen implements TimerListener {
     public static final int GROUND_WIDTH = 348;
     public static final int GROUND_HEIGHT = 174;
     public static final int HORIZONTAL_DIAGONAL = GROUND_WIDTH / 3;
@@ -130,28 +129,6 @@ public class BattleScreen extends Drawable implements TimerListener {
         drawGround(graphics);
         drawBattleMap(graphics);
         drawGroup(graphics);
-    }
-
-    public int getX() {
-        return 0;
-    }
-
-    public void setX(int x) {
-    }
-
-    public int getY() {
-        return 0;
-    }
-
-    public void setY(int y) {
-    }
-
-    public int getHeight() {
-        return Port.getScreenH();
-    }
-
-    public int getWidth() {
-        return Port.getScreenW();
     }
 
     /**
@@ -613,5 +590,15 @@ public class BattleScreen extends Drawable implements TimerListener {
      */
     public BattleUnit getUser() {
         return user;
+    }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

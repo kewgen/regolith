@@ -16,7 +16,6 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 public final class Application extends com.geargames.common.Application {
 
     public static final int FPS_MAXIMUM = 30;
-    private final java.lang.String RMS_SETTINGS = "regolith";
 
     private Loader loader;
     private Render render;
@@ -50,10 +49,6 @@ public final class Application extends com.geargames.common.Application {
     }
 
     // ----- Property management ---------------------------------------------------------------------------------------
-
-    public Render getRender() {
-        return render;
-    }
 
     public PFontManager getFontManager() {
         return fontManager;
@@ -134,6 +129,7 @@ public final class Application extends com.geargames.common.Application {
 //        textHint.setDefaultFont(PFontCollection.getFontHint());
 
         panels = PRegolithPanelManager.getInstance();
+        panels.changeScreen(panels.getMainScreen());
         panels.initiate(render);
         panels.show(panels.getMainMenu());
         panels.show(panels.getLeft());
