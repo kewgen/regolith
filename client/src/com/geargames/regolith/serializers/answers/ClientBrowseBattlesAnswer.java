@@ -46,13 +46,13 @@ public class ClientBrowseBattlesAnswer extends BatchAnswer {
         return answers;
     }
 
-    public void deSerialize() throws Exception {
-        super.deSerialize();
-        ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();
-        for (int i = 0; i < answers.size(); i++) {
-            battles.add(((ClientListenToBattleAnswer) answers.get(i)).getBattle());
-        }
-    }
+//    public void deSerialize() throws Exception {
+//        super.deSerialize();
+//        ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();
+//        for (int i = 0; i < answers.size(); i++) {
+//            battles.add(((ClientListenToBattleAnswer) answers.get(i)).getBattle());
+//        }
+//    }
 
     public ClientBattleCollection getBattles() {
         return ObjectManager.getInstance().getBattleCollection();

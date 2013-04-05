@@ -9,7 +9,12 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.helpers.ClientBattleHelper;
+import com.geargames.regolith.serializers.answers.ClientCompleteGroupAnswer;
+import com.geargames.regolith.serializers.answers.ClientEvictAccountFromAllianceAnswer;
+import com.geargames.regolith.serializers.answers.ClientJoinToBattleAllianceAnswer;
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.BattleGroup;
 
 import java.util.Vector;
 
@@ -26,12 +31,11 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
         IndexObject index = (IndexObject) listPrototype.getIndexBySlot(0);
         items = new PBattleListItemVector((PObject) index.getPrototype(), getShownItemsAmount());
         types = new short[] {
-                Packets.BROWSE_CREATED_BATTLES
-//                Packets.JOIN_TO_BATTLE_ALLIANCE,
-//                Packets.EVICT_ACCOUNT_FROM_ALLIANCE
-//                Packets.,
-//                Packets.,
-//                Packets.
+                Packets.BROWSE_CREATED_BATTLES,
+                Packets.JOIN_TO_BATTLE_ALLIANCE,
+                Packets.EVICT_ACCOUNT_FROM_ALLIANCE,
+                Packets.GROUP_COMPLETE,
+                Packets.GROUP_DISBAND
         };
     }
 
@@ -63,34 +67,49 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
         items.setListenedBattle(battle);
     }
 
+    private void updateButtonAccount(BattleGroup battleGroup) {
+        if (items.getListenedBattle() != null && battleGroup.getAlliance().getBattle().getId() == items.getListenedBattle().getId()) {
+            ((PBattleListItem) items.elementAt(0)).resetButtonAccount(battleGroup);
+        }
+    }
+
     @Override
     public void onReceive(ClientDeSerializedMessage message, short type) {
         try {
-            Debug.debug("PBattlesList.onReceive(): type = " + type);
+//            Debug.debug("PBattlesList.onReceive(): type = " + type);
             switch (type) {
-                case Packets.BROWSE_CREATED_BATTLES:
+                case Packets.BROWSE_CREATED_BATTLES: {
+                    Debug.debug("PBattlesList.onReceive(type = " + type + "): BROWSE_CREATED_BATTLES");
                     items.update();
-//                    for (int i = 0; i < items.size(); i++) {
-//                        ((PBattleListItem) items.elementAt(i)).update();
-//                    }
                     break;
-//                case Packets.JOIN_TO_BATTLE_ALLIANCE:
-//                    ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) message;
-//                    BattleGroup battleGroup = joinToBattleAllianceAnswer.getBattleGroup();
-//                    if (items.getListenedBattle() != null) {
-//                        ((PBattleListItem) items.elementAt(0)).resetButtonAccount(
-//                                battleGroup.getAlliance().getNumber(),
-//                                battleGroup.getAlliance().getAllies().indexById(battleGroup.getId()));
-//                    }
-//                    break;
-//                case Packets.EVICT_ACCOUNT_FROM_ALLIANCE:
-//                    ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) message;
-//                    if (items.getListenedBattle() != null) {
-//                        ((PBattleListItem) items.elementAt(0)).resetButtonAccount(
-//                        );
-//                        evictAccountFromAllianceAnswer.getAlliance();
-//                    }
-//                    break;
+                }
+                case Packets.GROUP_COMPLETE: {
+                    Debug.debug("PBattlesList.onReceive(type = " + type + "): GROUP_COMPLETE");
+                    ClientCompleteGroupAnswer completeGroupAnswer = (ClientCompleteGroupAnswer) message;
+                    updateButtonAccount(completeGroupAnswer.getBattleGroup());
+                    break;
+                }
+                case Packets.GROUP_DISBAND: {
+                    Debug.debug("PBattlesList.onReceive(type = " + type + "): GROUP_DISBAND");
+                    ClientCompleteGroupAnswer completeGroupAnswer = (ClientCompleteGroupAnswer) message;
+                    updateButtonAccount(completeGroupAnswer.getBattleGroup());
+                    break;
+                }
+                case Packets.JOIN_TO_BATTLE_ALLIANCE: {
+                    Debug.debug("PBattlesList.onReceive(type = " + type + "): JOIN_TO_BATTLE_ALLIANCE");
+                    ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) message;
+                    updateButtonAccount(joinToBattleAllianceAnswer.getBattleGroup());
+                    break;
+                }
+                //todo: Если меня выкинули из битвы, нужно почистить переменную items.listenedBattle. Учесть, что я сам себя мог выкинуть из битвы, потому сам уже почистил и присвоил новые значения этим переменным.
+                case Packets.EVICT_ACCOUNT_FROM_ALLIANCE: {
+                    Debug.debug("PBattlesList.onReceive(type = " + type + "): EVICT_ACCOUNT_FROM_ALLIANCE");
+                    ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) message;
+                    BattleGroup battleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(
+                            evictAccountFromAllianceAnswer.getAlliance().getBattle(), evictAccountFromAllianceAnswer.getAccount().getId());
+                    updateButtonAccount(battleGroup);
+                    break;
+                }
                 default:
                     Debug.error("There is a message of type = " + type);
             }
@@ -100,10 +119,12 @@ public class PBattlesList extends PVerticalScrollView implements DataMessageList
     }
 
     public void registerMessageListener() {
+        Debug.debug("PBattlesList.registerMessageListener");
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
     }
 
     public void unregisterMessageListener() {
+        Debug.debug("PBattlesList.unregisterMessageListener");
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().unregister(this);
     }
 

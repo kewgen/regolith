@@ -108,6 +108,7 @@ public class PBattleListItemVector extends Vector {
     }
 
     public void update() {
+        Debug.debug("PBattleListItemVector.update: size=" + battles.size());
         size = battles.size();
         int iItem = 0;
         int iBattle = upIndex;
@@ -118,7 +119,7 @@ public class PBattleListItemVector extends Vector {
         }
         while (iItem < items.size() && iBattle < battles.size()) {
             Battle battle = battles.get(iBattle);
-            if (battle != listenedBattle) { //todo: id или ссылки на объекты?
+            if (listenedBattle == null || battle.getId() != listenedBattle.getId()) { //todo: id или ссылки на объекты?
                 PBattleListItem item = (PBattleListItem) items.get(iItem);
                 item.updateBattle(battle);
                 iItem++;

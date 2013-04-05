@@ -33,6 +33,7 @@ public class ClientJoinToBattleAllianceAnswer extends ClientDeSerializedMessage 
                     buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
             battleGroup = ClientBattleHelper.findBattleGroupById(battle, id);
             battleGroup.setAccount(account);
+            battleGroup.setWarriors(null);
         }
     }
 

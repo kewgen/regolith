@@ -39,26 +39,28 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
 
     @Override
     public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException {
-        Battle battle = battleManagerContext.getBattlesById().get(SimpleDeserializer.deserializeInt(from));
+        int battleId = SimpleDeserializer.deserializeInt(from);
+        Battle battle = battleManagerContext.getBattlesById().get(battleId);
         SerializedMessage message;
         List<SocketChannel> recipients;
         if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) != null) {
-            int alliance_id = SimpleDeserializer.deserializeInt(from);
-            Account victim = serverContext.getActiveAccountById(SimpleDeserializer.deserializeInt(from));
-            if (victim == null) {
+            int allianceId = SimpleDeserializer.deserializeInt(from);
+            int victimAccountId = SimpleDeserializer.deserializeInt(from);
+            Account victimAccount = serverContext.getActiveAccountById(victimAccountId);
+            if (victimAccount == null) {
                 throw new RegolithException();
             }
-            if (client.getAccount() == battle.getAuthor() && victim == client.getAccount()) {
+            if (client.getAccount() == battle.getAuthor() && victimAccount == client.getAccount()) {
                 // Автор битвы пытается исключить из битвы сам себя
                 recipients = MainServerRequestUtils.singleRecipientByClient(client);
                 message = ServerEvictAccountFromAllianceAnswer.AnswerFailure(to);
             } else {
-                if (client.getAccount() != battle.getAuthor() && client.getAccount() != victim) {
+                if (client.getAccount() != battle.getAuthor() && client.getAccount() != victimAccount) {
                     throw new RegolithException();
                 }
                 BattleAlliance alliance = null;
                 for (BattleAlliance battleAlliance : battle.getAlliances()) {
-                    if (alliance_id == battleAlliance.getId()) {
+                    if (allianceId == battleAlliance.getId()) {
                         alliance = battleAlliance;
                         break;
                     }
@@ -66,15 +68,15 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
                 if (alliance == null) {
                     throw new RegolithException();
                 }
-                if (battleCreationManager.evictAccount(alliance, victim)) {
-                    SocketChannel victimChannel = serverContext.getChannel(victim);
+                if (battleCreationManager.evictAccount(alliance, victimAccount)) {
+                    SocketChannel victimChannel = serverContext.getChannel(victimAccount);
                     Client victimClient = serverContext.getClient(victimChannel);
                     victimClient.setState(new ClientAtBattleMarket());
 
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
-                    recipients.add(serverContext.getChannel(victim));
+                    recipients.add(serverContext.getChannel(victimAccount));
 					schedulerService.updateBattle(battle);
-                    message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victim, alliance);
+                    message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victimAccount, alliance);
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);
                     message = ServerEvictAccountFromAllianceAnswer.AnswerFailure(to);

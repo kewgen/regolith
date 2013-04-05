@@ -92,12 +92,12 @@ public class BattleHelper {
         battle.setName(name);
         battle.setBattleType(battleType);
         battle.setAlliances(new BattleAlliance[allianceAmount]);
-        for (int i = 0; i < battle.getAlliances().length; i++) {
+        for (int i = 0; i < allianceAmount; i++) {
             BattleAlliance alliance = new BattleAlliance();
             alliance.setAllies(new ServerBattleGroupCollection());
             alliance.setBattle(battle);
             alliance.setNumber((byte) i);
-            for (int j = 0; j < groupSize; j++) {
+            for (int j = 0; j < allianceSize; j++) {
                 BattleGroup group = new BattleGroup();
                 group.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));
                 WarriorHelper.addGroupIntoAlliance(alliance, group);

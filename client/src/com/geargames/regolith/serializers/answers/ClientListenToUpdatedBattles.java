@@ -55,6 +55,7 @@ public class ClientListenToUpdatedBattles extends ClientDeSerializedMessage {
                         } else {
                             group.setAccount(null);
                         }
+                        group.setWarriors(null);
 //                        group.setAlliance(alliance);
 //                        alliance.getAllies().add(group);
                     }

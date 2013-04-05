@@ -102,6 +102,21 @@ public class ClientBattleHelper {
         throw new RegolithException();
     }
 
+    public static BattleGroup tryFindBattleGroupByAccountId(Battle battle, int accountId) {
+        BattleAlliance[] alliances = battle.getAlliances();
+        for (int i = 0; i < alliances.length; i++) {
+            BattleGroupCollection groups = alliances[i].getAllies();
+            for (int j = 0; j < groups.size(); j++) {
+                BattleGroup battleGroup = groups.get(j);
+                Account account = battleGroup.getAccount();
+                if (account != null && account.getId() == accountId) {
+                    return battleGroup;
+                }
+            }
+        }
+        return null;
+    }
+
     public static Account findAccountById(Battle battle, int accountId) throws RegolithException {
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {

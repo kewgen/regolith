@@ -1,6 +1,5 @@
 package com.geargames.regolith.managers;
 
-import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.*;
@@ -38,6 +37,7 @@ public class ClientBattleCreationManager {
      * @param account
      */
     public ClientEvictAccountFromAllianceAnswer evictAccount(BattleAlliance alliance, Account account) throws Exception {
+        //todo: Передавать не alliance + account, а только battleGroup
         evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
         configuration.getNetwork().sendSynchronousMessage(
                 new EvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer, 100);

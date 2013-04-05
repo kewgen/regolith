@@ -6,6 +6,7 @@ import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.BattleGroup;
 
 /**
  * User: mikhail v. kutuzov, abarakov
@@ -77,14 +78,20 @@ public class PBattleListItem extends PContentPanel {
 
 //    }
 
-    /**
-     * Обновить конкретную морду на панели битв.
-     *
-     * @param allianceNumber номер боевой стороны морды
-     * @param groupNumber  нормер группы морды
-     */
-    public void resetButtonAccount(int allianceNumber, int groupNumber) {
-        playersPanel.resetButtonAccount(allianceNumber, groupNumber);
+//    /**
+//     * Обновить конкретную морду на панели битв.
+//     *
+//     * @param allianceNumber номер боевой стороны морды
+//     * @param groupNumber  нормер группы морды
+//     */
+//    public void resetButtonAccount(int allianceNumber, int groupNumber) {
+//        playersPanel.resetButtonAccount(allianceNumber, groupNumber);
+//    }
+
+    public void resetButtonAccount(BattleGroup battleGroup) {
+        playersPanel.resetButtonAccount(
+                battleGroup.getAlliance().getNumber(),
+                battleGroup.getAlliance().getAllies().indexById(battleGroup.getId()));
     }
 
 }

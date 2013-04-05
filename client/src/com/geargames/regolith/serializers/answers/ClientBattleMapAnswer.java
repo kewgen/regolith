@@ -28,4 +28,8 @@ public class ClientBattleMapAnswer extends ClientDeSerializedMessage {
         }
     }
 
+    public boolean isSuccess() {
+        return battleMap != null;
+    }
+
 }

@@ -21,7 +21,7 @@ public class ServerListenToBattleRequest extends MainOneToClientRequest {
     private BattleManagerContext battleManagerContext;
     private ServerBattleMarketManager battleMarketManager;
 
-    public ServerListenToBattleRequest(BattleManagerContext battleManagerContext, ServerBattleMarketManager battleMarketManager, BrowseBattlesSchedulerService browseBattlesSchedulerService) {
+    public ServerListenToBattleRequest(BattleManagerContext battleManagerContext, ServerBattleMarketManager battleMarketManager) {
         this.battleManagerContext = battleManagerContext;
         this.battleMarketManager = battleMarketManager;
     }

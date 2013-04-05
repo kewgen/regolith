@@ -310,12 +310,12 @@ public class PBattleCreatePanel extends PRootContentPanel {
 
     @Override
     public void onShow() {
-
+        Debug.debug("Dialog 'Create battle': onShow");
     }
 
     @Override
     public void onHide() {
-
+        Debug.debug("Dialog 'Create battle': onHide");
     }
 
     public void showPanel(DrawablePPanel callerPanel) {

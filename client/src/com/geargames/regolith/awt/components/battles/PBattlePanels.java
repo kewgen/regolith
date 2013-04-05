@@ -18,8 +18,8 @@ public class PBattlePanels {
     private Battle battle;
     private ArrayList activeAlliances;
 
-    private ArrayList type1x1x1;
     private ArrayList type1x1;
+    private ArrayList type1x1x1;
     private ArrayList type1x1x1x1;
 
     private ArrayList type2x2;

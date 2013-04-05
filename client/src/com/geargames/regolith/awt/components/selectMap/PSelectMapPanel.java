@@ -84,6 +84,16 @@ public class PSelectMapPanel extends PRootContentPanel {
         }
     }
 
+    @Override
+    public void onShow() {
+        Debug.debug("Dialog 'Select map': onShow");
+    }
+
+    @Override
+    public void onHide() {
+        Debug.debug("Dialog 'Select map': onHide");
+    }
+
     public void setSelectedMap(BattleMap map) {
         selectedMap = map;
         mapDescription.setText(map.getName());
@@ -120,6 +130,11 @@ public class PSelectMapPanel extends PRootContentPanel {
             if (isRandomMap) {
                 Debug.debug("Browsing a random map...");
                 ClientBattleMapAnswer battleMapAnswer = battleMarketManager.browseRandomBattleMap(battleType);
+                if (!battleMapAnswer.isSuccess()) {
+                    Debug.error("BrowseRandomBattleMap: Request rejected (battle type id = " + battleType.getId() + ")");
+                    NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_GET_BATTLE_MAP_EXCEPTION, this);
+                    return;
+                }
                 selectedMap = battleMapAnswer.getBattleMap();
                 currentPanel = callerPanel;
                 createBattle();
@@ -175,11 +190,16 @@ public class PSelectMapPanel extends PRootContentPanel {
         try {
             Debug.debug("Creating a battle (map id = " + selectedMap.getId() + "; battle type id = " + battleType.getId() + ")...");
             ClientListenToBattleAnswer listenToBattleAnswer = battleMarketManager.createBattle(selectedMap, battleType);
+            if (!listenToBattleAnswer.isSuccess()) {
+                Debug.error("CreateBattle: Request rejected (map id = " + selectedMap.getId() + "; battle type id = " + battleType.getId() + ")");
+                NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_CREATE_BATTLE_EXCEPTION, this);
+                return;
+            }
             battle = listenToBattleAnswer.getBattle();
             Debug.debug("The battle was created (battle id = " + battle.getId() + ")");
 //            ObjectManager.getInstance().setClientBattle(battle);
         } catch (Exception e) {
-            Debug.critical("CreateBattle: deserialization exception (map id = " + selectedMap.getId() + "; battle type id = " + battleType.getId() + ")", e);
+            Debug.critical("CreateBattle: Send request and receive answer is failed (map id = " + selectedMap.getId() + "; battle type id = " + battleType.getId() + ")", e);
             NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_CREATE_BATTLE_EXCEPTION, this);
             return;
         }
@@ -196,16 +216,6 @@ public class PSelectMapPanel extends PRootContentPanel {
      */
     public void onButtonOkClick() {
         createBattle();
-    }
-
-    @Override
-    public void onShow() {
-
-    }
-
-    @Override
-    public void onHide() {
-
     }
 
 }

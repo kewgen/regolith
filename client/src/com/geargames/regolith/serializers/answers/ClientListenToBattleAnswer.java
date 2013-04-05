@@ -4,6 +4,7 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.serializers.AccountDeserializer;
 import com.geargames.regolith.serializers.SerializeHelper;
@@ -34,9 +35,16 @@ public class ClientListenToBattleAnswer extends ClientDeSerializedMessage {
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
-            battle = new Battle();
             int battleId = SimpleDeserializer.deserializeInt(buffer);
-            battle.setId(battleId);
+            //todo: Пока сервер не заработает более надежным образом будем искать уже созданную битву в ObjectManager.battleCollection
+            // В некоторых случаях сервер высылает по несколько раз одинаковое сообщение ListenToCreatedBattle, поэтому
+            // в списке ObjectManager.battleCollection оказываются разные объекты битвы, но реализующие одну и ту же битву.
+            battle = ObjectManager.getInstance().findBattleById(battleId);
+            if (battle == null) {
+                battle = new Battle();
+                battle.setId(battleId);
+                ObjectManager.getInstance().getBattleCollection().add(battle);
+            }
             battle.setName(SimpleDeserializer.deserializeString(buffer));
             int battleTypeId = SimpleDeserializer.deserializeInt(buffer);
             BattleType battleType = BaseConfigurationHelper.findBattleTypeById(battleTypeId, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());

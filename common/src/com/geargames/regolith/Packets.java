@@ -195,6 +195,4 @@ public interface Packets {
 
     short BATTLE_SERVICE_NEW_CLIENT_LOGIN = 203;
 
-
-
 }

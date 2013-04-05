@@ -60,7 +60,7 @@ public class PPlayerButton extends PTouchButton {
         if (account != null) {
             titleLabel.setText(account.getName());
         } else {
-            titleLabel.setText("<NONE>");
+            titleLabel.setText("ПУСТО");
         }
         flag.setPrototype(render.getSprite(Graph.SPR_TEAM_COLOR + battleGroup.getAlliance().getNumber()));
         initiated = true;
@@ -91,7 +91,7 @@ public class PPlayerButton extends PTouchButton {
     @Override
     public void onClick() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        panelManager.getSelectWarriorsPanel().showPanel(battleGroup);
+        panelManager.getBattlesPanel().onPlayerButtonClick(battleGroup);
     }
 
 }
