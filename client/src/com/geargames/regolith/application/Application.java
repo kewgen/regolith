@@ -85,9 +85,6 @@ public final class Application extends com.geargames.common.Application {
         try {
             i_buf = Image.createImage(w, h);
             graphicsBuffer = new Graphics(i_buf.getImage());
-            if (render != null) {
-                getGraphics().setRender(render);
-            }
         } catch (Exception ex) {
             Debug.critical("Exception during the creation of screen buffer", ex);
         }
@@ -110,8 +107,8 @@ public final class Application extends com.geargames.common.Application {
         render.setCreator(new PRegolithUnitCreator());
         render.create();
         loader.loadPacker(graphicsBuffer, render);
-        getGraphics().setRender(render);
 
+        Environment.setRender(render);
         fontManager = new PFontManager();
 
         ArrayIntegerDual fontIndexes = new ArrayIntegerDual(1, 2);

@@ -1,8 +1,5 @@
 package com.geargames.regolith.units;
 
-import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.states.UnitState;
-
 /**
  * Боец постоянно движется по игровой сетке координат(над которой движется экран), эта сущность, какраз, предназначена
  * для связи бойца с этой сеткой.
@@ -12,8 +9,7 @@ import com.geargames.regolith.units.map.states.UnitState;
 public class BattleUnit {
     private int mapX;
     private int mapY;
-    private Warrior warrior;
-    private UnitState state;
+    private Unit unit;
 
     /**
      * Вернуть координату на игровой карте по горизонтальной оси.
@@ -41,23 +37,11 @@ public class BattleUnit {
         this.mapY = mapY;
     }
 
-    public Warrior getWarrior() {
-        return warrior;
+    public Unit getUnit() {
+        return unit;
     }
 
-    public void setWarrior(Warrior warrior) {
-        this.warrior = warrior;
-    }
-
-    /**
-     * Вернуть состояние прорисовки бойца.
-     * @return
-     */
-    public UnitState getState() {
-        return state;
-    }
-
-    public void setState(UnitState state) {
-        this.state = state;
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

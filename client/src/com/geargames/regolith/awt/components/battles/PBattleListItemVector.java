@@ -1,9 +1,7 @@
 package com.geargames.regolith.awt.components.battles;
 
-import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
-import com.geargames.common.util.Math;
 import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;

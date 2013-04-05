@@ -2,6 +2,7 @@ package com.geargames.regolith.awt.components.warrior;
 
 import com.geargames.awt.components.*;
 import com.geargames.common.Render;
+import com.geargames.common.env.Environment;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
@@ -129,7 +130,7 @@ public class PWarriorCharacteristics extends PContentPanel {
                 break;
             case 30:
                 Account account = ClientConfigurationFactory.getConfiguration().getAccount();
-                Render render = Application.getInstance().getGraphics().getRender();
+                Render render = Environment.getRender();
                 faces = new HorizontalFaces(account.getWarriors(), (PObject)index.getPrototype(), render);
                 addActiveChild(faces, index);
                 break;

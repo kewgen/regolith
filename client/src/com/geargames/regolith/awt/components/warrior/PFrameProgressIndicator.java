@@ -2,6 +2,7 @@ package com.geargames.regolith.awt.components.warrior;
 
 import com.geargames.awt.components.PObjectElement;
 import com.geargames.awt.components.PPrototypeElement;
+import com.geargames.common.env.Environment;
 import com.geargames.common.util.Region;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.Index;
@@ -39,7 +40,7 @@ public class PFrameProgressIndicator extends PObjectElement {
 
     public void draw(Graphics graphics, int x, int y) {
         background.draw(graphics, x, y);
-        graphics.getRender().getFrame(indicator + value).draw(graphics, x, y);
+        Environment.getRender().getFrame(indicator + value).draw(graphics, x, y);
     }
 
     public int getCardinality() {

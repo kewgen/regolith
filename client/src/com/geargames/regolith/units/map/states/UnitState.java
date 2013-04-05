@@ -1,14 +1,21 @@
 package com.geargames.regolith.units.map.states;
 
-import com.geargames.common.Render;
-import com.geargames.common.packer.PUnitScript;
-import com.geargames.regolith.units.map.Unit;
+import com.geargames.common.packer.PUnit;
+import com.geargames.regolith.units.Unit;
 
 /**
  * User: m.v.kutuzov
  * Date: 02.04.13
  */
 public abstract class UnitState {
-    protected abstract PUnitScript getPUnitScript(Render render, Unit unit, int action);
-    public abstract void next();
+    /**
+     * Перейти га следующее остояние из PUnitScript.
+     */
+    public abstract void next( Unit unit);
+
+    /**
+     * Вернуть текущий PUnit для отображения бойца.
+     * @return
+     */
+    public abstract PUnit current();
 }

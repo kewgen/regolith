@@ -8,7 +8,7 @@ import com.geargames.awt.utils.motions.StubMotionListener;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.common.util.Math;
+import com.geargames.common.util.Mathematics;
 import java.util.Vector;
 
 /**
@@ -46,7 +46,7 @@ public class PBattleMapList extends PHorizontalScrollView {
         mapItems.ensureCapacity(mapAmount);
 
         // Сначало изменяем уже существующие элементы списка
-        int minSize = Math.min(oldSize, mapAmount);
+        int minSize = Mathematics.min(oldSize, mapAmount);
         for (int i = 0; i < minSize; i++) {
             BattleMap map = collection[i];
             PBattleMapListItem item = (PBattleMapListItem) mapItems.get(i);

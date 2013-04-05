@@ -5,6 +5,7 @@ import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.awt.components.PTouchButton;
 import com.geargames.common.Graphics;
 import com.geargames.common.Render;
+import com.geargames.common.env.Environment;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
@@ -42,7 +43,7 @@ public class PPlayerButton extends PTouchButton {
     @Override
     public void draw(Graphics graphics, int x, int y) {
         if (!initiated) {
-            initiate(graphics.getRender());
+            initiate(Environment.getRender());
         }
 //      super.draw(graphics, x, y);
         if (battleGroup.getAccount() != null) {
