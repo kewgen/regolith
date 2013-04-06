@@ -91,7 +91,7 @@ public class SimplePlay {
 
         System.out.println("lets go to the battle market");
 
-        confirm = baseManager.goBattleManager();
+        confirm = baseManager.goBattleMarket();
 
         if (!confirm.isConfirm()) {
             System.err.println("could not go to the battle market");

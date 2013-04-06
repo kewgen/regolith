@@ -72,7 +72,7 @@ public class BattleConnectionTest {
 
         System.out.println("The client go to the battle market...");
 
-        ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+        ClientConfirmationAnswer confirm = baseManager.goBattleMarket();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
 //        System.out.println("Browsing battles...");
@@ -344,10 +344,10 @@ public class BattleConnectionTest {
         Manager.pause(1500); // Ждем, пока ClientA создаст битву
         ClientTestHelper.checkAsyncMessages();
 
-        //todo: goBattleManager - надо ли?
-        System.out.println("The client go to the battle market...");
-        confirm = baseManager.goBattleManager();
-        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
+//        //todo: goBattleMarket - надо ли?
+//        System.out.println("The client go to the battle market...");
+//        confirm = baseManager.goBattleMarket();
+//        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
         confirm = battleMarketManager.listenToCreatedBattles();
@@ -431,10 +431,10 @@ public class BattleConnectionTest {
         Manager.pause(1500); // Ждем, пока ClientA создаст битву
         ClientTestHelper.checkAsyncMessages();
 
-        //todo: goBattleManager - надо ли?
-        System.out.println("The client go to the battle market...");
-        confirm = baseManager.goBattleManager();
-        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
+//        //todo: goBattleMarket - надо ли?
+//        System.out.println("The client go to the battle market...");
+//        confirm = baseManager.goBattleMarket();
+//        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
         confirm = battleMarketManager.listenToCreatedBattles();

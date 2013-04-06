@@ -81,7 +81,7 @@ public class BattleCreationTest {
         ClientTestHelper.hireWarriorForClient(selfAccount);
 
         System.out.println("The client go to the battle market...");
-        ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+        ClientConfirmationAnswer confirm = baseManager.goBattleMarket();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Find the appropriate type of battle...");
@@ -279,9 +279,9 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #6a ==============================");
 
-        System.out.println("The client go to the battle market...");
-        confirm = baseManager.goBattleManager(); //todo: надо ли?
-        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
+//        System.out.println("The client go to the battle market...");
+//        confirm = baseManager.goBattleMarket(); //todo: надо ли?
+//        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
         battleMap = battleMarketManager.browseRandomBattleMap(battleType);
@@ -338,9 +338,9 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #7a ==============================");
 
-        System.out.println("The client go to the battle market...");
-        confirm = baseManager.goBattleManager(); //todo: надо ли?
-        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
+//        System.out.println("The client go to the battle market...");
+//        confirm = baseManager.goBattleMarket(); //todo: надо ли?
+//        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
         battleMap = battleMarketManager.browseRandomBattleMap(battleType);

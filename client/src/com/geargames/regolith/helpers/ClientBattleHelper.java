@@ -105,9 +105,9 @@ public class ClientBattleHelper {
     public static BattleGroup tryFindBattleGroupByAccountId(Battle battle, int accountId) {
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
-            BattleGroupCollection groups = alliances[i].getAllies();
-            for (int j = 0; j < groups.size(); j++) {
-                BattleGroup battleGroup = groups.get(j);
+            BattleGroupCollection battleGroups = alliances[i].getAllies();
+            for (int j = 0; j < battleGroups.size(); j++) {
+                BattleGroup battleGroup = battleGroups.get(j);
                 Account account = battleGroup.getAccount();
                 if (account != null && account.getId() == accountId) {
                     return battleGroup;

@@ -7,7 +7,7 @@ import com.geargames.regolith.managers.ServerTrainingBattleCreationManager;
 import com.geargames.regolith.serializers.MainServerRequestUtils;
 import com.geargames.regolith.serializers.answers.ServerCancelBattleAnswer;
 import com.geargames.regolith.service.*;
-import com.geargames.regolith.service.states.ClientAtBase;
+import com.geargames.regolith.service.states.ClientAtBattleMarket;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 
@@ -48,7 +48,7 @@ public class ServerCancelBattleRequest extends ServerRequest {
 
             for (SocketChannel recipient : recipients) {
                 Client recipientClient = serverContext.getClient(recipient);
-                recipientClient.setState(new ClientAtBase());
+                recipientClient.setState(new ClientAtBattleMarket());
             }
         } else {
             throw new RegolithException();

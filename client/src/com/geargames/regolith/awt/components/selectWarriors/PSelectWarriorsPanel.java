@@ -107,6 +107,7 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
                     return;
                 }
                 Debug.debug("The client listens to the battle (battle id = " + battle.getId() + ")");
+                clientConfiguration.setBattle(battle);
             } catch (Exception e) {
                 Debug.error("ListenToBattle: Send request and receive answer is failed (battle id = " + battle.getId() + ")", e);
                 NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_LISTEN_TO_BATTLE_EXCEPTION, this);

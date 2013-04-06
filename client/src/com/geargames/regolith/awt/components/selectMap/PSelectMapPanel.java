@@ -120,7 +120,7 @@ public class PSelectMapPanel extends PRootContentPanel {
 
         try {
 //            Debug.debug("The client go to the battle market...");
-//            ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+//            ClientConfirmationAnswer confirm = baseManager.goBattleMarket();
 //            if (!confirm.isConfirm()) {
 //                Debug.critical("The client could not go to the battle market");
 //                //todo: Сообщить пользователю об ошибке
@@ -197,7 +197,7 @@ public class PSelectMapPanel extends PRootContentPanel {
             }
             battle = listenToBattleAnswer.getBattle();
             Debug.debug("The battle was created (battle id = " + battle.getId() + ")");
-//            ObjectManager.getInstance().setClientBattle(battle);
+            clientConfiguration.setBattle(battle);
         } catch (Exception e) {
             Debug.critical("CreateBattle: Send request and receive answer is failed (map id = " + selectedMap.getId() + "; battle type id = " + battleType.getId() + ")", e);
             NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_CREATE_BATTLE_EXCEPTION, this);

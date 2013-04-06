@@ -16,6 +16,7 @@ public class LocalizedStrings {
 
     // ----- Battles ---------------------------------------------------------------------------------------------------
 
+    public static final String BATTLES_MSG_GO_TO_BATTLE_MARKET_EXCEPTION              = "НЕ УДАЛОСЬ ИЗМЕНИТЬ СТЕЙТ НА СЕРВЕРЕ ДЛЯ КЛИЕНТА НА BATTLE MARKET";
     public static final String BATTLES_MSG_LISTEN_TO_CREATED_BATTLES_EXCEPTION        = "НЕ УДАЛОСЬ ПОДПИСАТЬСЯ НА РАССЫЛКУ ОБНОВЛЕНИЙ БИТВ";
     public static final String BATTLES_MSG_DO_NOT_LISTEN_TO_CREATED_BATTLES_EXCEPTION = "НЕ УДАЛОСЬ ОТПИСАТЬСЯ ОТ РАССЫЛКИ ОБНОВЛЕНИЙ БИТВ";
     public static final String BATTLES_MSG_CANCEL_BATTLE_EXCEPTION      = "НЕ УДАЛОСЬ ОТМЕНИТЬ БИТВУ";

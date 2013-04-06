@@ -30,7 +30,7 @@ public class ClientBaseManager {
        return confirmation;
     }
 
-    public ClientConfirmationAnswer goBattleManager() throws Exception{
+    public ClientConfirmationAnswer goBattleMarket() throws Exception{
         configuration.getNetwork().sendSynchronousMessage(
                 new ChangeBaseLocation(configuration, Packets.GO_TO_BATTLE_MARKET), confirmation, 100);
         return confirmation;

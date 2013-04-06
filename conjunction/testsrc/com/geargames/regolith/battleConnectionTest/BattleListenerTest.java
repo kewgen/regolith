@@ -71,7 +71,7 @@ public class BattleListenerTest {
         ClientTestHelper.hireWarriorForClient(selfAccount);
 
         System.out.println("The client go to the battle market...");
-        ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+        ClientConfirmationAnswer confirm = baseManager.goBattleMarket();
         Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
@@ -304,10 +304,10 @@ public class BattleListenerTest {
         Manager.pause(1500); // Ждем, пока ClientA создаст битву
         ClientTestHelper.checkAsyncMessages();
 
-        //todo: goBattleManager - надо ли?
-        System.out.println("The client go to the battle market...");
-        confirm = baseManager.goBattleManager();
-        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
+//        //todo: goBattleMarket - надо ли?
+//        System.out.println("The client go to the battle market...");
+//        confirm = baseManager.goBattleMarket();
+//        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
         confirm = battleMarketManager.listenToCreatedBattles();
@@ -385,10 +385,10 @@ public class BattleListenerTest {
         Manager.pause(1500); // Ждем, пока ClientA создаст битву
         ClientTestHelper.checkAsyncMessages();
 
-        //todo: goBattleManager - надо ли?
-        System.out.println("The client go to the battle market...");
-        confirm = baseManager.goBattleManager();
-        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
+//        //todo: goBattleMarket - надо ли?
+//        System.out.println("The client go to the battle market...");
+//        confirm = baseManager.goBattleMarket();
+//        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Listening created battles...");
         confirm = battleMarketManager.listenToCreatedBattles();
@@ -466,7 +466,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #7g ==============================");
         System.out.println("'Client B' is trying join to an alliance (id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
-        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);;
+        joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(alliance);
         Assert.assertFalse("'Client B' should not join to the alliance", joinToBattleAllianceAnswer.isSuccess());
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();

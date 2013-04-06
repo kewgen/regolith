@@ -326,7 +326,7 @@ public class PBattleCreatePanel extends PRootContentPanel {
 //
 //        try {
 //            Debug.debug("The client go to the battle market...");
-//            ClientConfirmationAnswer confirm = baseManager.goBattleManager();
+//            ClientConfirmationAnswer confirm = baseManager.goBattleMarket();
 //            if (!confirm.isConfirm()) {
 //                Debug.critical("The client could not go to the battle market");
 //                //to do: Сообщить пользователю об ошибке
