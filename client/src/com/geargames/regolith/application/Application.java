@@ -129,8 +129,9 @@ public final class Application extends com.geargames.common.Application {
 //        textHint.setDefaultFont(PFontCollection.getFontHint());
 
         panels = PRegolithPanelManager.getInstance();
-        panels.changeScreen(panels.getMainScreen());
+
         panels.initiate(render);
+        panels.changeScreen(panels.getMainScreen());
         panels.show(panels.getMainMenu());
         panels.show(panels.getLeft());
 /*

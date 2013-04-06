@@ -1,5 +1,7 @@
 package com.geargames.regolith.units.tackle;
 
+import com.geargames.regolith.units.ElementTypes;
+
 /**
  * Позиция из каталога бони. Представляет базовые характеристи - тип брони.
  * User: mkutuzov
@@ -91,5 +93,10 @@ public class ArmorType extends Tackle {
 
     public int getType() {
         return TackleType.TYPE;
+    }
+
+    @Override
+    public short getElementType() {
+        return ElementTypes.NULL;
     }
 }

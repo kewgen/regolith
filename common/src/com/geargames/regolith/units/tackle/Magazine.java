@@ -1,6 +1,7 @@
 package com.geargames.regolith.units.tackle;
 
 import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.ElementTypes;
 
 /**
  * Особая сущность - куча зарядов, существует только когда бойцу надо выложить(забрать) заряды из сумки
@@ -51,4 +52,10 @@ public class Magazine extends Element {
     public int getFrameId() {
         return projectile.getFrameId();
     }
+
+    @Override
+    public short getElementType() {
+        return ElementTypes.MAGAZINE;
+    }
+
 }

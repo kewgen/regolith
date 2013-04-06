@@ -1,5 +1,6 @@
 package com.geargames.regolith.units.tackle;
 
+import com.geargames.regolith.units.ElementTypes;
 import com.geargames.regolith.units.Skill;
 
 /**
@@ -37,5 +38,10 @@ public class Medikit extends Ammunition {
 
     public int getType() {
         return TackleType.MEDIKIT;
+    }
+
+    @Override
+    public short getElementType() {
+        return ElementTypes.MEDIKIT;
     }
 }

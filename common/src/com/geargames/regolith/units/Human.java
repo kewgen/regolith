@@ -126,4 +126,9 @@ public class Human extends Element {
     public boolean isAbleToWalkThrough() {
         return false;
     }
+
+    @Override
+    public short getElementType() {
+        return ElementTypes.HUMAN;
+    }
 }

@@ -18,7 +18,7 @@ public class MenuTest {
     public static void main(String[] args) {
         try {
             //service = MainServiceManager.runMainService();
-            client((args[0] == null ? ACCOUNT_NAME_DEFAULT : args[0]));
+            client((args.length == 0 ? ACCOUNT_NAME_DEFAULT : args[0]));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

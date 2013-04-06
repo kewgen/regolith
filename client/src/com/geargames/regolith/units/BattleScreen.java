@@ -3,12 +3,16 @@ package com.geargames.regolith.units;
 import com.geargames.awt.Screen;
 import com.geargames.common.env.Environment;
 import com.geargames.common.logging.Debug;
+import com.geargames.common.network.DataMessageListener;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
+import com.geargames.common.util.ArrayList;
 import com.geargames.common.util.Mathematics;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.Event;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.helpers.BattleMapHelper;
@@ -27,7 +31,7 @@ import java.util.Vector;
  * User: mkutuzov
  * Date: 13.02.12
  */
-public class BattleScreen extends Screen implements TimerListener {
+public class BattleScreen extends Screen implements TimerListener, DataMessageListener {
     public static final int GROUND_WIDTH = 348;
     public static final int GROUND_HEIGHT = 174;
     public static final int HORIZONTAL_DIAGONAL = GROUND_WIDTH / 3;
@@ -37,12 +41,13 @@ public class BattleScreen extends Screen implements TimerListener {
     public static int VERTICAL_RADIUS = VERTICAL_DIAGONAL / 2;
     public static double TANGENS = (VERTICAL_RADIUS + 0.0) / (HORIZONTAL_RADIUS + 0.0);
 
-    private BattleUnit[] enemies;
-    private BattleUnit[] allies;
+    private ArrayList enemies;
+    private ArrayList allies;
+    private ArrayList group;
 
     private Vector steps;
     private Battle battle;
-    private BattleUnit[] group;
+
     private BattleUnit user;
     private MapCorrector corrector;
     private Finder cellFinder;
@@ -71,58 +76,11 @@ public class BattleScreen extends Screen implements TimerListener {
 
     private Pair center;
 
+    private int timerId;
+
     public BattleScreen() {
         steps = new Vector();
-        TimerManager.setPeriodicTimer(100, this);
-    }
-
-    public void init() {
-        int length = battle.getMap().getCells().length;
-
-        topCenter = new Pair();
-        topCenter.setX((length - 1) * BattleScreen.HORIZONTAL_RADIUS);
-        topCenter.setY(0);
-
-        centerRight = new Pair();
-        centerRight.setX((length - 1) * BattleScreen.HORIZONTAL_DIAGONAL);
-        centerRight.setY(topCenter.getY() + (length - 1) * BattleScreen.VERTICAL_RADIUS);
-
-        bottomCenter = new Pair();
-        bottomCenter.setX(topCenter.getX());
-        bottomCenter.setY(topCenter.getY() + (length - 1) * BattleScreen.VERTICAL_DIAGONAL);
-
-        centerLeft = new Pair();
-        centerLeft.setX(0);
-        centerLeft.setY(centerRight.getY());
-
-        b1 = (int) (topCenter.getY() - (topCenter.getX()) * TANGENS) - VERTICAL_RADIUS;
-
-        b2 = (int) (centerRight.getY() + centerRight.getX() * TANGENS) + VERTICAL_RADIUS;
-
-        b3 = (int) (bottomCenter.getY() - bottomCenter.getX() * TANGENS) + VERTICAL_RADIUS;
-
-        b4 = (int) (centerLeft.getY() + centerLeft.getX() * TANGENS) - VERTICAL_RADIUS;
-        center = new Pair();
-        showGrid = false;
-
-        BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
-        BattleAlliance alliance = group[0].getUnit().getWarrior().getBattleGroup().getAlliance();
-        ExitZone exit = alliance.getExit();
-        setCellCenter(exit.getX(), exit.getY());
-        BattleGroupCollection clients = alliance.getAllies();
-        for (int j = 0; j < clients.size(); j++) {
-            WarriorCollection warriors = clients.get(j).getWarriors();
-            for (int i = 0; i < warriors.size(); i++) {
-                user = getGroupUnitByWarrior(warriors.get(i));
-                ClientBattleHelper.observe(user.getUnit().getWarrior(), battleConfiguration);
-                ClientBattleHelper.initMapXY(this, user);
-                Step step = new Step();
-                step.setScreen(this);
-                step.setUnit(user);
-                steps.addElement(step);
-            }
-        }
-        ClientBattleHelper.route(user.getUnit().getWarrior(), battleConfiguration);
+        timerId = -1;
     }
 
     public void draw(Graphics graphics) {
@@ -159,8 +117,8 @@ public class BattleScreen extends Screen implements TimerListener {
      * @param graphics
      */
     private void drawGroup(Graphics graphics) {
-        for (int i = 0; i < group.length; i++) {
-            BattleUnit unit = group[i];
+        for (int i = 0; i < group.size(); i++) {
+            BattleUnit unit = (BattleUnit)group.get(i);
             if (isOnTheScreen(unit.getMapX(), unit.getMapY())) {
                 drawBattleUnit(graphics, unit);
             }
@@ -240,20 +198,17 @@ public class BattleScreen extends Screen implements TimerListener {
     }
 
     public void onTimer(int timerId) {
-        //todo: Реализовать функциональноть, стартующую и останавливающую таймер
         for (int i = 0; i < steps.size(); i++) {
             ((Step) steps.elementAt(i)).onTick();
         }
-        if (isMyTurn()) {
-            for (int i = 0; i < group.length; i++) {
-                group[i].getUnit().next();
-            }
+        for (int i = 0; i < group.size(); i++) {
+            ((BattleUnit) group.get(i)).getUnit().next();
         }
-        for (int i = 0; i < allies.length; i++) {
-            allies[i].getUnit().next();
+        for (int i = 0; i < allies.size(); i++) {
+            ((BattleUnit) allies.get(i)).getUnit().next();
         }
-        for (int i = 0; i < enemies.length; i++) {
-            enemies[i].getUnit().next();
+        for (int i = 0; i < enemies.size(); i++) {
+            ((BattleUnit) enemies.get(i)).getUnit().next();
         }
     }
 
@@ -281,14 +236,14 @@ public class BattleScreen extends Screen implements TimerListener {
                 corrector.correct(mapX, mapY, this);
                 break;
             case Event.EVENT_TOUCH_RELEASED:
-                if (isMyTurn()) {
+                if (myTurn) {
                     if (isOnTheMap(x, y)) {
                         if (Mathematics.abs(touchedXX - x) <= SPOT && Mathematics.abs(touchedYY - y) <= SPOT) {
                             Pair cell = cellFinder.find(x + mapX, y + mapY, this);
                             BattleCell battleCell = battle.getMap().getCells()[cell.getX()][cell.getY()];
                             Element element = battleCell.getElement();
-                            if (element instanceof Warrior && ((Warrior) element).getBattleGroup() == group[0].getUnit().getWarrior().getBattleGroup()) {
-                                user = getGroupUnitByWarrior((Warrior) element);
+                            if (element instanceof Warrior && ((Warrior) element).getBattleGroup() == ((BattleUnit) group.get(0)).getUnit().getWarrior().getBattleGroup()) {
+                                user = ClientBattleHelper.getBattleUnitByWarrior(group, (Warrior) element);
                                 ClientBattleHelper.route(user.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
                                 Debug.debug("the current user number = " + user.getUnit().getWarrior().getNumber());
                             } else if (BattleMapHelper.isReachable(battleCell) && !user.getUnit().getWarrior().isMoving()) {
@@ -300,7 +255,7 @@ public class BattleScreen extends Screen implements TimerListener {
                 }
                 break;
             case Event.EVENT_TOUCH_DOUBLE_CLICK:
-                if (isMyTurn()) {
+                if (myTurn) {
                     if (isOnTheMap(x, y)) {
                         Pair cell = cellFinder.find(x + mapX, y + mapY, this);
                         if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getUnit().getWarrior())) {
@@ -315,37 +270,24 @@ public class BattleScreen extends Screen implements TimerListener {
         return true;
     }
 
-    private BattleUnit getGroupUnitByWarrior(Warrior warrior) {
-        for (int i = 0; i < group.length; i++) {
-            if (warrior == group[i].getUnit().getWarrior()) {
-                return group[i];
-            }
-        }
-        return null;
+    @Override
+    public int getInterval() {
+        return 100;
     }
 
-    private BattleUnit getAllyUnitByWarrior(Warrior warrior) {
-        for (int i = 0; i < allies.length; i++) {
-            if (warrior == allies[i].getUnit().getWarrior()) {
-                return allies[i];
-            }
-        }
-        return null;
+    @Override
+    public short[] getTypes() {
+        return new short[]{Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT};
     }
 
-    private BattleUnit getEnemyUnitByWarrior(Warrior warrior) {
-        for (int i = 0; i < enemies.length; i++) {
-            if (warrior == enemies[i].getUnit().getWarrior()) {
-                return enemies[i];
-            }
-        }
-        return null;
-    }
+    @Override
+    public void onReceive(ClientDeSerializedMessage message, short type) {
 
+    }
 
     private Step getStep(BattleUnit unit) {
         for (int i = 0; i < steps.size(); i++) {
-            if (((Step) steps.elementAt(i)).getUnit() == unit) {
+            if (((Step) steps.elementAt(i)).getBattleUnit() == unit) {
                 return (Step) steps.elementAt(i);
             }
         }
@@ -353,24 +295,23 @@ public class BattleScreen extends Screen implements TimerListener {
     }
 
     public void moveUser(int x, int y) {
-        System.out.println(x + ":" + y);
         getStep(user).init();
     }
 
     /**
-     * Разрешить двинуть бойца warrior принадлежащего основной группе в точку x;y
+     * Разрешить двинуть бойца warrior принадлежащего союзуснику в точку x;y
      *
-     * @param warior
+     * @param warrior
      * @param x
      * @param y
      */
-    public void moveAlly(Warrior warior, int x, int y) {
-        ClientBattleHelper.trace(warior, x, y);
-        getStep(getAllyUnitByWarrior(warior)).init();
+    public void moveAlly(Warrior warrior, int x, int y) {
+        ClientBattleHelper.trace(warrior, x, y);
+        getStep(ClientBattleHelper.getBattleUnitByWarrior(allies, warrior)).init();
     }
 
     /**
-     * Разрешить двинуть бойца warior не пренадлежащего основной группе в точку x;y
+     * Разрешить двинуть бойца warrior пренадлежащего врагу в точку x;y
      *
      * @param warrior
      * @param x
@@ -379,6 +320,9 @@ public class BattleScreen extends Screen implements TimerListener {
     public void moveEnemy(Warrior warrior, int x, int y) {
 
     }
+
+
+
 
 
     /**
@@ -571,19 +515,6 @@ public class BattleScreen extends Screen implements TimerListener {
     }
 
     /**
-     * Вернуть группу своих бойцов участвующих в битве.
-     *
-     * @return
-     */
-    public BattleUnit[] getGroup() {
-        return group;
-    }
-
-    public void setGroup(BattleUnit[] group) {
-        this.group = group;
-    }
-
-    /**
      * Вернуть своего активного бойца.
      *
      * @return
@@ -594,11 +525,64 @@ public class BattleScreen extends Screen implements TimerListener {
 
     @Override
     public void onShow() {
+        if (battle != null) {
+            group = ClientBattleHelper.getBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
+            allies = ClientBattleHelper.getAllyBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
+            enemies = ClientBattleHelper.getEnemyBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
 
+            int length = battle.getMap().getCells().length;
+
+            topCenter = new Pair();
+            topCenter.setX((length - 1) * BattleScreen.HORIZONTAL_RADIUS);
+            topCenter.setY(0);
+
+            centerRight = new Pair();
+            centerRight.setX((length - 1) * BattleScreen.HORIZONTAL_DIAGONAL);
+            centerRight.setY(topCenter.getY() + (length - 1) * BattleScreen.VERTICAL_RADIUS);
+
+            bottomCenter = new Pair();
+            bottomCenter.setX(topCenter.getX());
+            bottomCenter.setY(topCenter.getY() + (length - 1) * BattleScreen.VERTICAL_DIAGONAL);
+
+            centerLeft = new Pair();
+            centerLeft.setX(0);
+            centerLeft.setY(centerRight.getY());
+
+            b1 = (int) (topCenter.getY() - (topCenter.getX()) * TANGENS) - VERTICAL_RADIUS;
+
+            b2 = (int) (centerRight.getY() + centerRight.getX() * TANGENS) + VERTICAL_RADIUS;
+
+            b3 = (int) (bottomCenter.getY() - bottomCenter.getX() * TANGENS) + VERTICAL_RADIUS;
+
+            b4 = (int) (centerLeft.getY() + centerLeft.getX() * TANGENS) - VERTICAL_RADIUS;
+            center = new Pair();
+            showGrid = false;
+
+            BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
+            BattleAlliance alliance = ((BattleUnit)group.get(0)).getUnit().getWarrior().getBattleGroup().getAlliance();
+            ExitZone exit = alliance.getExit();
+            setCellCenter(exit.getX(), exit.getY());
+            BattleGroupCollection clients = alliance.getAllies();
+            for (int j = 0; j < clients.size(); j++) {
+                WarriorCollection warriors = clients.get(j).getWarriors();
+                for (int i = 0; i < warriors.size(); i++) {
+                    user = ClientBattleHelper.getBattleUnitByWarrior(group, warriors.get(i));
+                    ClientBattleHelper.observe(user.getUnit().getWarrior(), battleConfiguration);
+                    ClientBattleHelper.initMapXY(this, user);
+                    Step step = new Step();
+                    step.setScreen(this);
+                    step.setBattleUnit(user);
+                    steps.addElement(step);
+                }
+            }
+            ClientBattleHelper.route(user.getUnit().getWarrior(), battleConfiguration);
+
+            timerId = TimerManager.setPeriodicTimer(100, this);
+        }
     }
 
     @Override
     public void onHide() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        TimerManager.killTimer(timerId);
     }
 }

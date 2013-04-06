@@ -18,11 +18,9 @@ public class MainScreen extends Screen {
 
     @Override
     public void onShow() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void onHide() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

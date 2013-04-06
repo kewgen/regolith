@@ -1,6 +1,7 @@
 package com.geargames.regolith.units.battle;
 
 import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.ElementTypes;
 import com.geargames.regolith.units.dictionaries.MagazineCollection;
 import com.geargames.regolith.units.dictionaries.MedikitCollection;
 import com.geargames.regolith.units.dictionaries.StateTackleCollection;
@@ -68,4 +69,9 @@ public class Box extends Element {
     public boolean isHalfLong() {
         return true;
     }
+    @Override
+    public short getElementType() {
+        return ElementTypes.BOX;
+    }
+
 }

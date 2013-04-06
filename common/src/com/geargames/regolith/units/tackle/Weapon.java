@@ -1,6 +1,7 @@
 package com.geargames.regolith.units.tackle;
 
 import com.geargames.regolith.BattleConfiguration;
+import com.geargames.regolith.units.ElementTypes;
 
 /**
  * User: mkutuzov
@@ -55,4 +56,10 @@ public class Weapon extends StateTackle {
     public int getType() {
         return TackleType.WEAPON;
     }
+
+    @Override
+    public short getElementType() {
+        return ElementTypes.WEAPON;
+    }
+
 }

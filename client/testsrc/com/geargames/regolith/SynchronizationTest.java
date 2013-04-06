@@ -114,8 +114,7 @@ public class SynchronizationTest {
         screen.setCorrector(new CubeBorderCorrector());
         screen.setMyTurn(true);
         screen.setBattle(battle);
-        screen.setGroup(group);
-        screen.init();
+        screen.onShow();
 
         screen.moveUser(10,10);
         while (warrior.isMoving()) {
