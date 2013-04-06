@@ -29,11 +29,9 @@ public class ServerTrainingBattleCreationManager {
     public boolean evictAccount(BattleAlliance alliance, Account account) {
         for (BattleGroup battleGroup : ((ServerBattleGroupCollection) alliance.getAllies()).getBattleGroups()) {
             if (battleGroup.getAccount() == account) {
-                doNotListenToBattle(alliance.getBattle(), account);
                 isNotReady(battleGroup);
                 battleGroup.setAccount(null);
                 ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors().clear();
-                // Не забыть изменить стейт у клиента
                 return true;
             }
         }
@@ -130,6 +128,11 @@ public class ServerTrainingBattleCreationManager {
         return false;
     }
 
+    /**
+     * Исключить группу из списка готовых к битве.
+     * @param group
+     * @return
+     */
     public boolean isNotReady(BattleGroup group) {
         Battle battle = group.getAlliance().getBattle();
         Set<BattleGroup> groups = configuration.getServerContext().getBattleManagerContext().getCompleteGroups().get(battle);
