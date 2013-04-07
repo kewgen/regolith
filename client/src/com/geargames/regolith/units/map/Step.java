@@ -27,7 +27,7 @@ public class Step {
     private int extensionX;
     private int extensionY;
 
-    public Step(){
+    public Step() {
         initiated = false;
     }
 
@@ -42,14 +42,23 @@ public class Step {
         mapX = battleUnit.getMapX();
         mapY = battleUnit.getMapY();
         Warrior warrior = battleUnit.getUnit().getWarrior();
-        if(WarriorHelper.getReachableRadius(warrior) == 0){
-            step = Direction.NONE;
-        }else{
+        boolean isMoving = true;
+        if (WarriorHelper.getReachableRadius(warrior) == 0) {
+            isMoving = false;
+        } else {
             step = WarriorHelper.getStepDirection(warrior, screen.getBattle().getMap().getCells());
-            warrior.setDirection(step);
+            if (step == Direction.NONE) {
+                isMoving = false;
+            } else {
+                if(warrior.getDirection() != step || !warrior.isMoving()){
+                    warrior.setDirection(step);
+                    battleUnit.getUnit().run();
+                }
+            }
         }
-        warrior.setMoving(step != Direction.NONE);
-        if(!warrior.isMoving() && screen.getUser() == battleUnit){
+
+        warrior.setMoving(isMoving);
+        if (!warrior.isMoving() && screen.getUser() == battleUnit) {
             ClientBattleHelper.route(warrior, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
         }
     }
@@ -75,8 +84,8 @@ public class Step {
                 battleUnit.setMapY(extensionY + mapY);
                 ticks++;
             } else {
-                battleUnit.setMapX(BattleScreen.HORIZONTAL_RADIUS*(step.getX() - step.getY()) + mapX) ;
-                battleUnit.setMapY(BattleScreen.VERTICAL_RADIUS*(step.getY() + step.getX()) + mapY);
+                battleUnit.setMapX(BattleScreen.HORIZONTAL_RADIUS * (step.getX() - step.getY()) + mapX);
+                battleUnit.setMapY(BattleScreen.VERTICAL_RADIUS * (step.getY() + step.getX()) + mapY);
                 WarriorHelper.step(battleUnit.getUnit().getWarrior(), step.getX(), step.getY(), battleConfiguration);
                 init();
             }
@@ -97,7 +106,7 @@ public class Step {
     }
 
     /**
-     *  Юнит battleUnit бойца, путь которого должен быть прорисован.
+     * Юнит battleUnit бойца, путь которого должен быть прорисован.
      *
      * @return
      */
