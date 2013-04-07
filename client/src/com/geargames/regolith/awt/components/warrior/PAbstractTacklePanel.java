@@ -2,6 +2,7 @@ package com.geargames.regolith.awt.components.warrior;
 
 import com.geargames.awt.components.*;
 import com.geargames.common.*;
+import com.geargames.common.env.Environment;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.packer.PSprite;
@@ -150,7 +151,7 @@ public abstract class PAbstractTacklePanel extends PContentPanel {
     //TODO: сделать отрисовку для случая брони, патронов, аптечки и сборщика
     public void draw(Graphics graphics, int x, int y) {
         if (!initiated) {
-            Render render = graphics.getRender();
+            Render render = Environment.getRender();
             PSprite tackleImage = render.getSprite(tackle.getFrameId());
             image.setPrototype(tackleImage);
             switch (tackle.getType()) {

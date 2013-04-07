@@ -153,14 +153,14 @@ public class BattleConnectionTest {
 
         // -------------------------------------------------------------------------------------------------------------
 
-        System.out.println("========== scenario: #2a ==============================");
-        System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        listen = battleMarketManager.listenToBattle(battle);
-        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Client C' listens to the battle (battle id=" + battle.getId() + ")");
-//        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
-        Manager.pause(300);
-        ClientTestHelper.checkAsyncMessages();
+//        System.out.println("========== scenario: #2a ==============================");
+//        System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
+//        listen = battleMarketManager.listenToBattle(battle);
+//        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
+//        System.out.println("'Client C' listens to the battle (battle id=" + battle.getId() + ")");
+////        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+//        Manager.pause(300);
+//        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #2b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
@@ -188,14 +188,14 @@ public class BattleConnectionTest {
 
         // -------------------------------------------------------------------------------------------------------------
 
-        System.out.println("========== scenario: #3a ==============================");
-        System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        listen = battleMarketManager.listenToBattle(battle);
-        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
-//        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
-        Manager.pause(300);
-        ClientTestHelper.checkAsyncMessages();
+//        System.out.println("========== scenario: #3a ==============================");
+//        System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
+//        listen = battleMarketManager.listenToBattle(battle);
+//        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
+//        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
+////        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+//        Manager.pause(300);
+//        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #3b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
@@ -246,14 +246,14 @@ public class BattleConnectionTest {
 
         // -------------------------------------------------------------------------------------------------------------
 
-        System.out.println("========== scenario: #4a ==============================");
-        System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        listen = battleMarketManager.listenToBattle(battle);
-        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
-//        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
-        Manager.pause(300);
-        ClientTestHelper.checkAsyncMessages();
+//        System.out.println("========== scenario: #4a ==============================");
+//        System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
+//        listen = battleMarketManager.listenToBattle(battle);
+//        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
+//        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
+////        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+//        Manager.pause(300);
+//        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #4b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");
@@ -297,14 +297,14 @@ public class BattleConnectionTest {
 
         // -------------------------------------------------------------------------------------------------------------
 
-        System.out.println("========== scenario: #5a ==============================");
-        System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
-        listen = battleMarketManager.listenToBattle(battle);
-        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
-        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
-//        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
-        Manager.pause(300);
-        ClientTestHelper.checkAsyncMessages();
+//        System.out.println("========== scenario: #5a ==============================");
+//        System.out.println("Trying to connect to the battle for listening (battle id=" + battle.getId()+ ")...");
+//        listen = battleMarketManager.listenToBattle(battle);
+//        Assert.assertNotNull("The client could not listen to the battle", listen.getBattle());
+//        System.out.println("'Client C' listens to the battle (battle id=" + listen.getBattle().getId() + ")");
+////        Assert.assertTrue("Different references to the battles", battle == listen.getBattle());
+//        Manager.pause(300);
+//        ClientTestHelper.checkAsyncMessages();
 
         System.out.println("========== scenario: #5b ==============================");
         System.out.println("The client is trying join to an alliance (alliance id = " + alliance.getId() + "; number = " + alliance.getNumber() + ")...");

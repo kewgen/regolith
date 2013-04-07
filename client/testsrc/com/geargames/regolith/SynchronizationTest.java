@@ -5,6 +5,7 @@ import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.BattleUnit;
+import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.battle.ClientBorder;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
@@ -101,18 +102,19 @@ public class SynchronizationTest {
         BattleMapHelper.clearViewAround(warrior);
 
         BattleUnit[] group = new BattleUnit[1];
-        BattleUnit unit = new BattleUnit();
-        group[0] = unit;
+        BattleUnit battleUnit = new BattleUnit();
+        group[0] = battleUnit;
+        Unit unit = new Unit();
         unit.setWarrior(warrior);
+        unit.init();
+        battleUnit.setUnit(unit);
         BattleScreen screen = new BattleScreen();
         screen.setCoordinateFinder(new ReverseProjectionFinder());
         screen.setCellFinder(new ProjectionFinder());
         screen.setCorrector(new CubeBorderCorrector());
         screen.setMyTurn(true);
         screen.setBattle(battle);
-        screen.setGroup(group);
-        screen.initMap();
-        screen.initAllies();
+        screen.onShow();
 
         screen.moveUser(10,10);
         while (warrior.isMoving()) {

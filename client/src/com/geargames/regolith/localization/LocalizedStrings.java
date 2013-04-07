@@ -22,6 +22,7 @@ public class LocalizedStrings {
     public static final String BATTLES_MSG_CANCEL_BATTLE_EXCEPTION      = "НЕ УДАЛОСЬ ОТМЕНИТЬ БИТВУ";
     public static final String BATTLES_MSG_SELF_EVICT_ACCOUNT_EXCEPTION = "НЕ УДАЕТСЯ ВЫЙТИ ИЗ БИТВЫ";
     public static final String BATTLES_MSG_EVICT_ACCOUNT_EXCEPTION      = "НЕ УДАЕТСЯ ИСКЛЮЧИТЬ ИГРОКА ИЗ БИТВЫ";
+    public static final String BATTLES_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION = "НЕ УДАЛОСЬ ОТПИСАТЬСЯ ОТ РАССЫЛКИ ОБНОВЛЕНИЙ ОТДЕЛЬНОЙ БИТВЫ";
 
     // ----- Battle create ---------------------------------------------------------------------------------------------
 

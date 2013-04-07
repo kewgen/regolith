@@ -1,6 +1,7 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.Account;
@@ -20,6 +21,7 @@ public class ClientBattleCreationManager {
     private ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer;
     private ClientCompleteGroupAnswer completeGroupAnswer;
     private ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer;
+    private ClientConfirmationAnswer confirmationAnswer;
 
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
@@ -28,6 +30,7 @@ public class ClientBattleCreationManager {
         joinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
         completeGroupAnswer = new ClientCompleteGroupAnswer();
         evictAccountFromAllianceAnswer = new ClientEvictAccountFromAllianceAnswer();
+        confirmationAnswer = new ClientConfirmationAnswer();
     }
 
     /**
@@ -78,7 +81,7 @@ public class ClientBattleCreationManager {
      */
     public ClientCompleteGroupAnswer completeGroup(BattleGroup group, Warrior[] warriors) throws Exception{
 //        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
-		configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group),completeGroupAnswer, 100);
+		configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group), completeGroupAnswer, 100);
         return completeGroupAnswer;
     }
 
@@ -93,8 +96,10 @@ public class ClientBattleCreationManager {
         return completeGroupAnswer;
     }
 
-    public void doNotListenToBattle(Battle battle) {
-        configuration.getNetwork().sendMessage(new DoNotListenToBattleRequest(configuration, battle));
+    public ClientConfirmationAnswer doNotListenToBattle(Battle battle) throws Exception {
+        configuration.getNetwork().sendSynchronousMessage(
+                new DoNotListenToBattleRequest(configuration, battle), confirmationAnswer, 100);
+        return confirmationAnswer;
     }
 
 }

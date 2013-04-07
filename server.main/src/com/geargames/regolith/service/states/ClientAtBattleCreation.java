@@ -51,6 +51,9 @@ public class ClientAtBattleCreation extends MainState {
             case Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES:
                 request = new ServerDoNotListenToCreatedBattlesRequest(schedulerService);
                 break;
+            case Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE:
+                request = new ServerDoNotListenToCreatedBattleRequest();
+                break;
             default:
                 throw new RegolithException("Invalid message type (" + type + ")");
         }

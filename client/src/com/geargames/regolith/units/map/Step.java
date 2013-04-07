@@ -7,6 +7,7 @@ import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.battle.Direction;
+import com.geargames.regolith.units.battle.Warrior;
 
 /**
  * User: mkutuzov
@@ -16,7 +17,7 @@ import com.geargames.regolith.units.battle.Direction;
  */
 public class Step {
     private BattleScreen screen;
-    private BattleUnit unit;
+    private BattleUnit battleUnit;
     private Direction step;
     private int ticks;
     private boolean initiated;
@@ -38,17 +39,18 @@ public class Step {
         ticks = 0;
         extensionX = 0;
         extensionY = 0;
-        mapX = unit.getMapX();
-        mapY = unit.getMapY();
-        if(WarriorHelper.getReachableRadius(unit.getWarrior()) == 0){
+        mapX = battleUnit.getMapX();
+        mapY = battleUnit.getMapY();
+        Warrior warrior = battleUnit.getUnit().getWarrior();
+        if(WarriorHelper.getReachableRadius(warrior) == 0){
             step = Direction.NONE;
         }else{
-            step = WarriorHelper.getStepDirection(unit.getWarrior(), screen.getBattle().getMap().getCells());
-            unit.getWarrior().setDirection(step);
+            step = WarriorHelper.getStepDirection(warrior, screen.getBattle().getMap().getCells());
+            warrior.setDirection(step);
         }
-        unit.getWarrior().setMoving(step != Direction.NONE);
-        if(!unit.getWarrior().isMoving() && screen.getUser() == unit){
-            ClientBattleHelper.route(unit.getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+        warrior.setMoving(step != Direction.NONE);
+        if(!warrior.isMoving() && screen.getUser() == battleUnit){
+            ClientBattleHelper.route(warrior, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
         }
     }
 
@@ -60,7 +62,7 @@ public class Step {
      * в середине текущей клетки.
      */
     public void onTick() {
-        if (initiated && unit.getWarrior().isMoving()) {
+        if (initiated && battleUnit.getUnit().getWarrior().isMoving()) {
             BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
             int speed = battleConfiguration.getWalkSpeed();
             double shiftOnTickX = (double) BattleScreen.HORIZONTAL_RADIUS / (double) speed;
@@ -69,13 +71,13 @@ public class Step {
             if (speed - ticks >= 0) {
                 extensionX += shiftOnTickX * (step.getX() - step.getY());
                 extensionY += shiftOnTickY * (step.getY() + step.getX());
-                unit.setMapX(extensionX + mapX);
-                unit.setMapY(extensionY + mapY);
+                battleUnit.setMapX(extensionX + mapX);
+                battleUnit.setMapY(extensionY + mapY);
                 ticks++;
             } else {
-                unit.setMapX(BattleScreen.HORIZONTAL_RADIUS*(step.getX() - step.getY()) + mapX) ;
-                unit.setMapY(BattleScreen.VERTICAL_RADIUS*(step.getY() + step.getX()) + mapY);
-                WarriorHelper.step(unit.getWarrior(), step.getX(), step.getY(), battleConfiguration);
+                battleUnit.setMapX(BattleScreen.HORIZONTAL_RADIUS*(step.getX() - step.getY()) + mapX) ;
+                battleUnit.setMapY(BattleScreen.VERTICAL_RADIUS*(step.getY() + step.getX()) + mapY);
+                WarriorHelper.step(battleUnit.getUnit().getWarrior(), step.getX(), step.getY(), battleConfiguration);
                 init();
             }
         }
@@ -95,15 +97,15 @@ public class Step {
     }
 
     /**
-     *  Юнит unit бойца, путь которого должен быть прорисован.
+     *  Юнит battleUnit бойца, путь которого должен быть прорисован.
      *
      * @return
      */
-    public BattleUnit getUnit() {
-        return unit;
+    public BattleUnit getBattleUnit() {
+        return battleUnit;
     }
 
-    public void setUnit(BattleUnit unit) {
-        this.unit = unit;
+    public void setBattleUnit(BattleUnit battleUnit) {
+        this.battleUnit = battleUnit;
     }
 }

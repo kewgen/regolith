@@ -29,4 +29,6 @@ public abstract class Element extends Entity {
      * Это препятствие в половину роста бойца?
      */
     public abstract boolean isHalfLong();
+
+    public abstract short getElementType();
 }

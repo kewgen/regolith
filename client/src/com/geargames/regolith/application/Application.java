@@ -16,7 +16,6 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 public final class Application extends com.geargames.common.Application {
 
     public static final int FPS_MAXIMUM = 30;
-    private final java.lang.String RMS_SETTINGS = "regolith";
 
     private Loader loader;
     private Render render;
@@ -51,10 +50,6 @@ public final class Application extends com.geargames.common.Application {
 
     // ----- Property management ---------------------------------------------------------------------------------------
 
-    public Render getRender() {
-        return render;
-    }
-
     public PFontManager getFontManager() {
         return fontManager;
     }
@@ -85,9 +80,6 @@ public final class Application extends com.geargames.common.Application {
         try {
             i_buf = Image.createImage(w, h);
             graphicsBuffer = new Graphics(i_buf.getImage());
-            if (render != null) {
-                getGraphics().setRender(render);
-            }
         } catch (Exception ex) {
             Debug.critical("Exception during the creation of screen buffer", ex);
         }
@@ -110,8 +102,8 @@ public final class Application extends com.geargames.common.Application {
         render.setCreator(new PRegolithUnitCreator());
         render.create();
         loader.loadPacker(graphicsBuffer, render);
-        getGraphics().setRender(render);
 
+        Environment.setRender(render);
         fontManager = new PFontManager();
 
         ArrayIntegerDual fontIndexes = new ArrayIntegerDual(1, 2);
@@ -137,7 +129,9 @@ public final class Application extends com.geargames.common.Application {
 //        textHint.setDefaultFont(PFontCollection.getFontHint());
 
         panels = PRegolithPanelManager.getInstance();
+
         panels.initiate(render);
+        panels.changeScreen(panels.getMainScreen());
         panels.show(panels.getMainMenu());
         panels.show(panels.getLeft());
 /*

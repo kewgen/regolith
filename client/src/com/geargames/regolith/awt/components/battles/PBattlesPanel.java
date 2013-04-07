@@ -107,7 +107,9 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     BattleGroup battleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(
                             ClientConfigurationFactory.getConfiguration().getBattle(),
                             evictAccountFromAllianceAnswer.getAccount().getId());
-                    battleList.updateButtonAccount(battleGroup);
+                    if (battleGroup != null) {
+                        battleList.updateButtonAccount(battleGroup);
+                    }
                     break;
                 }
                 case Packets.CANCEL_BATTLE:
@@ -242,12 +244,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             } else {
                 // Я просто подписался на обновления битвы => нужно отписаться от обновлений
                 //todo: Вероятно, этот случай никогда не наступит
-                Debug.debug("The client is trying to unsubscribe from the battle (battle id = " + listenedBattle.getId() + ")...");
-                battleCreationManager.doNotListenToBattle(listenedBattle);
-                //todo: Обработать ответ от сервера
-//                if (!doNotListenToBattleAnswer.isSuccess()) {
-//                }
-                Debug.debug("The client unsubscribe from battle (battle id = " + listenedBattle.getId() + ")");
+                doNotListenToBattle(listenedBattle);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
             }
@@ -327,6 +324,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 } else {
                     // Я собираюсь вступить в боевую группу другой битвы
                     boolean res = evictAccountFromBattleGroup(myBattleGroup);
+                    doNotListenToBattle(listenedBattle);
                     ClientConfigurationFactory.getConfiguration().setBattle(null);
                     battleList.updateList();
                     if (!res) {
@@ -376,6 +374,30 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         } catch (Exception e) {
             Debug.error("EvictAccount: Send request and receive answer is failed (battle group id = " + battleGroup.getId() + ")", e);
             NotificationBox.error(LocalizedStrings.BATTLES_MSG_SELF_EVICT_ACCOUNT_EXCEPTION, this);
+            return false;
+        }
+    }
+
+    /**
+     * Вспомогательная функция. Отписывает игрока от получения обновлений битвы.
+     * @param battle - битва, от которой нужно отписаться;
+     * @return       - true, если отписались от битвы успешно.
+     */
+    private boolean doNotListenToBattle(Battle battle) {
+        ClientBattleCreationManager battleCreationManager = ClientConfigurationFactory.getConfiguration().getBattleCreationManager();
+        try {
+            Debug.debug("The client is trying to unsubscribe from the battle (battle id = " + battle.getId() + ")...");
+            ClientConfirmationAnswer confirmationAnswer = battleCreationManager.doNotListenToBattle(battle);
+            if (!confirmationAnswer.isConfirm()) {
+                Debug.error("DoNotListenToBattle: Request rejected (battle id = " + battle.getId() + ")");
+                NotificationBox.error(LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION, this);
+                return false;
+            }
+            Debug.debug("The client unsubscribe from battle (battle id = " + battle.getId() + ")");
+            return true;
+        } catch (Exception e) {
+            Debug.error("DoNotListenToBattle: Send request and receive answer is failed (battle id = " + battle.getId() + ")", e);
+            NotificationBox.error(LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION, this);
             return false;
         }
     }

@@ -1,12 +1,18 @@
 package com.geargames.regolith.units;
 
-import com.geargames.awt.Drawable;
+import com.geargames.awt.Screen;
+import com.geargames.common.env.Environment;
+import com.geargames.common.logging.Debug;
+import com.geargames.common.network.DataMessageListener;
+import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
-import com.geargames.regolith.Port;
+import com.geargames.common.util.ArrayList;
+import com.geargames.common.util.Mathematics;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.Event;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.helpers.BattleMapHelper;
@@ -25,7 +31,7 @@ import java.util.Vector;
  * User: mkutuzov
  * Date: 13.02.12
  */
-public class BattleScreen extends Drawable implements TimerListener {
+public class BattleScreen extends Screen implements TimerListener, DataMessageListener {
     public static final int GROUND_WIDTH = 348;
     public static final int GROUND_HEIGHT = 174;
     public static final int HORIZONTAL_DIAGONAL = GROUND_WIDTH / 3;
@@ -35,12 +41,13 @@ public class BattleScreen extends Drawable implements TimerListener {
     public static int VERTICAL_RADIUS = VERTICAL_DIAGONAL / 2;
     public static double TANGENS = (VERTICAL_RADIUS + 0.0) / (HORIZONTAL_RADIUS + 0.0);
 
-    private BattleUnit[] enemies;
-    private BattleUnit[] allies;
+    private ArrayList enemies;
+    private ArrayList allies;
+    private ArrayList group;
 
     private Vector steps;
     private Battle battle;
-    private BattleUnit[] group;
+
     private BattleUnit user;
     private MapCorrector corrector;
     private Finder cellFinder;
@@ -69,108 +76,38 @@ public class BattleScreen extends Drawable implements TimerListener {
 
     private Pair center;
 
+    private int timerId;
+
     public BattleScreen() {
         steps = new Vector();
-        TimerManager.setPeriodicTimer(100, this);
-    }
-
-
-    public void initAllies() {
-        BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
-        BattleAlliance alliance = group[0].getWarrior().getBattleGroup().getAlliance();
-        ExitZone exit = alliance.getExit();
-        setCellCenter(exit.getX(), exit.getY());
-        BattleGroupCollection clients = alliance.getAllies();
-        for (int j = 0; j < clients.size(); j++) {
-            WarriorCollection warriors = clients.get(j).getWarriors();
-            for (int i = 0; i < warriors.size(); i++) {
-                user = getGroupUnitByWarrior(warriors.get(i));
-                ClientBattleHelper.observe(user.getWarrior(), battleConfiguration);
-                ClientBattleHelper.initMapXY(this, user);
-                Step step = new Step();
-                step.setScreen(this);
-                step.setUnit(user);
-                steps.addElement(step);
-            }
-        }
-        ClientBattleHelper.route(user.getWarrior(), battleConfiguration);
-    }
-
-    public void initMap() {
-        int length = battle.getMap().getCells().length;
-
-        topCenter = new Pair();
-        topCenter.setX((length - 1) * BattleScreen.HORIZONTAL_RADIUS);
-        topCenter.setY(0);
-
-        centerRight = new Pair();
-        centerRight.setX((length - 1) * BattleScreen.HORIZONTAL_DIAGONAL);
-        centerRight.setY(topCenter.getY() + (length - 1) * BattleScreen.VERTICAL_RADIUS);
-
-        bottomCenter = new Pair();
-        bottomCenter.setX(topCenter.getX());
-        bottomCenter.setY(topCenter.getY() + (length - 1) * BattleScreen.VERTICAL_DIAGONAL);
-
-        centerLeft = new Pair();
-        centerLeft.setX(0);
-        centerLeft.setY(centerRight.getY());
-
-        b1 = (int) (topCenter.getY() - (topCenter.getX()) * TANGENS) - VERTICAL_RADIUS;
-
-        b2 = (int) (centerRight.getY() + centerRight.getX() * TANGENS) + VERTICAL_RADIUS;
-
-        b3 = (int) (bottomCenter.getY() - bottomCenter.getX() * TANGENS) + VERTICAL_RADIUS;
-
-        b4 = (int) (centerLeft.getY() + centerLeft.getX() * TANGENS) - VERTICAL_RADIUS;
-        center = new Pair();
-        showGrid = false;
+        timerId = -1;
     }
 
     public void draw(Graphics graphics) {
         drawGround(graphics);
-        if (showGrid) {
-            drawGrid(graphics);
-        }
+        drawBattleMap(graphics);
         drawGroup(graphics);
     }
 
-    public int getX() {
-        return 0;
-    }
-
-    public void setX(int x) {
-    }
-
-    public int getY() {
-        return 0;
-    }
-
-    public void setY(int y) {
-    }
-
-    public int getHeight() {
-        return Port.getScreenH();
-    }
-
-    public int getWidth() {
-        return Port.getScreenW();
-    }
-
     /**
-     * Прорисовываем изометрическую клетку карты, по координатам её центра(x;y) на
+     * Прорисовываем содержимое клетки и изометрическую клетку карты, по координатам её центра(x;y) на
      * графическом контексте graphics.
      *
      * @param graphics
      * @param x
      * @param y
+     * @param cell
+     * @param path
      */
-    private void drawCell(Graphics graphics, int x, int y, boolean path) {
-        graphics.drawLine(x, y - VERTICAL_RADIUS, x + HORIZONTAL_RADIUS, y);
-        graphics.drawLine(x + HORIZONTAL_RADIUS, y, x, y + VERTICAL_RADIUS);
-        graphics.drawLine(x, y + VERTICAL_RADIUS, x - HORIZONTAL_RADIUS, y);
-        graphics.drawLine(x - HORIZONTAL_RADIUS, y, x, y - VERTICAL_RADIUS);
+    private void drawCell(Graphics graphics, int x, int y, BattleCell cell, boolean path) {
+        if (showGrid) {
+            graphics.drawLine(x, y - VERTICAL_RADIUS, x + HORIZONTAL_RADIUS, y);
+            graphics.drawLine(x + HORIZONTAL_RADIUS, y, x, y + VERTICAL_RADIUS);
+            graphics.drawLine(x, y + VERTICAL_RADIUS, x - HORIZONTAL_RADIUS, y);
+            graphics.drawLine(x - HORIZONTAL_RADIUS, y, x, y - VERTICAL_RADIUS);
+        }
         if (path) {
-            graphics.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x, y);
+            Environment.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x, y);
         }
     }
 
@@ -180,10 +117,10 @@ public class BattleScreen extends Drawable implements TimerListener {
      * @param graphics
      */
     private void drawGroup(Graphics graphics) {
-        for (int i = 0; i < group.length; i++) {
-            BattleUnit unit = group[i];
+        for (int i = 0; i < group.size(); i++) {
+            BattleUnit unit = (BattleUnit)group.get(i);
             if (isOnTheScreen(unit.getMapX(), unit.getMapY())) {
-                drawUnit(graphics, unit);
+                drawBattleUnit(graphics, unit);
             }
         }
     }
@@ -194,15 +131,12 @@ public class BattleScreen extends Drawable implements TimerListener {
      *
      * @param graphics
      */
-    private void drawUnit(Graphics graphics, BattleUnit unit) {
-/*
-        unit.getState().getPUnitScript(unit.getWarrior(), graphics.getRender()).draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY, unit.getWarrior());
-        Graph.UN_MAN_DOWN_SHOT_RIFLE_1
-*/
+    private void drawBattleUnit(Graphics graphics, BattleUnit battleUnit) {
+        battleUnit.getUnit().draw(graphics, battleUnit.getMapX() - mapX, battleUnit.getMapY() - mapY);
     }
 
 
-    private void drawGrid(Graphics graphics) {
+    private void drawBattleMap(Graphics graphics) {
         graphics.setColor(netColor);
         BattleCell[][] cells = battle.getMap().getCells();
         int length = cells.length;
@@ -212,10 +146,10 @@ public class BattleScreen extends Drawable implements TimerListener {
             x = (length - 1 + j) * HORIZONTAL_RADIUS;
             for (int i = 0; i < length; i++) {
                 if (isOnTheScreen(x, y)) {
-                    if (BattleMapHelper.isShortestPathCell(cells[j][i], user.getWarrior())) {
-                        drawCell(graphics, x - mapX, y - mapY, true);
+                    if (BattleMapHelper.isShortestPathCell(cells[j][i], user.getUnit().getWarrior())) {
+                        drawCell(graphics, x - mapX, y - mapY, cells[j][i], true);
                     } else {
-                        drawCell(graphics, x - mapX, y - mapY, false);
+                        drawCell(graphics, x - mapX, y - mapY, cells[j][i], false);
                     }
                 }
                 x -= HORIZONTAL_RADIUS;
@@ -227,10 +161,10 @@ public class BattleScreen extends Drawable implements TimerListener {
     private void drawGround(Graphics graphics) {
         int x = -mapX % GROUND_WIDTH - HORIZONTAL_RADIUS;
         int tmp = -mapY % GROUND_HEIGHT - VERTICAL_RADIUS;
-        while (x < Port.getScreenW()) {
+        while (x < getWidth()) {
             int y = tmp;
-            while (y < Port.getScreenH()) {
-                graphics.getRender().getSprite(1).draw(graphics, x, y);
+            while (y < getHeight()) {
+                Environment.getRender().getSprite(1).draw(graphics, x, y);
                 y += GROUND_HEIGHT;
             }
             x += GROUND_WIDTH;
@@ -264,20 +198,17 @@ public class BattleScreen extends Drawable implements TimerListener {
     }
 
     public void onTimer(int timerId) {
-        //todo: Реализовать функциональноть, стартующую и останавливающую таймер
         for (int i = 0; i < steps.size(); i++) {
             ((Step) steps.elementAt(i)).onTick();
         }
-        if (isMyTurn()) {
-            for (int i = 0; i < group.length; i++) {
-                group[i].getState().next();
-            }
+        for (int i = 0; i < group.size(); i++) {
+            ((BattleUnit) group.get(i)).getUnit().next();
         }
-        for (int i = 0; i < allies.length; i++) {
-            allies[i].getState().next();
+        for (int i = 0; i < allies.size(); i++) {
+            ((BattleUnit) allies.get(i)).getUnit().next();
         }
-        for (int i = 0; i < enemies.length; i++) {
-            enemies[i].getState().next();
+        for (int i = 0; i < enemies.size(); i++) {
+            ((BattleUnit) enemies.get(i)).getUnit().next();
         }
     }
 
@@ -305,31 +236,31 @@ public class BattleScreen extends Drawable implements TimerListener {
                 corrector.correct(mapX, mapY, this);
                 break;
             case Event.EVENT_TOUCH_RELEASED:
-                if (isMyTurn()) {
+                if (myTurn) {
                     if (isOnTheMap(x, y)) {
-                        if (Math.abs(touchedXX - x) <= SPOT && Math.abs(touchedYY - y) <= SPOT) {
+                        if (Mathematics.abs(touchedXX - x) <= SPOT && Mathematics.abs(touchedYY - y) <= SPOT) {
                             Pair cell = cellFinder.find(x + mapX, y + mapY, this);
                             BattleCell battleCell = battle.getMap().getCells()[cell.getX()][cell.getY()];
                             Element element = battleCell.getElement();
-                            if (element instanceof Warrior && ((Warrior) element).getBattleGroup() == group[0].getWarrior().getBattleGroup()) {
-                                user = getGroupUnitByWarrior((Warrior) element);
-                                ClientBattleHelper.route(user.getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
-                                System.out.println("the current user number = " + user.getWarrior().getNumber());
-                            } else if (BattleMapHelper.isReachable(battleCell) && !user.getWarrior().isMoving()) {
-                                ClientBattleHelper.trace(user.getWarrior(), cell.getX(), cell.getY());
-                                System.out.println("trace for a user " + user.getWarrior().getNumber());
+                            if (element instanceof Warrior && ((Warrior) element).getBattleGroup() == ((BattleUnit) group.get(0)).getUnit().getWarrior().getBattleGroup()) {
+                                user = ClientBattleHelper.getBattleUnitByWarrior(group, (Warrior) element);
+                                ClientBattleHelper.route(user.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+                                Debug.debug("the current user number = " + user.getUnit().getWarrior().getNumber());
+                            } else if (BattleMapHelper.isReachable(battleCell) && !user.getUnit().getWarrior().isMoving()) {
+                                ClientBattleHelper.trace(user.getUnit().getWarrior(), cell.getX(), cell.getY());
+                                Debug.debug("trace for a user " + user.getUnit().getWarrior().getNumber());
                             }
                         }
                     }
                 }
                 break;
             case Event.EVENT_TOUCH_DOUBLE_CLICK:
-                if (isMyTurn()) {
+                if (myTurn) {
                     if (isOnTheMap(x, y)) {
                         Pair cell = cellFinder.find(x + mapX, y + mapY, this);
-                        if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getWarrior())) {
+                        if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getUnit().getWarrior())) {
                             //ClientBattleHelper.move(this, cell.getX(), cell.getY());
-                            System.out.println("move an user " + user.getWarrior().getNumber());
+                            System.out.println("move an user " + user.getUnit().getWarrior().getNumber());
                             moveUser(cell.getX(), cell.getY());
                         }
                     }
@@ -339,37 +270,24 @@ public class BattleScreen extends Drawable implements TimerListener {
         return true;
     }
 
-    private BattleUnit getGroupUnitByWarrior(Warrior warrior) {
-        for (int i = 0; i < group.length; i++) {
-            if (warrior == group[i].getWarrior()) {
-                return group[i];
-            }
-        }
-        return null;
+    @Override
+    public int getInterval() {
+        return 100;
     }
 
-    private BattleUnit getAllyUnitByWarrior(Warrior warrior) {
-        for (int i = 0; i < allies.length; i++) {
-            if (warrior == allies[i].getWarrior()) {
-                return allies[i];
-            }
-        }
-        return null;
+    @Override
+    public short[] getTypes() {
+        return new short[]{Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT};
     }
 
-    private BattleUnit getEnemyUnitByWarrior(Warrior warrior) {
-        for (int i = 0; i < enemies.length; i++) {
-            if (warrior == enemies[i].getWarrior()) {
-                return enemies[i];
-            }
-        }
-        return null;
-    }
+    @Override
+    public void onReceive(ClientDeSerializedMessage message, short type) {
 
+    }
 
     private Step getStep(BattleUnit unit) {
         for (int i = 0; i < steps.size(); i++) {
-            if (((Step) steps.elementAt(i)).getUnit() == unit) {
+            if (((Step) steps.elementAt(i)).getBattleUnit() == unit) {
                 return (Step) steps.elementAt(i);
             }
         }
@@ -377,24 +295,23 @@ public class BattleScreen extends Drawable implements TimerListener {
     }
 
     public void moveUser(int x, int y) {
-        System.out.println(x + ":" + y);
         getStep(user).init();
     }
 
     /**
-     * Разрешить двинуть бойца warrior принадлежащего основной группе в точку x;y
+     * Разрешить двинуть бойца warrior принадлежащего союзуснику в точку x;y
      *
-     * @param warior
+     * @param warrior
      * @param x
      * @param y
      */
-    public void moveAlly(Warrior warior, int x, int y) {
-        ClientBattleHelper.trace(warior, x, y);
-        getStep(getAllyUnitByWarrior(warior)).init();
+    public void moveAlly(Warrior warrior, int x, int y) {
+        ClientBattleHelper.trace(warrior, x, y);
+        getStep(ClientBattleHelper.getBattleUnitByWarrior(allies, warrior)).init();
     }
 
     /**
-     * Разрешить двинуть бойца warior не пренадлежащего основной группе в точку x;y
+     * Разрешить двинуть бойца warrior пренадлежащего врагу в точку x;y
      *
      * @param warrior
      * @param x
@@ -405,6 +322,9 @@ public class BattleScreen extends Drawable implements TimerListener {
     }
 
 
+
+
+
     /**
      * Покрывает ли наш экран эту точку карты?
      *
@@ -413,7 +333,7 @@ public class BattleScreen extends Drawable implements TimerListener {
      * @return
      */
     public boolean isOnTheScreen(int x, int y) {
-        return mapX <= x + HORIZONTAL_RADIUS && x - HORIZONTAL_RADIUS <= mapX + Port.getW() && mapY <= y + VERTICAL_RADIUS && y - VERTICAL_RADIUS <= mapY + Port.getH();
+        return mapX <= x + HORIZONTAL_RADIUS && x - HORIZONTAL_RADIUS <= mapX + getWidth() && mapY <= y + VERTICAL_RADIUS && y - VERTICAL_RADIUS <= mapY + getHeight();
     }
 
     /**
@@ -595,24 +515,74 @@ public class BattleScreen extends Drawable implements TimerListener {
     }
 
     /**
-     * Вернуть группу своих бойцов участвующих в битве.
-     *
-     * @return
-     */
-    public BattleUnit[] getGroup() {
-        return group;
-    }
-
-    public void setGroup(BattleUnit[] group) {
-        this.group = group;
-    }
-
-    /**
      * Вернуть своего активного бойца.
      *
      * @return
      */
     public BattleUnit getUser() {
         return user;
+    }
+
+    @Override
+    public void onShow() {
+        if (battle != null) {
+            group = ClientBattleHelper.getBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
+            allies = ClientBattleHelper.getAllyBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
+            enemies = ClientBattleHelper.getEnemyBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
+
+            int length = battle.getMap().getCells().length;
+
+            topCenter = new Pair();
+            topCenter.setX((length - 1) * BattleScreen.HORIZONTAL_RADIUS);
+            topCenter.setY(0);
+
+            centerRight = new Pair();
+            centerRight.setX((length - 1) * BattleScreen.HORIZONTAL_DIAGONAL);
+            centerRight.setY(topCenter.getY() + (length - 1) * BattleScreen.VERTICAL_RADIUS);
+
+            bottomCenter = new Pair();
+            bottomCenter.setX(topCenter.getX());
+            bottomCenter.setY(topCenter.getY() + (length - 1) * BattleScreen.VERTICAL_DIAGONAL);
+
+            centerLeft = new Pair();
+            centerLeft.setX(0);
+            centerLeft.setY(centerRight.getY());
+
+            b1 = (int) (topCenter.getY() - (topCenter.getX()) * TANGENS) - VERTICAL_RADIUS;
+
+            b2 = (int) (centerRight.getY() + centerRight.getX() * TANGENS) + VERTICAL_RADIUS;
+
+            b3 = (int) (bottomCenter.getY() - bottomCenter.getX() * TANGENS) + VERTICAL_RADIUS;
+
+            b4 = (int) (centerLeft.getY() + centerLeft.getX() * TANGENS) - VERTICAL_RADIUS;
+            center = new Pair();
+            showGrid = false;
+
+            BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
+            BattleAlliance alliance = ((BattleUnit)group.get(0)).getUnit().getWarrior().getBattleGroup().getAlliance();
+            ExitZone exit = alliance.getExit();
+            setCellCenter(exit.getX(), exit.getY());
+            BattleGroupCollection clients = alliance.getAllies();
+            for (int j = 0; j < clients.size(); j++) {
+                WarriorCollection warriors = clients.get(j).getWarriors();
+                for (int i = 0; i < warriors.size(); i++) {
+                    user = ClientBattleHelper.getBattleUnitByWarrior(group, warriors.get(i));
+                    ClientBattleHelper.observe(user.getUnit().getWarrior(), battleConfiguration);
+                    ClientBattleHelper.initMapXY(this, user);
+                    Step step = new Step();
+                    step.setScreen(this);
+                    step.setBattleUnit(user);
+                    steps.addElement(step);
+                }
+            }
+            ClientBattleHelper.route(user.getUnit().getWarrior(), battleConfiguration);
+
+            timerId = TimerManager.setPeriodicTimer(100, this);
+        }
+    }
+
+    @Override
+    public void onHide() {
+        TimerManager.killTimer(timerId);
     }
 }

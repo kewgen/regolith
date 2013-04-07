@@ -7,7 +7,7 @@ import com.geargames.awt.utils.motions.StubMotionListener;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.packer.PSprite;
-import com.geargames.common.util.Math;
+import com.geargames.common.util.Mathematics;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
@@ -47,7 +47,7 @@ public class PWarriorList extends PHorizontalScrollView {
         warriorItems.ensureCapacity(warriorAmount);
 
         // Сначало изменяем уже существующие элементы списка
-        int minSize = Math.min(oldSize, warriorAmount);
+        int minSize = Mathematics.min(oldSize, warriorAmount);
         for (int i = 0; i < minSize; i++) {
             Warrior warrior = collection.get(i);
             PWarriorListItem item = (PWarriorListItem) warriorItems.get(i);

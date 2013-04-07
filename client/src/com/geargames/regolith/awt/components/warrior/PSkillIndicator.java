@@ -3,6 +3,7 @@ package com.geargames.regolith.awt.components.warrior;
 import com.geargames.awt.components.*;
 import com.geargames.common.Graphics;
 import com.geargames.common.Render;
+import com.geargames.common.env.Environment;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.NullRegion;
@@ -61,7 +62,7 @@ public class PSkillIndicator extends PContentPanel {
 
     public void draw(Graphics graphics, int x, int y) {
         if (!initiated) {
-            Render render = graphics.getRender();
+            Render render = Environment.getRender();
             icon.setPrototype(render.getSprite(basePID + category.getId()));
             short categoryScore = WarriorHelper.getSkillScore(warrior, category);
             nameLabel.setText(category.getName());

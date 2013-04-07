@@ -24,6 +24,11 @@ import com.geargames.regolith.awt.components.warrior.exchange.storehouse.PProjec
 import com.geargames.regolith.awt.components.warrior.exchange.storehouse.PWeaponFromStoreHousePanel;
 import com.geargames.regolith.awt.components.warrior.exchange.warrior.PArmorFromWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.warrior.PWeaponFromWarriorPanel;
+import com.geargames.regolith.units.BattleScreen;
+import com.geargames.regolith.units.MainScreen;
+import com.geargames.regolith.units.map.finder.ProjectionFinder;
+import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
+import com.geargames.regolith.units.map.verifier.CubeBorderCorrector;
 
 public class PRegolithPanelManager extends PPanelManager {
     private static PRegolithPanelManager instance;
@@ -52,6 +57,9 @@ public class PRegolithPanelManager extends PPanelManager {
     private DrawablePPanel selectWarriorsWindow;
     private DrawablePPanel battlesWindow;
 
+    private MainScreen mainScreen;
+    private BattleScreen battleScreen;
+
     private PRegolithPanelManager() {
     }
 
@@ -69,6 +77,12 @@ public class PRegolithPanelManager extends PPanelManager {
      * @return
      */
     public void initiate(Render render) {
+        mainScreen = new MainScreen();
+
+        battleScreen = new BattleScreen();
+        battleScreen.setCoordinateFinder(new ReverseProjectionFinder());
+        battleScreen.setCellFinder(new ProjectionFinder());
+        battleScreen.setCorrector(new CubeBorderCorrector());
 
         left = new DefaultDrawablePPanel();
         left.setAnchor(Anchors.TOP_LEFT_ANCHOR);
@@ -162,6 +176,14 @@ public class PRegolithPanelManager extends PPanelManager {
         battlesWindow = new DefaultDrawablePPanel();
         battlesWindow.setAnchor(Anchors.CENTER_ANCHOR);
         battlesWindow.setElement(battlesPanel);
+    }
+
+    public MainScreen getMainScreen() {
+        return mainScreen;
+    }
+
+    public BattleScreen getBattleScreen() {
+        return battleScreen;
     }
 
     public DrawablePPanel getBattlesWindow() {

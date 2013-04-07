@@ -11,5 +11,5 @@ public class TackleType {
     public static final int PROJECTILE = 3;
     public static final int MEDIKIT = 4;
     public static final int HARVESTER = 5;
-    public static final int TYPE = 5;
+    public static final int TYPE = 6;
 }

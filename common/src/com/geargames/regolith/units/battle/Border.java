@@ -1,6 +1,7 @@
 package com.geargames.regolith.units.battle;
 
 import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.ElementTypes;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
 /**
@@ -44,6 +45,11 @@ public abstract class Border extends Element {
 
     public void setAbleToWalkThrough(boolean ableToWalkThrough) {
         this.ableToWalkThrough = ableToWalkThrough;
+    }
+
+    @Override
+    public short getElementType() {
+        return ElementTypes.BORDER;
     }
 
     public abstract void setAbleToShootThrough(WeaponCategory category, boolean able);
