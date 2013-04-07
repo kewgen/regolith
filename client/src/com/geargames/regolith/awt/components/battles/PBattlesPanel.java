@@ -235,7 +235,8 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 if (myBattleGroup.getAccount().getId() != configuration.getAccount().getId()) {
                     Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAccount().getId() != configuration.getAccount().getId()");
                 }
-                boolean res = evictAccountFromBattleGroup(myBattleGroup);
+                boolean res = evictAccountFromBattleGroup(myBattleGroup) &&
+                        doNotListenToBattle(listenedBattle);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
                 if (!res) {
@@ -244,9 +245,12 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             } else {
                 // Я просто подписался на обновления битвы => нужно отписаться от обновлений
                 //todo: Вероятно, этот случай никогда не наступит
-                doNotListenToBattle(listenedBattle);
+                boolean res = doNotListenToBattle(listenedBattle);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
+                if (!res) {
+                    return;
+                }
             }
         }
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
@@ -323,8 +327,8 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
 //                    disbandGroup(myBattleGroup);
                 } else {
                     // Я собираюсь вступить в боевую группу другой битвы
-                    boolean res = evictAccountFromBattleGroup(myBattleGroup);
-                    doNotListenToBattle(listenedBattle);
+                    boolean res = evictAccountFromBattleGroup(myBattleGroup) &&
+                            doNotListenToBattle(listenedBattle);
                     ClientConfigurationFactory.getConfiguration().setBattle(null);
                     battleList.updateList();
                     if (!res) {
