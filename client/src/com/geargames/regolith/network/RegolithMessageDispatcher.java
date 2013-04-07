@@ -1,5 +1,6 @@
 package com.geargames.regolith.network;
 
+import com.geargames.common.logging.Debug;
 import com.geargames.common.network.DataMessage;
 import com.geargames.common.network.MessageDispatcher;
 import com.geargames.common.network.Network;
@@ -42,6 +43,7 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
                 message = new ClientCompleteGroupAnswer();
                 break;
             default:
+                Debug.critical("RegolithMessageDispatcher: Unknown message type (" + dataMessage.getMessageType() + ")");
                 return null;
         }
         MicroByteBuffer buffer = new MicroByteBuffer();
