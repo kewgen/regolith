@@ -295,6 +295,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void moveUser(int x, int y) {
+        ClientBattleHelper.trace(user.getUnit().getWarrior(), x, y);
         getStep(user).init();
     }
 
@@ -317,7 +318,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * @param x
      * @param y
      */
-    public void moveEnemy(Warrior warrior, int x, int y) {
+    public void moveEnemy(Warrior warrior, short[] x, short[] y) {
 
     }
 

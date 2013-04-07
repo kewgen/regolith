@@ -29,6 +29,8 @@ public class PMainMenuPanel extends PRootContentPanel {
 //                element = new PBattleCreateButton((PObject) index.getPrototype());
 //                break;
             case 13:
+                element = new PCampButton((PObject) index.getPrototype());
+                break;
             case 14:
             case 15:
             case 16:
