@@ -41,7 +41,8 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 Packets.EVICT_ACCOUNT_FROM_ALLIANCE,
                 Packets.GROUP_COMPLETE,
                 Packets.GROUP_DISBAND,
-                Packets.CANCEL_BATTLE
+                Packets.CANCEL_BATTLE,
+                Packets.START_BATTLE
         };
     }
 

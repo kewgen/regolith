@@ -32,10 +32,12 @@ public class PHeadlinePanel extends PRootContentPanel {
         }
     }
 
+    @Override
     public Region getDrawRegion() {
         return NullRegion.instance;
     }
 
+    @Override
     public Region getTouchRegion() {
         return NullRegion.instance;
     }
