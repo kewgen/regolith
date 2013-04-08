@@ -4,12 +4,13 @@ import com.geargames.awt.Anchors;
 import com.geargames.awt.DrawablePPanel;
 
 /**
- * Users: mikhail v. kutuzov, abarakov
+ * Предок всех панелек, которые отображаются поверх всех остальных панелек.
+ * User: abarakov
  * Date: 25.12.12
  */
-public class DefaultDrawablePPanel extends DrawablePPanel {
+public class TopDrawablePPanel extends DrawablePPanel {
 
-    public DefaultDrawablePPanel() {
+    public TopDrawablePPanel() {
         setAnchor(Anchors.CENTER_ANCHOR);
     }
 
@@ -25,7 +26,7 @@ public class DefaultDrawablePPanel extends DrawablePPanel {
 
     @Override
     public byte getLayer() {
-        return MIDDLE_LAYER;
+        return TOP_LAYER;
     }
 
 }

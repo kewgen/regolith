@@ -84,15 +84,15 @@ public class PRegolithPanelManager extends PPanelManager {
         battleScreen.setCellFinder(new ProjectionFinder());
         battleScreen.setCorrector(new CubeBorderCorrector());
 
-        left = new DefaultDrawablePPanel();
+        left = new TopDrawablePPanel();
         left.setAnchor(Anchors.TOP_LEFT_ANCHOR);
         left.setElement(new PLeftPanel(render.getObject(Graph.PAN_LEFT)));
 
-        headline = new DefaultDrawablePPanel();
-        headline.setAnchor(Anchors.CENTER_ANCHOR);
+        headline = new TopDrawablePPanel();
+        headline.setAnchor(Anchors.TOP_CENTER_ANCHOR);
         headline.setElement(new PHeadlinePanel(render.getObject(Graph.PAN_CENTER)));
 
-        right = new DefaultDrawablePPanel();
+        right = new TopDrawablePPanel();
         right.setAnchor(Anchors.TOP_RIGHT_ANCHOR);
         right.setElement(new PMoneyRegolithPanel(render.getObject(Graph.PAN_RIGHT)));
 
