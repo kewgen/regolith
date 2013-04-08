@@ -5,11 +5,13 @@ import com.geargames.regolith.units.Bag;
 import com.geargames.regolith.units.tackle.Ammunition;
 import com.geargames.regolith.units.tackle.StateTackle;
 
+import java.io.Serializable;
+
 /**
  * User: mkutuzov
  * Date: 17.03.12
  */
-public class StoreHouse {
+public class StoreHouse implements Serializable{
     private byte level;
     private Bag bag;
     private AmmunitionBag ammunitionBag;

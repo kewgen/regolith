@@ -165,6 +165,11 @@ public class BattleDeserializer {
                 exitZones[i] = battle.getAlliances()[i].getExit();
             }
         }
+        Account author = new Account();
+        battle.setAuthor(author);
+        author.setId(SimpleDeserializer.deserializeInt(buffer));
+        author.setName(SimpleDeserializer.deserializeString(buffer));
+        author.setFrameId(SimpleDeserializer.deserializeInt(buffer));
     }
 
     public static Battle deserializeBattle(MicroByteBuffer buffer, BaseConfiguration baseConfiguration, Account account) {

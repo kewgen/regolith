@@ -118,23 +118,12 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      */
     private void drawGroup(Graphics graphics) {
         for (int i = 0; i < group.size(); i++) {
-            BattleUnit unit = (BattleUnit)group.get(i);
-            if (isOnTheScreen(unit.getMapX(), unit.getMapY())) {
-                drawBattleUnit(graphics, unit);
+            BattleUnit battleUnit = (BattleUnit)group.get(i);
+            if (isOnTheScreen(battleUnit.getMapX(), battleUnit.getMapY())) {
+                battleUnit.getUnit().draw(graphics, battleUnit.getMapX() - mapX, battleUnit.getMapY() - mapY);
             }
         }
     }
-
-
-    /**
-     * Рисуем бойца.
-     *
-     * @param graphics
-     */
-    private void drawBattleUnit(Graphics graphics, BattleUnit battleUnit) {
-        battleUnit.getUnit().draw(graphics, battleUnit.getMapX() - mapX, battleUnit.getMapY() - mapY);
-    }
-
 
     private void drawBattleMap(Graphics graphics) {
         graphics.setColor(netColor);

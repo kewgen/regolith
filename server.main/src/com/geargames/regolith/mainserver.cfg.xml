@@ -6,7 +6,7 @@
     <messageBufferSize>4096</messageBufferSize>
     <messageInputDataProcessorAmount>4</messageInputDataProcessorAmount>
     <messageOutputDataProcessorsAmount>3</messageOutputDataProcessorsAmount>
-    <port>1237</port>
+    <port>1238</port>
     <imageDirectory>images</imageDirectory>
     <browseBattlesTimeInterval>10</browseBattlesTimeInterval>
 </serverConfiguration>

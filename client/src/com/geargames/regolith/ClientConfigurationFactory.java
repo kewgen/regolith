@@ -36,7 +36,7 @@ public class ClientConfigurationFactory {
 
         configuration.setMessageBuffer(new MicroByteBuffer(new byte[SIZE]));
         configuration.setNetwork(new ConsoleNetwork(new MicroByteBuffer(new byte[SIZE])));
-        configuration.setPort(1237);
+        configuration.setPort(1238);
         configuration.setServer("localhost");
 
         configuration.setMessageDispatcher(new RegolithMessageDispatcher(configuration.getNetwork(), Packets.BATTLE_SERVICE_NEW_CLIENT_LOGIN));

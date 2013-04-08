@@ -109,6 +109,10 @@ public class BattleSerializer {
             SimpleSerializer.serialize((byte)0, buffer);
         }
         BattleMapSerializer.serialize(battle.getMap(), account, buffer);
+
+        SerializeHelper.serializeEntityReference(battle.getAuthor(), buffer);
+        SimpleSerializer.serialize(battle.getAuthor().getName(), buffer);
+        SimpleSerializer.serialize(battle.getAuthor().getFrameId(), buffer);
     }
 
 }

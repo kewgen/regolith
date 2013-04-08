@@ -12,4 +12,5 @@ import java.rmi.RemoteException;
  */
 public interface BattleServiceFunctions extends Remote {
     void register(Battle battle) throws RemoteException;
+    int getBattlesAmount() throws RemoteException;
 }

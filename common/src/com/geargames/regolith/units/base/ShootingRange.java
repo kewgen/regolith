@@ -3,11 +3,13 @@ package com.geargames.regolith.units.base;
 import com.geargames.regolith.units.Entity;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
+import java.io.Serializable;
+
 /**
  * User: mkutuzov
  * Date: 17.03.12
  */
-public class ShootingRange {
+public class ShootingRange implements Serializable{
     private byte level;
     private WarriorCollection warriors;
 

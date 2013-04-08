@@ -13,4 +13,5 @@ public interface BattleServiceContext {
     ServerBattle addBattle(Battle battle, int id);
     ServerBattle getServerBattleById(int id);
     ServerBattle removeServerBattleById(int id);
+    public int getServerBattlesAmount();
 }

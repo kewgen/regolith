@@ -4,11 +4,13 @@ import com.geargames.regolith.units.Entity;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
+import java.io.Serializable;
+
 /**
  * User: mkutuzov
  * Date: 17.03.12
  */
-public class Hospital {
+public class Hospital implements Serializable {
     private byte level;
     private WarriorCollection warriors;
 

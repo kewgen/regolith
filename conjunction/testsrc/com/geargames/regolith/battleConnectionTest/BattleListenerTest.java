@@ -512,7 +512,7 @@ public class BattleListenerTest {
 
         System.out.println("========== scenario: #7p ==============================");
         System.out.println("Waiting of start of the battle (by Author)...");
-        ClientStartBattleAnswer startBattleAnswer = new ClientStartBattleAnswer(selfAccount, clientConfiguration);
+        ClientStartBattleAnswer startBattleAnswer = new ClientStartBattleAnswer(clientConfiguration);
         Assert.assertTrue("'Client A' does not begin the battle",
                 waitForAsyncAnswer(startBattleAnswer, Packets.START_BATTLE, NEXT_WAINTING));
         Assert.assertTrue("??? The battle began with an error", startBattleAnswer.isSuccess());

@@ -19,6 +19,10 @@ public class BattleServiceRegister extends UnicastRemoteObject implements Battle
         BattleServiceConfigurationFactory.getConfiguration().getContext().addBattle(battle, battle.getId());
     }
 
+    public int getBattlesAmount() throws RemoteException {
+        return BattleServiceConfigurationFactory.getConfiguration().getContext().getServerBattlesAmount();
+    }
+
     public BattleServiceRegister() throws RemoteException {
     }
 

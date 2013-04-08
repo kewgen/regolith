@@ -25,7 +25,7 @@ public class ClientBattleCreationManager {
 
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
-        startBattleAnswer = new ClientStartBattleAnswer(configuration.getAccount(), configuration);
+        startBattleAnswer = new ClientStartBattleAnswer(configuration);
         cancelBattleAnswer = new ClientCancelBattleAnswer();
         joinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
         completeGroupAnswer = new ClientCompleteGroupAnswer();
