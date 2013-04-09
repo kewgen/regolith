@@ -35,11 +35,13 @@ public class PMoneyRegolithPanel extends PRootContentPanel implements DataMessag
             case 1:
                 moneyLabel = new PShowingModalLabel((PObject)index.getPrototype());
                 moneyLabel.setText("0");
+//                moneyLabel.setPanel();
                 addActiveChild(moneyLabel, index);
                 break;
             case 2:
                 regolithLabel = new PShowingModalLabel((PObject)index.getPrototype());
                 regolithLabel.setText("0");
+//                regolithLabel.setPanel();
                 addActiveChild(regolithLabel, index);
                 break;
         }
