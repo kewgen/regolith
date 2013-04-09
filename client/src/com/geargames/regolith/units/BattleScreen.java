@@ -20,6 +20,7 @@ import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.map.Pair;
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
@@ -47,6 +48,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     private Vector steps;
     private Battle battle;
+    private BattleGroup battleGroup;
 
     private BattleUnit user;
     private MapCorrector corrector;
@@ -105,6 +107,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             graphics.drawLine(x + HORIZONTAL_RADIUS, y, x, y + VERTICAL_RADIUS);
             graphics.drawLine(x, y + VERTICAL_RADIUS, x - HORIZONTAL_RADIUS, y);
             graphics.drawLine(x - HORIZONTAL_RADIUS, y, x, y - VERTICAL_RADIUS);
+            graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
         }
         if (path) {
             Environment.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x, y);
@@ -118,7 +121,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      */
     private void drawGroup(Graphics graphics) {
         for (int i = 0; i < group.size(); i++) {
-            BattleUnit battleUnit = (BattleUnit)group.get(i);
+            BattleUnit battleUnit = (BattleUnit) group.get(i);
             if (isOnTheScreen(battleUnit.getMapX(), battleUnit.getMapY())) {
                 battleUnit.getUnit().draw(graphics, battleUnit.getMapX() - mapX, battleUnit.getMapY() - mapY);
             }
@@ -231,7 +234,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                             Pair cell = cellFinder.find(x + mapX, y + mapY, this);
                             BattleCell battleCell = battle.getMap().getCells()[cell.getX()][cell.getY()];
                             Element element = battleCell.getElement();
-                            if (element instanceof Warrior && ((Warrior) element).getBattleGroup() == ((BattleUnit) group.get(0)).getUnit().getWarrior().getBattleGroup()) {
+                            if (element != null && element.getElementType() == ElementTypes.HUMAN && ((Warrior) element).getBattleGroup() == battleGroup) {
                                 user = ClientBattleHelper.getBattleUnitByWarrior(group, (Warrior) element);
                                 ClientBattleHelper.route(user.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
                                 Debug.debug("the current user number = " + user.getUnit().getWarrior().getNumber());
@@ -284,7 +287,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void moveUser(int x, int y) {
-        ClientBattleHelper.trace(user.getUnit().getWarrior(), x, y);
         getStep(user).init();
     }
 
@@ -310,9 +312,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public void moveEnemy(Warrior warrior, short[] x, short[] y) {
 
     }
-
-
-
 
 
     /**
@@ -520,6 +519,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             allies = ClientBattleHelper.getAllyBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
             enemies = ClientBattleHelper.getEnemyBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
 
+            battleGroup = ((BattleUnit) group.get(0)).getUnit().getWarrior().getBattleGroup();
+
             int length = battle.getMap().getCells().length;
 
             topCenter = new Pair();
@@ -546,10 +547,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
             b4 = (int) (centerLeft.getY() + centerLeft.getX() * TANGENS) - VERTICAL_RADIUS;
             center = new Pair();
-            showGrid = false;
+            showGrid = true;
 
             BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
-            BattleAlliance alliance = ((BattleUnit)group.get(0)).getUnit().getWarrior().getBattleGroup().getAlliance();
+            BattleAlliance alliance = battleGroup.getAlliance();
             ExitZone exit = alliance.getExit();
             setCellCenter(exit.getX(), exit.getY());
             BattleGroupCollection clients = alliance.getAllies();
@@ -566,8 +567,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 }
             }
             ClientBattleHelper.route(user.getUnit().getWarrior(), battleConfiguration);
-
             timerId = TimerManager.setPeriodicTimer(100, this);
+
+            myTurn = true;
+            setNetColor(255);
         }
     }
 

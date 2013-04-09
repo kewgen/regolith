@@ -22,10 +22,17 @@ public class Step {
     private int ticks;
     private boolean initiated;
 
-    private int mapX;
-    private int mapY;
+    private int beginMapX;
+    private int beginMapY;
     private int extensionX;
     private int extensionY;
+
+    private int shiftOnTickX;
+    private int shiftOnTickY;
+    private int speed;
+    private Warrior warrior;
+
+    private BattleConfiguration battleConfiguration;
 
     public Step() {
         initiated = false;
@@ -39,18 +46,26 @@ public class Step {
         ticks = 0;
         extensionX = 0;
         extensionY = 0;
-        mapX = battleUnit.getMapX();
-        mapY = battleUnit.getMapY();
-        Warrior warrior = battleUnit.getUnit().getWarrior();
+        beginMapX = battleUnit.getMapX();
+        beginMapY = battleUnit.getMapY();
+        warrior = battleUnit.getUnit().getWarrior();
+        speed = warrior.getSpeed();
+        shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
+        shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
+        battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
+
         boolean isMoving = true;
         if (WarriorHelper.getReachableRadius(warrior) == 0) {
             isMoving = false;
+            battleUnit.getUnit().stop();
         } else {
             step = WarriorHelper.getStepDirection(warrior, screen.getBattle().getMap().getCells());
             if (step == Direction.NONE) {
                 isMoving = false;
+                battleUnit.getUnit().stop();
             } else {
-                if(warrior.getDirection() != step || !warrior.isMoving()){
+                if (warrior.getDirection() != step || !warrior.isMoving()) {
+                    battleUnit.getUnit().stop();
                     warrior.setDirection(step);
                     battleUnit.getUnit().run();
                 }
@@ -58,7 +73,7 @@ public class Step {
         }
 
         warrior.setMoving(isMoving);
-        if (!warrior.isMoving() && screen.getUser() == battleUnit) {
+        if (!isMoving && screen.getUser() == battleUnit) {
             ClientBattleHelper.route(warrior, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
         }
     }
@@ -71,21 +86,16 @@ public class Step {
      * в середине текущей клетки.
      */
     public void onTick() {
-        if (initiated && battleUnit.getUnit().getWarrior().isMoving()) {
-            BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
-            int speed = battleConfiguration.getWalkSpeed();
-            double shiftOnTickX = (double) BattleScreen.HORIZONTAL_RADIUS / (double) speed;
-            double shiftOnTickY = (double) BattleScreen.VERTICAL_RADIUS / (double) speed;
-
-            if (speed - ticks >= 0) {
+        if (initiated && warrior.isMoving()) {
+            if (speed - ticks > 0) {
                 extensionX += shiftOnTickX * (step.getX() - step.getY());
                 extensionY += shiftOnTickY * (step.getY() + step.getX());
-                battleUnit.setMapX(extensionX + mapX);
-                battleUnit.setMapY(extensionY + mapY);
+                battleUnit.setMapX(extensionX + beginMapX);
+                battleUnit.setMapY(extensionY + beginMapY);
                 ticks++;
             } else {
-                battleUnit.setMapX(BattleScreen.HORIZONTAL_RADIUS * (step.getX() - step.getY()) + mapX);
-                battleUnit.setMapY(BattleScreen.VERTICAL_RADIUS * (step.getY() + step.getX()) + mapY);
+                battleUnit.setMapX(BattleScreen.HORIZONTAL_RADIUS * (step.getX() - step.getY()) + beginMapX);
+                battleUnit.setMapY(BattleScreen.VERTICAL_RADIUS * (step.getY() + step.getX()) + beginMapY);
                 WarriorHelper.step(battleUnit.getUnit().getWarrior(), step.getX(), step.getY(), battleConfiguration);
                 init();
             }

@@ -9,10 +9,10 @@
 
     <property name="deploy" value="deploy"/>
 
-    <property name="gg" value="../"/>
-    <property name="gg.console.dir" location="${gg}/awt/console/"/>
-    <property name="gg.common.dir" location="${gg}/awt/common"/>
-    <property name="gg.awt.console.dir" location="${gg}/awt/awt"/>
+    <property name="gg" value="../awt"/>
+    <property name="gg.console.dir" location="${gg}/console/"/>
+    <property name="gg.common.dir" location="${gg}/common"/>
+    <property name="gg.awt.console.dir" location="${gg}/awt"/>
     <property name="gg.modules.dir" location="${build}/gg.modules"/>
     <property name="client.dir" location="client"/>
     <property name="common.dir" location="common"/>
@@ -21,6 +21,16 @@
     <property name="server.dir" value="server"/>
     <property name="server.main.dir" value="server.main"/>
     <property name="server.battle.dir" value="server.battle"/>
+
+    <property name="gg.common.lib" value="ggcommon.jar"/>
+    <property name="gg.console.lib" value="ggconsole.jar"/>
+    <property name="gg.awt.console.lib" value="ggawtconsole.jar"/>
+    <property name="common.lib" value="common.jar"/>
+    <property name="client.lib" value="client.jar"/>
+    <property name="main.server.lib" value="mainserver.jar"/>
+    <property name="battle.server.lib" value="battleserver.jar"/>
+    <property name="conjunction.lib" value="conjunction.jar"/>
+    <property name="server.lib"  value="server.jar"/>
 
     <target name="clean">
         <delete dir="${build}"/>
@@ -44,7 +54,7 @@
             </fileset>
             <fileset dir="${release}">
                 <patternset>
-                    <include name="ggcommon.jar"/>
+                    <include name="${gg.common.lib}"/>
                 </patternset>
             </fileset>
         </path>
@@ -54,7 +64,7 @@
             <classpath refid="classpath.gg.console"/>
         </javac>
 
-        <jar basedir="${gg.modules.dir}/gg.console" destfile="${release}/ggconsole.jar"/>
+        <jar basedir="${gg.modules.dir}/gg.console" destfile="${release}/${gg.console.lib}"/>
     </target>
 
     <target name="gg.common">
@@ -65,10 +75,10 @@
 
         <javac srcdir="${gg.common.dir}/" destdir="${gg.modules.dir}/gg.common" includeantruntime="false" debug="true"/>
 
-        <jar basedir="${gg.modules.dir}/gg.common" destfile="${release}/ggcommon.jar"/>
+        <jar basedir="${gg.modules.dir}/gg.common" destfile="${release}/${gg.common.lib}"/>
     </target>
 
-    <target name="gg.awt.console" depends="gg.common,gg.console">
+    <target name="gg.awt.console" depends="gg.common">
         <echo message="Deploying gg.awt.console"/>
 
         <delete dir="${gg.modules.dir}/gg.awt.console"/>
@@ -77,7 +87,7 @@
         <path id="classpath.gg.awt.console">
             <fileset dir="${release}">
                 <patternset>
-                    <include name="ggcommon.jar"/>
+                    <include name="${gg.common.lib}"/>
                 </patternset>
             </fileset>
         </path>
@@ -87,8 +97,7 @@
             <classpath refid="classpath.gg.awt.console"/>
         </javac>
 
-        <jar basedir="${gg.modules.dir}/gg.awt.console" destfile="${release}/ggawtconsole.jar"/>
-
+        <jar basedir="${gg.modules.dir}/gg.awt.console" destfile="${release}/${gg.awt.console.lib}"/>
     </target>
 
     <target name="common" depends="gg.common">
@@ -99,7 +108,7 @@
         <path id="classpath.common">
             <fileset dir="${release}">
                 <patternset>
-                    <include name="ggcommon.jar"/>
+                    <include name="${gg.common.lib}"/>
                 </patternset>
             </fileset>
         </path>
@@ -110,52 +119,14 @@
         <javac srcdir="${common.dir}/testsrc" destdir="${build}/common" includeantruntime="false" debug="true">
             <classpath refid="classpath.common"/>
         </javac>
-        <copy todir="${build}/common/com/geargames/regolith/units/">
-            <fileset dir="${common.dir}/src/com/geargames/regolith/units">
+        <copy todir="${build}/common/">
+            <fileset dir="${common.dir}/src">
                 <patternset>
-                    <include name="*.xml"/>
+                    <include name="**/*.xml"/>
                 </patternset>
             </fileset>
         </copy>
-        <copy todir="${build}/common/com/geargames/regolith/units/tackle">
-            <fileset dir="${common.dir}/src/com/geargames/regolith/units/tackle">
-                <patternset>
-                    <include name="*.xml"/>
-                </patternset>
-            </fileset>
-        </copy>
-        <copy todir="${build}/common/com/geargames/regolith/units/map">
-            <fileset dir="${common.dir}/src/com/geargames/regolith/units/map">
-                <patternset>
-                    <include name="*.xml"/>
-                </patternset>
-            </fileset>
-        </copy>
-        <copy todir="${build}/common/com/geargames/regolith/units/battle">
-            <fileset dir="${common.dir}/src/com/geargames/regolith/units/battle">
-                <patternset>
-                    <include name="*.xml"/>
-                </patternset>
-            </fileset>
-        </copy>
-        <copy todir="${build}/common/com/geargames/regolith/units/base">
-            <fileset dir="${common.dir}/src/com/geargames/regolith/units/base">
-                <patternset>
-                    <include name="*.xml"/>
-                </patternset>
-            </fileset>
-        </copy>
-        <copy todir="${build}/common/com/geargames/regolith/">
-            <fileset dir="${common.dir}/src/com/geargames/regolith/">
-                <patternset>
-                    <include name="*.xml"/>
-                </patternset>
-            </fileset>
-        </copy>
-
-        <jar basedir="${build}/common" destfile="${release}/Common.jar"/>
-
-
+        <jar basedir="${build}/common" destfile="${release}/${common.lib}"/>
     </target>
 
     <target name="client" depends="common,gg.awt.console,gg.console">
@@ -163,9 +134,8 @@
         <delete dir="${build}/client"/>
         <mkdir dir="${build}/client"/>
 
-
         <path id="classpath.client">
-            <fileset dir="${lib}">
+            <fileset dir="${gg.console.dir}/lib">
                 <patternset>
                     <include name="**/*"/>
                 </patternset>
@@ -173,7 +143,9 @@
 
             <fileset dir="${release}">
                 <patternset>
-                    <include name="**/*"/>
+                    <include name="${gg.common.lib}"/>
+                    <include name="${common.lib}"/>
+                    <include name="${gg.awt.console.lib}"/>
                 </patternset>
             </fileset>
         </path>
@@ -195,27 +167,26 @@
         <copy todir="${release}/lib">
             <fileset dir="${lib}">
                 <include name="**/*"/>
-
             </fileset>
         </copy>
 
-        <echo message="JARing RegolithClient"/>
+        <echo message="Packing Regolith client"/>
 
-        <jar basedir="${build}/client" destfile="${release}/RegolithClient.jar">
+        <jar basedir="${build}/client" destfile="${release}/client.jar">
             <manifest>
                 <attribute name="Main-Class" value="client.RegolithMain"/>
                 <attribute name="Class-Path" value="
 					lib/junit-4.9.jar
-					ggcommon.jar
-					ggconsole.jar
-					ggawtconsole"
+					${gg.common.lib}
+					${gg.console.lib}
+					${gg.awt.console.lib}"
                         />
             </manifest>
         </jar>
 
     </target>
 
-    <target name="server" depends="common">
+    <target name="server" depends="common, gg.common">
         <delete dir="${build}/server"/>
         <mkdir dir="${build}/server"/>
 

@@ -35,7 +35,7 @@ public class ClientBattleHelper {
     public static void trace(Warrior warrior, int x, int y) {
         BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
         BattleMapHelper.makeShortestRoute(x, y, warrior);
-        warrior.setDirection(WarriorHelper.getStepDirection(warrior, warrior.getBattleGroup().getAlliance().getBattle().getMap().getCells()));
+        //warrior.setDirection(WarriorHelper.getStepDirection(warrior, warrior.getBattleGroup().getAlliance().getBattle().getMap().getCells()));
     }
 
     /**

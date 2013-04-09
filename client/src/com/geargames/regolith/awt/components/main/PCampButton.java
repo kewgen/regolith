@@ -96,8 +96,10 @@ public class PCampButton extends PTouchButton {
             exit.setY((short)1);
             exit.setxRadius((byte)1);
             exit.setyRadius((byte)1);
-            mine.setX((short)0);
-            mine.setY((short)0);
+            WarriorHelper.putWarriorIntoMap(mine, battleMap, 0, 0);
+            mine.setNumber((short)1);
+            mine.setActionScore((short)100);
+            mine.setSpeed((byte)8);
             battle.getAlliances()[0].setExit(exit);
             exits[0] = exit;
 
@@ -106,9 +108,11 @@ public class PCampButton extends PTouchButton {
             exit.setY((short)18);
             exit.setxRadius((byte)1);
             exit.setyRadius((byte)1);
-            another.setX((short)18);
-            another.setY((short)18);
             battle.getAlliances()[1].setExit(exit);
+            WarriorHelper.putWarriorIntoMap(another, battleMap, 18, 18);
+            another.setNumber((short)2);
+            another.setActionScore((short)100);
+            another.setSpeed((byte)10);
             exits[1] = exit;
 
             WarriorHelper.addWarriorToGroup(battle.getAlliances()[0].getAllies().get(0), mine);
