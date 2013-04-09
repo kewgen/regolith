@@ -64,4 +64,8 @@ public class ConcurrentBattleServiceContext implements BattleServiceContext {
     public ServerBattle removeServerBattleById(int id) {
         return battles.remove(id);
     }
+
+    public int getServerBattlesAmount(){
+        return  battles.size();
+    }
 }

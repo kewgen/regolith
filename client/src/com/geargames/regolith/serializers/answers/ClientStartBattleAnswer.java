@@ -19,11 +19,9 @@ public class ClientStartBattleAnswer extends ClientDeSerializedMessage {
     private int port;
     private boolean success;
 
-    private Account account;
     private ClientConfiguration configuration;
 
-    public ClientStartBattleAnswer(Account account, ClientConfiguration configuration) {
-        this.account = account;
+    public ClientStartBattleAnswer(ClientConfiguration configuration) {
         this.configuration = configuration;
         this.success = false;
     }
@@ -34,7 +32,7 @@ public class ClientStartBattleAnswer extends ClientDeSerializedMessage {
         success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             battle = ObjectManager.getInstance().getClientBattle();
-            BattleDeserializer.deserializeBattle(buffer, configuration.getBaseConfiguration(), account, battle);
+            BattleDeserializer.deserializeBattle(buffer, configuration.getBaseConfiguration(), configuration.getAccount(), battle);
             host = SimpleDeserializer.deserializeString(buffer);
             port = SimpleDeserializer.deserializeInt(buffer);
         }
