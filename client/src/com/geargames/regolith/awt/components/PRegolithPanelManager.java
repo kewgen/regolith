@@ -5,11 +5,8 @@ import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.awt.components.battles.PBattlesPanel;
+import com.geargames.regolith.awt.components.main.*;
 import com.geargames.regolith.awt.components.selectMap.PSelectMapPanel;
-import com.geargames.regolith.awt.components.main.PHeadlinePanel;
-import com.geargames.regolith.awt.components.main.PLeftPanel;
-import com.geargames.regolith.awt.components.main.PMainMenuPanel;
-import com.geargames.regolith.awt.components.main.PMoneyRegolithPanel;
 import com.geargames.regolith.awt.components.battleCreate.PBattleCreatePanel;
 import com.geargames.regolith.awt.components.selectWarriors.PSelectWarriorsPanel;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
@@ -59,6 +56,8 @@ public class PRegolithPanelManager extends PPanelManager {
 
     private MainScreen mainScreen;
     private BattleScreen battleScreen;
+
+    private DrawablePPanel fontTestWindow;
 
     private PRegolithPanelManager() {
     }
@@ -176,6 +175,11 @@ public class PRegolithPanelManager extends PPanelManager {
         battlesWindow = new DefaultDrawablePPanel();
         battlesWindow.setAnchor(Anchors.CENTER_ANCHOR);
         battlesWindow.setElement(battlesPanel);
+
+        PFontTestPanel fontTest = new PFontTestPanel(render.getObject(Graph.PAN_BATTLE_CREATE));
+        fontTestWindow = new DefaultDrawablePPanel();
+        fontTestWindow.setAnchor(Anchors.CENTER_ANCHOR);
+        fontTestWindow.setElement(fontTest);
     }
 
     public MainScreen getMainScreen() {
@@ -276,6 +280,10 @@ public class PRegolithPanelManager extends PPanelManager {
 
     public PSelectWarriorsPanel getSelectWarriorsPanel() {
         return (PSelectWarriorsPanel) selectWarriorsWindow.getElement();
+    }
+
+    public DrawablePPanel getFontTestWindow() {
+        return fontTestWindow;
     }
 
 }

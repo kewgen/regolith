@@ -7,7 +7,7 @@ import com.geargames.regolith.awt.components.PRootContentPanel;
 
 /**
  * User: mikhail v. kutuzov
- * Начальная панель.
+ * Начальная панель "Главное меню".
  */
 public class PMainMenuPanel extends PRootContentPanel {
 
@@ -26,8 +26,8 @@ public class PMainMenuPanel extends PRootContentPanel {
                 element = new PMerсenaryButton((PObject) index.getPrototype());
                 break;
             case 12:
-//                element = new PBattleCreateButton((PObject) index.getPrototype());
-//                break;
+                element = new PFontTestButton((PObject) index.getPrototype());
+                break;
             case 13:
                 element = new PCampButton((PObject) index.getPrototype());
                 break;

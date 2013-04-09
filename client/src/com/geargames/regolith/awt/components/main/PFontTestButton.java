@@ -6,18 +6,18 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 /**
  * User: abarakov
- * Тестовая кнопка для вызова диалогового окна "Создание битвы".
+ * Тестовая кнопка для вызова окна "Символы ASCII" (для тестирования шрифтов).
  */
-public class PBattleCreateButton extends PTouchButton {
+public class PFontTestButton extends PTouchButton {
 
-    public PBattleCreateButton(PObject prototype) {
+    public PFontTestButton(PObject prototype) {
         super(prototype);
     }
 
     public void onClick() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.hide(panelManager.getMainMenu());
-        panelManager.show(panelManager.getBattleCreateWindow());
+        panelManager.show(panelManager.getFontTestWindow());
     }
 
 }
