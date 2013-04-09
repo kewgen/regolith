@@ -2,8 +2,6 @@ package com.geargames.regolith;
 
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.serializers.answers.*;
-import com.geargames.regolith.service.MainServiceManager;
-import com.geargames.regolith.service.SimpleService;
 import com.geargames.regolith.units.Account;
 
 /**
@@ -12,19 +10,19 @@ import com.geargames.regolith.units.Account;
  * Time: 21:47
  */
 public class MenuTest {
-    private static SimpleService service;
+//    private static SimpleService service;
 
     private static String ACCOUNT_NAME_DEFAULT     = "АВТОР";
     private static String ACCOUNT_PASSWORD_DEFAULT = "СЕКРЕТ";
 
     public static void main(String[] args) {
         try {
-            service = MainServiceManager.runMainService();
+//            service = MainServiceManager.runMainService();
             client((args.length == 0 ? ACCOUNT_NAME_DEFAULT : args[0]));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            service.stopService();
+//            service.stopService();
         }
     }
 
