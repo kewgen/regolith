@@ -8,19 +8,17 @@ import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.packer.PSprite;
 import com.geargames.common.util.Mathematics;
-import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
 import java.util.Vector;
 
 /**
  * User: abarakov
  * Date: 10.04.13
- * Горизонтальный список бойцов.
+ * Горизонтальный список наград игрока.
  */
 public class PAwardList extends PHorizontalScrollView {
-    private Vector warriorItems;
-    private int warriorAmount;
+    private Vector awardItems;
+    private int awardAmount;
     private PObject buttonObject;
     private ElasticInertMotionListener inertMotionListener;
     private StubMotionListener stubMotionListener;
@@ -30,7 +28,7 @@ public class PAwardList extends PHorizontalScrollView {
         super(prototype);
         Index frameButtonIndex = prototype.getIndexBySlot(0);
         buttonObject = (PObject) frameButtonIndex.getPrototype();
-        warriorItems = new Vector(16);
+        awardItems = new Vector(16);
         inertMotionListener = new ElasticInertMotionListener();
         stubMotionListener = new StubMotionListener();
         initiateMotionListener();
@@ -41,42 +39,42 @@ public class PAwardList extends PHorizontalScrollView {
                 inertMotionListener, stubMotionListener, this));
     }
 
-    public void setWarriorList(WarriorCollection collection) {
-        warriorAmount = collection.size();
-        int oldSize = warriorItems.size();
-        warriorItems.ensureCapacity(warriorAmount);
-
-        // Сначало изменяем уже существующие элементы списка
-        int minSize = Mathematics.min(oldSize, warriorAmount);
-        for (int i = 0; i < minSize; i++) {
-            Warrior warrior = collection.get(i);
-            PAwardListItem item = (PAwardListItem) warriorItems.get(i);
-            item.setWarrior(warrior);
-        }
-
-        // Если список карт увеличился - создаем новые элементы
-        for (int i = minSize; i < collection.size(); i++) {
-            Warrior map = collection.get(i);
-            PAwardListItem item = new PAwardListItem(buttonObject);
-            warriorItems.add(item);
-            item.setWarrior(map);
-            item.setWarriorAvatar((PSprite) buttonObject.getIndexBySlot(0).getPrototype());
-        }
-        initiateMotionListener();
-    }
+//    public void setAwardList(AwardCollection collection) {
+//        awardAmount = collection.size();
+//        int oldSize = awardItems.size();
+//        awardItems.ensureCapacity(awardAmount);
+//
+//        // Сначало изменяем уже существующие элементы списка
+//        int minSize = Mathematics.min(oldSize, awardAmount);
+//        for (int i = 0; i < minSize; i++) {
+//            Award award = collection.get(i);
+//            PAwardListItem item = (PAwardListItem) awardItems.get(i);
+//            item.setAward(award);
+//        }
+//
+//        // Если список наград увеличился - создаем новые элементы
+//        for (int i = minSize; i < collection.size(); i++) {
+//            Award award = collection.get(i);
+//            PAwardListItem item = new PAwardListItem(buttonObject);
+//            awardItems.add(item);
+//            item.setAward(award);
+//            item.setAwardIcon((PSprite) buttonObject.getIndexBySlot(0).getPrototype());
+//        }
+//        initiateMotionListener();
+//    }
 
     @Override
     public Vector getItems() {
-        return warriorItems;
+        return awardItems;
     }
 
     @Override
     public int getItemsAmount() {
-        return warriorAmount; // getItems().size();
+        return awardAmount; // getItems().size();
     }
 
     public PAwardListItem getItem(int index) {
-        return (PAwardListItem) warriorItems.get(index);
+        return (PAwardListItem) awardItems.get(index);
     }
 
 }

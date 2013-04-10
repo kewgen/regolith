@@ -54,12 +54,12 @@ public class PWarriorList extends PHorizontalScrollView {
             item.setWarrior(warrior);
         }
 
-        // Если список карт увеличился - создаем новые элементы
+        // Если список бойцов увеличился - создаем новые элементы
         for (int i = minSize; i < collection.size(); i++) {
-            Warrior map = collection.get(i);
+            Warrior warrior = collection.get(i);
             PWarriorListItem item = new PWarriorListItem(buttonObject);
             warriorItems.add(item);
-            item.setWarrior(map);
+            item.setWarrior(warrior);
             item.setWarriorAvatar((PSprite) buttonObject.getIndexBySlot(0).getPrototype());
         }
         initiateMotionListener();
