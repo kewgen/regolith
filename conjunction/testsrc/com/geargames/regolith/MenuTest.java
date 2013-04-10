@@ -12,20 +12,12 @@ import com.geargames.regolith.units.Account;
  * Time: 21:47
  */
 public class MenuTest {
-    private static SimpleService service;
 
     private static String ACCOUNT_NAME_DEFAULT     = "АВТОР";
     private static String ACCOUNT_PASSWORD_DEFAULT = "СЕКРЕТ";
 
-    public static void main(String[] args) {
-        try {
-            service = MainServiceManager.runMainService();
-            client((args.length == 0 ? ACCOUNT_NAME_DEFAULT : args[0]));
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            service.stopService();
-        }
+    public static void main(String[] args)throws Exception{
+         client((args.length == 0 ? ACCOUNT_NAME_DEFAULT : args[0]));
     }
 
     public static void client(String accountName) throws Exception {
