@@ -8,6 +8,7 @@ import com.geargames.common.packer.PFont;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.application.PFontCollection;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 
 /**
@@ -28,39 +29,39 @@ public class PFontTestPanel extends PRootContentPanel {
 
         button8 = new PEntitledRadioButton(Environment.getRender().getObject(Graph.OBJ_BUT));
         button8.setText("8");
-        addActiveChild(button8, 160, -130);
+        addActiveChild(button8, 160, -170);
         group.addButton(button8);
 
         button10 = new PEntitledRadioButton(Environment.getRender().getObject(Graph.OBJ_BUT));
         button10.setText("10");
-        addActiveChild(button10, 160, -80);
+        addActiveChild(button10, 160, -120);
         group.addButton(button10);
 
         button12 = new PEntitledRadioButton(Environment.getRender().getObject(Graph.OBJ_BUT));
         button12.setText("12");
-        addActiveChild(button12, 160, -30);
+        addActiveChild(button12, 160, -70);
         button12.setChecked(true);
         group.addButton(button12);
 
         button14 = new PEntitledRadioButton(Environment.getRender().getObject(Graph.OBJ_BUT));
         button14.setText("14");
-        addActiveChild(button14, 160, 20);
+        addActiveChild(button14, 160, -20);
         group.addButton(button14);
 
         buttonCodeOrChar = new PEntitledToggleButton(Environment.getRender().getObject(Graph.OBJ_BUT));
         buttonCodeOrChar.setText("CODE / SYMBOL");
-        addActiveChild(buttonCodeOrChar, 160, 70);
+        addActiveChild(buttonCodeOrChar, 160, 50);
 
-        PButtonOk button = new PButtonOk(Environment.getRender().getObject(Graph.OBJ_BUT));
+        PButtonClose button = new PButtonClose(Environment.getRender().getObject(Graph.OBJ_BUT));
         button.setText("ЗАКРЫТЬ");
-        addActiveChild(button, 160, 120);
+        addActiveChild(button, 160, 100);
     }
 
     @Override
     protected void createSlotElementByIndex(IndexObject index, PObject parentPrototype) {
 //        switch (index.getSlot()) {
 //            case 17:
-//                PButtonOk button = new PButtonOk((PObject)index.getPrototype());
+//                PButtonClose button = new PButtonClose((PObject)index.getPrototype());
 //                button.setText("ЗАКРЫТЬ");
 //                addActiveChild(button, index);
 //                break;
@@ -97,7 +98,20 @@ public class PFontTestPanel extends PRootContentPanel {
     }
 
     private String[] chars = new String[] {
-            " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIGKLMNOPQRSTUVWXYZ[\\]^_`abcdefghigklmnopqrstuvwxyz{|}~",
+//            " !\"#$%&'()*+,-./",
+//            "0123456789",
+//            ":",
+//            ";",
+//            "<=>",
+//            "?",
+//            "@",
+//            "ABCDEFGHIGKLMNOPQRSTUVWXYZ",
+//            "[\\]^_`",
+//            "abcdefghigklmnopqrstuvwxyz",
+//            "{|}~",
+
+            " !\"#$%&'()*+,-./0123456789:<=>?@ABCDEFGHIGKLMNOPQRSTUVWXYZ",
+            "[\\]^_`abcdefghigklmnopqrstuvwxyz{|}~",
             "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя"
     };
 
@@ -105,7 +119,7 @@ public class PFontTestPanel extends PRootContentPanel {
     public void draw(Graphics graphics, int x, int y) {
         super.draw(graphics, x, y);
         x -= 380;
-        y -= 160;
+        y -= 170;
         PFont newFont;
         if (button8.getChecked()) {
             newFont = PFontCollection.getFont8();
@@ -130,30 +144,39 @@ public class PFontTestPanel extends PRootContentPanel {
             for (int j = 0; j < charSet.length(); j++) {
                 String s;
                 if (buttonCodeOrChar.getChecked()) {
-                    s = String.valueOf(charSet.charAt(j));
-                } else {
                     s = String.valueOf((int)charSet.charAt(j));
+                } else {
+                    s = String.valueOf(charSet.charAt(j));
                 }
-                graphics.drawString(s, x + xCode * 32, y + yCode * 20, 0);
+                graphics.drawString(s, x + xCode * 44, y + yCode * 20, 0);
 
-                if (++xCode == 16) {
+                if (++xCode == 12) {
                     xCode = 0;
                     yCode++;
                 }
             }
+            yCode++;
         }
+        yCode++;
+        for (int i = 0; i < chars.length; i++) {
+            graphics.drawString(chars[i], x, y + yCode * 20, 0);
+            yCode++;
+        }
+
         graphics.setFont(oldFont);
     }
 
-    public class PButtonOk extends PEntitledTouchButton {
+    public class PButtonClose extends PEntitledTouchButton {
 
-        public PButtonOk(PObject prototype) {
+        public PButtonClose(PObject prototype) {
             super(prototype);
         }
 
         @Override
         public void onClick() {
-            super.onClick();
+            PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+            panelManager.hide(panelManager.getFontTestWindow());
+            panelManager.show(panelManager.getMainMenu());
         }
 
     }
