@@ -5,11 +5,9 @@ import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.awt.components.battles.PBattlesPanel;
+import com.geargames.regolith.awt.components.main.*;
+import com.geargames.regolith.awt.components.playerInfo.PPlayerInfoPanel;
 import com.geargames.regolith.awt.components.selectMap.PSelectMapPanel;
-import com.geargames.regolith.awt.components.main.PHeadlinePanel;
-import com.geargames.regolith.awt.components.main.PLeftPanel;
-import com.geargames.regolith.awt.components.main.PMainMenuPanel;
-import com.geargames.regolith.awt.components.main.PMoneyRegolithPanel;
 import com.geargames.regolith.awt.components.battleCreate.PBattleCreatePanel;
 import com.geargames.regolith.awt.components.selectWarriors.PSelectWarriorsPanel;
 import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
@@ -52,13 +50,17 @@ public class PRegolithPanelManager extends PPanelManager {
 
     private DrawablePPanel warrior;
     private DrawablePPanel mainMenu;
+
+    private DrawablePPanel battlesWindow;
     private DrawablePPanel battleCreateWindow;
     private DrawablePPanel selectMapWindow;
     private DrawablePPanel selectWarriorsWindow;
-    private DrawablePPanel battlesWindow;
+    private DrawablePPanel playerInfoWindow;
 
     private MainScreen mainScreen;
     private BattleScreen battleScreen;
+
+    private DrawablePPanel fontTestWindow;
 
     private PRegolithPanelManager() {
     }
@@ -84,15 +86,15 @@ public class PRegolithPanelManager extends PPanelManager {
         battleScreen.setCellFinder(new ProjectionFinder());
         battleScreen.setCorrector(new CubeBorderCorrector());
 
-        left = new DefaultDrawablePPanel();
+        left = new TopDrawablePPanel();
         left.setAnchor(Anchors.TOP_LEFT_ANCHOR);
         left.setElement(new PLeftPanel(render.getObject(Graph.PAN_LEFT)));
 
-        headline = new DefaultDrawablePPanel();
-        headline.setAnchor(Anchors.CENTER_ANCHOR);
+        headline = new TopDrawablePPanel();
+        headline.setAnchor(Anchors.TOP_CENTER_ANCHOR);
         headline.setElement(new PHeadlinePanel(render.getObject(Graph.PAN_CENTER)));
 
-        right = new DefaultDrawablePPanel();
+        right = new TopDrawablePPanel();
         right.setAnchor(Anchors.TOP_RIGHT_ANCHOR);
         right.setElement(new PMoneyRegolithPanel(render.getObject(Graph.PAN_RIGHT)));
 
@@ -157,6 +159,11 @@ public class PRegolithPanelManager extends PPanelManager {
         mainMenu.setAnchor(Anchors.CENTER_ANCHOR);
         mainMenu.setElement(mainMenuPanel);
 
+        PBattlesPanel battlesPanel = new PBattlesPanel(render.getObject(Graph.PAN_BATTLE_LIST));
+        battlesWindow = new DefaultDrawablePPanel();
+        battlesWindow.setAnchor(Anchors.CENTER_ANCHOR);
+        battlesWindow.setElement(battlesPanel);
+
         PBattleCreatePanel battleCreatePanel = new PBattleCreatePanel(render.getObject(Graph.PAN_BATTLE_CREATE));
         battleCreateWindow = new DefaultDrawablePPanel();
         battleCreateWindow.setAnchor(Anchors.CENTER_ANCHOR);
@@ -172,10 +179,15 @@ public class PRegolithPanelManager extends PPanelManager {
         selectWarriorsWindow.setAnchor(Anchors.CENTER_ANCHOR);
         selectWarriorsWindow.setElement(selectWarriorsPanel);
 
-        PBattlesPanel battlesPanel = new PBattlesPanel(render.getObject(Graph.PAN_BATTLE_LIST));
-        battlesWindow = new DefaultDrawablePPanel();
-        battlesWindow.setAnchor(Anchors.CENTER_ANCHOR);
-        battlesWindow.setElement(battlesPanel);
+        PPlayerInfoPanel playerInfoPanel = new PPlayerInfoPanel(render.getObject(Graph.PAN_PLAYER_INFO));
+        playerInfoWindow = new DefaultDrawablePPanel();
+        playerInfoWindow.setAnchor(Anchors.CENTER_ANCHOR);
+        playerInfoWindow.setElement(playerInfoPanel);
+
+        PFontTestPanel fontTest = new PFontTestPanel(render.getObject(Graph.PAN_BATTLE_CREATE));
+        fontTestWindow = new DefaultDrawablePPanel();
+        fontTestWindow.setAnchor(Anchors.CENTER_ANCHOR);
+        fontTestWindow.setElement(fontTest);
     }
 
     public MainScreen getMainScreen() {
@@ -184,14 +196,6 @@ public class PRegolithPanelManager extends PPanelManager {
 
     public BattleScreen getBattleScreen() {
         return battleScreen;
-    }
-
-    public DrawablePPanel getBattlesWindow() {
-        return battlesWindow;
-    }
-
-    public PBattlesPanel getBattlesPanel() {
-        return (PBattlesPanel) battlesWindow.getElement();
     }
 
     public DrawablePPanel getWeaponFromStoreHouse() {
@@ -254,6 +258,14 @@ public class PRegolithPanelManager extends PPanelManager {
         return right;
     }
 
+    public DrawablePPanel getBattlesWindow() {
+        return battlesWindow;
+    }
+
+    public PBattlesPanel getBattlesPanel() {
+        return (PBattlesPanel) battlesWindow.getElement();
+    }
+
     public DrawablePPanel getBattleCreateWindow() {
         return battleCreateWindow;
     }
@@ -276,6 +288,18 @@ public class PRegolithPanelManager extends PPanelManager {
 
     public PSelectWarriorsPanel getSelectWarriorsPanel() {
         return (PSelectWarriorsPanel) selectWarriorsWindow.getElement();
+    }
+
+    public DrawablePPanel getPlayerInfoWindow() {
+        return playerInfoWindow;
+    }
+
+    public PPlayerInfoPanel getPlayerInfoPanel() {
+        return (PPlayerInfoPanel) playerInfoWindow.getElement();
+    }
+
+    public DrawablePPanel getFontTestWindow() {
+        return fontTestWindow;
     }
 
 }

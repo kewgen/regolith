@@ -15,8 +15,12 @@ public class PLeftPanel extends PRootContentPanel {
         super(prototype);
     }
 
+    @Override
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()){
+            case 0:
+                createDefaultElementByIndex(index, prototype);
+                break;
             case 1:
                 button = new PBackButton((PObject)index.getPrototype());
                 addActiveChild(button, index);

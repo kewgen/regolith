@@ -12,10 +12,16 @@ import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
  * Time: 23:43
  */
 public class WarriorDrawablePPanel extends DrawablePPanel {
+
+    @Override
+    public void onShow() {
+    }
+
+    @Override
     public void onHide() {
         BatchMessageManager manager = BatchMessageManager.getInstance();
         if (manager.size() > 0) {
-            try{
+            try {
                 ArrayList answers = manager.commitMessages().getAnswers();
                 for (int i = 0; i < answers.size(); i++) {
                     if (!((ClientConfirmationAnswer) answers.get(i)).isConfirm()) {
@@ -23,12 +29,15 @@ public class WarriorDrawablePPanel extends DrawablePPanel {
                         System.exit(1);
                     }
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                  //todo:  Написать корректный обработчик события
             }
         }
     }
 
-    public void onShow() {
+    @Override
+    public byte getLayer() {
+        return MIDDLE_LAYER;
     }
+
 }

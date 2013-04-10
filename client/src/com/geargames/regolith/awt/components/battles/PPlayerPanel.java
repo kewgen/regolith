@@ -1,6 +1,7 @@
 package com.geargames.regolith.awt.components.battles;
 
 import com.geargames.awt.components.PContentPanel;
+import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 
@@ -22,6 +23,11 @@ public class PPlayerPanel extends PContentPanel {
 
     public PPlayerButton getPlayerButton(int index){
         return (PPlayerButton)getActiveChildren().get(index);
+    }
+
+    @Override
+    public void draw(Graphics graphics, int x, int y) {
+        super.draw(graphics, x, y + 26); //todo: почему я вынужден это сделать?
     }
 
 }

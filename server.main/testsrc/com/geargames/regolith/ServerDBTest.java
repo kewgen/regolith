@@ -456,6 +456,14 @@ public class ServerDBTest {
         battleType2x2.setGroupSize((short)1);
         battleTypes.add(battleType2x2);
 
+        BattleType battleType1x1_2 = new TrainingBattle();
+        battleType1x1_2.setName("1x1");
+        battleType1x1_2.setScores((byte) 5);
+        battleType1x1_2.setAllianceAmount((short)2);
+        battleType1x1_2.setAllianceSize((short)1);
+        battleType1x1_2.setGroupSize((short)2);
+        battleTypes.add(battleType1x1_2);
+
         baseConfiguration.setBattleTypes(battleTypes);
 
         org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
@@ -1149,6 +1157,78 @@ public class ServerDBTest {
         types[1] = baseConfiguration.getBattleTypes().get(1); // 1x1x1
         types[2] = baseConfiguration.getBattleTypes().get(2); // 1x1x1x1
         types[3] = baseConfiguration.getBattleTypes().get(3); // 2x2
+
+        Border border = baseConfiguration.getBorders().get(0);
+        map5.getCells()[3][3].setElement(border);
+
+        Box box = new Box();
+        ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
+        serverMagazineCollection.setMagazines(new LinkedList<Magazine>());
+        box.setMagazines(serverMagazineCollection);
+        ServerStateTackleCollection serverStateTackleCollection = new ServerStateTackleCollection();
+        serverStateTackleCollection.setTackles(new LinkedList<StateTackle>());
+        box.setTackles(serverStateTackleCollection);
+        ServerMedikitCollection serverMedikitCollection = new ServerMedikitCollection();
+        serverMedikitCollection.setMedikits(new LinkedList<Medikit>());
+        box.setMedikits(serverMedikitCollection);
+
+        Weapon rifle = new Weapon();
+        rifle.setLoad((short) 10);
+        Projectile projectile = baseConfiguration.getProjectiles().get(0);
+        rifle.setProjectile(projectile);
+        rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
+
+        box.getTackles().add(rifle);
+        map5.getCells()[1][1].setElement(box);
+        map5.setContent(BattleHelper.serializeBattleCells(map5.getCells()));
+
+        session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(map5);
+        tx.commit();
+        session.close();
+    }
+
+    @Test
+    public void addMap6() throws Exception {
+        BattleMap map5 = BattleHelper.createBattleMap(10);
+        map5.setName("КАРТА6");
+        ExitZone[] exits = new ExitZone[4];
+        ExitZone exit = new ExitZone();
+        exit.setX((short) 2);
+        exit.setY((short) 2);
+        exit.setxRadius((byte) 2);
+        exit.setyRadius((byte) 2);
+        exits[0] = exit;
+        exit = new ExitZone();
+        exit.setX((short) 8);
+        exit.setY((short) 8);
+        exit.setxRadius((byte) 2);
+        exit.setyRadius((byte) 2);
+        exits[1] = exit;
+        exit = new ExitZone();
+        exit.setX((short) 8);
+        exit.setY((short) 2);
+        exit.setxRadius((byte) 2);
+        exit.setyRadius((byte) 2);
+        exits[2] = exit;
+        exit = new ExitZone();
+        exit.setX((short) 2);
+        exit.setY((short) 8);
+        exit.setxRadius((byte) 2);
+        exit.setyRadius((byte) 2);
+        exits[3] = exit;
+
+        map5.setExits(exits);
+
+        Session session = sessionFactory.openSession();
+        BaseConfiguration baseConfiguration = (BaseConfiguration) session.createQuery("from BaseConfiguration").list().get(0);
+        session.close();
+
+        BattleType[] types = new BattleType[2];
+        map5.setPossibleBattleTypes(types);
+        types[0] = baseConfiguration.getBattleTypes().get(0); // 1x1*1
+        types[1] = baseConfiguration.getBattleTypes().get(4); // 1x1*2
 
         Border border = baseConfiguration.getBorders().get(0);
         map5.getCells()[3][3].setElement(border);

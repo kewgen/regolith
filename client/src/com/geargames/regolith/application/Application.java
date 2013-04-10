@@ -133,10 +133,8 @@ public final class Application extends com.geargames.common.Application {
         panels.initiate(render);
         panels.changeScreen(panels.getMainScreen());
         panels.show(panels.getMainMenu());
-        panels.show(panels.getLeft());
-/*
         panels.show(panels.getHeadline());
-*/
+        panels.show(panels.getLeft());
         panels.show(panels.getRight());
     }
 

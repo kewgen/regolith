@@ -1,10 +1,7 @@
 package com.geargames.regolith.units;
 
 import com.geargames.regolith.SecurityOperationManager;
-import com.geargames.regolith.Util;
-import com.geargames.regolith.units.Entity;
 import com.geargames.regolith.units.base.Base;
-import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
 /**
@@ -82,6 +79,10 @@ public class Account extends Login {
         this.fortunate = fortunate;
     }
 
+    /**
+     * Получить величину опыта игрока.
+     * @return
+     */
     public int getExperience() {
         return experience;
     }
@@ -90,6 +91,10 @@ public class Account extends Login {
         this.experience = experience;
     }
 
+    /**
+     * Получить клан, к которому принадлежит игрок.
+     * @return
+     */
     public Clan getClan() {
         return clan;
     }
@@ -106,6 +111,10 @@ public class Account extends Login {
         this.security = security;
     }
 
+    /**
+     * Получить список бойцов игрока.
+     * @return
+     */
     public WarriorCollection getWarriors() {
         return warriors;
     }
