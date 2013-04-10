@@ -20,7 +20,7 @@ public abstract class PTouchLabel extends PObjectElement {
 
     public PTouchLabel(PObject prototype) {
         super(prototype);
-        IndexObject index = (IndexObject) prototype.getIndexBySlot(0); //todo: 0 -> 109
+        IndexObject index = (IndexObject) prototype.getIndexBySlot(109);
         label = new PSimpleLabel(index);
         label.setX(index.getX());
         label.setY(index.getY());

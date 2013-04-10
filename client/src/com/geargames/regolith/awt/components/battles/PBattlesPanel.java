@@ -19,6 +19,7 @@ import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.managers.ClientBattleCreationManager;
 import com.geargames.regolith.managers.ClientBattleMarketManager;
+import com.geargames.regolith.network.RequestHelper;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
@@ -220,7 +221,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             // Битва была создана мною => нужно заканселить ее
             // Этой ситуации вообще происходить не должно
             Debug.error("There was an attempt to create a battle, when there are already created battle");
-            boolean res = cancelBattle(listenedBattle);
+            boolean res = RequestHelper.cancelBattle(listenedBattle, this);
             ClientConfigurationFactory.getConfiguration().setBattle(null);
             battleList.updateList();
             if (!res) {
@@ -236,8 +237,8 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 if (myBattleGroup.getAccount().getId() != configuration.getAccount().getId()) {
                     Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAccount().getId() != configuration.getAccount().getId()");
                 }
-                boolean res = evictAccountFromBattleGroup(myBattleGroup) &&
-                        doNotListenToBattle(listenedBattle);
+                boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
+                        RequestHelper.doNotListenToBattle(listenedBattle, this);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
                 if (!res) {
@@ -246,7 +247,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             } else {
                 // Я просто подписался на обновления битвы => нужно отписаться от обновлений
                 //todo: Вероятно, этот случай никогда не наступит
-                boolean res = doNotListenToBattle(listenedBattle);
+                boolean res = RequestHelper.doNotListenToBattle(listenedBattle, this);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
                 if (!res) {
@@ -295,14 +296,14 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     if (myBattleGroup != null) {
                         // Я вхожу в одну из других боевых груп => выхожу из нее и вхожу в другую
                         //todo: должно быть иное действие по освобождение занимаемой боевой группы, при этом я не должен выходить из битвы
-                        if (!evictAccountFromBattleGroup(myBattleGroup)) {
+                        if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
                             return;
                         }
 //                        disbandGroup(myBattleGroup);
                     }
                 } else {
                     // Я щелкнул по иконке боевой группы чужой битвы, при этом у меня есть своя созданная битва => нужно заканселить свою битву
-                    boolean res = cancelBattle(listenedBattle);
+                    boolean res = RequestHelper.cancelBattle(listenedBattle, this);
                     battleCreateButton.setVisible(true);
                     ClientConfigurationFactory.getConfiguration().setBattle(null);
                     battleList.updateList();
@@ -322,14 +323,14 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     // Я собираюсь вступить в другую боевую группу чужой битвы, одну из боевых групп которой, я уже занимаю
                     // Я вхожу в одну из других боевых груп => выхожу из нее и вхожу в другую
                     //todo: должно быть иное действие по освобождению занимаемой боевой группы, при этом я не должен выходить из битвы
-                    if (!evictAccountFromBattleGroup(myBattleGroup)) {
+                    if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
                         return;
                     }
 //                    disbandGroup(myBattleGroup);
                 } else {
                     // Я собираюсь вступить в боевую группу другой битвы
-                    boolean res = evictAccountFromBattleGroup(myBattleGroup) &&
-                            doNotListenToBattle(listenedBattle);
+                    boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
+                            RequestHelper.doNotListenToBattle(listenedBattle, this);
                     ClientConfigurationFactory.getConfiguration().setBattle(null);
                     battleList.updateList();
                     if (!res) {
@@ -343,111 +344,12 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             // Особой реакции на этот случай не требуется
         } else {
             // Боевая группа кем-то занята, но не мною => посмотрим информацию об игроке
-            //todo: реализовать
-//            PRegolithPanelManager.getInstance().getWarriorInfoPanel().showPanel(
-//                    battleGroup.getAccount(),
-//                    /*kickAllowed=*/battleGroup.getAlliance().getBattle().getAuthor().getId() == configuration.getAccount().getId());
-            NotificationBox.error("ДОЛЖНО ПОЯВИТЬСЯ ОКНО С ИНФОРМАЦИЕЙ ОБ ИГРОКЕ. ДАННОЕ ОКНО В РАЗРАБОТКЕ", this);
+            PRegolithPanelManager.getInstance().getPlayerInfoPanel().showPanel(
+                    battleGroup, battleGroup.getAlliance().getBattle().getAuthor().getId() == configuration.getAccount().getId());
             return;
         }
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.getSelectWarriorsPanel().showPanel(battleGroup);
-    }
-
-    /**
-     * Вспомогательная функция. Исключает игрока из боевой группы.
-     * @param battleGroup - боевая группа, которую нужно освободить;
-     * @return            - true, если освобождение прошло успешно.
-     */
-    private boolean evictAccountFromBattleGroup(BattleGroup battleGroup) {
-        ClientBattleCreationManager battleCreationManager = ClientConfigurationFactory.getConfiguration().getBattleCreationManager();
-        try {
-            Debug.debug("The client is trying to get out of the battle (" +
-                    "battle id = " + battleGroup.getAlliance().getBattle().getId() + "; battle group id = " + battleGroup.getId() + ")...");
-            ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer = battleCreationManager.evictAccount(
-                    battleGroup.getAlliance(), battleGroup.getAccount());
-            if (!evictAccountFromAllianceAnswer.isSuccess()) {
-                Debug.error("EvictAccount: Request rejected (battle group id = " + battleGroup.getId() + ")");
-                NotificationBox.error(LocalizedStrings.BATTLES_MSG_SELF_EVICT_ACCOUNT_EXCEPTION, this);
-                return false;
-            }
-            Debug.debug("The client evicted from the alliance (" +
-                    "battle group id = " + battleGroup.getId() +
-                    "; account id = " + evictAccountFromAllianceAnswer.getAccount().getId() +
-                    "; alliance id = " + evictAccountFromAllianceAnswer.getAlliance().getId() + ")");
-            return true;
-        } catch (Exception e) {
-            Debug.error("EvictAccount: Send request and receive answer is failed (battle group id = " + battleGroup.getId() + ")", e);
-            NotificationBox.error(LocalizedStrings.BATTLES_MSG_SELF_EVICT_ACCOUNT_EXCEPTION, this);
-            return false;
-        }
-    }
-
-    /**
-     * Вспомогательная функция. Отписывает игрока от получения обновлений битвы.
-     * @param battle - битва, от которой нужно отписаться;
-     * @return       - true, если отписались от битвы успешно.
-     */
-    private boolean doNotListenToBattle(Battle battle) {
-        ClientBattleCreationManager battleCreationManager = ClientConfigurationFactory.getConfiguration().getBattleCreationManager();
-        try {
-            Debug.debug("The client is trying to unsubscribe from the battle (battle id = " + battle.getId() + ")...");
-            ClientConfirmationAnswer confirmationAnswer = battleCreationManager.doNotListenToBattle(battle);
-            if (!confirmationAnswer.isConfirm()) {
-                Debug.error("DoNotListenToBattle: Request rejected (battle id = " + battle.getId() + ")");
-                NotificationBox.error(LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION, this);
-                return false;
-            }
-            Debug.debug("The client unsubscribe from battle (battle id = " + battle.getId() + ")");
-            return true;
-        } catch (Exception e) {
-            Debug.error("DoNotListenToBattle: Send request and receive answer is failed (battle id = " + battle.getId() + ")", e);
-            NotificationBox.error(LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION, this);
-            return false;
-        }
-    }
-
-    /**
-     * Вспомогательная функция. Отменяет битву.
-     * @param battle - битва, которую нужно отменить;
-     * @return       - true, если отмена битвы прошла успешно.
-     */
-    private boolean cancelBattle(Battle battle) {
-        ClientBattleCreationManager battleCreationManager = ClientConfigurationFactory.getConfiguration().getBattleCreationManager();
-        try {
-            Debug.debug("Trying to cancelation the battle (battle id = " + battle.getId() + ")...");
-            ClientCancelBattleAnswer cancelBattleAnswer = battleCreationManager.cancelBattle();
-            if (!cancelBattleAnswer.isSuccess()) {
-                Debug.error("CancelBattle: Request rejected (battle id = " + battle.getId() + ")");
-                NotificationBox.error(LocalizedStrings.BATTLES_MSG_CANCEL_BATTLE_EXCEPTION, this);
-                return false;
-            }
-            Debug.debug("The client canceled battle (battle id = " + battle.getId() + ")");
-            return true;
-        } catch (Exception e) {
-            Debug.error("CancelBattle: Send request and receive answer is failed (battle id = " + battle.getId() + ")", e);
-            NotificationBox.error(LocalizedStrings.BATTLES_MSG_CANCEL_BATTLE_EXCEPTION, this);
-            return false;
-        }
-    }
-
-    private boolean disbandGroup(BattleGroup battleGroup) {
-        ClientBattleCreationManager battleCreationManager = ClientConfigurationFactory.getConfiguration().getBattleCreationManager();
-        try {
-            Debug.debug("The client is trying disband the battle group (battle group id = " + battleGroup.getId() + ")...");
-            ClientCompleteGroupAnswer completeGroupAnswer = battleCreationManager.disbandGroup(battleGroup);
-            if (!completeGroupAnswer.isSuccess()) {
-                Debug.error("DisbandGroup: Request rejected (battle group id = " + battleGroup.getId() + ")");
-                NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_DISBAND_GROUP_EXCEPTION, this);
-                return false;
-            }
-            Debug.debug("The client disbanded the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
-            return true;
-        } catch (Exception e) {
-            Debug.error("DisbandGroup: Send request and receive answer is failed (battle group id = " + battleGroup.getId() + ")", e);
-            NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_DISBAND_GROUP_EXCEPTION, this);
-            return false;
-        }
     }
 
 }

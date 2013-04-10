@@ -55,9 +55,20 @@ public class LocalizedStrings {
 
     public static final String SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION    = "НЕ УДАЛОСЬ ОТМЕНИТЬ БИТВУ";
 
+    // ----- Player info -------------------------------------------------------------------------------------------
+
+    public static final String PLAYER_INFO_PANEL_TITLE = "ИНФОРМАЦИЯ ОБ ИГРОКЕ";
+
+    public static final String PLAYER_INFO_HINT_PLAYER_NAME   = "ИМЯ ИГРОКА";
+    public static final String PLAYER_INFO_HINT_PLAYER_LEVEL  = "УРОВЕНЬ ИГРОКА";
+    public static final String PLAYER_INFO_HINT_PLAYER_SCORE  = "КОЛИЧЕСТВО ОЧКОВ У ИГРОКА"; // Опыт игрока
+    public static final String PLAYER_INFO_HINT_PLAYER_WINS   = "КОЛИЧЕСТВО ПОПЕД";
+    public static final String PLAYER_INFO_HINT_PLAYER_LOSSES = "КОЛИЧЕСТВО ПОТЕРЯННЫХ БОЙЦОВ";
+    public static final String PLAYER_INFO_HINT_PLAYER_CLAN   = "КЛАН, В КОТОРЫЙ ВХОДИТ ИГРОК";
+
     // -----  ----------------------------------------------------------------------------------------------------------
 
-    public static final String INFO_MESSAGE_1 = "Для присоединения к битве требуется 3 бойца, у вас доступно только 2";
+    public static final String INFO_MESSAGE_1 = "Для присоединения к битве требуется бойцов - 3, у вас доступно только 2";
 
     // -----  ----------------------------------------------------------------------------------------------------------
 

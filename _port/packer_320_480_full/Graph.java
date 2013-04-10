@@ -1,5 +1,5 @@
 //../regolith/_port/packer_320_480_full
-//Thu Apr 04 17:48:00 MSD 2013 , version: 108
+//Wed Apr 10 17:25:15 GMT+04:00 2013 , version: 108
 
 package app;
 
@@ -12,8 +12,8 @@ public class Graph {
     final static public byte ELEMENT_FILLRECT = 33;
     final static public byte ELEMENT_FILLRECT_x4 = 34;
     final static public byte ELEMENT_ARC = 35;
-    final static public int FRAMES_COUNT = 1596;
-    final static public int SPR_COUNT = 297;
+    final static public int FRAMES_COUNT = 1602;
+    final static public int SPR_COUNT = 302;
     final static public int ANIM_COUNT = 1;
     final static public int UNIT_COUNT = 660;
     final static public int UNITS_COUNT = 180;
@@ -82,8 +82,8 @@ public class Graph {
     final static public short MAN_1_DIR_6_WEAPON = 1159;
     final static public short MAN_1_DIR_7_WEAPON = 1174;
     final static public short MAN_1_DIR_8_WEAPON = 1180;
-    final static public short EL_HINT = 1467;
-    final static public short EL_FONT = 1476;
+    final static public short EL_HINT = 1471;
+    final static public short EL_FONT = 1480;
 //Sprite
     final static public byte SPR_EMPTY = 0;
     final static public byte SPR_GROUND = 1;
@@ -105,12 +105,12 @@ public class Graph {
     final static public byte SPR_SKILL_IND = 100;
     final static public byte SPR_ICO_LIFE_IND = 121;
     final static public short SPR_BUTTON = 129;
-    final static public short SPR_ICO_WEAPON = 182;
-    final static public short SPR_TEXT_TEST = 196;
-    final static public short SPR_FONT_SYMB = 198;
-    final static public short SPR_FONT_NUM = 214;
-    final static public short SPR_FONT_EN = 231;
-    final static public short SPR_FONT_RU = 263;
+    final static public short SPR_ICO_WEAPON = 187;
+    final static public short SPR_TEXT_TEST = 201;
+    final static public short SPR_FONT_SYMB = 203;
+    final static public short SPR_FONT_NUM = 219;
+    final static public short SPR_FONT_EN = 236;
+    final static public short SPR_FONT_RU = 268;
 //Animation
 //Unit
     final static public byte U_MAN_IDLE_old = 0;
@@ -438,30 +438,31 @@ public class Graph {
     final static public byte OBJ_IND_CHARACTER = 40;
     final static public byte OBJ_IND_SKILL = 41;
     final static public byte OBJ_LABEL_MONEY = 42;
-    final static public byte OBJ_BUT_LATER = 43;
-    final static public byte OBJ_BUT_PREVISION = 44;
-    final static public byte OBJ_BUT_BACK = 45;
-    final static public byte OBJ_BUT_RADIO = 46;
-    final static public byte OBJ_BUT = 56;
-    final static public byte OBJ_BUT_SELECT = 57;
-    final static public byte OBJ_BUT_BATTLE = 59;
-    final static public byte OBJ_BUT_KICK = 60;
-    final static public byte OBJ_BUT_PLAYER_INFO = 65;
-    final static public byte OBJ_BUT_WIEW = 67;
-    final static public byte OBJ_CHECKBOX = 69;
-    final static public byte OBJ_CHECKBOX_STRING = 70;
-    final static public byte OBJ_BUT_PLUS = 71;
-    final static public byte OBJ_SPINBOX = 73;
-    final static public byte OBJ_HINT = 74;
-    final static public byte MENU_COMMON = 75;
-    final static public byte MENU_COMMON_ITEM = 76;
-    final static public byte MENU_COMMON_CONFIRM = 77;
-    final static public byte MENU_BOTTON_YES = 78;
-    final static public byte MENU_BOTTON_NO = 79;
-    final static public byte MENU_BOTTON_MENU = 80;
-    final static public byte MENU_TEST = 81;
-    final static public byte MENU_TEST_2 = 82;
-    final static public byte OBJ_PANEL_TOP_TEST = 83;
+    final static public byte OBJ_LABEL_PLAYER_INFO = 43;
+    final static public byte OBJ_BUT_LATER = 44;
+    final static public byte OBJ_BUT_PREVISION = 45;
+    final static public byte OBJ_BUT_BACK = 46;
+    final static public byte OBJ_BUT_RADIO = 47;
+    final static public byte OBJ_BUT = 57;
+    final static public byte OBJ_BUT_SELECT = 58;
+    final static public byte OBJ_BUT_BATTLE = 60;
+    final static public byte OBJ_BUT_KICK = 62;
+    final static public byte OBJ_BUT_PLAYER_INFO = 67;
+    final static public byte OBJ_BUT_WIEW = 69;
+    final static public byte OBJ_CHECKBOX = 71;
+    final static public byte OBJ_CHECKBOX_STRING = 72;
+    final static public byte OBJ_BUT_PLUS = 73;
+    final static public byte OBJ_SPINBOX = 75;
+    final static public byte OBJ_HINT = 76;
+    final static public byte MENU_COMMON = 77;
+    final static public byte MENU_COMMON_ITEM = 78;
+    final static public byte MENU_COMMON_CONFIRM = 79;
+    final static public byte MENU_BOTTON_YES = 80;
+    final static public byte MENU_BOTTON_NO = 81;
+    final static public byte MENU_BOTTON_MENU = 82;
+    final static public byte MENU_TEST = 83;
+    final static public byte MENU_TEST_2 = 84;
+    final static public byte OBJ_PANEL_TOP_TEST = 85;
 //Location
 //Map
 //PColor
@@ -471,18 +472,18 @@ public class Graph {
     static public int getCOLOR(int i){return COLOR[i];};
 
 //Links
-    final static public byte Frame_I_ID = 0;//1596
-    final static public byte Frame_I_TYPE = 1;//1596
-    final static public byte Sprite_index_I_TYPE = 2;//1116
+    final static public byte Frame_I_ID = 0;//1602
+    final static public byte Frame_I_TYPE = 1;//1602
+    final static public byte Sprite_index_I_TYPE = 2;//1125
     final static public byte Animation_index_I_TYPE = 3;//1
     final static public byte Unit_index_I_TYPE = 4;//6455
     final static public byte Unit_index_I_H = 5;//6455
     final static public byte Unit_script_index_I_TYPE = 6;//1446
-    final static public byte Object_index_I_W = 7;//451
-    final static public byte Object_index_I_H = 8;//451
-    final static public byte Object_index_I_TYPE = 9;//451
-    final static public byte Object_index_I_LAYER_TYPE = 10;//451
-    final static public byte Object_index_I_SLOT = 11;//451
+    final static public byte Object_index_I_W = 7;//458
+    final static public byte Object_index_I_H = 8;//458
+    final static public byte Object_index_I_TYPE = 9;//458
+    final static public byte Object_index_I_LAYER_TYPE = 10;//458
+    final static public byte Object_index_I_SLOT = 11;//458
     final static public byte Emitter_index_I_W = 12;//0
     final static public byte Emitter_index_I_H = 13;//0
     final static public byte Emitter_index_I_TYPE = 14;//0
@@ -494,15 +495,15 @@ public class Graph {
     final static public byte Affine_I_AF_VM = 20;//171
     final static public byte PARAM_BYTE_COUNT = 21;
 
-    final static public byte Frame_I_X = 21;//1596
-    final static public byte Frame_I_Y = 22;//1596
-    final static public byte Frame_I_W = 23;//1596
-    final static public byte Frame_I_H = 24;//1596
-    final static public byte Sprite_I_X = 25;//297
-    final static public byte Sprite_I_Y = 26;//297
-    final static public byte Sprite_index_I_ID = 27;//1116
-    final static public byte Sprite_index_I_X = 28;//1116
-    final static public byte Sprite_index_I_Y = 29;//1116
+    final static public byte Frame_I_X = 21;//1602
+    final static public byte Frame_I_Y = 22;//1602
+    final static public byte Frame_I_W = 23;//1602
+    final static public byte Frame_I_H = 24;//1602
+    final static public byte Sprite_I_X = 25;//302
+    final static public byte Sprite_I_Y = 26;//302
+    final static public byte Sprite_index_I_ID = 27;//1125
+    final static public byte Sprite_index_I_X = 28;//1125
+    final static public byte Sprite_index_I_Y = 29;//1125
     final static public byte Animation_I_X = 30;//1
     final static public byte Animation_I_Y = 31;//1
     final static public byte Animation_index_I_ID = 32;//1
@@ -518,11 +519,11 @@ public class Graph {
     final static public byte Unit_script_index_I_ID = 42;//1446
     final static public byte Unit_script_index_I_X = 43;//1446
     final static public byte Unit_script_index_I_Y = 44;//1446
-    final static public byte Object_I_X = 45;//84
-    final static public byte Object_I_Y = 46;//84
-    final static public byte Object_index_I_ID = 47;//451
-    final static public byte Object_index_I_X = 48;//451
-    final static public byte Object_index_I_Y = 49;//451
+    final static public byte Object_I_X = 45;//86
+    final static public byte Object_I_Y = 46;//86
+    final static public byte Object_index_I_ID = 47;//458
+    final static public byte Object_index_I_X = 48;//458
+    final static public byte Object_index_I_Y = 49;//458
     final static public byte Emitter_I_X = 50;//0
     final static public byte Emitter_I_Y = 51;//0
     final static public byte Emitter_index_I_ID = 52;//0
