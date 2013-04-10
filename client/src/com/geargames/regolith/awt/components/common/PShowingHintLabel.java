@@ -1,8 +1,8 @@
 package com.geargames.regolith.awt.components.common;
 
 import com.geargames.awt.TextHint;
-import com.geargames.common.Event;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 
 /**
  * User: abarakov
@@ -24,15 +24,19 @@ public class PShowingHintLabel extends PTouchLabel {
     }
 
     public void onClick() {
-
-    }
-
-    @Override
-    public boolean onEvent(int code, int param, int x, int y) {
-        if (code == Event.EVENT_TOUCH_PRESSED && hint != null && hint.length() > 0) {
-            TextHint.show(hint, x, y);
+        if (hint != null && hint.length() > 0) {
+            PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+            TextHint.show(hint, panelManager.getEventX(), panelManager.getEventY());
         }
-        return super.onEvent(code, param, x, y);
     }
+
+//    @Override
+//    public boolean onEvent(int code, int param, int x, int y) {
+//        if (code == Event.EVENT_TOUCH_PRESSED && hint != null && hint.length() > 0) {
+//            PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+//            TextHint.show(hint, panelManager.getEventX(), panelManager.getEventY());
+//        }
+//        return super.onEvent(code, param, x, y);
+//    }
 
 }

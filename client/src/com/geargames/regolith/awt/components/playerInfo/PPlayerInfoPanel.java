@@ -57,7 +57,7 @@ public class PPlayerInfoPanel extends PRootContentPanel {
                 labelPlayerName.setText("EMPTY");
                 labelPlayerName.setFont(PFontCollection.getFontLabel());
                 labelPlayerName.setHint(LocalizedStrings.PLAYER_INFO_HINT_PLAYER_NAME);
-                addPassiveChild(labelPlayerName, index);
+                addActiveChild(labelPlayerName, index);
                 break;
             }
             case 3: {
@@ -66,7 +66,7 @@ public class PPlayerInfoPanel extends PRootContentPanel {
                 labelPlayerLevel.setText("EMPTY");
                 labelPlayerLevel.setFont(PFontCollection.getFontLabel());
                 labelPlayerLevel.setHint(LocalizedStrings.PLAYER_INFO_HINT_PLAYER_LEVEL);
-                addPassiveChild(labelPlayerLevel, index);
+                addActiveChild(labelPlayerLevel, index);
                 break;
             }
             case 4: {
@@ -75,7 +75,7 @@ public class PPlayerInfoPanel extends PRootContentPanel {
                 labelPlayerScore.setText("EMPTY");
                 labelPlayerScore.setFont(PFontCollection.getFontLabel());
                 labelPlayerScore.setHint(LocalizedStrings.PLAYER_INFO_HINT_PLAYER_SCORE);
-                addPassiveChild(labelPlayerScore, index);
+                addActiveChild(labelPlayerScore, index);
                 break;
             }
             case 5: {
@@ -84,7 +84,7 @@ public class PPlayerInfoPanel extends PRootContentPanel {
                 labelPlayerWins.setText("EMPTY");
                 labelPlayerWins.setFont(PFontCollection.getFontLabel());
                 labelPlayerWins.setHint(LocalizedStrings.PLAYER_INFO_HINT_PLAYER_WINS);
-                addPassiveChild(labelPlayerWins, index);
+                addActiveChild(labelPlayerWins, index);
                 break;
             }
             case 6: {
@@ -93,7 +93,7 @@ public class PPlayerInfoPanel extends PRootContentPanel {
                 labelPlayerLosses.setText("EMPTY");
                 labelPlayerLosses.setFont(PFontCollection.getFontLabel());
                 labelPlayerLosses.setHint(LocalizedStrings.PLAYER_INFO_HINT_PLAYER_LOSSES);
-                addPassiveChild(labelPlayerLosses, index);
+                addActiveChild(labelPlayerLosses, index);
                 break;
             }
             case 7: {
@@ -102,7 +102,7 @@ public class PPlayerInfoPanel extends PRootContentPanel {
                 labelPlayerClan.setText("EMPTY");
                 labelPlayerClan.setFont(PFontCollection.getFontLabel());
                 labelPlayerClan.setHint(LocalizedStrings.PLAYER_INFO_HINT_PLAYER_CLAN);
-                addPassiveChild(labelPlayerClan, index);
+                addActiveChild(labelPlayerClan, index);
                 break;
             }
             case 8: {
