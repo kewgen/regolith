@@ -13,7 +13,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/c3p0-0.9.1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/server/c3p0-0.9.1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

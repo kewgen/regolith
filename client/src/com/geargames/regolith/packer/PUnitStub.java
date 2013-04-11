@@ -14,5 +14,6 @@ public class PUnitStub extends PUnit {
     }
 
     public void draw(Graphics graphics, int x, int y, Object unit) {
+        draw(graphics, x, y);
     }
 }

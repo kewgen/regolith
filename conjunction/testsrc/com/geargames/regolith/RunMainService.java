@@ -9,19 +9,8 @@ import com.geargames.regolith.service.MainServiceManager;
  */
 public class RunMainService {
 
-    public static void main(String[] args) {
-        try {
-            /*SimpleService service = */MainServiceManager.runMainService();
-            System.out.println("Server was started");
-            // Вечный цикл
-            while (true) {
-                Thread.sleep(50);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-//        } finally {
-//            service.stopService();
-        }
+    public static void main(String[] args) throws Exception {
+        MainServiceManager.runMainService();
     }
 
 }
