@@ -30,7 +30,7 @@
     <property name="main.server.lib" value="mainserver.jar"/>
     <property name="battle.server.lib" value="battleserver.jar"/>
     <property name="conjunction.lib" value="conjunction.jar"/>
-    <property name="server.lib"  value="server.jar"/>
+    <property name="server.lib" value="server.jar"/>
 
     <target name="clean">
         <delete dir="${build}"/>
@@ -73,7 +73,8 @@
         <delete dir="${gg.modules.dir}/gg.common"/>
         <mkdir dir="${gg.modules.dir}/gg.common"/>
 
-        <javac srcdir="${gg.common.dir}/" destdir="${gg.modules.dir}/gg.common" includeantruntime="false" debug="true" encoding="UTF-8"/>
+        <javac srcdir="${gg.common.dir}/" destdir="${gg.modules.dir}/gg.common" includeantruntime="false" debug="true"
+               encoding="UTF-8"/>
 
         <jar basedir="${gg.modules.dir}/gg.common" destfile="${release}/${gg.common.lib}"/>
     </target>
@@ -113,8 +114,9 @@
             </fileset>
         </path>
 
-        <javac srcdir="${common.dir}/src" destdir="${build}/common" includeantruntime="false" debug="true" encoding="UTF-8">
-            <classpath refid="classpath.common" />
+        <javac srcdir="${common.dir}/src" destdir="${build}/common" includeantruntime="false" debug="true"
+               encoding="UTF-8">
+            <classpath refid="classpath.common"/>
         </javac>
         <javac srcdir="${common.dir}/testsrc" destdir="${build}/common" includeantruntime="false" debug="true">
             <classpath refid="classpath.common"/>
@@ -150,13 +152,15 @@
 
         <echo message="Compiling client src..."/>
 
-        <javac srcdir="${client.dir}/src" destdir="${build}/client" includeantruntime="false" debug="true" encoding="UTF-8">
+        <javac srcdir="${client.dir}/src" destdir="${build}/client" includeantruntime="false" debug="true"
+               encoding="UTF-8">
             <classpath refid="classpath.client"/>
         </javac>
 
         <echo message="Compiling client testsrc..."/>
 
-        <javac srcdir="${client.dir}/testsrc" destdir="${build}/client" includeantruntime="false" debug="true" encoding="UTF-8">
+        <javac srcdir="${client.dir}/testsrc" destdir="${build}/client" includeantruntime="false" debug="true"
+               encoding="UTF-8">
             <classpath refid="classpath.client"/>
         </javac>
 
@@ -207,10 +211,12 @@
             </fileset>
         </path>
 
-        <javac srcdir="${server.dir}/src" destdir="${build}/server" includeantruntime="false" debug="true" encoding="UTF-8">
+        <javac srcdir="${server.dir}/src" destdir="${build}/server" includeantruntime="false" debug="true"
+               encoding="UTF-8">
             <classpath refid="classpath.server"/>
         </javac>
-        <javac srcdir="${server.dir}/testsrc" destdir="${build}/server" includeantruntime="false" debug="true" encoding="UTF-8">
+        <javac srcdir="${server.dir}/testsrc" destdir="${build}/server" includeantruntime="false" debug="true"
+               encoding="UTF-8">
             <classpath refid="classpath.server"/>
         </javac>
 
@@ -256,10 +262,12 @@
             </fileset>
         </path>
 
-        <javac srcdir="${server.main.dir}/src" destdir="${build}/server.main" includeantruntime="false" debug="true" encoding="UTF-8">
+        <javac srcdir="${server.main.dir}/src" destdir="${build}/server.main" includeantruntime="false" debug="true"
+               encoding="UTF-8">
             <classpath refid="classpath.server.main"/>
         </javac>
-        <javac srcdir="${server.main.dir}/testsrc" destdir="${build}/server.main" includeantruntime="false" debug="true" encoding="UTF-8">
+        <javac srcdir="${server.main.dir}/testsrc" destdir="${build}/server.main" includeantruntime="false" debug="true"
+               encoding="UTF-8">
             <classpath refid="classpath.server.main"/>
         </javac>
         <copy todir="${build}/server.main">
@@ -297,7 +305,8 @@
             </fileset>
         </path>
 
-        <javac srcdir="${server.battle.dir}/src" destdir="${build}/server.battle" includeantruntime="false" debug="true" encoding="UTF-8">
+        <javac srcdir="${server.battle.dir}/src" destdir="${build}/server.battle" includeantruntime="false" debug="true"
+               encoding="UTF-8">
             <classpath refid="classpath.server.battle"/>
         </javac>
 
@@ -312,7 +321,10 @@
         <jar basedir="${build}/server.battle" destfile="${release}/${battle.server.lib}"/>
     </target>
 
-    <target name="conjunction" depends="client,server.main,server.battle">
+    <!--
+    Таска создаёт библиотеку необходимую для тестирования клиент-серверного приложения на одной машине.
+    -->
+    <target name="conjunction" depends="clean,client,server.main,server.battle">
         <delete dir="${build}/conjunction"/>
         <mkdir dir="${build}/conjunction"/>
 
@@ -340,9 +352,41 @@
             </fileset>
         </path>
 
-        <javac srcdir="${conjunction.dir}/testsrc" destdir="${build}/conjunction" includeantruntime="false" debug="true" encoding="UTF-8">
+        <javac srcdir="${conjunction.dir}/testsrc" destdir="${build}/conjunction" includeantruntime="false" debug="true"
+               encoding="UTF-8">
             <classpath refid="classpath.conjunction"/>
         </javac>
+
+        <jar basedir="${build}/conjunction" destfile="${release}/conjunction.jar"/>
+    </target>
+
+    <!--
+    Запускаем эту таску чтоб почистить БД от мусора(проставить туда данные по-умолчанию).
+    -->
+    <target name="db.init">
+        <path id="classpath.conjunction">
+            <fileset dir="${lib}">
+                <patternset>
+                    <include name="*.jar"/>
+                </patternset>
+            </fileset>
+            <fileset dir="${lib}/server">
+                <patternset>
+                    <include name="**/*.jar"/>
+                </patternset>
+            </fileset>
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="${gg.common.lib}"/>
+                    <include name="${common.lib}"/>
+                    <include name="${server.lib}"/>
+                    <include name="${main.server.lib}"/>
+                    <include name="${gg.awt.console.lib}"/>
+                    <include name="${gg.console.lib}"/>
+                    <include name="${client.lib}"/>
+                </patternset>
+            </fileset>
+        </path>
 
         <delete dir="${report.dir}"/>
         <mkdir dir="${report.dir}"/>
@@ -352,11 +396,15 @@
             <formatter type="plain" usefile="false"/>
             <test name="com.geargames.regolith.ServerDBTest" haltonfailure="no" outfile="${report.dir}/result"/>
         </junit>
-        <jar basedir="${build}/conjunction" destfile="${release}/conjunction.jar"/>
     </target>
 
-    <target name="test.task" depends="conjunction">
-
+    <!--
+        Запускаем эту такску если хотим проверить как работает приложение.
+        0.запускает сервер
+        1.ждёт 30 секунд
+        2.запускает клиента (он берёт с сервера конфигурацию и рисует что есть)
+    -->
+    <target name="designer.task">
         <path id="classpath.test">
             <fileset dir="${lib}">
                 <patternset>
@@ -381,13 +429,18 @@
                 </patternset>
             </fileset>
         </path>
-        <java classname="com.geargames.regolith.RunMainService" fork="true">
-            <classpath refid="classpath.test"/>
-        </java>
-        <sleep seconds="20"/>
-        <java classname="com.geargames.regolith.MenuTest" fork="true">
-            <classpath refid="classpath.test"/>
-        </java>
+        <parallel>
+            <sequential>
+                <java classname="com.geargames.regolith.RunMainService" fork="true">
+                    <classpath refid="classpath.test"/>
+                </java>
+            </sequential>
+            <sequential>
+                <sleep seconds="30"/>
+                <java classname="com.geargames.regolith.MenuTest" fork="true">
+                    <classpath refid="classpath.test"/>
+                </java>
+            </sequential>
+        </parallel>
     </target>
-
 </project>
