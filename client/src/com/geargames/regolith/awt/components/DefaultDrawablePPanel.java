@@ -43,7 +43,7 @@ public abstract class DefaultDrawablePPanel extends DrawablePPanel {
             int yLocal = yTouch - getY() + region.getMinY();
             if (!region.isWithIn(xLocal, yLocal)) {
                 PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-                panelManager.hideModal(); //todo: hide(this);
+                panelManager.hide(this);
                 return true;
             }
         }

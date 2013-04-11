@@ -221,7 +221,7 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
 //        panelManager.hide(panelManager.getSelectWarriorsWindow());
 //        panelManager.show(panelManager.getMainMenu());
-        panelManager.getBattlesPanel().showPanel(battleGroup.getAlliance().getBattle(), panelManager.getSelectWarriorsWindow(), true);
+        panelManager.getBattlesPanel().showPanel(battleGroup.getAlliance().getBattle(), panelManager.getSelectWarriorsWindow());
     }
 
 }

@@ -191,18 +191,14 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
      * @param callerPanel    - панелька, из которой перешли на данную панельку
      */
     // activatePanel
-    public void showPanel(Battle listenedBattle, DrawablePPanel callerPanel, boolean isModalCallerPanel) {
+    public void showPanel(Battle listenedBattle, DrawablePPanel callerPanel) {
         Debug.debug("Dialog 'Battles'");
         ClientConfigurationFactory.getConfiguration().setBattle(listenedBattle);
         battleList.updateList();
         ScrollHelper.adjustVerticalInertMotionListener((ElasticInertMotionListener)battleList.getMotionListener(), battleList);
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        if (isModalCallerPanel) {
-            panelManager.hideModal();
-        } else {
-            panelManager.hide(callerPanel);
-        }
+        panelManager.hide(callerPanel);
         panelManager.show(panelManager.getBattlesWindow());
     }
 
