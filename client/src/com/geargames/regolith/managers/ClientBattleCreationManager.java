@@ -49,9 +49,8 @@ public class ClientBattleCreationManager {
 
     /**
      * Послать сообщение-запрос о начале битвы.
-     * @param author ссылка на аккаунт пользователя - инициатора начала битвы.
      */
-    public ClientStartBattleAnswer startBattle(Account author) throws Exception{
+    public ClientStartBattleAnswer startBattle() throws Exception{
         configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), startBattleAnswer, 100);
         return startBattleAnswer;
     }

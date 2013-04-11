@@ -23,6 +23,8 @@ public class PPlayerButton extends PTouchButton {
 //    private int number;
     private PPrototypeElement flag;
     private PSimpleLabel titleLabel;
+    private PSimpleLabel labelIsReady;
+    private boolean isReady;
     private boolean initiated;
 
     public PPlayerButton(PObject prototype) {
@@ -38,6 +40,13 @@ public class PPlayerButton extends PTouchButton {
         flag = new PPrototypeElement();
         flag.setX(index.getX());
         flag.setY(index.getY());
+
+        isReady = false;
+        labelIsReady = new PSimpleLabel(); //todo: для этого лейбла должен быть свой пакерный объект
+        labelIsReady.setAnchor((byte)Graphics.RIGHT);
+        labelIsReady.setText("Ready");
+        labelIsReady.setX(55);
+        labelIsReady.setY(44);
     }
 
     @Override
@@ -54,6 +63,9 @@ public class PPlayerButton extends PTouchButton {
         }
         titleLabel.draw(graphics, x + titleLabel.getX(), y + titleLabel.getY());
         flag.draw(graphics, x + flag.getX(), y + flag.getY());
+        if (isReady) {
+            labelIsReady.draw(graphics, x + labelIsReady.getX(), y + labelIsReady.getY());
+        }
     }
 
     protected void initiate(Render render) {
@@ -62,6 +74,7 @@ public class PPlayerButton extends PTouchButton {
             titleLabel.setText(account.getName());
         } else {
             titleLabel.setText("ПУСТО");
+            isReady = false;
         }
         flag.setPrototype(render.getSprite(Graph.SPR_TEAM_COLOR + battleGroup.getAlliance().getNumber()));
         initiated = true;
@@ -74,6 +87,14 @@ public class PPlayerButton extends PTouchButton {
     public void setBattleGroup(BattleGroup battleGroup) {
         this.battleGroup = battleGroup;
         initiated = false;
+    }
+
+    public boolean getIsReady() {
+        return isReady;
+    }
+
+    public void setIsReady(boolean isReady) {
+        this.isReady = isReady;
     }
 
 //    /**

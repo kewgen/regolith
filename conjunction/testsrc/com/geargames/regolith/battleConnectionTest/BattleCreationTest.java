@@ -430,7 +430,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #7j ==============================");
         System.out.println("Trying to fake start a battle (by Author)...");
-        ClientStartBattleAnswer startBattleAnswer = battleCreationManager.startBattle(selfAccount);
+        ClientStartBattleAnswer startBattleAnswer = battleCreationManager.startBattle();
         Assert.assertFalse("The client should not start the battle", startBattleAnswer.isSuccess());
         Manager.pause(800);
         ClientTestHelper.checkAsyncMessages();
@@ -450,7 +450,7 @@ public class BattleCreationTest {
 
         System.out.println("========== scenario: #7p ==============================");
         System.out.println("Trying to start a battle (by Author)...");
-        startBattleAnswer = battleCreationManager.startBattle(selfAccount);
+        startBattleAnswer = battleCreationManager.startBattle();
         Assert.assertTrue("The client can not start the battle", startBattleAnswer.isSuccess());
         Assert.assertNotNull("Battle can not be null", startBattleAnswer.getBattle());
         Assert.assertTrue("Different ID of the client accounts", selfAccount.getId() == startBattleAnswer.getBattle().getAuthor().getId());

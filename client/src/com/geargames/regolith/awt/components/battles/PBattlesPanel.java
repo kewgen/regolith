@@ -147,6 +147,12 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().unregister(this);
     }
 
+    private void doChangedListenedBattle(Battle battle) {
+        ClientConfigurationFactory.getConfiguration().setBattle(battle);
+//        battleCreateButton.setVisible(true);
+        battleList.updateList();
+    }
+
     @Override
     public void onShow() {
         Debug.debug("Dialog 'Battles': onShow");
@@ -295,7 +301,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                         if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
                             return;
                         }
-//                        disbandGroup(myBattleGroup);
+//                        disbandBattleGroup(myBattleGroup);
                     }
                 } else {
                     // Я щелкнул по иконке боевой группы чужой битвы, при этом у меня есть своя созданная битва => нужно заканселить свою битву
@@ -322,7 +328,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
                         return;
                     }
-//                    disbandGroup(myBattleGroup);
+//                    disbandBattleGroup(myBattleGroup);
                 } else {
                     // Я собираюсь вступить в боевую группу другой битвы
                     boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
@@ -346,6 +352,10 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         }
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.getSelectWarriorsPanel().showPanel(battleGroup);
+    }
+
+    public void onStartBattleButtonClick() {
+        RequestHelper.startBattle(this);
     }
 
 }

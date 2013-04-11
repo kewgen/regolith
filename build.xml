@@ -391,7 +391,7 @@
         <delete dir="${report.dir}"/>
         <mkdir dir="${report.dir}"/>
 
-        <junit printsummary="yes" haltonfailure="yes" maxmemory="512m">
+        <junit printsummary="yes" haltonfailure="yes" fork="true">
             <classpath refid="classpath.conjunction"/>
             <formatter type="plain" usefile="false"/>
             <test name="com.geargames.regolith.ServerDBTest" haltonfailure="no" outfile="${report.dir}/result"/>
