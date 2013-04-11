@@ -1,8 +1,8 @@
 package com.geargames.regolith.awt.components.warrior;
 
-import com.geargames.awt.DrawablePPanel;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.util.ArrayList;
+import com.geargames.regolith.awt.components.DefaultDrawablePPanel;
 import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 
@@ -11,7 +11,7 @@ import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
  * Date: 25.12.12
  * Time: 23:43
  */
-public class WarriorDrawablePPanel extends DrawablePPanel {
+public class WarriorDrawablePPanel extends DefaultDrawablePPanel {
 
     @Override
     public void onShow() {

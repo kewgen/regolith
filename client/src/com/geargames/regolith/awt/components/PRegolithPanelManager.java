@@ -31,36 +31,36 @@ import com.geargames.regolith.units.map.verifier.CubeBorderCorrector;
 public class PRegolithPanelManager extends PPanelManager {
     private static PRegolithPanelManager instance;
 
-    private DrawablePPanel left;
-    private DrawablePPanel headline;
-    private DrawablePPanel right;
+    private DefaultDrawablePPanel left;
+    private DefaultDrawablePPanel headline;
+    private DefaultDrawablePPanel right;
 
-    private DrawablePPanel weaponFromStoreHouse;
-    private DrawablePPanel projectileFromStoreHouse;
-    private DrawablePPanel armorFromStoreHouse;
-    private DrawablePPanel medikitFromStoreHouse;
+    private DefaultDrawablePPanel weaponFromStoreHouse;
+    private DefaultDrawablePPanel projectileFromStoreHouse;
+    private DefaultDrawablePPanel armorFromStoreHouse;
+    private DefaultDrawablePPanel medikitFromStoreHouse;
 
-    private DrawablePPanel armorFromWarrior;
-    private DrawablePPanel weaponFromWarrior;
+    private DefaultDrawablePPanel armorFromWarrior;
+    private DefaultDrawablePPanel weaponFromWarrior;
 
-    private DrawablePPanel armorFromBag;
-    private DrawablePPanel projectileFromBag;
-    private DrawablePPanel weaponFromBag;
-    private DrawablePPanel medikitFromBag;
+    private DefaultDrawablePPanel armorFromBag;
+    private DefaultDrawablePPanel projectileFromBag;
+    private DefaultDrawablePPanel weaponFromBag;
+    private DefaultDrawablePPanel medikitFromBag;
 
-    private DrawablePPanel warrior;
-    private DrawablePPanel mainMenu;
+    private DefaultDrawablePPanel warrior;
+    private DefaultDrawablePPanel mainMenu;
 
-    private DrawablePPanel battlesWindow;
-    private DrawablePPanel battleCreateWindow;
-    private DrawablePPanel selectMapWindow;
-    private DrawablePPanel selectWarriorsWindow;
-    private DrawablePPanel playerInfoWindow;
+    private DefaultDrawablePPanel battlesWindow;
+    private DefaultDrawablePPanel battleCreateWindow;
+    private DefaultDrawablePPanel selectMapWindow;
+    private DefaultDrawablePPanel selectWarriorsWindow;
+    private DefaultDrawablePPanel playerInfoWindow;
 
     private MainScreen mainScreen;
     private BattleScreen battleScreen;
 
-    private DrawablePPanel fontTestWindow;
+    private DefaultDrawablePPanel fontTestWindow;
 
     private PRegolithPanelManager() {
     }
@@ -100,52 +100,52 @@ public class PRegolithPanelManager extends PPanelManager {
 
         PObject panelWeaponSelect = render.getObject(Graph.PAN_WEAPON_SELECT);
         PWeaponFromStoreHousePanel weaponFromStoreHousePanel = new PWeaponFromStoreHousePanel(panelWeaponSelect);
-        weaponFromStoreHouse = new DefaultDrawablePPanel();
+        weaponFromStoreHouse = new MiddleDrawablePPanel();
         weaponFromStoreHousePanel.setVisible(true);
         weaponFromStoreHouse.setElement(weaponFromStoreHousePanel);
 
         PProjectileFromStoreHousePanel projectileFromStoreHousePanel = new PProjectileFromStoreHousePanel(panelWeaponSelect);
-        projectileFromStoreHouse = new DefaultDrawablePPanel();
+        projectileFromStoreHouse = new MiddleDrawablePPanel();
         projectileFromStoreHousePanel.setVisible(true);
         projectileFromStoreHouse.setElement(projectileFromStoreHousePanel);
 
         PArmorFromStoreHousePanel armorFromStoreHousePanel = new PArmorFromStoreHousePanel(panelWeaponSelect);
-        armorFromStoreHouse = new DefaultDrawablePPanel();
+        armorFromStoreHouse = new MiddleDrawablePPanel();
         armorFromStoreHousePanel.setVisible(true);
         armorFromStoreHouse.setElement(armorFromStoreHousePanel);
 
         PMedikitFromStoreHousePanel medikitFromStoreHousePanel = new PMedikitFromStoreHousePanel(panelWeaponSelect);
-        medikitFromStoreHouse = new DefaultDrawablePPanel();
+        medikitFromStoreHouse = new MiddleDrawablePPanel();
         medikitFromStoreHousePanel.setVisible(true);
         medikitFromStoreHouse.setElement(medikitFromStoreHousePanel);
 
         PArmorFromWarriorPanel armorFromWarriorPanel = new PArmorFromWarriorPanel(panelWeaponSelect);
-        armorFromWarrior = new DefaultDrawablePPanel();
+        armorFromWarrior = new MiddleDrawablePPanel();
         armorFromWarriorPanel.setVisible(true);
         armorFromWarrior.setElement(armorFromWarriorPanel);
 
         PWeaponFromWarriorPanel weaponFromWarriorPanel = new PWeaponFromWarriorPanel(panelWeaponSelect);
-        weaponFromWarrior = new DefaultDrawablePPanel();
+        weaponFromWarrior = new MiddleDrawablePPanel();
         weaponFromWarriorPanel.setVisible(true);
         weaponFromWarrior.setElement(weaponFromWarriorPanel);
 
         PArmorFromBagPanel armorFromBagPanel = new PArmorFromBagPanel(panelWeaponSelect);
-        armorFromBag = new DefaultDrawablePPanel();
+        armorFromBag = new MiddleDrawablePPanel();
         armorFromBagPanel.setVisible(true);
         armorFromBag.setElement(armorFromBagPanel);
 
         PProjectileFromBagPanel projectileFromBagPanel = new PProjectileFromBagPanel(panelWeaponSelect);
-        projectileFromBag = new DefaultDrawablePPanel();
+        projectileFromBag = new MiddleDrawablePPanel();
         projectileFromBagPanel.setVisible(true);
         projectileFromBag.setElement(projectileFromBagPanel);
 
         PWeaponFromBagPanel weaponFromBagPanel = new PWeaponFromBagPanel(panelWeaponSelect);
-        weaponFromBag = new DefaultDrawablePPanel();
+        weaponFromBag = new MiddleDrawablePPanel();
         weaponFromBagPanel.setVisible(true);
         weaponFromBag.setElement(weaponFromBagPanel);
 
         PMedikitFromBagPanel medikitFromBagPanel = new PMedikitFromBagPanel(panelWeaponSelect);
-        medikitFromBag = new DefaultDrawablePPanel();
+        medikitFromBag = new MiddleDrawablePPanel();
         medikitFromBagPanel.setVisible(true);
         medikitFromBag.setElement(medikitFromBagPanel);
 
@@ -155,37 +155,38 @@ public class PRegolithPanelManager extends PPanelManager {
         warrior.setElement(warriorPanel);
 
         PMainMenuPanel mainMenuPanel = new PMainMenuPanel(render.getObject(Graph.PAN_MAIN_MENU));
-        mainMenu = new DefaultDrawablePPanel();
+        mainMenu = new MiddleDrawablePPanel();
         mainMenu.setAnchor(Anchors.CENTER_ANCHOR);
         mainMenu.setElement(mainMenuPanel);
 
         PBattlesPanel battlesPanel = new PBattlesPanel(render.getObject(Graph.PAN_BATTLE_LIST));
-        battlesWindow = new DefaultDrawablePPanel();
+        battlesWindow = new MiddleDrawablePPanel();
         battlesWindow.setAnchor(Anchors.CENTER_ANCHOR);
         battlesWindow.setElement(battlesPanel);
 
         PBattleCreatePanel battleCreatePanel = new PBattleCreatePanel(render.getObject(Graph.PAN_BATTLE_CREATE));
-        battleCreateWindow = new DefaultDrawablePPanel();
+        battleCreateWindow = new MiddleDrawablePPanel();
         battleCreateWindow.setAnchor(Anchors.CENTER_ANCHOR);
         battleCreateWindow.setElement(battleCreatePanel);
 
         PSelectMapPanel selectMapPanel = new PSelectMapPanel(render.getObject(Graph.PAN_MAP_SELECT));
-        selectMapWindow = new DefaultDrawablePPanel();
+        selectMapWindow = new MiddleDrawablePPanel();
         selectMapWindow.setAnchor(Anchors.CENTER_ANCHOR);
         selectMapWindow.setElement(selectMapPanel);
 
         PSelectWarriorsPanel selectWarriorsPanel = new PSelectWarriorsPanel(render.getObject(Graph.PAN_FIGHTER_SELECT));
-        selectWarriorsWindow = new DefaultDrawablePPanel();
+        selectWarriorsWindow = new MiddleDrawablePPanel();
         selectWarriorsWindow.setAnchor(Anchors.CENTER_ANCHOR);
         selectWarriorsWindow.setElement(selectWarriorsPanel);
 
         PPlayerInfoPanel playerInfoPanel = new PPlayerInfoPanel(render.getObject(Graph.PAN_PLAYER_INFO));
-        playerInfoWindow = new DefaultDrawablePPanel();
+        playerInfoWindow = new MiddleDrawablePPanel();
+        playerInfoWindow.setModalAutoClose(true);
         playerInfoWindow.setAnchor(Anchors.CENTER_ANCHOR);
         playerInfoWindow.setElement(playerInfoPanel);
 
         PFontTestPanel fontTest = new PFontTestPanel(render.getObject(Graph.PAN_BATTLE_CREATE));
-        fontTestWindow = new DefaultDrawablePPanel();
+        fontTestWindow = new MiddleDrawablePPanel();
         fontTestWindow.setAnchor(Anchors.CENTER_ANCHOR);
         fontTestWindow.setElement(fontTest);
     }
