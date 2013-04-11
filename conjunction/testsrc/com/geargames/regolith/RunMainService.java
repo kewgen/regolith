@@ -1,7 +1,6 @@
 package com.geargames.regolith;
 
 import com.geargames.regolith.service.MainServiceManager;
-//import com.geargames.regolith.service.SimpleService;
 
 /**
  * User: abarakov
@@ -11,6 +10,7 @@ public class RunMainService {
 
     public static void main(String[] args) throws Exception {
         MainServiceManager.runMainService();
+        System.out.println("Main service was started");
     }
 
 }

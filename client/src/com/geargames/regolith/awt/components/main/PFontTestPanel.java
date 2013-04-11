@@ -113,7 +113,7 @@ public class PFontTestPanel extends PRootContentPanel {
 //            "abcdefghigklmnopqrstuvwxyz",
 //            "{|}~",
 
-            " !\"#$%&'()*+,-./0123456789:<=>?@ABCDEFGHIGKLMNOPQRSTUVWXYZ",
+            " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIGKLMNOPQRSTUVWXYZ",
             "[\\]^_`abcdefghigklmnopqrstuvwxyz{|}~",
             "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя"
     };
