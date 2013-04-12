@@ -44,7 +44,7 @@ public class PBattlesButton extends PTouchButton {
     public void onClick() {
         if (goToBattleMarket()) {
             PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-            panelManager.getBattlesPanel().showPanel(null, panelManager.getMainMenu(), false);
+            panelManager.getBattlesPanel().showPanel(null, panelManager.getMainMenu());
         }
     }
 

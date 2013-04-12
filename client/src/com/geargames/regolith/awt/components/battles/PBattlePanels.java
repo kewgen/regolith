@@ -4,11 +4,10 @@ import com.geargames.awt.components.PContentPanel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.ArrayList;
+import com.geargames.common.util.HashMap;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
-
-import java.util.Hashtable;
 
 /**
  * User: mikhail v. kutuzov
@@ -30,7 +29,7 @@ public class PBattlePanels {
     private ArrayList type3x3x3;
 
     private ArrayList type4x4;
-    private Hashtable table;
+    private HashMap table;
 
     public PBattlePanels(PObject prototype, PContentPanel container) {
         type1x1 = new ArrayList();
@@ -46,7 +45,7 @@ public class PBattlePanels {
 
         type4x4 = new ArrayList();
 
-        table = new Hashtable();
+        table = new HashMap();
 
         table.put("1x1", type1x1);
         table.put("1x1x1", type1x1x1);
@@ -128,6 +127,13 @@ public class PBattlePanels {
             }
             activeAlliances = list;
             setVisibility(list, true);
+
+            for (int i = 0; i < activeAlliances.size(); i++) {
+                PPlayerPanel panel = (PPlayerPanel) activeAlliances.get(i);
+                for (int j = 0; j < battle.getBattleType().getAllianceSize(); j++) {
+                    panel.getPlayerButton(j).setIsReady(false);
+                }
+            }
         }
     }
 
@@ -164,6 +170,18 @@ public class PBattlePanels {
         for (int i = 0; i < list.size(); i++) {
             ((PPlayerPanel) list.get(i)).setVisible(visible);
         }
+    }
+
+    public boolean getIsReadyBattle() {
+        for (int i = 0; i < activeAlliances.size(); i++) {
+            PPlayerPanel panel = (PPlayerPanel) activeAlliances.get(i);
+            for (int j = 0; j < battle.getBattleType().getAllianceSize(); j++) {
+                if (!panel.getPlayerButton(j).getIsReady()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }

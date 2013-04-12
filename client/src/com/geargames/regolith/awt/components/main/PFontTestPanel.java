@@ -6,6 +6,7 @@ import com.geargames.common.env.Environment;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PFont;
 import com.geargames.common.packer.PObject;
+import com.geargames.common.util.Region;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
@@ -89,7 +90,9 @@ public class PFontTestPanel extends PRootContentPanel {
 
     @Override
     public void onShow() {
-
+        Region region = getTouchRegion();
+        region.setWidth(1000);
+        region.setHeight(1000);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class PFontTestPanel extends PRootContentPanel {
 //            "abcdefghigklmnopqrstuvwxyz",
 //            "{|}~",
 
-            " !\"#$%&'()*+,-./0123456789:<=>?@ABCDEFGHIGKLMNOPQRSTUVWXYZ",
+            " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIGKLMNOPQRSTUVWXYZ",
             "[\\]^_`abcdefghigklmnopqrstuvwxyz{|}~",
             "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя"
     };

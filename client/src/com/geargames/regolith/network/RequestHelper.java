@@ -2,14 +2,12 @@ package com.geargames.regolith.network;
 
 import com.geargames.awt.components.PObjectElement;
 import com.geargames.common.logging.Debug;
+import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.managers.ClientBattleCreationManager;
-import com.geargames.regolith.serializers.answers.ClientCancelBattleAnswer;
-import com.geargames.regolith.serializers.answers.ClientCompleteGroupAnswer;
-import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
-import com.geargames.regolith.serializers.answers.ClientEvictAccountFromAllianceAnswer;
+import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -96,7 +94,7 @@ public class RequestHelper {
         }
     }
 
-    public static boolean disbandGroup(BattleGroup battleGroup, PObjectElement element) {
+    public static boolean disbandBattleGroup(BattleGroup battleGroup, PObjectElement element) {
         ClientBattleCreationManager battleCreationManager = ClientConfigurationFactory.getConfiguration().getBattleCreationManager();
         try {
             Debug.debug("The client is trying disband the battle group (battle group id = " + battleGroup.getId() + ")...");
@@ -114,5 +112,32 @@ public class RequestHelper {
             return false;
         }
     }
+
+    /**
+     * Вспомогательная функция. Начинает битву.
+     * @return - true, если битва началась успешно.
+     */
+    public static boolean startBattle(PObjectElement element) {
+        ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
+        ClientBattleCreationManager battleCreationManager = configuration.getBattleCreationManager();
+        try {
+            Debug.debug("Trying to start the battle (battle id = " + configuration.getBattle().getId() + ")...");
+            ClientStartBattleAnswer startBattleAnswer = battleCreationManager.startBattle();
+            if (!startBattleAnswer.isSuccess()) {
+                Debug.error("StartBattle: Request rejected (battle id = " + configuration.getBattle().getId() + ")");
+                NotificationBox.error(LocalizedStrings.BATTLES_MSG_START_BATTLE_EXCEPTION, element);
+                return false;
+            }
+            Debug.debug("The client begun the battle (battle id = " + startBattleAnswer.getBattle().getId() +
+                    "; address: " + startBattleAnswer.getHost() + ":" + startBattleAnswer.getPort() + ")");
+            return true;
+        } catch (Exception e) {
+            Debug.error("StartBattle: Send request and receive answer is failed (battle id = " + configuration.getBattle().getId() + ")", e);
+            NotificationBox.error(LocalizedStrings.BATTLES_MSG_START_BATTLE_EXCEPTION, element);
+            return false;
+        }
+    }
+
+
 
 }

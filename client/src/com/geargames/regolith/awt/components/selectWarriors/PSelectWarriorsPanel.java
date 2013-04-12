@@ -14,6 +14,7 @@ import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.managers.ClientBattleCreationManager;
 import com.geargames.regolith.managers.ClientBattleMarketManager;
+import com.geargames.regolith.network.RequestHelper;
 import com.geargames.regolith.serializers.answers.ClientCompleteGroupAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinToBattleAllianceAnswer;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
@@ -135,18 +136,7 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
             }
         } else {
             // Клиент повторно хочет выбрать бойцов.
-            try {
-                Debug.debug("The client is trying disband the battle group (battle group id = " + battleGroup.getId() + ")...");
-                ClientCompleteGroupAnswer completeGroupAnswer = battleCreationManager.disbandGroup(battleGroup);
-                if (!completeGroupAnswer.isSuccess()) {
-                    Debug.error("DisbandGroup: Request rejected (battle group id = " + battleGroup.getId() + ")");
-                    NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_DISBAND_GROUP_EXCEPTION, this);
-                    return;
-                }
-                Debug.debug("The client disbanded the battle group (battle group id = " + completeGroupAnswer.getBattleGroup().getId() + ")");
-            } catch (Exception e) {
-                Debug.error("DisbandGroup: Send request and receive answer is failed (battle group id = " + battleGroup.getId() + ")", e);
-                NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_DISBAND_GROUP_EXCEPTION, this);
+            if (!RequestHelper.disbandBattleGroup(battleGroup, this)) {
                 return;
             }
         }
@@ -221,7 +211,7 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
 //        panelManager.hide(panelManager.getSelectWarriorsWindow());
 //        panelManager.show(panelManager.getMainMenu());
-        panelManager.getBattlesPanel().showPanel(battleGroup.getAlliance().getBattle(), panelManager.getSelectWarriorsWindow(), true);
+        panelManager.getBattlesPanel().showPanel(battleGroup.getAlliance().getBattle(), panelManager.getSelectWarriorsWindow());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
+import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.components.PEntitledTouchButton;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
@@ -25,7 +26,11 @@ public abstract class PExchangeButton extends PEntitledTouchButton {
 
     public void onClick() {
         doAction();
-        PRegolithPanelManager.getInstance().hideModal();
+        PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
+        DrawablePPanel modalPanel = fabric.getModalPanel();
+        if (modalPanel != null) {
+            fabric.hide(modalPanel);
+        }
     }
 
     protected abstract void doAction();
