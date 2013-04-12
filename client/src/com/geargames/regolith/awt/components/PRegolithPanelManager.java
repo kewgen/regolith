@@ -103,49 +103,59 @@ public class PRegolithPanelManager extends PPanelManager {
         weaponFromStoreHouse = new MiddleDrawablePPanel();
         weaponFromStoreHousePanel.setVisible(true);
         weaponFromStoreHouse.setElement(weaponFromStoreHousePanel);
+        weaponFromStoreHouse.setModalAutoClose(true);
 
         PProjectileFromStoreHousePanel projectileFromStoreHousePanel = new PProjectileFromStoreHousePanel(panelWeaponSelect);
         projectileFromStoreHouse = new MiddleDrawablePPanel();
         projectileFromStoreHousePanel.setVisible(true);
         projectileFromStoreHouse.setElement(projectileFromStoreHousePanel);
+        projectileFromStoreHouse.setModalAutoClose(true);
 
         PArmorFromStoreHousePanel armorFromStoreHousePanel = new PArmorFromStoreHousePanel(panelWeaponSelect);
         armorFromStoreHouse = new MiddleDrawablePPanel();
         armorFromStoreHousePanel.setVisible(true);
         armorFromStoreHouse.setElement(armorFromStoreHousePanel);
+        armorFromStoreHouse.setModalAutoClose(true);
 
         PMedikitFromStoreHousePanel medikitFromStoreHousePanel = new PMedikitFromStoreHousePanel(panelWeaponSelect);
         medikitFromStoreHouse = new MiddleDrawablePPanel();
         medikitFromStoreHousePanel.setVisible(true);
+        medikitFromStoreHouse.setModalAutoClose(true);
         medikitFromStoreHouse.setElement(medikitFromStoreHousePanel);
 
         PArmorFromWarriorPanel armorFromWarriorPanel = new PArmorFromWarriorPanel(panelWeaponSelect);
         armorFromWarrior = new MiddleDrawablePPanel();
+        armorFromWarrior.setModalAutoClose(true);
         armorFromWarriorPanel.setVisible(true);
         armorFromWarrior.setElement(armorFromWarriorPanel);
 
         PWeaponFromWarriorPanel weaponFromWarriorPanel = new PWeaponFromWarriorPanel(panelWeaponSelect);
         weaponFromWarrior = new MiddleDrawablePPanel();
+        weaponFromWarrior.setModalAutoClose(true);
         weaponFromWarriorPanel.setVisible(true);
         weaponFromWarrior.setElement(weaponFromWarriorPanel);
 
         PArmorFromBagPanel armorFromBagPanel = new PArmorFromBagPanel(panelWeaponSelect);
         armorFromBag = new MiddleDrawablePPanel();
+        armorFromBag.setModalAutoClose(true);
         armorFromBagPanel.setVisible(true);
         armorFromBag.setElement(armorFromBagPanel);
 
         PProjectileFromBagPanel projectileFromBagPanel = new PProjectileFromBagPanel(panelWeaponSelect);
         projectileFromBag = new MiddleDrawablePPanel();
+        projectileFromBag.setModalAutoClose(true);
         projectileFromBagPanel.setVisible(true);
         projectileFromBag.setElement(projectileFromBagPanel);
 
         PWeaponFromBagPanel weaponFromBagPanel = new PWeaponFromBagPanel(panelWeaponSelect);
         weaponFromBag = new MiddleDrawablePPanel();
+        weaponFromBag.setModalAutoClose(true);
         weaponFromBagPanel.setVisible(true);
         weaponFromBag.setElement(weaponFromBagPanel);
 
         PMedikitFromBagPanel medikitFromBagPanel = new PMedikitFromBagPanel(panelWeaponSelect);
         medikitFromBag = new MiddleDrawablePPanel();
+        medikitFromBag.setModalAutoClose(true);
         medikitFromBagPanel.setVisible(true);
         medikitFromBag.setElement(medikitFromBagPanel);
 
