@@ -1,1 +1,1 @@
-cmd /c ant run.client
+cmd /c ant -Dlogin.name=%1 run.client

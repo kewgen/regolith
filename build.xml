@@ -9,6 +9,7 @@
     <property name="report.dir" location="${basedir}/reports"/>
 
     <property name="deploy" value="deploy"/>
+    <property name="login.name" value=""/>
 
     <property name="gg" value="../awt"/>
     <property name="gg.console.dir" location="${gg}/console/"/>
@@ -427,7 +428,11 @@
         </java>
     </target>
 
-    <target name="run.client">
+    <target name="simple">
+        <echo message="login name = ${login.name}"></echo>
+    </target>
+
+    <target name="run.client" depends="simple">
         <path id="classpath.test">
             <fileset dir="${release.lib}">
                 <patternset>
@@ -446,6 +451,7 @@
         </path>
         <java classname="com.geargames.regolith.MenuTest" fork="true">
             <classpath refid="classpath.test"/>
+            <arg value="${login.name}"/>
         </java>
     </target>
 </project>
