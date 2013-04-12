@@ -168,9 +168,11 @@ public class PBattlePanels {
      * @param allianceNumber номер союза из которого берётся аккаунт
      * @param groupNumber номер боевой группы внутри союза из которой берётся аккаунт
      */
-    public void resetButtonAccount(int allianceNumber, int groupNumber) {
+    public void resetButtonAccount(int allianceNumber, int groupNumber, boolean isReady) {
         PPlayerPanel panel = (PPlayerPanel) activeAlliances.get(allianceNumber);
-        panel.getPlayerButton(groupNumber).setBattleGroup(battle.getAlliances()[allianceNumber].getAllies().get(groupNumber));
+        PPlayerButton playerButton = panel.getPlayerButton(groupNumber);
+        playerButton.setBattleGroup(battle.getAlliances()[allianceNumber].getAllies().get(groupNumber));
+        playerButton.setIsReady(isReady);
     }
 
 //    public Account getButtonAccount(int allianceNumber, int groupNumber){

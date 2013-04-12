@@ -60,6 +60,8 @@ public class PBattleListItem extends PContentPanel {
         labelBattleType.setText(getBattle().getName());
         labelComposition.setText(getBattle().getBattleType().getName());
 //        labelLevel.setText(getBattle().);
+
+        buttonStartBattle.setVisible(panelPlayers.getIsReadyBattle());
     }
 
 //    /**
@@ -87,10 +89,11 @@ public class PBattleListItem extends PContentPanel {
 //        panelPlayers.resetButtonAccount(allianceNumber, groupNumber);
 //    }
 
-    public void resetButtonAccount(BattleGroup battleGroup) {
+    public void resetButtonAccount(BattleGroup battleGroup, boolean isReady) {
         panelPlayers.resetButtonAccount(
                 battleGroup.getAlliance().getNumber(),
-                battleGroup.getAlliance().getAllies().indexById(battleGroup.getId()));
+                battleGroup.getAlliance().getAllies().indexById(battleGroup.getId()),
+                isReady);
     }
 
 }

@@ -87,19 +87,19 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 case Packets.GROUP_COMPLETE: {
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): GROUP_COMPLETE");
                     ClientCompleteGroupAnswer completeGroupAnswer = (ClientCompleteGroupAnswer) message;
-                    battleList.updateButtonAccount(completeGroupAnswer.getBattleGroup());
+                    battleList.updateButtonAccount(completeGroupAnswer.getBattleGroup(), true);
                     break;
                 }
                 case Packets.GROUP_DISBAND: {
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): GROUP_DISBAND");
                     ClientCompleteGroupAnswer completeGroupAnswer = (ClientCompleteGroupAnswer) message;
-                    battleList.updateButtonAccount(completeGroupAnswer.getBattleGroup());
+                    battleList.updateButtonAccount(completeGroupAnswer.getBattleGroup(), false);
                     break;
                 }
                 case Packets.JOIN_TO_BATTLE_ALLIANCE: {
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): JOIN_TO_BATTLE_ALLIANCE");
                     ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) message;
-                    battleList.updateButtonAccount(joinToBattleAllianceAnswer.getBattleGroup());
+                    battleList.updateButtonAccount(joinToBattleAllianceAnswer.getBattleGroup(), false);
                     break;
                 }
                 //todo: Если меня выкинули из битвы, нужно почистить переменную items.listenedBattle. Учесть, что я сам себя мог выкинуть из битвы, потому сам уже почистил и присвоил новые значения этим переменным.
@@ -110,7 +110,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                             ClientConfigurationFactory.getConfiguration().getBattle(),
                             evictAccountFromAllianceAnswer.getAccount().getId());
                     if (battleGroup != null) {
-                        battleList.updateButtonAccount(battleGroup);
+                        battleList.updateButtonAccount(battleGroup, false);
                     }
                     break;
                 }

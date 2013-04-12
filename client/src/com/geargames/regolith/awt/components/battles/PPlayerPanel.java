@@ -22,7 +22,7 @@ public class PPlayerPanel extends PContentPanel {
     }
 
     public PPlayerButton getPlayerButton(int index){
-        return (PPlayerButton)getActiveChildren().get(index);
+        return (PPlayerButton) getActiveChildren().get(index);
     }
 
     @Override

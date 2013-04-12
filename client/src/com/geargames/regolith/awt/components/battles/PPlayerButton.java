@@ -6,6 +6,7 @@ import com.geargames.awt.components.PTouchButton;
 import com.geargames.common.Graphics;
 import com.geargames.common.Render;
 import com.geargames.common.env.Environment;
+import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
@@ -14,7 +15,7 @@ import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.BattleGroup;
 
 /**
- * User: mikhail v. kutuzov, abarakov
+ * Users: mikhail v. kutuzov, abarakov
  * Кнопка - слот игрок подсоединённый к бою. Должен быть нарисован в выключенном состоянии, если игрок не подключился,
  * подключение реализуется после нажатия на кнопку неподсоединённым пользователем.
  */
@@ -46,7 +47,7 @@ public class PPlayerButton extends PTouchButton {
         labelIsReady.setAnchor((byte)Graphics.RIGHT);
         labelIsReady.setText("Ready");
         labelIsReady.setX(55);
-        labelIsReady.setY(44);
+        labelIsReady.setY(48);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class PPlayerButton extends PTouchButton {
             titleLabel.setText(account.getName());
         } else {
             titleLabel.setText("ПУСТО");
-            isReady = false;
+//            isReady = false;
         }
         flag.setPrototype(render.getSprite(Graph.SPR_TEAM_COLOR + battleGroup.getAlliance().getNumber()));
         initiated = true;
@@ -85,6 +86,7 @@ public class PPlayerButton extends PTouchButton {
     }
 
     public void setBattleGroup(BattleGroup battleGroup) {
+        Debug.debug("PPlayerButton.setBattleGroup(): battleGroup.getId() = " + battleGroup.getId());
         this.battleGroup = battleGroup;
         initiated = false;
     }
@@ -94,6 +96,7 @@ public class PPlayerButton extends PTouchButton {
     }
 
     public void setIsReady(boolean isReady) {
+        Debug.debug("PPlayerButton.setIsReady(): isReady = " + isReady);
         this.isReady = isReady;
     }
 
