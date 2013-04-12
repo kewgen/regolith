@@ -5,9 +5,11 @@
     <property name="build" location="build"/>
     <property name="release" value="release"/>
     <property name="lib" location="${basedir}/lib"/>
+    <property name="release.lib" location="${release}/lib"/>
     <property name="report.dir" location="${basedir}/reports"/>
 
     <property name="deploy" value="deploy"/>
+    <property name="login.name" value=""/>
 
     <property name="gg" value="../awt"/>
     <property name="gg.console.dir" location="${gg}/console/"/>
@@ -122,6 +124,11 @@
             <classpath refid="classpath.common"/>
         </javac>
         <jar basedir="${build}/common" destfile="${release}/${common.lib}"/>
+        <copy todir="${release.lib}">
+            <fileset dir="${lib}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="client" depends="common,gg.awt.console,gg.console">
@@ -165,12 +172,6 @@
         </javac>
 
         <echo message="Copying libs"/>
-
-        <copy todir="${release}/lib">
-            <fileset dir="${lib}">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
 
         <echo message="Packing Regolith client"/>
 
@@ -365,12 +366,12 @@
     -->
     <target name="db.init">
         <path id="classpath.conjunction">
-            <fileset dir="${lib}">
+            <fileset dir="${release.lib}">
                 <patternset>
                     <include name="*.jar"/>
                 </patternset>
             </fileset>
-            <fileset dir="${lib}/server">
+            <fileset dir="${release.lib}/server">
                 <patternset>
                     <include name="**/*.jar"/>
                 </patternset>
@@ -381,9 +382,6 @@
                     <include name="${common.lib}"/>
                     <include name="${server.lib}"/>
                     <include name="${main.server.lib}"/>
-                    <include name="${gg.awt.console.lib}"/>
-                    <include name="${gg.console.lib}"/>
-                    <include name="${client.lib}"/>
                 </patternset>
             </fileset>
         </path>
@@ -404,14 +402,14 @@
         1.ждёт 30 секунд
         2.запускает клиента (он берёт с сервера конфигурацию и рисует что есть)
     -->
-    <target name="designer.task">
-        <path id="classpath.test">
-            <fileset dir="${lib}">
+    <target name="run.main.server">
+        <path id="classpath.run.main.server">
+            <fileset dir="${release.lib}">
                 <patternset>
                     <include name="*.jar"/>
                 </patternset>
             </fileset>
-            <fileset dir="${lib}/server">
+            <fileset dir="${release.lib}/server">
                 <patternset>
                     <include name="**/*.jar"/>
                 </patternset>
@@ -422,25 +420,38 @@
                     <include name="${common.lib}"/>
                     <include name="${server.lib}"/>
                     <include name="${main.server.lib}"/>
-                    <include name="${gg.awt.console.lib}"/>
-                    <include name="${gg.console.lib}"/>
-                    <include name="${client.lib}"/>
-                    <include name="${conjunction.lib}"/>
                 </patternset>
             </fileset>
         </path>
-        <parallel>
-            <sequential>
-                <java classname="com.geargames.regolith.RunMainService" fork="true">
-                    <classpath refid="classpath.test"/>
-                </java>
-            </sequential>
-            <sequential>
-                <sleep seconds="30"/>
-                <java classname="com.geargames.regolith.MenuTest" fork="true">
-                    <classpath refid="classpath.test"/>
-                </java>
-            </sequential>
-        </parallel>
+        <java classname="com.geargames.regolith.RunMainService" fork="true">
+            <classpath refid="classpath.run.main.server"/>
+        </java>
+    </target>
+
+    <target name="simple">
+        <echo message="login name = ${login.name}"></echo>
+    </target>
+
+    <target name="run.client" depends="simple">
+        <path id="classpath.test">
+            <fileset dir="${release.lib}">
+                <patternset>
+                    <include name="*.jar"/>
+                </patternset>
+            </fileset>
+            <fileset dir="${release}">
+                <patternset>
+                    <include name="${gg.common.lib}"/>
+                    <include name="${common.lib}"/>
+                    <include name="${gg.awt.console.lib}"/>
+                    <include name="${gg.console.lib}"/>
+                    <include name="${client.lib}"/>
+                </patternset>
+            </fileset>
+        </path>
+        <java classname="com.geargames.regolith.MenuTest" fork="true">
+            <classpath refid="classpath.test"/>
+            <arg value="${login.name}"/>
+        </java>
     </target>
 </project>

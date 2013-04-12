@@ -1,8 +1,6 @@
 package com.geargames.regolith.awt.components.warrior.exchange;
 
-import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.components.PValueComponent;
-import com.geargames.common.Event;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.Index;
 import com.geargames.common.packer.PObject;
@@ -41,27 +39,6 @@ public abstract class PExchangePanel extends PRootContentPanel {
             initiated = true;
         }
         super.draw(graphics, x, y);
-    }
-
-    public boolean onEvent(int code, int param, int xTouch, int yTouch) {
-        boolean result = false;
-        //todo: Использовать механизм ModalAutoClose из DefaultDrawablePPanel
-        if (code >= Event.EVENT_KEY_PRESSED && code <= Event.EVENT_KEY_DOWN) {
-            if (getTouchRegion().isWithIn(xTouch, yTouch)) {
-                result = super.onEvent(code, param, xTouch, yTouch);
-            } else {
-                if (code == Event.EVENT_TOUCH_RELEASED) {
-                    PRegolithPanelManager fabric = PRegolithPanelManager.getInstance();
-                    DrawablePPanel modalPanel = fabric.getModalPanel();
-                    if (modalPanel != null) {
-                        fabric.hide(modalPanel);
-                    }
-                }
-            }
-        } else {
-            result = super.onEvent(code, param, xTouch, yTouch);
-        }
-        return result;
     }
 
     /**

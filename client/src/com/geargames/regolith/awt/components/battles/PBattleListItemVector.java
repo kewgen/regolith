@@ -15,7 +15,6 @@ import java.util.Vector;
  * Список битв.
  */
 public class PBattleListItemVector extends Vector {
-//    private Battle listenedBattle;
 
     private ArrayList items;
     private int amount;
@@ -30,7 +29,6 @@ public class PBattleListItemVector extends Vector {
         for (int i = 0; i < shownAmount + 1; i++) {
             PBattleListItem item = new PBattleListItem(itemPrototype);
             items.add(item);
-//            setBattleIntoPanel(item, i);
         }
         size = 0;
         upIndex = 0;
@@ -38,54 +36,25 @@ public class PBattleListItemVector extends Vector {
         update();
     }
 
-//    private void setBattleIntoPanel(PBattleListItem panel, int index) {
-//        if (index < battles.size()) {
-//            panel.setBattle(battles.get(index));
-//        } else {
-//            Debug.error("A NOT EXISTED BATTLE HAS BEEN RETRIEVED");
-//        }
-//    }
-//
-//    private PBattleListItem getPresentedItem(int index) {
-//        if (index >= upIndex && index <= downIndex) {
-//            return (PBattleListItem) items.get(index - upIndex);
-//        }
-//        return null;
-//    }
-//
-//    private PBattleListItem up() {
-//        upIndex--;
-//        downIndex--;
-//        PBattleListItem item = (PBattleListItem) items.remove(amount);
-//        setBattleIntoPanel(item, upIndex);
-//        items.add(0, item);
-//        return item;
-//    }
-//
-//    private PBattleListItem down() {
-//        upIndex++;
-//        downIndex++;
-//        PBattleListItem item = (PBattleListItem) items.remove(0);
-//        setBattleIntoPanel(item, downIndex);
-//        items.add(item);
-//        return item;
-//    }
-
     public Object elementAt(int index) {
-        PBattleListItem item;
-        if (index < upIndex) { //todo: а если upIndex - index > 1 ?
-            // up
-            upIndex--;
-            item = (PBattleListItem) items.remove(amount);
-            items.add(0, item);
-            item.updateBattle(ObjectManager.getInstance().getBattleCollection().get(upIndex)); //todo: а если get(upIndex) == listenedBattle?
+        PBattleListItem item = null;
+        if (index < upIndex) {
+            int difference = upIndex - index;
+            for (int i = difference; i > 0; i--) {
+                item = (PBattleListItem) items.remove(amount);
+                items.add(0, item);
+                item.updateBattle(ObjectManager.getInstance().getBattleCollection().get(upIndex - i));
+            }
+            upIndex -= difference;
         } else
-        if (index >= upIndex + amount) { //todo: а если index - (upIndex + amount > 1 ?
-            // down
-            upIndex++;
-            item = (PBattleListItem) items.remove(0);
-            items.add(item);
-            item.updateBattle(ObjectManager.getInstance().getBattleCollection().get(upIndex)); //todo: а если get(upIndex) == listenedBattle?
+        if (index >= upIndex + amount) {
+            int difference = index - (upIndex + amount);
+            for (int i = 0; i < difference; i++) {
+                item = (PBattleListItem) items.remove(0);
+                items.add(item);
+                item.updateBattle(ObjectManager.getInstance().getBattleCollection().get(upIndex + i));
+            }
+            upIndex += difference;
         } else {
             item = (PBattleListItem) items.get(index - upIndex);
         }
@@ -95,15 +64,6 @@ public class PBattleListItemVector extends Vector {
     public int size() {
         return size;
     }
-
-//    public Battle getListenedBattle() {
-//        return listenedBattle;
-//    }
-//
-//    public void setListenedBattle(Battle battle) {
-//        listenedBattle = battle;
-//        update();
-//    }
 
     public void update() {
         ClientBattleCollection battles = ObjectManager.getInstance().getBattleCollection();

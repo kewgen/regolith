@@ -51,14 +51,14 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
             case 0:
-                battleList = new PBattlesList((PObject)index.getPrototype());
+                battleList = new PBattlesList((PObject) index.getPrototype());
                 ElasticInertMotionListener motionListener = new ElasticInertMotionListener();
                 battleList.setMotionListener(motionListener);
                 ScrollHelper.adjustVerticalInertMotionListener(motionListener, battleList);
                 addActiveChild(battleList, index);
                 break;
             case 1:
-                battleCreateButton = new PBattleCreateButton((PObject)index.getPrototype());
+                battleCreateButton = new PBattleCreateButton((PObject) index.getPrototype());
                 addActiveChild(battleCreateButton, index);
                 break;
         }
@@ -200,10 +200,10 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
 
     /**
      * Отобразить панельку.
+     *
      * @param listenedBattle - битва созданная данным клиентом, или null если только начали слушать все битвы
      * @param callerPanel    - панелька, из которой перешли на данную панельку
      */
-    // activatePanel
     public void showPanel(Battle listenedBattle, BattleGroup completeBattleGroup, DrawablePPanel callerPanel) {
         Debug.debug("Dialog 'Battles'");
         ClientConfigurationFactory.getConfiguration().setBattle(listenedBattle);
@@ -211,7 +211,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             doUpdateButtonAccount(completeBattleGroup, true);
         }
         battleList.updateList();
-        ScrollHelper.adjustVerticalInertMotionListener((ElasticInertMotionListener)battleList.getMotionListener(), battleList);
+        ScrollHelper.adjustVerticalInertMotionListener((ElasticInertMotionListener) battleList.getMotionListener(), battleList);
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.hide(callerPanel);
@@ -223,7 +223,6 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
      */
     public void onBattleCreateButtonClick() {
         ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
-        ClientBattleCreationManager battleCreationManager = configuration.getBattleCreationManager();
         Battle listenedBattle = configuration.getBattle();
         if (listenedBattle == null) {
             // Нет битв, которую я создал или в которую вступил => можно смело создавать битву

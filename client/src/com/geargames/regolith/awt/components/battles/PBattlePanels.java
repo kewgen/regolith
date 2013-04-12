@@ -140,19 +140,12 @@ public class PBattlePanels {
     private void update() {
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
-//            if (alliances[i] != null) { //todo: разве может быть равен null?
-                PPlayerPanel alliancePanel = (PPlayerPanel) activeAlliances.get(i);
-                BattleGroupCollection groups = alliances[i].getAllies();
-                for (int j = 0; j < groups.size(); j++) {
-                    PPlayerButton playerButton = alliancePanel.getPlayerButton(j);
-//                    if (groups.get(j) != null) { //todo: разве может быть равен null?
-                        playerButton.setBattleGroup(groups.get(j));
-//                    } else {
-//                        playerButton.setAccount(null);
-//                    }
-//                    playerButton.setNumber(i);
-                }
-//            }
+            PPlayerPanel alliancePanel = (PPlayerPanel) activeAlliances.get(i);
+            BattleGroupCollection groups = alliances[i].getAllies();
+            for (int j = 0; j < groups.size(); j++) {
+                PPlayerButton playerButton = alliancePanel.getPlayerButton(j);
+                playerButton.setBattleGroup(groups.get(j));
+            }
         }
     }
 
@@ -166,7 +159,7 @@ public class PBattlePanels {
     /**
      * Установить аккаунт для отрисовки на кнопке игрока.
      * @param allianceNumber номер союза из которого берётся аккаунт
-     * @param groupNumber номер боевой группы внутри союза из которой берётся аккаунт
+     * @param groupNumber    номер боевой группы внутри союза из которой берётся аккаунт
      */
     public void resetButtonAccount(int allianceNumber, int groupNumber, boolean isReady) {
         PPlayerPanel panel = (PPlayerPanel) activeAlliances.get(allianceNumber);
@@ -174,11 +167,6 @@ public class PBattlePanels {
         playerButton.setBattleGroup(battle.getAlliances()[allianceNumber].getAllies().get(groupNumber));
         playerButton.setIsReady(isReady);
     }
-
-//    public Account getButtonAccount(int allianceNumber, int groupNumber){
-//        PPlayerPanel panel = (PPlayerPanel)activeAlliances.get(allianceNumber);
-//        return panel.getPlayerButton(groupNumber).getAccount();
-//    }
 
     private void setVisibility(ArrayList list, boolean visible) {
         for (int i = 0; i < list.size(); i++) {

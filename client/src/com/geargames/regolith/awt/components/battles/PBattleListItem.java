@@ -62,37 +62,11 @@ public class PBattleListItem extends PContentPanel {
 
     public void updateBattle(Battle battle) {
         panelPlayers.updateBattle(battle);
-
         labelBattleType.setText(getBattle().getName());
         labelComposition.setText(getBattle().getBattleType().getName());
 //        labelLevel.setText(getBattle().);
         changeVisibleOfStartBattleButton();
     }
-
-//    /**
-//     * Обновить морды игроков на панели битвы, по содержимому getBattle().
-//     */
-//    public void update() {
-//        int allianceAmount = getBattle().getBattleType().getAllianceAmount();
-//        int allianceSize = getBattle().getBattleType().getAllianceSize();
-//        for (int i = 0; i < allianceAmount; i++) {
-//            for (int j = 0; j < allianceSize; j++) {
-//                panelPlayers.resetButtonAccount(i, j);
-//            }
-//        }
-//
-
-//    }
-
-//    /**
-//     * Обновить конкретную морду на панели битв.
-//     *
-//     * @param allianceNumber номер боевой стороны морды
-//     * @param groupNumber  нормер группы морды
-//     */
-//    public void resetButtonAccount(int allianceNumber, int groupNumber) {
-//        panelPlayers.resetButtonAccount(allianceNumber, groupNumber);
-//    }
 
     public void resetButtonAccount(BattleGroup battleGroup, boolean isReady) {
         panelPlayers.resetButtonAccount(

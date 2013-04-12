@@ -2,8 +2,6 @@ package com.geargames.regolith;
 
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.serializers.answers.*;
-import com.geargames.regolith.service.MainServiceManager;
-import com.geargames.regolith.service.SimpleService;
 import com.geargames.regolith.units.Account;
 
 /**
@@ -17,7 +15,7 @@ public class MenuTest {
     private static String ACCOUNT_PASSWORD_DEFAULT = "СЕКРЕТ";
 
     public static void main(String[] args)throws Exception{
-         client((args.length == 0 ? ACCOUNT_NAME_DEFAULT : args[0]));
+        client((args.length == 0 ? ACCOUNT_NAME_DEFAULT : args[0]));
     }
 
     public static void client(String accountName) throws Exception {
