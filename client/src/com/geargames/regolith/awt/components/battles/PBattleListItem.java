@@ -56,8 +56,8 @@ public class PBattleListItem extends PContentPanel {
 
     public void updateBattle(Battle battle) {
         panelPlayers.updateBattle(battle);
-        battleTypeLabel.setText(getBattle().getName());
-        compositionLabel.setText(getBattle().getBattleType().getName());
+        labelBattleType.setText(getBattle().getName());
+        labelComposition.setText(getBattle().getBattleType().getName());
     }
 
     public void resetButtonAccount(BattleGroup battleGroup) {
