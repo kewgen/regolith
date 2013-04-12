@@ -208,7 +208,7 @@ public class PSelectMapPanel extends PRootContentPanel {
 //        panelManager.getSelectWarriorsPanel().showPanel(battle.getAlliances()[0].getAllies().get(0), currentPanel);
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        panelManager.getBattlesPanel().showPanel(battle, currentPanel);
+        panelManager.getBattlesPanel().showPanel(battle, null, currentPanel);
     }
 
     /**

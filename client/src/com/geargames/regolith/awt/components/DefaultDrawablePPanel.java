@@ -25,6 +25,18 @@ public abstract class DefaultDrawablePPanel extends DrawablePPanel {
         this.modalAutoClose = modalAutoClose;
     }
 
+    public void show() {
+        PRegolithPanelManager.getInstance().show(this);
+    }
+
+    public void showModal() {
+        PRegolithPanelManager.getInstance().showModal(this);
+    }
+
+    public void hide() {
+        PRegolithPanelManager.getInstance().hide(this);
+    }
+
     @Override
     public void onShow() {
         ((PRootContentPanel) getElement()).onShow();

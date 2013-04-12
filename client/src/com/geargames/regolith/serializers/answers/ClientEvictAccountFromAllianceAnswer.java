@@ -21,6 +21,7 @@ public class ClientEvictAccountFromAllianceAnswer extends ClientDeSerializedMess
     private boolean isSuccess;
     private BattleAlliance alliance;
     private Account account;
+    private BattleGroup battleGroup;
 
 //    public void setBattle(Battle battle) {
 //        this.battle = battle;
@@ -30,6 +31,7 @@ public class ClientEvictAccountFromAllianceAnswer extends ClientDeSerializedMess
         isSuccess = SimpleDeserializer.deserializeBoolean(buffer);
         alliance = null;
         account = null;
+        battleGroup = null;
         if (isSuccess) {
             Battle battle = ClientConfigurationFactory.getConfiguration().getBattle();
             alliance = ClientBattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(buffer));
@@ -41,6 +43,7 @@ public class ClientEvictAccountFromAllianceAnswer extends ClientDeSerializedMess
                 Account account = battleGroup.getAccount();
                 if (account.getId() == id) {
                     this.account = account;
+                    this.battleGroup = battleGroup;
                     battleGroup.setAccount(null);
                     battleGroup.setWarriors(null);
                     return;
@@ -69,6 +72,13 @@ public class ClientEvictAccountFromAllianceAnswer extends ClientDeSerializedMess
      */
     public Account getAccount() {
         return account;
+    }
+
+    /**
+     * Боевая группа, из которой выкинули пользователя, или который вышел из нее сам.
+     */
+    public BattleGroup getBattleGroup() {
+        return battleGroup;
     }
 
 }

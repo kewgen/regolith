@@ -161,7 +161,7 @@ public class PPlayerInfoPanel extends PRootContentPanel {
 //        labelPlayerWins.setText(playerAccount.getStatistics.getWinCount());
 //        labelPlayerLosses.setText(playerAccount.getStatistics.getLossCount());
         if (playerAccount.getClan() == null) {
-            Debug.error("Null Clan");
+//            Debug.error("Null Clan"); //todo: NullPointerException
             labelPlayerClan.setText("EMPTY");
         } else {
             labelPlayerClan.setText(playerAccount.getClan().getName());
@@ -188,6 +188,8 @@ public class PPlayerInfoPanel extends PRootContentPanel {
         }
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.getBattlesPanel().doUpdateButtonAccount(battleGroup, false);
+
         panelManager.hide(panelManager.getPlayerInfoWindow());
 ////        panelManager.show(panelManager.getMainMenu());
 //        panelManager.getBattlesPanel().showPanel(battleGroup.getAlliance().getBattle(), panelManager.getSelectWarriorsWindow(), true);

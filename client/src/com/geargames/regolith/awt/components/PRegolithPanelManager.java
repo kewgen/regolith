@@ -199,67 +199,67 @@ public class PRegolithPanelManager extends PPanelManager {
         return battleScreen;
     }
 
-    public DrawablePPanel getWeaponFromStoreHouse() {
+    public DefaultDrawablePPanel getWeaponFromStoreHouse() {
         return weaponFromStoreHouse;
     }
 
-    public DrawablePPanel getProjectileFromStoreHouse() {
+    public DefaultDrawablePPanel getProjectileFromStoreHouse() {
         return projectileFromStoreHouse;
     }
 
-    public DrawablePPanel getArmorFromStoreHouse() {
+    public DefaultDrawablePPanel getArmorFromStoreHouse() {
         return armorFromStoreHouse;
     }
 
-    public DrawablePPanel getMedikitFromStoreHouse() {
+    public DefaultDrawablePPanel getMedikitFromStoreHouse() {
         return medikitFromStoreHouse;
     }
 
-    public DrawablePPanel getArmorFromWarrior() {
+    public DefaultDrawablePPanel getArmorFromWarrior() {
         return armorFromWarrior;
     }
 
-    public DrawablePPanel getWeaponFromWarrior() {
+    public DefaultDrawablePPanel getWeaponFromWarrior() {
         return weaponFromWarrior;
     }
 
-    public DrawablePPanel getArmorFromBag() {
+    public DefaultDrawablePPanel getArmorFromBag() {
         return armorFromBag;
     }
 
-    public DrawablePPanel getProjectileFromBag() {
+    public DefaultDrawablePPanel getProjectileFromBag() {
         return projectileFromBag;
     }
 
-    public DrawablePPanel getWeaponFromBag() {
+    public DefaultDrawablePPanel getWeaponFromBag() {
         return weaponFromBag;
     }
 
-    public DrawablePPanel getMedikitFromBag() {
+    public DefaultDrawablePPanel getMedikitFromBag() {
         return medikitFromBag;
     }
 
-    public DrawablePPanel getWarrior() {
+    public DefaultDrawablePPanel getWarrior() {
         return warrior;
     }
 
-    public DrawablePPanel getMainMenu() {
+    public DefaultDrawablePPanel getMainMenu() {
         return mainMenu;
     }
 
-    public DrawablePPanel getLeft() {
+    public DefaultDrawablePPanel getLeft() {
         return left;
     }
 
-    public DrawablePPanel getHeadline() {
+    public DefaultDrawablePPanel getHeadline() {
         return headline;
     }
 
-    public DrawablePPanel getRight() {
+    public DefaultDrawablePPanel getRight() {
         return right;
     }
 
-    public DrawablePPanel getBattlesWindow() {
+    public DefaultDrawablePPanel getBattlesWindow() {
         return battlesWindow;
     }
 
@@ -267,7 +267,7 @@ public class PRegolithPanelManager extends PPanelManager {
         return (PBattlesPanel) battlesWindow.getElement();
     }
 
-    public DrawablePPanel getBattleCreateWindow() {
+    public DefaultDrawablePPanel getBattleCreateWindow() {
         return battleCreateWindow;
     }
 
@@ -275,7 +275,7 @@ public class PRegolithPanelManager extends PPanelManager {
         return (PBattleCreatePanel) battleCreateWindow.getElement();
     }
 
-    public DrawablePPanel getSelectMapWindow() {
+    public DefaultDrawablePPanel getSelectMapWindow() {
         return selectMapWindow;
     }
 
@@ -283,7 +283,7 @@ public class PRegolithPanelManager extends PPanelManager {
         return (PSelectMapPanel) selectMapWindow.getElement();
     }
 
-    public DrawablePPanel getSelectWarriorsWindow() {
+    public DefaultDrawablePPanel getSelectWarriorsWindow() {
         return selectWarriorsWindow;
     }
 
@@ -291,7 +291,7 @@ public class PRegolithPanelManager extends PPanelManager {
         return (PSelectWarriorsPanel) selectWarriorsWindow.getElement();
     }
 
-    public DrawablePPanel getPlayerInfoWindow() {
+    public DefaultDrawablePPanel getPlayerInfoWindow() {
         return playerInfoWindow;
     }
 
@@ -299,7 +299,7 @@ public class PRegolithPanelManager extends PPanelManager {
         return (PPlayerInfoPanel) playerInfoWindow.getElement();
     }
 
-    public DrawablePPanel getFontTestWindow() {
+    public DefaultDrawablePPanel getFontTestWindow() {
         return fontTestWindow;
     }
 

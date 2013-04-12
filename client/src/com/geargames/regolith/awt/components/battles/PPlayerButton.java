@@ -9,6 +9,7 @@ import com.geargames.common.env.Environment;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.Account;
@@ -59,14 +60,14 @@ public class PPlayerButton extends PTouchButton {
         if (battleGroup.getAccount() != null) {
             //todo: рисовать рожицу игрока
             getNormalSkin().draw(graphics, x, y);
+            if (isReady) {
+                labelIsReady.draw(graphics, x + labelIsReady.getX(), y + labelIsReady.getY());
+            }
         } else {
             getPushedSkin().draw(graphics, x, y);
         }
         titleLabel.draw(graphics, x + titleLabel.getX(), y + titleLabel.getY());
         flag.draw(graphics, x + flag.getX(), y + flag.getY());
-        if (isReady) {
-            labelIsReady.draw(graphics, x + labelIsReady.getX(), y + labelIsReady.getY());
-        }
     }
 
     protected void initiate(Render render) {
@@ -75,7 +76,7 @@ public class PPlayerButton extends PTouchButton {
             titleLabel.setText(account.getName());
         } else {
             titleLabel.setText("ПУСТО");
-//            isReady = false;
+            isReady = false;
         }
         flag.setPrototype(render.getSprite(Graph.SPR_TEAM_COLOR + battleGroup.getAlliance().getNumber()));
         initiated = true;
@@ -97,7 +98,9 @@ public class PPlayerButton extends PTouchButton {
 
     public void setIsReady(boolean isReady) {
         Debug.debug("PPlayerButton.setIsReady(): isReady = " + isReady);
-        this.isReady = isReady;
+        this.isReady = isReady &&
+                battleGroup != null &&
+                battleGroup.getAlliance().getBattle().getAuthor().getId() == ClientConfigurationFactory.getConfiguration().getAccount().getId();
     }
 
 //    /**
