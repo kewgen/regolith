@@ -1,0 +1,2 @@
+copy /y server.main\src\com\geargames\regolith\service\jaxb.index out\production\server.main\com\geargames\regolith\service
+copy /y server.battle\src\com\geargames\regolith\service\jaxb.index out\production\server.battle\com\geargames\regolith\service
