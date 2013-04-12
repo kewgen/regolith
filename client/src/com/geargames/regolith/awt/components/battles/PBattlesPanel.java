@@ -36,7 +36,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
 
     public PBattlesPanel(PObject prototype) {
         super(prototype);
-        types = new short[] {
+        types = new short[]{
                 Packets.BROWSE_CREATED_BATTLES,
                 Packets.JOIN_TO_BATTLE_ALLIANCE,
                 Packets.EVICT_ACCOUNT_FROM_ALLIANCE,
@@ -51,14 +51,14 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
             case 0:
-                battleList = new PBattlesList((PObject)index.getPrototype());
+                battleList = new PBattlesList((PObject) index.getPrototype());
                 ElasticInertMotionListener motionListener = new ElasticInertMotionListener();
                 battleList.setMotionListener(motionListener);
                 ScrollHelper.adjustVerticalInertMotionListener(motionListener, battleList);
                 addActiveChild(battleList, index);
                 break;
             case 1:
-                battleCreateButton = new PBattleCreateButton((PObject)index.getPrototype());
+                battleCreateButton = new PBattleCreateButton((PObject) index.getPrototype());
                 addActiveChild(battleCreateButton, index);
                 break;
         }
@@ -119,15 +119,16 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     //todo: Дореализовать обработчик события и тщательно его протестировать
 //                    ClientCancelBattleAnswer cancelBattleAnswer = (ClientCancelBattleAnswer) message;
 //                    if (cancelBattleAnswer.getBattleId() == ClientConfigurationFactory.getConfiguration().getBattle()) {
-                    {
-                        ClientConfigurationFactory.getConfiguration().setBattle(null);
-                        battleCreateButton.setVisible(true);
-                        battleList.updateList();
-                    }
-                    break;
+                {
+                    ClientConfigurationFactory.getConfiguration().setBattle(null);
+                    battleCreateButton.setVisible(true);
+                    battleList.updateList();
+                }
+                break;
                 case Packets.START_BATTLE:
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): START_BATTLE");
                     //todo: реализовать
+
                     break;
                 default:
                     Debug.error("There is a message of type = " + type);
@@ -187,15 +188,15 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
 
     /**
      * Отобразить панельку.
+     *
      * @param listenedBattle - битва созданная данным клиентом, или null если только начали слушать все битвы
      * @param callerPanel    - панелька, из которой перешли на данную панельку
      */
-    // activatePanel
     public void showPanel(Battle listenedBattle, DrawablePPanel callerPanel, boolean isModalCallerPanel) {
         Debug.debug("Dialog 'Battles'");
         ClientConfigurationFactory.getConfiguration().setBattle(listenedBattle);
         battleList.updateList();
-        ScrollHelper.adjustVerticalInertMotionListener((ElasticInertMotionListener)battleList.getMotionListener(), battleList);
+        ScrollHelper.adjustVerticalInertMotionListener((ElasticInertMotionListener) battleList.getMotionListener(), battleList);
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         if (isModalCallerPanel) {
@@ -206,52 +207,57 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         panelManager.show(panelManager.getBattlesWindow());
     }
 
+    public void onStartBattleReceive(){
+
+
+    }
+
     /**
      * Обработчик нажатия на кнопку "Создать бой".
      */
     public void onBattleCreateButtonClick() {
         ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
-        ClientBattleCreationManager battleCreationManager = configuration.getBattleCreationManager();
         Battle listenedBattle = configuration.getBattle();
         if (listenedBattle == null) {
             // Нет битв, которую я создал или в которую вступил => можно смело создавать битву
             // Особой реакции на этот случай не требуется
-        } else
-        if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
-            // Битва была создана мною => нужно заканселить ее
-            // Этой ситуации вообще происходить не должно
-            Debug.error("There was an attempt to create a battle, when there are already created battle");
-            boolean res = RequestHelper.cancelBattle(listenedBattle, this);
-            ClientConfigurationFactory.getConfiguration().setBattle(null);
-            battleList.updateList();
-            if (!res) {
-                return;
-            }
         } else {
-            BattleGroup myBattleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(listenedBattle, configuration.getAccount().getId());
-            if (myBattleGroup != null) {
-                // Я вступил в одну из боевых групп => нужно выйти из битвы
-                if (myBattleGroup.getAlliance().getBattle().getId() != listenedBattle.getId()) {
-                    Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAlliance().getBattle().getId() != listenedBattle.getId()");
-                }
-                if (myBattleGroup.getAccount().getId() != configuration.getAccount().getId()) {
-                    Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAccount().getId() != configuration.getAccount().getId()");
-                }
-                boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
-                        RequestHelper.doNotListenToBattle(listenedBattle, this);
+            if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
+                // Битва была создана мною => нужно заканселить ее
+                // Этой ситуации вообще происходить не должно
+                Debug.error("There was an attempt to create a battle, when there are already created battle");
+                boolean res = RequestHelper.cancelBattle(listenedBattle, this);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
                 if (!res) {
                     return;
                 }
             } else {
-                // Я просто подписался на обновления битвы => нужно отписаться от обновлений
-                //todo: Вероятно, этот случай никогда не наступит
-                boolean res = RequestHelper.doNotListenToBattle(listenedBattle, this);
-                ClientConfigurationFactory.getConfiguration().setBattle(null);
-                battleList.updateList();
-                if (!res) {
-                    return;
+                BattleGroup myBattleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(listenedBattle, configuration.getAccount().getId());
+                if (myBattleGroup != null) {
+                    // Я вступил в одну из боевых групп => нужно выйти из битвы
+                    if (myBattleGroup.getAlliance().getBattle().getId() != listenedBattle.getId()) {
+                        Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAlliance().getBattle().getId() != listenedBattle.getId()");
+                    }
+                    if (myBattleGroup.getAccount().getId() != configuration.getAccount().getId()) {
+                        Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAccount().getId() != configuration.getAccount().getId()");
+                    }
+                    boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
+                            RequestHelper.doNotListenToBattle(listenedBattle, this);
+                    ClientConfigurationFactory.getConfiguration().setBattle(null);
+                    battleList.updateList();
+                    if (!res) {
+                        return;
+                    }
+                } else {
+                    // Я просто подписался на обновления битвы => нужно отписаться от обновлений
+                    //todo: Вероятно, этот случай никогда не наступит
+                    boolean res = RequestHelper.doNotListenToBattle(listenedBattle, this);
+                    ClientConfigurationFactory.getConfiguration().setBattle(null);
+                    battleList.updateList();
+                    if (!res) {
+                        return;
+                    }
                 }
             }
         }
@@ -286,8 +292,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             if (listenedBattle == null) {
                 // У меня нет своей битвы и я не вхожу ни в одну другую битву => могу смело выбирать бойцов и вступать в чужую битву
                 // Особой реакции на этот случай не требуется
-            } else
-            if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: сравнивать сущности по id или по ссылке?
+            } else if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: сравнивать сущности по id или по ссылке?
                 // У меня есть своя битва
                 if (battleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
                     // Я собираюсь вступить в боевую группу своей битвы => сначало нужно освободить занятую боевую группу перед вступлением в другую
@@ -338,8 +343,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     }
                 }
             }
-        } else
-        if (battleGroup.getAccount().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
+        } else if (battleGroup.getAccount().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
             // Боевая группа занята мною => посмотрим каких бойцов я выбрал и, при необходимости, перевыберем их
             // Особой реакции на этот случай не требуется
         } else {
