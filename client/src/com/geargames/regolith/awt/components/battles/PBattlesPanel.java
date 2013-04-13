@@ -209,9 +209,13 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         panelManager.show(panelManager.getBattlesWindow());
     }
 
-    public void onStartBattleReceive(){
+    public void onStartBattleReceive(ClientDeSerializedMessage message){
+        ClientStartBattleAnswer answer = (ClientStartBattleAnswer)message;
+        if(answer.isSuccess()){
 
-
+        }else{
+            NotificationBox.error(LocalizedStrings.COULD_NOT_START_BATTLE, this);
+        }
     }
 
     /**

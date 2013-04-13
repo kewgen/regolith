@@ -35,7 +35,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
         BattleServiceConfiguration configuration = BattleServiceConfigurationFactory.getConfiguration();
         BattleServiceContext context = configuration.getContext();
         ServerBattle serverBattle = context.getServerBattleById(SimpleDeserializer.deserializeInt(from));
-        serverBattle.getClients().add((BattleClient)client);
+        serverBattle.getClients().add((BattleClient) client);
 
         int allianceId = SimpleDeserializer.deserializeInt(from);
         int accountId = SimpleDeserializer.deserializeInt(from);
@@ -46,48 +46,49 @@ public class BattleServiceLoginRequest extends ServerRequest {
                 break;
             }
         }
-        if (account == null) {
-            throw new RegolithException("An account is wrong");
-        }
-        String name = SimpleDeserializer.deserializeString(from);
-        String password = SimpleDeserializer.deserializeString(from);
-        SerializedMessage message;
-        List<MessageToClient> messages = new ArrayList<MessageToClient>(3);
-        if (account.getName().equals(name) && account.getPassword().equals(password)) {
-            BattleAlliance alliance = BattleHelper.findAlliance(serverBattle.getBattle(), allianceId);
-            serverBattle.getAlliances().get(alliance.getNumber()).add((BattleClient)client);
-            Collection<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getClients());
-            serverBattle.getClients().add((BattleClient)client);
-            Battle battle = serverBattle.getBattle();
-            BattleGroup battleGroup = null;
-            for (BattleGroup group : ((ServerBattleGroupCollection) (battle.getAlliances()[alliance.getNumber()].getAllies())).getBattleGroups()) {
-                if (account.getId() == group.getAccount().getId()) {
-                    battleGroup = group;
-                    serverBattle.getReadyGroups().add(group);
-                    break;
+        if (account != null) {
+            String name = SimpleDeserializer.deserializeString(from);
+            String password = SimpleDeserializer.deserializeString(from);
+            SerializedMessage message;
+            List<MessageToClient> messages = new ArrayList<MessageToClient>(3);
+            if (account.getName().equals(name) && account.getPassword().equals(password)) {
+                BattleAlliance alliance = BattleHelper.findAlliance(serverBattle.getBattle(), allianceId);
+                serverBattle.getAlliances().get(alliance.getNumber()).add((BattleClient) client);
+                Collection<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getClients());
+                serverBattle.getClients().add((BattleClient) client);
+                Battle battle = serverBattle.getBattle();
+                BattleGroup battleGroup = null;
+                for (BattleGroup group : ((ServerBattleGroupCollection) (battle.getAlliances()[alliance.getNumber()].getAllies())).getBattleGroups()) {
+                    if (account.getId() == group.getAccount().getId()) {
+                        battleGroup = group;
+                        serverBattle.getReadyGroups().add(group);
+                        break;
+                    }
                 }
-            }
-            List<SocketChannel> recipient = new ArrayList<SocketChannel>(1);
-            recipient.add(client.getChannel());
-            message = BattleServiceLoginAnswer.answerSuccess(to, battle, serverBattle.getReadyGroups());
-            messages.add(new BattleMessageToClient(recipient, message.serialize()));
+                List<SocketChannel> recipient = new ArrayList<SocketChannel>(1);
+                recipient.add(client.getChannel());
+                message = BattleServiceLoginAnswer.answerSuccess(to, battle, serverBattle.getReadyGroups());
+                messages.add(new BattleMessageToClient(recipient, message.serialize()));
 
-            if (serverBattle.getClients().size() == serverBattle.getGroups().size()) {
-                configuration.getBattleSchedulerService().add(serverBattle);
+                if (serverBattle.getClients().size() == serverBattle.getGroups().size()) {
+                    configuration.getBattleSchedulerService().add(serverBattle);
+                } else {
+                    message = new BattleServiceNewClientLogin(to, battle, battleGroup);
+                    messages.add(new BattleMessageToClient(recipients, message.serialize()));
+                    client.setState(new ClientAtBattle(serverBattle));
+                }
             } else {
-                message = new BattleServiceNewClientLogin(to, battle, battleGroup);
-                messages.add(new BattleMessageToClient(recipients, message.serialize()));
-                client.setState(new ClientAtBattle(serverBattle));
-            }
-        } else {
-            List<SocketChannel> recipient = new ArrayList<SocketChannel>(1);
-            recipient.add(client.getChannel());
+                List<SocketChannel> recipient = new ArrayList<SocketChannel>(1);
+                recipient.add(client.getChannel());
 
-            message = BattleServiceLoginAnswer.answerFailure(to, serverBattle.getBattle());
-            messages.add(new BattleMessageToClient(recipient, message.serialize()));
+                message = BattleServiceLoginAnswer.answerFailure(to, serverBattle.getBattle());
+                messages.add(new BattleMessageToClient(recipient, message.serialize()));
+            }
+            return messages;
         }
 
-        return messages;
+
+        return null;
     }
 }
 

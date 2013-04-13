@@ -1,5 +1,6 @@
 package com.geargames.regolith.managers;
 
+import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
@@ -48,23 +49,24 @@ public class ServerTrainingBattleCreationManager {
         return null;
     }
 
-    public Battle startBattle(Account author) {
+    public Battle startBattle(Account author) throws RegolithException {
         BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         Battle battle = battleManagerContext.getCreatedBattles().get(author);
+        BattleType battleType = battle.getBattleType();
 
-        if (battleManagerContext.getCompleteGroups().get(battle).size() < battle.getBattleType().getAllianceAmount() * battle.getBattleType().getAllianceSize() * battle.getBattleType().getGroupSize()) {
-            return null;
+        if (battleManagerContext.getCompleteGroups().get(battle).size() < battleType.getAllianceAmount() * battleType.getAllianceSize()) {
+            throw new RegolithException("There are incomplete groups.");
         }
-        if (!((ServerBattleType) (battle.getBattleType())).haveToStart(battle)) {
-            return null;
+        if (!((ServerBattleType) (battleType)).haveToStart(battle)) {
+            throw new RegolithException("Warriors amount is not valid.");
         }
         try {
             BattleCell[][] cells = BattleHelper.deserializeBattleCells(battle.getMap().getContent());
             battle.getMap().setCells(cells);
         } catch (IOException e) {
-            return null;
+            throw new RegolithException(e);
         } catch (ClassNotFoundException e) {
-            return null;
+            throw new RegolithException(e);
         }
         BattleHelper.spreadAlliancesOnTheMap(battle);
 

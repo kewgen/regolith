@@ -456,14 +456,6 @@ public class ServerDBTest {
         battleType2x2.setGroupSize((short)1);
         battleTypes.add(battleType2x2);
 
-        BattleType battleType1x1_2 = new TrainingBattle();
-        battleType1x1_2.setName("1x1");
-        battleType1x1_2.setScores((byte) 5);
-        battleType1x1_2.setAllianceAmount((short)2);
-        battleType1x1_2.setAllianceSize((short)1);
-        battleType1x1_2.setGroupSize((short)2);
-        battleTypes.add(battleType1x1_2);
-
         baseConfiguration.setBattleTypes(battleTypes);
 
         org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();

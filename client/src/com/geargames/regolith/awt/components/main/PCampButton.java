@@ -185,7 +185,7 @@ public class PCampButton extends PTouchButton {
             PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
             manager.hideAll();
             manager.getBattleScreen().setBattle(battle);
-            manager.changeScreen(manager.getBattleScreen());
+            manager.show(manager.getBattleScreen());
         }
     }
 }
