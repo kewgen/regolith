@@ -5,6 +5,7 @@ import com.geargames.awt.components.PLabel;
 import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -54,16 +55,25 @@ public class PBattleListItem extends PContentPanel {
         return panelPlayers.getBattle();
     }
 
+    private void changeVisibleOfStartBattleButton() {
+        buttonStartBattle.setVisible(panelPlayers.getBattle().getAuthor().getId() == ClientConfigurationFactory.getConfiguration().getAccount().getId() &&
+                panelPlayers.getIsReadyBattle());
+    }
+
     public void updateBattle(Battle battle) {
         panelPlayers.updateBattle(battle);
         labelBattleType.setText(getBattle().getName());
         labelComposition.setText(getBattle().getBattleType().getName());
+//        labelLevel.setText(getBattle().);
+        changeVisibleOfStartBattleButton();
     }
 
-    public void resetButtonAccount(BattleGroup battleGroup) {
+    public void resetButtonAccount(BattleGroup battleGroup, boolean isReady) {
         panelPlayers.resetButtonAccount(
                 battleGroup.getAlliance().getNumber(),
-                battleGroup.getAlliance().getAllies().indexById(battleGroup.getId()));
+                battleGroup.getAlliance().getAllies().indexById(battleGroup.getId()),
+                isReady);
+        changeVisibleOfStartBattleButton();
     }
 
 }

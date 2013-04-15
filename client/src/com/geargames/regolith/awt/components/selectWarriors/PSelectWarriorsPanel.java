@@ -97,7 +97,9 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
 
         Battle battle = battleGroup.getAlliance().getBattle();
         int accountId = clientConfiguration.getAccount().getId();
-        if (battle.getAuthor().getId() != accountId && (battleGroup.getAccount() == null || battleGroup.getAccount().getId() != accountId)) {
+        if (clientConfiguration.getBattle() == null) {
+            // Если клиент еще не подписан на битву, то подпишемся на нее
+//      if (battle.getAuthor().getId() != accountId && (battleGroup.getAccount() == null || battleGroup.getAccount().getId() != accountId)) {
             // Клиент не является владельцем битвы и не входит ни в один из альянсов битвы, поэтому, сначало нужно подписаться эту битву
             try {
                 Debug.debug("Trying to connect to the battle for listening (battle id = " + battle.getId() + ")...");
@@ -114,10 +116,16 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
                 NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_LISTEN_TO_BATTLE_EXCEPTION, this);
                 return;
             }
+        } else {
+            if (clientConfiguration.getBattle().getId() != battleGroup.getAlliance().getBattle().getId()) {
+                Debug.error("PSelectWarriorsPanel.showPanel(): The client is not listened of battle, but is trying to join the battle (listened battle id = " + clientConfiguration.getBattle().getId() + "; joined battle id = " + battleGroup.getAlliance().getBattle().getId() + ")");
+                NotificationBox.error(LocalizedStrings.SELECT_WARRIORS_MSG_JOIN_TO_ALLIANCE_EXCEPTION, this);
+                return;
+            }
         }
 
         if (battleGroup.getAccount() == null || battleGroup.getAccount().getId() != accountId) {
-            // Если клиент еще не занял эту боевую группу то он должен ее занять
+            // Если клиент еще не занял эту боевую группу, то он должен ее занять
             try {
                 Debug.debug("The client is trying join to an alliance (alliance id = " + battleGroup.getAlliance().getId() + "; number = " + battleGroup.getAlliance().getNumber() + ")...");
                 ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = battleCreationManager.joinToAlliance(battleGroup.getAlliance());
@@ -211,7 +219,7 @@ public class PSelectWarriorsPanel extends PRootContentPanel {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
 //        panelManager.hide(panelManager.getSelectWarriorsWindow());
 //        panelManager.show(panelManager.getMainMenu());
-        panelManager.getBattlesPanel().showPanel(battleGroup.getAlliance().getBattle(), panelManager.getSelectWarriorsWindow());
+        panelManager.getBattlesPanel().showPanel(battleGroup.getAlliance().getBattle(), battleGroup, panelManager.getSelectWarriorsWindow());
     }
 
 }

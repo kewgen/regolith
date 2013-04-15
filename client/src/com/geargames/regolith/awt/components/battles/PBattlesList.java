@@ -37,10 +37,10 @@ public class PBattlesList extends PVerticalScrollView {
         items.update();
     }
 
-    public void updateButtonAccount(BattleGroup battleGroup) {
+    public void updateButtonAccount(BattleGroup battleGroup, boolean isReady) {
         Battle listenedBattle = ClientConfigurationFactory.getConfiguration().getBattle();
         if (listenedBattle != null && battleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
-            ((PBattleListItem) items.elementAt(0)).resetButtonAccount(battleGroup);
+            ((PBattleListItem) items.elementAt(0)).resetButtonAccount(battleGroup, isReady);
         }
     }
 

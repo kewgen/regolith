@@ -52,7 +52,7 @@ public class StoreHouseVerticalTackleItemsVector extends Vector {
                     panel.setTackle(ammunition, amount);
                 }
             } else {
-                Debug.error("A NOT EXISTED REQUISITE HAS BEEN RETRIEVED");
+                Debug.warning("A not existed requisite has been retrieved"); //todo: Этой ошибки не должно появляться при нормальных условиях
             }
         }
     }

@@ -3,11 +3,8 @@ package com.geargames.regolith;
 import com.geargames.regolith.service.MainServiceManager;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Администратор
- * Date: 11.04.13
- * Time: 18:01
- * To change this template use File | Settings | File Templates.
+ * User: abarakov
+ * Date: 02.04.13
  */
 public class RunMainService {
 

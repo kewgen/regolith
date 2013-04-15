@@ -36,7 +36,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
 
     public PBattlesPanel(PObject prototype) {
         super(prototype);
-        types = new short[]{
+        types = new short[] {
                 Packets.BROWSE_CREATED_BATTLES,
                 Packets.JOIN_TO_BATTLE_ALLIANCE,
                 Packets.EVICT_ACCOUNT_FROM_ALLIANCE,
@@ -87,31 +87,40 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 case Packets.GROUP_COMPLETE: {
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): GROUP_COMPLETE");
                     ClientCompleteGroupAnswer completeGroupAnswer = (ClientCompleteGroupAnswer) message;
-                    battleList.updateButtonAccount(completeGroupAnswer.getBattleGroup());
+                    doUpdateButtonAccount(completeGroupAnswer.getBattleGroup(), true);
                     break;
                 }
                 case Packets.GROUP_DISBAND: {
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): GROUP_DISBAND");
                     ClientCompleteGroupAnswer completeGroupAnswer = (ClientCompleteGroupAnswer) message;
-                    battleList.updateButtonAccount(completeGroupAnswer.getBattleGroup());
+                    doUpdateButtonAccount(completeGroupAnswer.getBattleGroup(), false);
                     break;
                 }
                 case Packets.JOIN_TO_BATTLE_ALLIANCE: {
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): JOIN_TO_BATTLE_ALLIANCE");
                     ClientJoinToBattleAllianceAnswer joinToBattleAllianceAnswer = (ClientJoinToBattleAllianceAnswer) message;
-                    battleList.updateButtonAccount(joinToBattleAllianceAnswer.getBattleGroup());
+                    doUpdateButtonAccount(joinToBattleAllianceAnswer.getBattleGroup(), false);
                     break;
                 }
                 //todo: Если меня выкинули из битвы, нужно почистить переменную items.listenedBattle. Учесть, что я сам себя мог выкинуть из битвы, потому сам уже почистил и присвоил новые значения этим переменным.
                 case Packets.EVICT_ACCOUNT_FROM_ALLIANCE: {
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): EVICT_ACCOUNT_FROM_ALLIANCE");
                     ClientEvictAccountFromAllianceAnswer evictAccountFromAllianceAnswer = (ClientEvictAccountFromAllianceAnswer) message;
-                    BattleGroup battleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(
-                            ClientConfigurationFactory.getConfiguration().getBattle(),
-                            evictAccountFromAllianceAnswer.getAccount().getId());
-                    if (battleGroup != null) {
-                        battleList.updateButtonAccount(battleGroup);
+//                    if (ClientConfigurationFactory.getConfiguration().getAccount().getId() == evictAccountFromAllianceAnswer.getAccount().getId()) {
+//                        // Меня выкинули из битвы
+//                    }
+
+//                    BattleGroup battleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(
+//                            ClientConfigurationFactory.getConfiguration().getBattle(),
+//                            evictAccountFromAllianceAnswer.getAccount().getId());
+                    if (evictAccountFromAllianceAnswer.getBattleGroup() != null) {
+                        doUpdateButtonAccount(evictAccountFromAllianceAnswer.getBattleGroup(), false);
+                    } else {
+                        Debug.error("PPBattlesList.onReceive(type = " + type + "): battleGroup == null");
                     }
+
+//                    ClientConfigurationFactory.getConfiguration().setBattle(null);
+//                    battleList.updateList();
                     break;
                 }
                 case Packets.CANCEL_BATTLE:
@@ -119,16 +128,15 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     //todo: Дореализовать обработчик события и тщательно его протестировать
 //                    ClientCancelBattleAnswer cancelBattleAnswer = (ClientCancelBattleAnswer) message;
 //                    if (cancelBattleAnswer.getBattleId() == ClientConfigurationFactory.getConfiguration().getBattle()) {
-                {
-                    ClientConfigurationFactory.getConfiguration().setBattle(null);
-                    battleCreateButton.setVisible(true);
-                    battleList.updateList();
-                }
-                break;
+                    {
+                        ClientConfigurationFactory.getConfiguration().setBattle(null);
+                        battleCreateButton.setVisible(true);
+                        battleList.updateList();
+                    }
+                    break;
                 case Packets.START_BATTLE:
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): START_BATTLE");
                     //todo: реализовать
-
                     break;
                 default:
                     Debug.error("There is a message of type = " + type);
@@ -148,10 +156,8 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().unregister(this);
     }
 
-    private void doChangedListenedBattle(Battle battle) {
-        ClientConfigurationFactory.getConfiguration().setBattle(battle);
-//        battleCreateButton.setVisible(true);
-        battleList.updateList();
+    public void doUpdateButtonAccount(BattleGroup battleGroup, boolean isReady) {
+        battleList.updateButtonAccount(battleGroup, isReady);
     }
 
     @Override
@@ -198,9 +204,12 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
      * @param listenedBattle - битва созданная данным клиентом, или null если только начали слушать все битвы
      * @param callerPanel    - панелька, из которой перешли на данную панельку
      */
-    public void showPanel(Battle listenedBattle, DrawablePPanel callerPanel) {
+    public void showPanel(Battle listenedBattle, BattleGroup completeBattleGroup, DrawablePPanel callerPanel) {
         Debug.debug("Dialog 'Battles'");
         ClientConfigurationFactory.getConfiguration().setBattle(listenedBattle);
+        if (completeBattleGroup != null) {
+            doUpdateButtonAccount(completeBattleGroup, true);
+        }
         battleList.updateList();
         ScrollHelper.adjustVerticalInertMotionListener((ElasticInertMotionListener) battleList.getMotionListener(), battleList);
 
@@ -227,43 +236,43 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         if (listenedBattle == null) {
             // Нет битв, которую я создал или в которую вступил => можно смело создавать битву
             // Особой реакции на этот случай не требуется
+        } else
+        if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
+            // Битва была создана мною => нужно заканселить ее
+            // Этой ситуации вообще происходить не должно, но, на всякий случай, обработаем ее
+            Debug.error("There was an attempt to create a battle, when there are already created battle");
+
+            boolean res = RequestHelper.cancelBattle(listenedBattle, this);
+            ClientConfigurationFactory.getConfiguration().setBattle(null);
+            battleList.updateList();
+            if (!res) {
+                return;
+            }
         } else {
-            if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
-                // Битва была создана мною => нужно заканселить ее
-                // Этой ситуации вообще происходить не должно
-                Debug.error("There was an attempt to create a battle, when there are already created battle");
-                boolean res = RequestHelper.cancelBattle(listenedBattle, this);
+            BattleGroup myBattleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(listenedBattle, configuration.getAccount().getId());
+            if (myBattleGroup != null) {
+                // Я вступил в одну из боевых групп => нужно выйти из битвы
+                if (myBattleGroup.getAlliance().getBattle().getId() != listenedBattle.getId()) {
+                    Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAlliance().getBattle().getId() != listenedBattle.getId()");
+                }
+                if (myBattleGroup.getAccount().getId() != configuration.getAccount().getId()) {
+                    Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAccount().getId() != configuration.getAccount().getId()");
+                }
+                boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
+                        RequestHelper.doNotListenToBattle(listenedBattle, this);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
                 if (!res) {
                     return;
                 }
             } else {
-                BattleGroup myBattleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(listenedBattle, configuration.getAccount().getId());
-                if (myBattleGroup != null) {
-                    // Я вступил в одну из боевых групп => нужно выйти из битвы
-                    if (myBattleGroup.getAlliance().getBattle().getId() != listenedBattle.getId()) {
-                        Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAlliance().getBattle().getId() != listenedBattle.getId()");
-                    }
-                    if (myBattleGroup.getAccount().getId() != configuration.getAccount().getId()) {
-                        Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAccount().getId() != configuration.getAccount().getId()");
-                    }
-                    boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
-                            RequestHelper.doNotListenToBattle(listenedBattle, this);
-                    ClientConfigurationFactory.getConfiguration().setBattle(null);
-                    battleList.updateList();
-                    if (!res) {
-                        return;
-                    }
-                } else {
-                    // Я просто подписался на обновления битвы => нужно отписаться от обновлений
-                    //todo: Вероятно, этот случай никогда не наступит
-                    boolean res = RequestHelper.doNotListenToBattle(listenedBattle, this);
-                    ClientConfigurationFactory.getConfiguration().setBattle(null);
-                    battleList.updateList();
-                    if (!res) {
-                        return;
-                    }
+                // Я просто подписался на обновления битвы => нужно отписаться от обновлений
+                // Эта ситуация возможна, если я вошел в боевую группу одной из битв, а потом автор этой битвы меня выкинул из боевой группы
+                boolean res = RequestHelper.doNotListenToBattle(listenedBattle, this);
+                ClientConfigurationFactory.getConfiguration().setBattle(null);
+                battleList.updateList();
+                if (!res) {
+                    return;
                 }
             }
         }
@@ -275,7 +284,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
     /**
      * Обработчик нажатия на иконку боевой группы, чтобы вступить в нее или посмотреть кто в нее вступил.
      */
-    public void onPlayerButtonClick(BattleGroup battleGroup) {
+    public void onPlayerButtonClick(BattleGroup targetBattleGroup) {
         /* Рассмотрим различные ситуации и варианты реакции на них:
         I.  Боевая группа свободна
             Важно: Не забываем, что мы можем уже состоять в одной из боевых групп той же битвы, в этом случае, нужно
@@ -293,20 +302,21 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
         Battle listenedBattle = configuration.getBattle();
 
-        if (battleGroup.getAccount() == null) {
+        if (targetBattleGroup.getAccount() == null) {
             // Я щелкнул по иконке незанятой боевой группы
             if (listenedBattle == null) {
                 // У меня нет своей битвы и я не вхожу ни в одну другую битву => могу смело выбирать бойцов и вступать в чужую битву
                 // Особой реакции на этот случай не требуется
-            } else if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: сравнивать сущности по id или по ссылке?
+            } else
+            if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: сравнивать сущности по id или по ссылке?
                 // У меня есть своя битва
-                if (battleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
+                if (targetBattleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
                     // Я собираюсь вступить в боевую группу своей битвы => сначало нужно освободить занятую боевую группу перед вступлением в другую
                     BattleGroup myBattleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(
                             listenedBattle, configuration.getAccount().getId());
                     if (myBattleGroup != null) {
                         // Я вхожу в одну из других боевых груп => выхожу из нее и вхожу в другую
-                        //todo: должно быть иное действие по освобождение занимаемой боевой группы, при этом я не должен выходить из битвы
+                        //todo: должно быть иное действие по освобождению занимаемой боевой группы, при этом я не должен выходить из битвы
                         if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
                             return;
                         }
@@ -323,25 +333,34 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     }
                 }
             } else {
-                // У меня нет своей битвы, но я занимаю боевую группу чужой битвы
+                // У меня нет своей битвы, но я подписан на чужую битву
                 BattleGroup myBattleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(
                         listenedBattle, configuration.getAccount().getId());
-                if (myBattleGroup == null) {
-                    Debug.error("PBattlesPanel.onPlayerButtonClick(): myBattleGroup == null");
-                }
-
-                if (battleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
-                    // Я собираюсь вступить в другую боевую группу чужой битвы, одну из боевых групп которой, я уже занимаю
-                    // Я вхожу в одну из других боевых груп => выхожу из нее и вхожу в другую
-                    //todo: должно быть иное действие по освобождению занимаемой боевой группы, при этом я не должен выходить из битвы
-                    if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
-                        return;
+                if (targetBattleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
+                    if (myBattleGroup != null) {
+                        // Я собираюсь вступить в другую боевую группу чужой битвы, одну из боевых групп которой, я уже занимаю
+                        // Я вхожу в одну из других боевых груп => выхожу из нее и вхожу в другую
+                        //todo: должно быть иное действие по освобождению занимаемой боевой группы, при этом я не должен выходить из битвы
+                        if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
+                            return;
+                        }
+//                        disbandBattleGroup(myBattleGroup);
+                    } else {
+                        // Я просто наблюдаю за битвой, не являясь ни ее создателем, ни входя ни в одну из ее боевых групп
+                        // Эта ситуация возможна, если я вошел в боевую группу битвы, а потом автор этой битвы меня выкинул из боевой группы
+                        // Особой реакции на этот случай не требуется
                     }
-//                    disbandBattleGroup(myBattleGroup);
                 } else {
                     // Я собираюсь вступить в боевую группу другой битвы
-                    boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
-                            RequestHelper.doNotListenToBattle(listenedBattle, this);
+                    boolean res;
+                    if (myBattleGroup != null) {
+                        // Я вхожу в одну из боевых груп => выхожу из нее
+                        res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this);
+                    } else {
+                        // Я просто наблюдатель битвы, подписан на ее обновления
+                        res = true;
+                    }
+                    res = res && RequestHelper.doNotListenToBattle(listenedBattle, this);
                     ClientConfigurationFactory.getConfiguration().setBattle(null);
                     battleList.updateList();
                     if (!res) {
@@ -349,17 +368,18 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     }
                 }
             }
-        } else if (battleGroup.getAccount().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
+        } else
+        if (targetBattleGroup.getAccount().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
             // Боевая группа занята мною => посмотрим каких бойцов я выбрал и, при необходимости, перевыберем их
             // Особой реакции на этот случай не требуется
         } else {
             // Боевая группа кем-то занята, но не мною => посмотрим информацию об игроке
             PRegolithPanelManager.getInstance().getPlayerInfoPanel().showPanel(
-                    battleGroup, battleGroup.getAlliance().getBattle().getAuthor().getId() == configuration.getAccount().getId());
+                    targetBattleGroup, targetBattleGroup.getAlliance().getBattle().getAuthor().getId() == configuration.getAccount().getId());
             return;
         }
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        panelManager.getSelectWarriorsPanel().showPanel(battleGroup);
+        panelManager.getSelectWarriorsPanel().showPanel(targetBattleGroup);
     }
 
     public void onStartBattleButtonClick() {
