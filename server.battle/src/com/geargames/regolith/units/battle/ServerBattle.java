@@ -20,6 +20,7 @@ public class ServerBattle {
 
     public ServerBattle(Battle battle) {
         this.battle = battle;
+        active = 0;
     }
 
     public Collection<BattleGroup> getGroups() {

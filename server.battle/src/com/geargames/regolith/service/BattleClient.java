@@ -1,5 +1,7 @@
 package com.geargames.regolith.service;
 
+import com.geargames.regolith.units.battle.ServerBattle;
+
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -9,6 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class BattleClient extends Client {
     private ReentrantLock lock;
+    private ServerBattle serverBattle;
 
     public BattleClient() {
         this.lock = new ReentrantLock();
@@ -22,4 +25,11 @@ public class BattleClient extends Client {
         lock.unlock();
     }
 
+    public ServerBattle getServerBattle() {
+        return serverBattle;
+    }
+
+    public void setServerBattle(ServerBattle serverBattle) {
+        this.serverBattle = serverBattle;
+    }
 }

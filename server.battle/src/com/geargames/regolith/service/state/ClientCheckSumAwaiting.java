@@ -14,9 +14,6 @@ import com.geargames.regolith.service.Client;
  * Time: 13:56
  */
 public class ClientCheckSumAwaiting extends BattleState {
-    private ClientAtBattle clientAtBattle;
-    private ClientActivationAwaiting clientActivationAwaiting;
-
     @Override
     protected void execute(MicroByteBuffer from, Client client, short type) throws RegolithException {
         ServerRequest request;
@@ -28,18 +25,6 @@ public class ClientCheckSumAwaiting extends BattleState {
                 throw new RegolithException();
         }
         BattleServiceConfigurationFactory.getConfiguration().getWriter().addMessageToClient(request.request(from, getWriteBuffer(), client).get(0));
-        if (clientActivationAwaiting != null) {
-            client.setState(clientActivationAwaiting);
-        } else {
-            client.setState(clientAtBattle);
-        }
-    }
-
-    public void setClientAtBattle(ClientAtBattle clientAtBattle) {
-        this.clientAtBattle = clientAtBattle;
-    }
-
-    public void setClientActivationAwaiting(ClientActivationAwaiting clientActivationAwaiting) {
-        this.clientActivationAwaiting = clientActivationAwaiting;
+        client.setState(new ClientActivationAwaiting());
     }
 }

@@ -86,9 +86,6 @@ public class ServerShootRequest extends ServerRequest {
             }
         }
 
-        ClientCheckSumAwaiting state = new ClientCheckSumAwaiting();
-        state.setClientAtBattle((ClientAtBattle)client.getState());
-        client.setState(state);
         return messages;
     }
 }

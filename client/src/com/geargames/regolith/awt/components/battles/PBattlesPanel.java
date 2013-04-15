@@ -21,6 +21,8 @@ import com.geargames.regolith.managers.ClientBattleCreationManager;
 import com.geargames.regolith.managers.ClientBattleMarketManager;
 import com.geargames.regolith.network.RequestHelper;
 import com.geargames.regolith.serializers.answers.*;
+import com.geargames.regolith.serializers.requests.LoginToBattleServiceRequest;
+import com.geargames.regolith.serializers.requests.StartBattleRequest;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -137,6 +139,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 case Packets.START_BATTLE:
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): START_BATTLE");
                     //todo: реализовать
+                    onStartBattleReceive(message);
                     break;
                 default:
                     Debug.error("There is a message of type = " + type);
@@ -221,6 +224,12 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
     public void onStartBattleReceive(ClientDeSerializedMessage message){
         ClientStartBattleAnswer answer = (ClientStartBattleAnswer)message;
         if(answer.isSuccess()){
+            ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
+            configuration.setBattle(answer.getBattle());
+            LoginToBattleServiceRequest request = new LoginToBattleServiceRequest();
+            request.setBattle(answer.getBattle());
+            configuration.getNetwork().sendMessage(new LoginToBattleServiceRequest());
+
 
         }else{
             NotificationBox.error(LocalizedStrings.COULD_NOT_START_BATTLE, this);
