@@ -38,9 +38,11 @@ public class PCampButton extends PTouchButton {
         BattleTypeCollection types = ClientConfigurationFactory.getConfiguration().getBaseConfiguration().getBattleTypes();
         BattleType type = null;
         for (int i = 0; i < types.size(); i++) {
-            if (types.get(i).getName().equals("1x1")) {
-                type = types.get(i);
+            type = types.get(i);
+            if (type.getAllianceAmount() == 2 && type.getAllianceSize() == 1 && type.getGroupSize() == 1) {
+                break;
             }
+            type = null;
         }
         if (type != null) {
             Battle battle = new Battle();
