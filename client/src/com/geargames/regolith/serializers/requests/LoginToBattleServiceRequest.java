@@ -20,9 +20,12 @@ public class LoginToBattleServiceRequest extends ClientSerializedMessage {
     private Battle battle;
     private BattleAlliance alliance;
 
-    public LoginToBattleServiceRequest(ClientConfiguration configuration, Battle battle, BattleAlliance alliance) {
-        super(configuration);
+
+    public void setBattle(Battle battle) {
         this.battle = battle;
+    }
+
+    public void setAlliance(BattleAlliance alliance) {
         this.alliance = alliance;
     }
 

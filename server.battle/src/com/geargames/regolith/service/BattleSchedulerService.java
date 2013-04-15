@@ -1,11 +1,11 @@
 package com.geargames.regolith.service;
 
+import com.geargames.regolith.managers.CommonBattleManager;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.answers.FinishBattleMessage;
 import com.geargames.regolith.serializers.answers.ServerChangeActiveAllianceMessage;
 import com.geargames.regolith.service.clientstates.ClientState;
-import com.geargames.regolith.service.state.ClientActivationAwaiting;
 import com.geargames.regolith.service.state.ClientAtBattle;
 import com.geargames.regolith.service.state.ClientCheckSumAwaiting;
 import com.geargames.regolith.units.battle.*;
@@ -14,6 +14,7 @@ import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.*;
 
 public class BattleSchedulerService {
@@ -43,6 +44,20 @@ public class BattleSchedulerService {
         }
     }
 
+    public void add(final List<MessageToClient> messages){
+        scheduler.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (Thread.currentThread().isInterrupted()) {
+                    return;
+                }
+                for(MessageToClient message : messages){
+                    writer.addMessageToClient(message);
+                }
+            }
+        });
+    }
+
     public void add(final ServerBattle serverBattle) {
         serverBattle.setFuture(scheduler.scheduleAtFixedRate(
                 new Runnable() {
@@ -54,13 +69,7 @@ public class BattleSchedulerService {
                         int index = serverBattle.getActive();
                         for (BattleClient client : serverBattle.getAlliances().get(index)) {
                             client.lock();
-                            ClientState state = client.getState();
-                            if (state instanceof ClientAtBattle) {
-                                client.setState(new ClientActivationAwaiting());
-                            } else if (state instanceof ClientCheckSumAwaiting) {
-                                ClientCheckSumAwaiting checkSumAwaiting = (ClientCheckSumAwaiting) state;
-                                checkSumAwaiting.setClientActivationAwaiting(new ClientActivationAwaiting());
-                            }
+                            client.setState(new ClientCheckSumAwaiting());
                             client.release();
                         }
                         index = (index + 1) % serverBattle.getAlliances().size();
@@ -68,8 +77,8 @@ public class BattleSchedulerService {
                             client.lock();
                             ClientState state = client.getState();
                             if (state instanceof ClientCheckSumAwaiting) {
-                                ClientCheckSumAwaiting checkSumAwaiting = (ClientCheckSumAwaiting) state;
-                                checkSumAwaiting.setClientActivationAwaiting(null);
+                                //todo клиент со своего последнего хода не подтвердил свои данные
+                                CommonBattleManager.closeBattle(serverBattle);
                             } else {
                                 client.setState(new ClientAtBattle(serverBattle));
                             }

@@ -56,6 +56,7 @@ public class LocalizedStrings {
     // "ДЛЯ УЧАСТИЯ В БИТВЕ ВАМ ТРЕБУЕТСЯ ВЫБРАТЬ БОЙЦОВ: %s.\nСОВЕТ: ЩЕЛКНИТЕ ПО ИКОНКЕ БОЙЦА ДЛЯ ЕГО ВЫБОРА";
 
     public static final String SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION    = "НЕ УДАЛОСЬ ОТМЕНИТЬ БИТВУ";
+    public static final String COULD_NOT_START_BATTLE = "НЕ УДАЛОСЬ НАЧАТЬ БИТВУ";
 
     // ----- Player info -------------------------------------------------------------------------------------------
 

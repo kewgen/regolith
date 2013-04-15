@@ -131,7 +131,7 @@ public final class Application extends com.geargames.common.Application {
         panels = PRegolithPanelManager.getInstance();
 
         panels.initiate(render);
-        panels.changeScreen(panels.getMainScreen());
+        panels.show(panels.getMainScreen());
         panels.show(panels.getMainMenu());
         panels.show(panels.getHeadline());
         panels.show(panels.getLeft());

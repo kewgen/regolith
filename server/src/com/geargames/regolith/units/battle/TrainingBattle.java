@@ -18,11 +18,12 @@ public class TrainingBattle extends ServerBattleType {
                 return false;
             } else {
                 ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
+                BattleType battleType = battle.getBattleType();
                 int size = groups.size();
-                if (size != battle.getBattleType().getAllianceSize()) {
+                if (size != battleType.getAllianceSize()) {
                     return false;
                 }
-                int groupSize = battle.getBattleType().getGroupSize();
+                int groupSize = battleType.getGroupSize();
                 for (BattleGroup group : groups.getBattleGroups()) {
                     if (group.getWarriors().size() != groupSize) {
                         return false;
