@@ -6,6 +6,7 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.awt.components.common.PShowingModalLabel;
 
@@ -34,12 +35,14 @@ public class PMoneyRegolithPanel extends PRootContentPanel implements DataMessag
                 break;
             case 1:
                 moneyLabel = new PShowingModalLabel((PObject)index.getPrototype());
+                moneyLabel.setFont(PFontCollection.getFontLabel());
                 moneyLabel.setText("0");
 //                moneyLabel.setPanel();
                 addActiveChild(moneyLabel, index);
                 break;
             case 2:
                 regolithLabel = new PShowingModalLabel((PObject)index.getPrototype());
+                regolithLabel.setFont(PFontCollection.getFontLabel());
                 regolithLabel.setText("0");
 //                regolithLabel.setPanel();
                 addActiveChild(regolithLabel, index);
@@ -67,6 +70,7 @@ public class PMoneyRegolithPanel extends PRootContentPanel implements DataMessag
 //                    ClientMoneyUpdate moneyUpdate = (ClientMoneyUpdate) message;
 //                    moneyLabel.setText(moneyUpdate.getMoney());
 //                    regolithLabel.setText(moneyUpdate.getRegolith());
+//                    ClientConfigurationFactory.getConfiguration().getAccount().getMoney()
 //                    break;
                 default:
                     Debug.error("There is a message of type = " + type);

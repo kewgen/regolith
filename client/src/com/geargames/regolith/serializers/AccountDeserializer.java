@@ -108,6 +108,7 @@ public class AccountDeserializer {
         account.setFortunate(SimpleDeserializer.deserializeInt(buffer));
         account.setSpecialist(SimpleDeserializer.deserializeInt(buffer));
         account.setMoney(SimpleDeserializer.deserializeInt(buffer));
+        account.setRegolith(SimpleDeserializer.deserializeInt(buffer));
         byte length = buffer.get();
         ClientWarriorCollection warriors = new ClientWarriorCollection(new Vector());
         for (int i = 0; i < length; i++) {

@@ -47,6 +47,11 @@ public abstract class DefaultDrawablePPanel extends DrawablePPanel {
         ((PRootContentPanel) getElement()).onHide();
     }
 
+//    // onAutoClose, onAutoHide
+//    public void onCancel() {
+//        ((PRootContentPanel) getElement()).onCancel();
+//    }
+
     @Override
     public boolean onModalEvent(int code, int param, int xTouch, int yTouch) {
         if (modalAutoClose && code == Event.EVENT_TOUCH_PRESSED) {
@@ -55,6 +60,7 @@ public abstract class DefaultDrawablePPanel extends DrawablePPanel {
             int yLocal = yTouch - getY() + region.getMinY();
             if (!region.isWithIn(xLocal, yLocal)) {
                 PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+//                onCancel();
                 panelManager.hide(this);
                 return true;
             }

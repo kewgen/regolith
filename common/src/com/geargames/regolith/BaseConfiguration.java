@@ -11,7 +11,8 @@ import java.io.Serializable;
 public class BaseConfiguration implements Serializable {
     private short revision;
 
-    private short money;
+    private int money;
+    private int regolith;
     private byte pocketsAmount;
     private byte maxWorkShopLevel;
     private byte maxWorkShopProbability;
@@ -90,12 +91,24 @@ public class BaseConfiguration implements Serializable {
      * Базовое количество денег выделенных аккаунту.
      * @return
      */
-    public short getMoney() {
+    public int getMoney() {
         return money;
     }
 
-    public void setMoney(short money) {
+    public void setMoney(int money) {
         this.money = money;
+    }
+
+    /**
+     * Базовое количество реголита выделенных аккаунту.
+     * @return
+     */
+    public int getRegolith() {
+        return regolith;
+    }
+
+    public void setRegolith(int regolith) {
+        this.regolith = regolith;
     }
 
     public BattleTypeCollection getBattleTypes() {

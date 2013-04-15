@@ -11,6 +11,7 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.application.Graph;
+import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.BattleGroup;
@@ -35,6 +36,7 @@ public class PPlayerButton extends PTouchButton {
 
         IndexObject index = (IndexObject) prototype.getIndexBySlot(3);
         titleLabel = new PSimpleLabel(index);
+        titleLabel.setFont(PFontCollection.getFontLabelSmall());
         titleLabel.setX(index.getX());
         titleLabel.setY(index.getY());
 

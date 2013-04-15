@@ -86,12 +86,12 @@ public class PFontCollection {
 
     public static PFont getFontLabelSmall() {
         checkInstance();
-        return instance.font12;
+        return instance.font10;
     }
 
     public static PFont getFontLabelLarge() {
         checkInstance();
-        return instance.font12;
+        return instance.font14;
     }
 
     public static PFont getFontListTitle() {

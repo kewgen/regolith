@@ -89,6 +89,7 @@ public class AccountSerializer {
         SimpleSerializer.serialize(account.getFortunate(), buffer);
         SimpleSerializer.serialize(account.getSpecialist(), buffer);
         SimpleSerializer.serialize(account.getMoney(), buffer);
+        SimpleSerializer.serialize(account.getRegolith(), buffer);
         SimpleSerializer.serialize((byte) account.getWarriors().size(), buffer);
         for (Warrior warrior : ((ServerWarriorCollection) account.getWarriors()).getWarriors()) {
             serialize(warrior, buffer);

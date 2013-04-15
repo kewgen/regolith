@@ -17,6 +17,7 @@ public class Account extends Login {
     private int experience;
 
     private int money;
+    private int regolith;
     private int specialist;
     private int coach;
     private int economist;
@@ -37,6 +38,14 @@ public class Account extends Login {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public int getRegolith() {
+        return regolith;
+    }
+
+    public void setRegolith(int regolith) {
+        this.regolith = regolith;
     }
 
     public int getSpecialist() {
