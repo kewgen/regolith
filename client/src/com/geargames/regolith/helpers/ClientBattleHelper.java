@@ -137,7 +137,7 @@ public class ClientBattleHelper {
     }
 
     /**
-     *  Вернуть солдатиков для отрисовки на BattleScreen -  противников по битве battle для account.
+     * Вернуть солдатиков для отрисовки на BattleScreen - противников по битве battle для account.
      * @param battle
      * @param account
      * @return
@@ -293,7 +293,6 @@ public class ClientBattleHelper {
             }
         }
         return null;
-
     }
 
 }

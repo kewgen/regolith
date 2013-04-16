@@ -31,17 +31,13 @@ public class ClientTestHelper {
     /**
      * Залогинить клиента.
      */
-    public static ClientLoginAnswer clientLogon(String accountName, String accountPassword, boolean createIfNotExist) throws Exception {
+    public static ClientLoginAnswer clientLogon(Login login, boolean createIfNotExist) throws Exception {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         ClientCommonManager commonManager = clientConfiguration.getCommonManager();
 
-        Login login = new Login();
-        login.setName(accountName);
-        login.setPassword(accountPassword);
-
         System.out.println("Is checking for a login name");
 
-        ClientConfirmationAnswer confirm = commonManager.checkForName(accountName);
+        ClientConfirmationAnswer confirm = commonManager.checkForName(login.getName());
         if (createIfNotExist) {
             if (confirm.isConfirm()) {
                 System.out.println("Trying to create an account");

@@ -7,6 +7,8 @@ import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.BrowseBattlesSchedulerService;
 import com.geargames.regolith.service.Client;
+import com.geargames.regolith.service.MainServerConfiguration;
+import com.geargames.regolith.service.MainServerConfigurationFactory;
 
 /**
  * User: mkutuzov
@@ -15,8 +17,9 @@ import com.geargames.regolith.service.Client;
 public class ServerListenToBrowsedCreatedBattlesRequest extends MainOneToClientRequest {
     private BrowseBattlesSchedulerService schedulerService;
 
-    public ServerListenToBrowsedCreatedBattlesRequest(BrowseBattlesSchedulerService schedulerService) {
-        this.schedulerService = schedulerService;
+    public ServerListenToBrowsedCreatedBattlesRequest() {
+        MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
+        this.schedulerService = configuration.getBrowseBattlesSchedulerService();
     }
 
     @Override
@@ -24,4 +27,5 @@ public class ServerListenToBrowsedCreatedBattlesRequest extends MainOneToClientR
         schedulerService.addListener(client);
         return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.LISTEN_TO_BROWSED_CREATED_BATTLES);
     }
+
 }

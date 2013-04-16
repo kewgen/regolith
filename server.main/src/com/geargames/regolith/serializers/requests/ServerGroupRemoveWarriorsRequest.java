@@ -37,9 +37,9 @@ public class ServerGroupRemoveWarriorsRequest extends ServerRequest {
         List<SocketChannel> recipients;
         SerializedMessage message;
         Battle battle = battleManagerContext.getBattlesById().get(SimpleDeserializer.deserializeInt(from));
-        BattleAlliance alliance = BattleHelper.findAlliance(battle, SimpleDeserializer.deserializeInt(from));
+        BattleAlliance alliance = BattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(from));
         if (alliance != null) {
-            BattleGroup group = BattleHelper.findBattleGroup(alliance, SimpleDeserializer.deserializeInt(from));
+            BattleGroup group = BattleHelper.findBattleGroupById(alliance, SimpleDeserializer.deserializeInt(from));
             if (group != null) {
                 battleCreationManager.removeWarriors(group);
                 if (battleCreationManager.isNotReady(group)) {

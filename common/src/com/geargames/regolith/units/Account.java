@@ -140,9 +140,4 @@ public class Account extends Login {
         this.base = base;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + "; name='" + getName() + "'";
-    }
-
 }

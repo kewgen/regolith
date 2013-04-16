@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Клиент находится на базе.
+ * Users: mkutuzov, abarakov
  */
 public class ClientAtBase extends MainState {
     private ServerContext context;
@@ -34,8 +35,8 @@ public class ClientAtBase extends MainState {
         processors.put(Packets.TAKE_AMMUNITION_FROM_BAG_PUT_ON_WARRIOR, new ServerAmmunitionBag2WarriorRequest());
         processors.put(Packets.TAKE_TACKLE_FROM_BAG_PUT_ON_BODY, new ServerTackleBag2WarriorRequest());
         processors.put(Packets.TAKE_TACKLE_FROM_BAG_PUT_INTO_STORE_HOUSE, new ServerTackleBag2StoreHouseRequest());
-        processors.put(Packets.TAKE_AMMUNITION_FROM_STORE_HOUSE_PUT_INTO_BAG, new ServerAmmunitionStoreHouse2Bag());
-        processors.put(Packets.TAKE_AMMUNITION_FROM_STORE_HOUSE_PUT_ONTO_WARRIOR, new ServerAmmunitionStoreHouse2Warrior());
+        processors.put(Packets.TAKE_AMMUNITION_FROM_STORE_HOUSE_PUT_INTO_BAG, new ServerAmmunitionStoreHouse2BagRequest());
+        processors.put(Packets.TAKE_AMMUNITION_FROM_STORE_HOUSE_PUT_ONTO_WARRIOR, new ServerAmmunitionStoreHouse2WarriorRequest());
         processors.put(Packets.TAKE_TACKLE_FROM_STORE_HOUSE_PUT_INTO_BAG, new ServerTackleStoreHouse2BagRequest());
         processors.put(Packets.TAKE_TACKLE_FROM_STORE_HOUSE_PUT_ON_WARRIOR, new ServerTackleStoreHouse2WarriorRequest());
         processors.put(Packets.TAKE_TACKLE_FROM_BODY_PUT_INTO_BAG, new ServerTakleWarrior2BagRequest());
@@ -48,8 +49,7 @@ public class ClientAtBase extends MainState {
         List<MessageToClient> messages;
         switch (type) {
             case Packets.LOGOUT:
-                client.setState(new ClientNotLoggedIn());
-                context.removeChannel(client.getAccount());
+                new ServerSimpleLogoutRequest().clientRequest(from, client);
                 return;
             case Packets.BATCH_MESSAGE:
                 messages = batchRequest.request(from, getWriteBuffer(), client);

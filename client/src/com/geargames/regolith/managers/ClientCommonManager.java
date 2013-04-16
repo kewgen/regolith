@@ -36,10 +36,9 @@ public class ClientCommonManager {
 
     /**
      * Послать сообщение-запрос о выходе пользователем из своего аккаунта, т.е. разлогинить аккаунт.
-     * @param login
      */
-    public void logout(Login login) {
-        configuration.getNetwork().sendMessage(new LogoutRequest(configuration, login.getName()));
+    public void logout() {
+        configuration.getNetwork().sendMessage(new LogoutRequest(configuration));
     }
 
     /**

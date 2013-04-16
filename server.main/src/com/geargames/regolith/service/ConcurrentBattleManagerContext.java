@@ -9,28 +9,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 15.06.12
  */
 public class ConcurrentBattleManagerContext implements BattleManagerContext {
-    private ConcurrentMap<Integer, Battle> battles;
-    private ConcurrentMap<Account, Battle> created;
+    private ConcurrentMap<Integer, Battle> battlesById;
+    private ConcurrentMap<Account, Battle> createdBattles;
+    private ConcurrentMap<Account, Battle> battlesByAccount; //todo: Мапы createdBattles и battlesByAccount можно объединить
     private ConcurrentMap<Battle, Set<Account>> listeners;
     private ConcurrentMap<Battle, Set<BattleGroup>> completeGroups;
 
     public ConcurrentBattleManagerContext() {
-        created = new ConcurrentHashMap<Account, Battle>();
+        battlesById = new ConcurrentHashMap<Integer, Battle>();
+        createdBattles = new ConcurrentHashMap<Account, Battle>();
+        battlesByAccount = new ConcurrentHashMap<Account, Battle>();
         listeners = new ConcurrentHashMap<Battle, Set<Account>>();
-        battles = new ConcurrentHashMap<Integer, Battle>();
         completeGroups = new ConcurrentHashMap<Battle, Set<BattleGroup>>();
-    }
-
-    /**
-     * ??? Получить map...
-     */
-    @Override
-    public ConcurrentMap<Battle, Set<BattleGroup>> getCompleteGroups() {
-        return completeGroups;
     }
 
     /**
@@ -38,7 +32,7 @@ public class ConcurrentBattleManagerContext implements BattleManagerContext {
      */
     @Override
     public ConcurrentMap<Integer, Battle> getBattlesById() {
-        return battles;
+        return battlesById;
     }
 
     /**
@@ -46,7 +40,15 @@ public class ConcurrentBattleManagerContext implements BattleManagerContext {
      */
     @Override
     public ConcurrentMap<Account, Battle> getCreatedBattles() {
-        return created;
+        return createdBattles;
+    }
+
+    /**
+     * Получить map всех слушаемых битв каждым клиентом, где ключ - это ссылка на подписчика битвы (ее автора, участника или подписчика).
+     */
+    @Override
+    public ConcurrentMap<Account, Battle> getBattlesByAccount() {
+        return battlesByAccount;
     }
 
     /**
@@ -57,4 +59,13 @@ public class ConcurrentBattleManagerContext implements BattleManagerContext {
     public ConcurrentMap<Battle, Set<Account>> getBattleListeners() {
         return listeners;
     }
+
+    /**
+     * Получить map всех заполненных боевых групп всех битв.
+     */
+    @Override
+    public ConcurrentMap<Battle, Set<BattleGroup>> getCompleteGroups() {
+        return completeGroups;
+    }
+
 }

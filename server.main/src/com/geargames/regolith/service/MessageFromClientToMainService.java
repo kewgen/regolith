@@ -34,11 +34,15 @@ public class MessageFromClientToMainService implements Runnable {
             client.getState().execute(new MicroByteBuffer(buffer), client);
         } catch (RegolithException e) {
             logger.error("Regolith execution exception", e);
+            //todo: Правильно разлогинить клиента, использовать один из ServerSimpleLogoutRequest
             try {
                 client.getChannel().close();
             } catch (IOException e1) {
 
+            } finally {
+                serverConfiguration.getServerContext().removeClient(channel);
             }
         }
     }
+
 }

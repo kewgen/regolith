@@ -1,7 +1,6 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.managers.ServerTrainingBattleCreationManager;
 import com.geargames.regolith.serializers.answers.ServerEvictAccountFromAllianceAnswer;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
@@ -24,49 +23,49 @@ import java.util.List;
  */
 public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
     private BattleManagerContext battleManagerContext;
-    private ServerTrainingBattleCreationManager battleCreationManager;
     private ServerContext serverContext;
-    private BrowseBattlesSchedulerService schedulerService;
 
     public ServerEvictAccountFromAllianceRequest() {
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         this.battleManagerContext = configuration.getServerContext().getBattleManagerContext();
-        this.battleCreationManager = configuration.getBattleCreationManager();
         this.serverContext = configuration.getServerContext();
-        this.schedulerService = configuration.getBrowseBattlesSchedulerService();
     }
 
-    @Override
+    public static List<MessageToClient> evictAccount(Battle battle, Account clientAccount, Account victimAccount, int allianceId, MicroByteBuffer buffer) {
+        List<MessageToClient> messages = new LinkedList<MessageToClient>();
+        if (clientAccount == battle.getAuthor() || clientAccount == victimAccount) {
+            for (BattleAlliance alliance : battle.getAlliances()) {
+                if (allianceId == alliance.getId()) {
+                    MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
+                    if (configuration.getBattleCreationManager().evictAccount(alliance, victimAccount)) {
+                        List<SocketChannel> recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
+                        configuration.getBrowseBattlesSchedulerService().updateBattle(battle);
+
+                        SerializedMessage message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(buffer, victimAccount, alliance);
+                        messages.add(new MainMessageToClient(recipients, message.serialize()));
+                        return messages;
+                    }
+                    break;
+                }
+            }
+        }
+        return messages;
+    }
+
     public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException {
         int battleId = SimpleDeserializer.deserializeInt(from);
         Battle battle = battleManagerContext.getBattlesById().get(battleId);
-        SerializedMessage message;
-        List<SocketChannel> recipients;
-        List<MessageToClient> messages = new LinkedList<MessageToClient>();
         if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) != null) {
             int allianceId = SimpleDeserializer.deserializeInt(from);
             int victimId = SimpleDeserializer.deserializeInt(from);
             Account victimAccount = serverContext.getActiveAccountById(victimId);
             if (victimAccount != null) {
-                if (client.getAccount() == battle.getAuthor() || client.getAccount() == victimAccount) {
-                    for (BattleAlliance alliance : battle.getAlliances()) {
-                        if (allianceId == alliance.getId()) {
-                            if (battleCreationManager.evictAccount(alliance, victimAccount)) {
-                                recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
-                                schedulerService.updateBattle(battle);
-
-                                message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(to, victimAccount, alliance);
-                                messages.add(new MainMessageToClient(recipients, message.serialize()));
-                                return messages;
-                            }
-                            break;
-                        }
-                    }
-                }
+                return evictAccount(battle, client.getAccount(), victimAccount, allianceId, to);
             }
         }
-        recipients = MainServerRequestUtils.singleRecipientByClient(client);
-        message = ServerEvictAccountFromAllianceAnswer.AnswerFailure(to);
+        List<SocketChannel> recipients = MainServerRequestUtils.singleRecipientByClient(client);
+        SerializedMessage message = ServerEvictAccountFromAllianceAnswer.AnswerFailure(to);
+        List<MessageToClient> messages = new LinkedList<MessageToClient>();
         messages.add(new MainMessageToClient(recipients, message.serialize()));
         return messages;
     }

@@ -56,7 +56,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
             String password = SimpleDeserializer.deserializeString(from);
             if (account.getName().equals(name) && account.getPassword().equals(password)) {
                 Battle battle = serverBattle.getBattle();
-                BattleAlliance alliance = BattleHelper.findAlliance(battle, allianceId);
+                BattleAlliance alliance = BattleHelper.findAllianceById(battle, allianceId);
                 serverBattle.getAlliances().get(alliance.getNumber()).add((BattleClient) client);
                 Collection<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getClients());
                 serverBattle.getClients().add((BattleClient) client);

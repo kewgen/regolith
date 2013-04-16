@@ -11,6 +11,7 @@ import com.geargames.regolith.service.clientstates.ClientState;
  * Time: 13:20
  */
 public abstract class MainState extends ClientState {
+
     public static  ThreadLocal<MicroByteBuffer> MICRO_BYTE_BUFFER = new ThreadLocal<MicroByteBuffer>(){
         @Override
         protected MicroByteBuffer initialValue() {

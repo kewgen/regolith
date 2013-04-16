@@ -52,7 +52,6 @@ public class ServerCommonManager {
 
 
     public Account login(Login login) {
-
         Session session = serverConfiguration.getSessionFactory().openSession();
         Criteria account = session.createCriteria(Account.class);
         account.add(Restrictions.eq("name", login.getName()));
@@ -66,7 +65,7 @@ public class ServerCommonManager {
         return accounts.get(0);
     }
 
-    public void logout(Login login) {
+    public void logout(Account account) {
 
     }
 }

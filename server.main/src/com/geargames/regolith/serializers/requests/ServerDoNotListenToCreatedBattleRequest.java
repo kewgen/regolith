@@ -23,12 +23,12 @@ public class ServerDoNotListenToCreatedBattleRequest extends MainOneToClientRequ
         MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
         Battle battle = configuration.getServerContext().getBattleManagerContext().getBattlesById().get(SimpleDeserializer.deserializeInt(from));
         if (battle != null) {
-            configuration.getBattleCreationManager().doNotListenToBattle(battle, client.getAccount());
-            client.setState(new ClientAtBattleMarket());
-            return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE);
-        } else {
-            return ServerConfirmationAnswer.answerFailure(writeBuffer, Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE);
+            if (configuration.getBattleCreationManager().doNotListenToBattle(battle, client.getAccount())) {
+                client.setState(new ClientAtBattleMarket());
+                return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE);
+            }
         }
+        return ServerConfirmationAnswer.answerFailure(writeBuffer, Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE);
     }
 
 }

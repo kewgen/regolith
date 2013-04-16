@@ -7,6 +7,8 @@ import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.BrowseBattlesSchedulerService;
 import com.geargames.regolith.service.Client;
+import com.geargames.regolith.service.MainServerConfiguration;
+import com.geargames.regolith.service.MainServerConfigurationFactory;
 
 /**
  * User: mkutuzov
@@ -15,8 +17,9 @@ import com.geargames.regolith.service.Client;
 public class ServerDoNotListenToCreatedBattlesRequest extends MainOneToClientRequest {
     private BrowseBattlesSchedulerService schedulerService;
 
-    public ServerDoNotListenToCreatedBattlesRequest(BrowseBattlesSchedulerService schedulerService) {
-        this.schedulerService = schedulerService;
+    public ServerDoNotListenToCreatedBattlesRequest() {
+        MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
+        this.schedulerService = configuration.getBrowseBattlesSchedulerService();
     }
 
     @Override

@@ -35,4 +35,5 @@ public class ClientNotLoggedIn extends MainState {
         }
         MainServerConfigurationFactory.getConfiguration().getWriter().addMessageToClient(messages.get(0));
     }
+
 }

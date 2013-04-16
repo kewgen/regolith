@@ -10,7 +10,7 @@ import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.service.*;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 20.06.12
  */
 public class ClientAtBattleMarket extends MainState {
@@ -29,6 +29,9 @@ public class ClientAtBattleMarket extends MainState {
         ServerRequest request;
         ServerBattleMarketManager battleMarketManager = serverConfiguration.getBattleMarketManager();
         switch (type) {
+            case Packets.LOGOUT:
+                new ServerSimpleLogoutRequest().clientRequest(from, client);
+                return;
             case Packets.CREATE_BATTLE:
                 request = new ServerCreateBattleRequest(serverConfiguration, battleMarketManager, schedulerService);
                 break;
@@ -36,7 +39,7 @@ public class ClientAtBattleMarket extends MainState {
                 request = new ServerListenToBattleRequest(battleManagerContext, battleMarketManager);
                 break;
             case Packets.GO_TO_BASE:
-                request = new ServerGoToBase();
+                request = new ServerGoToBaseRequest();
                 break;
             case Packets.BROWSE_BATTLE_MAPS:
                 request = new ServerBrowseBattleMapsRequest(battleMarketManager);
@@ -45,10 +48,10 @@ public class ClientAtBattleMarket extends MainState {
                 request = new ServerBrowseRandomBattleMapRequest();
                 break;
             case Packets.LISTEN_TO_BROWSED_CREATED_BATTLES:
-                request = new ServerListenToBrowsedCreatedBattlesRequest(schedulerService);
+                request = new ServerListenToBrowsedCreatedBattlesRequest();
                 break;
             case Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES:
-                request = new ServerDoNotListenToCreatedBattlesRequest(schedulerService);
+                request = new ServerDoNotListenToCreatedBattlesRequest();
                 break;
             case Packets.FRAME_MESSAGE:
                 request = new ServerGetFrameRequest();

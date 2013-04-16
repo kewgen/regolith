@@ -12,5 +12,7 @@ import java.util.List;
  * Date: 12.07.12
  */
 public abstract class ServerRequest {
+
     public abstract List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException;
+
 }

@@ -10,20 +10,21 @@ import com.geargames.regolith.service.*;
 import java.util.List;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 21.06.12
  */
 public class ClientAtBattleCreation extends MainState {
-    private BrowseBattlesSchedulerService schedulerService;
 
     public ClientAtBattleCreation() {
-        schedulerService = MainServerConfigurationFactory.getConfiguration().getBrowseBattlesSchedulerService();
     }
 
     @Override
     protected void execute(MicroByteBuffer from, Client client, short type) throws RegolithException {
         ServerRequest request;
         switch (type) {
+            case Packets.LOGOUT:
+                request = new ServerLogoutAtBattleCreationRequest();
+                break;
             case Packets.GROUP_COMPLETE:
                 request = new ServerGroupAddWarriorsRequest();
                 break;
@@ -46,10 +47,10 @@ public class ClientAtBattleCreation extends MainState {
                 request = new ServerGetFrameRequest();
                 break;
             case Packets.LISTEN_TO_BROWSED_CREATED_BATTLES:
-                request = new ServerListenToBrowsedCreatedBattlesRequest(schedulerService);
+                request = new ServerListenToBrowsedCreatedBattlesRequest();
                 break;
             case Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES:
-                request = new ServerDoNotListenToCreatedBattlesRequest(schedulerService);
+                request = new ServerDoNotListenToCreatedBattlesRequest();
                 break;
             case Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE:
                 request = new ServerDoNotListenToCreatedBattleRequest();
@@ -63,4 +64,5 @@ public class ClientAtBattleCreation extends MainState {
             writer.addMessageToClient(message);
         }
     }
+
 }
