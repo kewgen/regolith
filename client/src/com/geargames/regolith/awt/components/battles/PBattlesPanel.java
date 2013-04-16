@@ -229,6 +229,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             configuration.setBattle(answer.getBattle());
             LoginToBattleServiceRequest request = new LoginToBattleServiceRequest();
             request.setBattle(answer.getBattle());
+            request.setConfiguration(configuration);
             Network network = configuration.getNetwork();
             Debug.debug("Disconnecting from the main server." + network.getAddress() + ":" + network.getPort());
             network.disconnect();
@@ -236,7 +237,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             network.connect(answer.getHost(), answer.getPort());
             PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
             manager.showModal(manager.getLoginBattleServiceWait());
-            network.sendMessage(new LoginToBattleServiceRequest());
+            network.sendMessage(request);
         } else {
             NotificationBox.error(LocalizedStrings.COULD_NOT_START_BATTLE, this);
         }
