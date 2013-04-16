@@ -515,9 +515,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     @Override
     public void onShow() {
         if (battle != null) {
-            group = ClientBattleHelper.getBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
-            allies = ClientBattleHelper.getAllyBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
-            enemies = ClientBattleHelper.getEnemyBattleUnits(battle, ClientConfigurationFactory.getConfiguration().getAccount());
+            Account account = ClientConfigurationFactory.getConfiguration().getAccount();
+            group = ClientBattleHelper.getBattleUnits(battle, account);
+            allies = ClientBattleHelper.getAllyBattleUnits(battle, account);
+            enemies = ClientBattleHelper.getEnemyBattleUnits(battle, account);
 
             battleGroup = ((BattleUnit) group.get(0)).getUnit().getWarrior().getBattleGroup();
 
@@ -569,7 +570,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             ClientBattleHelper.route(user.getUnit().getWarrior(), battleConfiguration);
             timerId = TimerManager.setPeriodicTimer(100, this);
 
-            myTurn = true;
             setNetColor(255);
         }
     }

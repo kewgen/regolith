@@ -46,6 +46,19 @@ public class ClientConfigurationFactory {
         configuration.setBaseManager(new ClientBaseManager(configuration));
         configuration.setBaseWarriorMarketManager(new ClientBaseWarriorMarketManager(configuration));
 
+
+
+        short[] stepLengths = new short[8];
+        stepLengths[0] = (short)Port.getConvertedValue(63);
+        stepLengths[1] = (short)Port.getConvertedValue(63);
+        stepLengths[2] = (short)Port.getConvertedValue(63);
+        stepLengths[3] = (short)Port.getConvertedValue(63);
+        stepLengths[4] = (short)Port.getConvertedValue(63);
+        stepLengths[5] = (short)Port.getConvertedValue(63);
+        stepLengths[6] = (short)Port.getConvertedValue(63);
+        stepLengths[7] = (short)Port.getConvertedValue(63);
+        configuration.setStepLengths(stepLengths);
+
         return configuration;
     }
 

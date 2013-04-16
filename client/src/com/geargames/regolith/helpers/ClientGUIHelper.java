@@ -28,9 +28,14 @@ public class ClientGUIHelper {
     }
 
 
-    public static int getPackerScriptsDirection(Direction direction){
-        int number = direction.getNumber();
-        return number < 7 ? number + 1 : 0;
+    /**
+     * Класс работает с набором напрвлений от 0 до 7 с отсутсвием направления класс работает не корректно.
+     * @see Direction
+     * @param direction
+     * @return
+     */
+    public static int convertPackerScriptsDirection(Direction direction){
+        return  (direction.getNumber() + 2) % Direction.NONE.getNumber();
     }
 
 }

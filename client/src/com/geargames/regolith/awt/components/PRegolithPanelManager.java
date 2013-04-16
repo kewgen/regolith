@@ -4,6 +4,7 @@ import com.geargames.awt.*;
 import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
+import com.geargames.regolith.awt.components.battles.PBattleServiceLoginWait;
 import com.geargames.regolith.awt.components.battles.PBattlesPanel;
 import com.geargames.regolith.awt.components.main.*;
 import com.geargames.regolith.awt.components.playerInfo.PPlayerInfoPanel;
@@ -61,6 +62,7 @@ public class PRegolithPanelManager extends PPanelManager {
     private BattleScreen battleScreen;
 
     private DefaultDrawablePPanel fontTestWindow;
+    private TopDrawablePPanel loginBattleServiceWait;
 
     private PRegolithPanelManager() {
     }
@@ -199,6 +201,15 @@ public class PRegolithPanelManager extends PPanelManager {
         fontTestWindow = new MiddleDrawablePPanel();
         fontTestWindow.setAnchor(Anchors.CENTER_ANCHOR);
         fontTestWindow.setElement(fontTest);
+
+        PBattleServiceLoginWait startBattleWaitPanel = new PBattleServiceLoginWait(render.getObject(Graph.PAN_WAITING_SERVER));
+        loginBattleServiceWait = new TopDrawablePPanel();
+        loginBattleServiceWait.setAnchor(Anchors.CENTER_ANCHOR);
+        loginBattleServiceWait.setElement(startBattleWaitPanel);
+    }
+
+    public TopDrawablePPanel getLoginBattleServiceWait() {
+        return loginBattleServiceWait;
     }
 
     public MainScreen getMainScreen() {

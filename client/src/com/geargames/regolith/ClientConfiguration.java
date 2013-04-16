@@ -35,8 +35,17 @@ public class ClientConfiguration {
     private Warrior[] baseWarriors;
     private MessageDispatcher messageDispatcher;
     private boolean ready;
+    private short[] stepLengths;
 
     public ClientConfiguration() {
+    }
+
+    public short[] getStepLengths() {
+        return stepLengths;
+    }
+
+    public void setStepLengths(short[] stepLengths) {
+        this.stepLengths = stepLengths;
     }
 
     public MessageDispatcher getMessageDispatcher() {

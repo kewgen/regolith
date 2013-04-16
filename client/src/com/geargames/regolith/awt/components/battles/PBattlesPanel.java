@@ -5,6 +5,7 @@ import com.geargames.awt.utils.ScrollHelper;
 import com.geargames.awt.utils.motions.ElasticInertMotionListener;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.network.DataMessageListener;
+import com.geargames.common.network.Network;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
@@ -38,7 +39,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
 
     public PBattlesPanel(PObject prototype) {
         super(prototype);
-        types = new short[] {
+        types = new short[]{
                 Packets.BROWSE_CREATED_BATTLES,
                 Packets.JOIN_TO_BATTLE_ALLIANCE,
                 Packets.EVICT_ACCOUNT_FROM_ALLIANCE,
@@ -130,12 +131,12 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     //todo: Дореализовать обработчик события и тщательно его протестировать
 //                    ClientCancelBattleAnswer cancelBattleAnswer = (ClientCancelBattleAnswer) message;
 //                    if (cancelBattleAnswer.getBattleId() == ClientConfigurationFactory.getConfiguration().getBattle()) {
-                    {
-                        ClientConfigurationFactory.getConfiguration().setBattle(null);
-                        battleCreateButton.setVisible(true);
-                        battleList.updateList();
-                    }
-                    break;
+                {
+                    ClientConfigurationFactory.getConfiguration().setBattle(null);
+                    battleCreateButton.setVisible(true);
+                    battleList.updateList();
+                }
+                break;
                 case Packets.START_BATTLE:
                     Debug.debug("PBattlesList.onReceive(type = " + type + "): START_BATTLE");
                     //todo: реализовать
@@ -221,17 +222,23 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         panelManager.show(panelManager.getBattlesWindow());
     }
 
-    public void onStartBattleReceive(ClientDeSerializedMessage message){
-        ClientStartBattleAnswer answer = (ClientStartBattleAnswer)message;
-        if(answer.isSuccess()){
+    public void onStartBattleReceive(ClientDeSerializedMessage message) {
+        ClientStartBattleAnswer answer = (ClientStartBattleAnswer) message;
+        if (answer.isSuccess()) {
+            Debug.debug("The battle has begun.");
             ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
             configuration.setBattle(answer.getBattle());
             LoginToBattleServiceRequest request = new LoginToBattleServiceRequest();
             request.setBattle(answer.getBattle());
-            configuration.getNetwork().sendMessage(new LoginToBattleServiceRequest());
-
-
-        }else{
+            Network network = configuration.getNetwork();
+            Debug.debug("Disconnecting from the main server." + network.getAddress() + ":" + network.getPort());
+            network.disconnect();
+            Debug.debug("Connecting to the battle server." + answer.getHost() + ":" + answer.getPort());
+            network.connect(answer.getHost(), answer.getPort());
+            PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
+            manager.showModal(manager.getLoginBattleServiceWait());
+            network.sendMessage(new LoginToBattleServiceRequest());
+        } else {
             NotificationBox.error(LocalizedStrings.COULD_NOT_START_BATTLE, this);
         }
     }
@@ -245,8 +252,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         if (listenedBattle == null) {
             // Нет битв, которую я создал или в которую вступил => можно смело создавать битву
             // Особой реакции на этот случай не требуется
-        } else
-        if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
+        } else if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
             // Битва была создана мною => нужно заканселить ее
             // Этой ситуации вообще происходить не должно, но, на всякий случай, обработаем ее
             Debug.error("There was an attempt to create a battle, when there are already created battle");
@@ -316,8 +322,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             if (listenedBattle == null) {
                 // У меня нет своей битвы и я не вхожу ни в одну другую битву => могу смело выбирать бойцов и вступать в чужую битву
                 // Особой реакции на этот случай не требуется
-            } else
-            if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: сравнивать сущности по id или по ссылке?
+            } else if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: сравнивать сущности по id или по ссылке?
                 // У меня есть своя битва
                 if (targetBattleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
                     // Я собираюсь вступить в боевую группу своей битвы => сначало нужно освободить занятую боевую группу перед вступлением в другую
@@ -377,8 +382,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     }
                 }
             }
-        } else
-        if (targetBattleGroup.getAccount().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
+        } else if (targetBattleGroup.getAccount().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
             // Боевая группа занята мною => посмотрим каких бойцов я выбрал и, при необходимости, перевыберем их
             // Особой реакции на этот случай не требуется
         } else {

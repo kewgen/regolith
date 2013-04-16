@@ -37,7 +37,7 @@ public class LocalizedStrings {
 //    НЕ УДАЛОСЬ СОЗДАТЬ БИТВУ ПО ВЫБРАННЫМ ПАРАМЕТРАМ. ПОПРОБУЙТЕ ИЗМЕНИТЬ ПАРАМЕТРЫ БИТВЫ И ПОВТОРИТЬ СВОЕ ДЕЙСТВИЕ ЕЩЕ РАЗ
     public static final String BATTLE_CREATE_MSG_GET_BATTLE_MAP_EXCEPTION   = "НЕ УДАЛОСЬ ПОЛУЧИТЬ ОТ СЕРВЕРА КАРТУ БИТВЫ ПО ВЫБРАННЫМ ПАРАМЕТРАМ";
     public static final String BATTLE_CREATE_MSG_CREATE_BATTLE_EXCEPTION    = "НЕ УДАЛОСЬ СОЗДАТЬ БИТВУ";
-
+    public static final String BATTLE_START_AWAITING = "ОЖИДАЕМ ВХОДА НА СЕРВЕР БИТВЫ";
     // ----- Browse maps -----------------------------------------------------------------------------------------------
 
     public static final String BROWSE_MAPS_PANEL_TITLE = "ВЫБОР КАРТЫ";
@@ -56,6 +56,7 @@ public class LocalizedStrings {
 
     public static final String SELECT_WARRIORS_MSG_CANCEL_BATTLE_EXCEPTION    = "НЕ УДАЛОСЬ ОТМЕНИТЬ БИТВУ";
     public static final String COULD_NOT_START_BATTLE = "НЕ УДАЛОСЬ НАЧАТЬ БИТВУ";
+    public static final String COULD_NOT_LOGIN_TO_BATTLE = "НЕ УДАЛОСЬ ПОДСОЕДИНИТЬСЯ К БИТВЕ";
 
     // ----- Player info -------------------------------------------------------------------------------------------
 

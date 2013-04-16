@@ -25,7 +25,7 @@ public abstract class AbstractWarriorState extends UnitState {
 
     public void init(Unit unit) {
         Warrior warrior = unit.getWarrior();
-        defaultScript = Environment.getRender().getUnitScript(warrior.getWeapon().getWeaponType().getCapacity() + getAction() + ClientGUIHelper.getPackerScriptsDirection(warrior.getDirection()));
+        defaultScript = Environment.getRender().getUnitScript(warrior.getWeapon().getWeaponType().getCategory().getPackerId() + getAction() + ClientGUIHelper.convertPackerScriptsDirection(warrior.getDirection()));
         current = 0;
         limit = (byte)defaultScript.getIndexes().size();
         unit.setState(this);

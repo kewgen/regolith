@@ -17,6 +17,11 @@ public class MainScreen extends Screen {
     }
 
     @Override
+    public boolean onEvent(int code, int param, int x, int y) {
+        return false;
+    }
+
+    @Override
     public void onShow() {
     }
 
