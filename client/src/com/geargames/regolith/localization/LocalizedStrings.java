@@ -48,6 +48,7 @@ public class LocalizedStrings {
     public static final String SELECT_WARRIORS_PANEL_TITLE                    = "ВЫБОР БОЙЦОВ";
     public static final String SELECT_WARRIORS_LIST_TITLE                     = "ВЫБЕРИТЕ БОЙЦОВ ДЛЯ БИТВЫ";
     public static final String SELECT_WARRIORS_MSG_LISTEN_TO_BATTLE_EXCEPTION = "НЕ УДАЛОСЬ ПОДПИСАТЬСЯ НА БИТВУ";
+    public static final String SELECT_WARRIORS_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION = BATTLES_MSG_DO_NOT_LISTEN_TO_CREATED_BATTLES_EXCEPTION;
     public static final String SELECT_WARRIORS_MSG_JOIN_TO_ALLIANCE_EXCEPTION = "НЕ УДАЛОСЬ ПРИСОЕДИНИТЬСЯ К ВОЕННОМУ СОЮЗУ";
     public static final String SELECT_WARRIORS_MSG_COMPLETE_GROUP_EXCEPTION   = "НЕ УДАЛОСЬ СОБРАТЬ БОЙЦОВ В БОЕВУЮ ГРУППУ";
     public static final String SELECT_WARRIORS_MSG_DISBAND_GROUP_EXCEPTION    = "НЕ УДАЛОСЬ РАСПУСТИТЬ БОЙЦОВ БОЕВОЙ ГРУППЫ";

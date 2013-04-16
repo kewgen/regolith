@@ -18,9 +18,8 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
-import com.geargames.regolith.managers.ClientBattleCreationManager;
 import com.geargames.regolith.managers.ClientBattleMarketManager;
-import com.geargames.regolith.network.RequestHelper;
+import com.geargames.regolith.network.ClientRequestHelper;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.LoginToBattleServiceRequest;
 import com.geargames.regolith.serializers.requests.StartBattleRequest;
@@ -257,7 +256,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             // Этой ситуации вообще происходить не должно, но, на всякий случай, обработаем ее
             Debug.error("There was an attempt to create a battle, when there are already created battle");
 
-            boolean res = RequestHelper.cancelBattle(listenedBattle, this);
+            boolean res = ClientRequestHelper.cancelBattle(listenedBattle, this, LocalizedStrings.BATTLES_MSG_CANCEL_BATTLE_EXCEPTION);
             ClientConfigurationFactory.getConfiguration().setBattle(null);
             battleList.updateList();
             if (!res) {
@@ -273,8 +272,8 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 if (myBattleGroup.getAccount().getId() != configuration.getAccount().getId()) {
                     Debug.error("PBattlesPanel.onBattleCreateButtonClick: myBattleGroup.getAccount().getId() != configuration.getAccount().getId()");
                 }
-                boolean res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this) &&
-                        RequestHelper.doNotListenToBattle(listenedBattle, this);
+                boolean res = ClientRequestHelper.evictAccountFromBattleGroup(myBattleGroup, this, LocalizedStrings.BATTLES_MSG_SELF_EVICT_ACCOUNT_EXCEPTION) &&
+                        ClientRequestHelper.doNotListenToBattle(listenedBattle, this, LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
                 if (!res) {
@@ -283,7 +282,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             } else {
                 // Я просто подписался на обновления битвы => нужно отписаться от обновлений
                 // Эта ситуация возможна, если я вошел в боевую группу одной из битв, а потом автор этой битвы меня выкинул из боевой группы
-                boolean res = RequestHelper.doNotListenToBattle(listenedBattle, this);
+                boolean res = ClientRequestHelper.doNotListenToBattle(listenedBattle, this, LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION);
                 ClientConfigurationFactory.getConfiguration().setBattle(null);
                 battleList.updateList();
                 if (!res) {
@@ -331,14 +330,14 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     if (myBattleGroup != null) {
                         // Я вхожу в одну из других боевых груп => выхожу из нее и вхожу в другую
                         //todo: должно быть иное действие по освобождению занимаемой боевой группы, при этом я не должен выходить из битвы
-                        if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
+                        if (!ClientRequestHelper.evictAccountFromBattleGroup(myBattleGroup, this, LocalizedStrings.BATTLES_MSG_SELF_EVICT_ACCOUNT_EXCEPTION)) {
                             return;
                         }
 //                        disbandBattleGroup(myBattleGroup);
                     }
                 } else {
                     // Я щелкнул по иконке боевой группы чужой битвы, при этом у меня есть своя созданная битва => нужно заканселить свою битву
-                    boolean res = RequestHelper.cancelBattle(listenedBattle, this);
+                    boolean res = ClientRequestHelper.cancelBattle(listenedBattle, this, LocalizedStrings.BATTLES_MSG_CANCEL_BATTLE_EXCEPTION);
                     battleCreateButton.setVisible(true);
                     ClientConfigurationFactory.getConfiguration().setBattle(null);
                     battleList.updateList();
@@ -355,7 +354,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                         // Я собираюсь вступить в другую боевую группу чужой битвы, одну из боевых групп которой, я уже занимаю
                         // Я вхожу в одну из других боевых груп => выхожу из нее и вхожу в другую
                         //todo: должно быть иное действие по освобождению занимаемой боевой группы, при этом я не должен выходить из битвы
-                        if (!RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this)) {
+                        if (!ClientRequestHelper.evictAccountFromBattleGroup(myBattleGroup, this, LocalizedStrings.BATTLES_MSG_SELF_EVICT_ACCOUNT_EXCEPTION)) {
                             return;
                         }
 //                        disbandBattleGroup(myBattleGroup);
@@ -369,12 +368,12 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     boolean res;
                     if (myBattleGroup != null) {
                         // Я вхожу в одну из боевых груп => выхожу из нее
-                        res = RequestHelper.evictAccountFromBattleGroup(myBattleGroup, this);
+                        res = ClientRequestHelper.evictAccountFromBattleGroup(myBattleGroup, this, LocalizedStrings.BATTLES_MSG_SELF_EVICT_ACCOUNT_EXCEPTION);
                     } else {
                         // Я просто наблюдатель битвы, подписан на ее обновления
                         res = true;
                     }
-                    res = res && RequestHelper.doNotListenToBattle(listenedBattle, this);
+                    res = res && ClientRequestHelper.doNotListenToBattle(listenedBattle, this, LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_BATTLE_EXCEPTION);
                     ClientConfigurationFactory.getConfiguration().setBattle(null);
                     battleList.updateList();
                     if (!res) {
@@ -396,7 +395,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
     }
 
     public void onStartBattleButtonClick() {
-        RequestHelper.startBattle(this);
+        ClientRequestHelper.startBattle(this, LocalizedStrings.BATTLES_MSG_START_BATTLE_EXCEPTION);
     }
 
 }

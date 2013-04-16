@@ -25,7 +25,7 @@ public class ClientBattleCreationManager {
 
     public ClientBattleCreationManager(ClientConfiguration configuration) {
         this.configuration = configuration;
-        startBattleAnswer = new ClientStartBattleAnswer(configuration);
+        startBattleAnswer = new ClientStartBattleAnswer();
         cancelBattleAnswer = new ClientCancelBattleAnswer();
         joinToBattleAllianceAnswer = new ClientJoinToBattleAllianceAnswer();
         completeGroupAnswer = new ClientCompleteGroupAnswer();
@@ -64,7 +64,7 @@ public class ClientBattleCreationManager {
     }
 
     /**
-     * Послать сообщение-запрос о попытке присоединиться к создаваемой битве.
+     * Послать сообщение-запрос о попытке присоединиться к битве.
      */
     public ClientJoinToBattleAllianceAnswer joinToAlliance(BattleAlliance alliance) throws Exception {
 //        joinToBattleAllianceAnswer.setBattle(alliance.getBattle());

@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 05.06.12
  */
 public class ServerDBTest {

@@ -12,7 +12,7 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.awt.components.common.PShowingHintLabel;
 import com.geargames.regolith.localization.LocalizedStrings;
-import com.geargames.regolith.network.RequestHelper;
+import com.geargames.regolith.network.ClientRequestHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -182,7 +182,7 @@ public class PPlayerInfoPanel extends PRootContentPanel {
 //        ClientBattleCreationManager battleCreationManager = clientConfiguration.getBattleCreationManager();
 //        ClientBattleMarketManager battleMarketManager = clientConfiguration.getBattleMarketManager();
 
-        if (!RequestHelper.evictAccountFromBattleGroup(battleGroup, this)) {
+        if (!ClientRequestHelper.evictAccountFromBattleGroup(battleGroup, this, LocalizedStrings.BATTLES_MSG_EVICT_ACCOUNT_EXCEPTION)) {
             //todo: А если игрок уже покинул боевую группу? следует вывести об этом сообщение, или просто проигнорировать.
 //            return;
         }

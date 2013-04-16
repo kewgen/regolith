@@ -53,6 +53,7 @@ public class MainServerHelper {
         base.setTrainingCenter(new TrainingCenter());
         base.setWorkShop(new WorkShop());
         account.setMoney(baseConfiguration.getMoney());
+        account.setRegolith(baseConfiguration.getRegolith());
         return account;
     }
 

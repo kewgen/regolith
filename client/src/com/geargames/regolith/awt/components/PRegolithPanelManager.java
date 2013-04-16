@@ -188,6 +188,7 @@ public class PRegolithPanelManager extends PPanelManager {
 
         PSelectWarriorsPanel selectWarriorsPanel = new PSelectWarriorsPanel(render.getObject(Graph.PAN_FIGHTER_SELECT));
         selectWarriorsWindow = new MiddleDrawablePPanel();
+//        selectWarriorsWindow.setModalAutoClose(true);
         selectWarriorsWindow.setAnchor(Anchors.CENTER_ANCHOR);
         selectWarriorsWindow.setElement(selectWarriorsPanel);
 

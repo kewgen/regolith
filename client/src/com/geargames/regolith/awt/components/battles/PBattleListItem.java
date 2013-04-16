@@ -6,6 +6,7 @@ import com.geargames.awt.components.PSimpleLabel;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -31,12 +32,12 @@ public class PBattleListItem extends PContentPanel {
                 break;
             case 2:
                 labelComposition = new PSimpleLabel(index);
-//                labelComposition.setFont(PFontCollection.getFontListTitle());
+                labelComposition.setFont(PFontCollection.getFontListTitle());
                 addPassiveChild(labelComposition, index);
                 break;
             case 3:
                 labelLevel = new PSimpleLabel(index);
-//                labelLevel.setFont(PFontCollection.getFontListTitle());
+                labelLevel.setFont(PFontCollection.getFontListTitle());
                 addPassiveChild(labelLevel, index);
                 break;
             case 4:
@@ -45,7 +46,7 @@ public class PBattleListItem extends PContentPanel {
                 break;
             case 109:
                 labelBattleType = new PSimpleLabel(index);
-//                labelBattleType.setFont(PFontCollection.getFontListTitle());
+                labelBattleType.setFont(PFontCollection.getFontListTitle());
                 addPassiveChild(labelBattleType, index);
                 break;
         }

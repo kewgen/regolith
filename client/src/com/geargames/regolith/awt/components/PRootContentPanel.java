@@ -13,8 +13,20 @@ public abstract class PRootContentPanel extends PContentPanel {
         super(prototype);
     }
 
+    /**
+     * Обработчик события отображения окна.
+     */
+    public abstract void onShow();
+
+    /**
+     * Обработчик события закрытия окна.
+     */
     public abstract void onHide();
 
-    public abstract void onShow();
+//    /**
+//     * Обработчик события принудительного закрытия окна. Возникает в случае щелчка вне Touch-области модального окна и
+//     * если ModalAutoClose == true.
+//     */
+//    public abstract void onCancel();
 
 }

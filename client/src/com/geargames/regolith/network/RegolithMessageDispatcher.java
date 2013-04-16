@@ -27,8 +27,6 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
                 message = new ClientBrowseBattlesAnswer();
                 break;
             case Packets.LISTEN_TO_BROWSED_CREATED_BATTLES:
-                message = new ClientConfirmationAnswer();
-                break;
             case Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES:
                 message = new ClientConfirmationAnswer();
                 break;
@@ -41,6 +39,12 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
             case Packets.GROUP_COMPLETE:
             case Packets.GROUP_DISBAND:
                 message = new ClientCompleteGroupAnswer();
+                break;
+            case Packets.CANCEL_BATTLE:
+                message = new ClientCancelBattleAnswer();
+                break;
+            case Packets.START_BATTLE:
+                message = new ClientStartBattleAnswer();
                 break;
             default:
                 Debug.critical("RegolithMessageDispatcher: Unknown message type (" + dataMessage.getMessageType() + ")");
