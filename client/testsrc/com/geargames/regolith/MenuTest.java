@@ -31,6 +31,7 @@ public class MenuTest {
         ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon(login, true);
 
         Account account = loginAnswer.getAccount();
+        account.setPassword(ACCOUNT_PASSWORD_DEFAULT);
         System.out.println("Account id = " + account.getId());
 
         System.out.println("Configuring the client...");

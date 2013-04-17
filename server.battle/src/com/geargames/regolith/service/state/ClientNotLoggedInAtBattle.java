@@ -21,7 +21,7 @@ public class ClientNotLoggedInAtBattle extends BattleState {
     protected void execute(MicroByteBuffer from, Client client, short type) throws RegolithException {
         ServerRequest request;
         switch (type) {
-            case Packets.LOGIN:
+            case Packets.BATTLE_SERVICE_LOGIN:
                 request = new BattleServiceLoginRequest();
                 break;
             default:
