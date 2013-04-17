@@ -43,6 +43,7 @@ public class ServerLogoutAtBattleCreationRequest extends ServerRequest {
             if (createdBattle != null) {
                 // Клиент является автором одной из битв => отменим битву и оповестим об этом всех ее подписчиков
 
+                battleManagerContext.getBattleListeners().get(createdBattle).remove(client.getAccount());
                 //todo: при выполнении запроса в список реципиентов попадает сам клиент, его следует от туда исключить
                 messages = new ServerCancelBattleRequest(client.getAccount()).request(from, to, client);
             } else {
@@ -53,6 +54,7 @@ public class ServerLogoutAtBattleCreationRequest extends ServerRequest {
                     if (battleGroup != null) {
                         // Клиент является участником битвы и занимает одну из боевых групп
 //                        messages = new ServerEvictAccountFromAllianceRequest().request(from, to, client);
+                        battleManagerContext.getBattleListeners().get(listenedBattle).remove(client.getAccount());
                         messages = ServerEvictAccountFromAllianceRequest.evictAccount(
                                 listenedBattle, client.getAccount(), client.getAccount(), battleGroup.getAlliance().getId(), to);
                         //todo: при выполнении запроса в список реципиентов попадает сам клиент, его следует от туда исключить

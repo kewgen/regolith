@@ -1,25 +1,23 @@
 //../regolith/_port/packer_320_480_full
-//Tue Apr 16 13:37:49 MSK 2013 , version: 108
+//Wed Apr 17 10:28:41 GMT+04:00 2013 , version: 108
 
-package game.app;
+package app;
 
 public class Graph {
 
 
-    final static public short IMG_COUNT = 31;
-    final static public short ELEMENT_LINE = 31;
-    final static public short ELEMENT_RECT = 32;
-    final static public short ELEMENT_FILLRECT = 33;
-    final static public short ELEMENT_FILLRECT_x4 = 34;
-    final static public short ELEMENT_ARC = 35;
+    final static public byte IMG_COUNT = 31;
+    final static public byte ELEMENT_LINE = 31;
+    final static public byte ELEMENT_RECT = 32;
+    final static public byte ELEMENT_FILLRECT = 33;
+    final static public byte ELEMENT_FILLRECT_x4 = 34;
+    final static public byte ELEMENT_ARC = 35;
     final static public int FRAMES_COUNT = 1622;
     final static public int SPR_COUNT = 314;
     final static public int ANIM_COUNT = 1;
     final static public int UNIT_COUNT = 660;
     final static public int UNITS_COUNT = 181;
-    final static public int OBJECTS_COUNT = 100;
     final static public int AFFINES_COUNT = 172;
-    final static public int EMITTERS_COUNT = 0;
 //Image
     final static public byte IMG_BODY_1_1 = 1;
     final static public byte IMG_BODY_1_2 = 2;
@@ -479,38 +477,6 @@ public class Graph {
 //PColor
 //GAI
 //Mission
-//Emitter
-//Affine
-    final static public byte AF_ARM_DIR_1 = 3;
-    final static public byte AF_ARM_DIR_3 = 11;
-    final static public byte AF_ARM_DIR_4 = 13;
-    final static public byte AF_ARM_DIR_5 = 15;
-    final static public byte AF_ARM_DIR_6 = 17;
-    final static public byte AF_ARM_DIR_7 = 20;
-    final static public byte AF_ARM_DIR_8 = 29;
-    final static public byte AF_FOOT_DIR_1 = 31;
-    final static public byte AF_FOOT_DIR_2 = 32;
-    final static public byte AF_FOOT_DIR_3 = 36;
-    final static public byte AF_FOOT_DIR_5 = 37;
-    final static public byte AF_FOOT_DIR_6 = 38;
-    final static public byte AF_FOOT_DIR_8 = 39;
-    final static public byte AF_BODY_DIR_1 = 41;
-    final static public byte AF_BODY_DIR_3 = 47;
-    final static public byte AF_BODY_DIR_5 = 48;
-    final static public byte AF_BODY_DIR_6 = 50;
-    final static public byte AF_BODY_DIR_7 = 52;
-    final static public byte AF_BODY_DIR_8 = 60;
-    final static public byte AF_HEAD_DIR_1 = 65;
-    final static public byte AF_HEAD_DIR_5 = 67;
-    final static public byte AF_HEAD_DIR_7 = 68;
-    final static public byte AF_WEAPON_DIR_1 = 69;
-    final static public byte AF_RUN = 96;
-    final static public byte AF_WEAPON_DIR_3 = 108;
-    final static public short AF_WEAPON_DIR_4 = 154;
-    final static public short AF_WEAPON_DIR_5 = 156;
-    final static public short AF_WEAPON_DIR_6 = 158;
-    final static public short AF_WEAPON_DIR_7 = 166;
-    final static public short AF_WEAPON_DIR_8 = 170;
      final static int[] COLOR = {0, 65535, };
     static public int getCOLOR(int i){return COLOR[i];};
 
@@ -608,7 +574,7 @@ public class Graph {
     static public int getIMG_INDEX(int i) {
         return IMG_INDEX[i];
     };
-     final static int[] IMG_LEN = {197120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+     final static int[] IMG_LEN = {197120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
     public Graph() {

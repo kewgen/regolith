@@ -38,9 +38,9 @@ public class ServerEvictAccountFromAllianceRequest extends ServerRequest {
                 if (allianceId == alliance.getId()) {
                     MainServerConfiguration configuration = MainServerConfigurationFactory.getConfiguration();
                     if (configuration.getBattleCreationManager().evictAccount(alliance, victimAccount)) {
-                        List<SocketChannel> recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
                         configuration.getBrowseBattlesSchedulerService().updateBattle(battle);
 
+                        List<SocketChannel> recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
                         SerializedMessage message = ServerEvictAccountFromAllianceAnswer.AnswerSuccess(buffer, victimAccount, alliance);
                         messages.add(new MainMessageToClient(recipients, message.serialize()));
                         return messages;
