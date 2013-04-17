@@ -12,10 +12,12 @@ import com.geargames.regolith.service.MainServerConfigurationFactory;
  * User: mkutuzov
  * Date: 13.07.12
  */
-public class ServerGoToBase extends MainOneToClientRequest {
+public class ServerGoToBaseRequest extends MainOneToClientRequest {
+
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         MainServerConfigurationFactory.getConfiguration().getBrowseBattlesSchedulerService().removeListener(client);
         return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.GO_TO_BASE);
     }
+
 }

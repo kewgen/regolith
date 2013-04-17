@@ -3,9 +3,10 @@ package com.geargames.regolith;
 import com.geargames.platform.ConsoleMainHelper;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.Login;
 
 /**
- * User: mikhail v. kutuzov, abarakov
+ * Users: mikhail v. kutuzov, abarakov
  * Date: 18.11.12
  * Time: 21:47
  */
@@ -24,7 +25,10 @@ public class MenuTest {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
 
-        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon(accountName, ACCOUNT_PASSWORD_DEFAULT, true);
+        Login login = new Login();
+        login.setName(accountName);
+        login.setPassword(ACCOUNT_PASSWORD_DEFAULT);
+        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon(login, true);
 
         Account account = loginAnswer.getAccount();
         account.setPassword(ACCOUNT_PASSWORD_DEFAULT);

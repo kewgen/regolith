@@ -3,18 +3,15 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.common.serialization.MicroByteBuffer;
-import com.geargames.common.serialization.SimpleSerializer;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 20.06.12
  */
 public class LogoutRequest extends ClientSerializedMessage {
-    private String name;
 
-    public LogoutRequest(ClientConfiguration configuration, String name) {
+    public LogoutRequest(ClientConfiguration configuration) {
         super(configuration);
-        this.name = name;
     }
 
     public short getType() {
@@ -22,6 +19,7 @@ public class LogoutRequest extends ClientSerializedMessage {
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serialize(name, buffer);
+
     }
+
 }

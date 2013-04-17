@@ -11,6 +11,7 @@ import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
@@ -53,7 +54,10 @@ public class BattleListenerTest {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
 
-        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("clientB", "секрет", true);
+        Login login = new Login();
+        login.setName("clientB");
+        login.setPassword("секрет");
+        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon(login, true);
 
         System.out.println("Configuring the client...");
 

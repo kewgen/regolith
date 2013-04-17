@@ -15,6 +15,7 @@ import java.io.File;
  * Разобрать запрос на получение изображения фрейма и приготовить ответ на основе файла.
  */
 public class ServerGetFrameRequest extends MainOneToClientRequest {
+
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         String id = "" + SimpleDeserializer.deserializeInt(from);
@@ -25,4 +26,5 @@ public class ServerGetFrameRequest extends MainOneToClientRequest {
                 + File.pathSeparator + fileName;
         return new ServerGetFrameAnswer(writeBuffer, new File(name));
     }
+
 }

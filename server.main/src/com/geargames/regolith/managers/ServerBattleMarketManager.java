@@ -1,12 +1,12 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.helpers.BattleTypeHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleMap;
 import org.hibernate.Criteria;
@@ -44,13 +44,16 @@ public class ServerBattleMarketManager {
         listeners.add(author);
         battleManagerContext.getBattleListeners().put(battle, listeners);
         battleManagerContext.getCreatedBattles().put(author, battle);
+        battleManagerContext.getBattlesByAccount().put(author, battle);
         battleManagerContext.getBattlesById().put(id, battle);
         battleManagerContext.getCompleteGroups().put(battle, new HashSet<BattleGroup>(battleType.getAllianceSize() * battleType.getAllianceAmount()));
         return battle;
     }
 
     public boolean listenToBattle(Battle battle, Account participant) {
-        configuration.getServerContext().getBattleManagerContext().getBattleListeners().get(battle).add(participant);
+        BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
+        battleManagerContext.getBattleListeners().get(battle).add(participant);
+        battleManagerContext.getBattlesByAccount().put(participant, battle);
         return true;
     }
 

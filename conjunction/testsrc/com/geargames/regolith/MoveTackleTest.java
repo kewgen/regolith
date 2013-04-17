@@ -11,6 +11,7 @@ import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;
 import com.geargames.regolith.service.MainServiceManager;
 import com.geargames.regolith.service.SimpleService;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.tackle.StateTackle;
@@ -44,7 +45,10 @@ public class MoveTackleTest {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
 
-        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("автор", "секрет", true);
+        Login login = new Login();
+        login.setName("автор");
+        login.setPassword("секрет");
+        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon(login, true);
 
         System.out.println("...");
 

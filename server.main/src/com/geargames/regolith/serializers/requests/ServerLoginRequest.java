@@ -18,6 +18,7 @@ import com.geargames.regolith.units.Login;
  * Date: 12.07.12
  */
 public class ServerLoginRequest extends MainOneToClientRequest {
+
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) {
         MainServerConfiguration serverConfiguration = MainServerConfigurationFactory.getConfiguration();
@@ -26,7 +27,9 @@ public class ServerLoginRequest extends MainOneToClientRequest {
         login.setPassword(SimpleDeserializer.deserializeString(from));
         Account account = serverConfiguration.getCommonManager().login(login);
         if (account != null) {
-            if (serverConfiguration.getServerContext().getActiveAccountById(account.getId()) != null) {
+            Account activeAccount = serverConfiguration.getServerContext().getActiveAccountById(account.getId());
+            if (activeAccount != null) {
+                // Клиент с таким же логином уже подключился
                 return ServerLoginAnswer.answerFailure(writeBuffer);
             } else {
                 serverConfiguration.getServerContext().addChannel(account, client.getChannel());
@@ -40,8 +43,9 @@ public class ServerLoginRequest extends MainOneToClientRequest {
                 }
             }
         } else {
+            // Недопустимая пара логин/пароль.
             return ServerLoginAnswer.answerFailure(writeBuffer);
         }
-
     }
+
 }

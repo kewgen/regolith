@@ -72,8 +72,9 @@ public class ServerStartBattleRequest extends ServerRequest {
                             messages.add(new MainMessageToClient(listeners, new ServerStopListenAnswer(to, battle).serialize()));
                         }
 
-                        battleManagerContext.getCreatedBattles().remove(client.getAccount());
                         battleManagerContext.getBattlesById().remove(battle.getId());
+                        battleManagerContext.getCreatedBattles().remove(client.getAccount());
+                        battleManagerContext.getBattlesByAccount().remove(client.getAccount());
                         battleManagerContext.getBattleListeners().remove(battle);
                         battleManagerContext.getCompleteGroups().remove(battle);
 

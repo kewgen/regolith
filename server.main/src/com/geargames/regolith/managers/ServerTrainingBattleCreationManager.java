@@ -1,12 +1,12 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
 import com.geargames.regolith.service.BattleManagerContext;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
@@ -18,6 +18,7 @@ import java.util.Set;
 
 /**
  * Класс менеджер для тренировочных битв.
+ * Users: m.v.kutuzov, abarakov
  */
 public class ServerTrainingBattleCreationManager {
 
@@ -75,11 +76,11 @@ public class ServerTrainingBattleCreationManager {
 
     public void cancelBattle(Account author) {
         BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
-        Battle battle = battleManagerContext.getCreatedBattles().get(author);
-        battleManagerContext.getCreatedBattles().remove(author);
+        Battle battle = battleManagerContext.getCreatedBattles().remove(author);
         battleManagerContext.getBattlesById().remove(battle.getId());
-        battleManagerContext.getCompleteGroups().remove(battle);
+        battleManagerContext.getBattlesByAccount().remove(author);
         battleManagerContext.getBattleListeners().remove(battle);
+        battleManagerContext.getCompleteGroups().remove(battle);
     }
 
     /**
@@ -87,7 +88,7 @@ public class ServerTrainingBattleCreationManager {
      *
      * @param group
      * @param warriors
-     * @return false если какой-то боец уже находился в группе или число бойцов в группе превысило предел.
+     * @return false, если какой-то боец уже находился в группе или число бойцов в группе превысило предел.
      */
     public boolean addWarriors(BattleGroup group, Warrior[] warriors) {
         if (group.getWarriors().size() > 0 || warriors.length != group.getAlliance().getBattle().getBattleType().getGroupSize()) {
@@ -107,8 +108,10 @@ public class ServerTrainingBattleCreationManager {
         ((ServerWarriorCollection)group.getWarriors()).getWarriors().clear();
     }
 
-    public void doNotListenToBattle(Battle battle, Account account) {
-        configuration.getServerContext().getBattleManagerContext().getBattleListeners().get(battle).remove(account);
+    public boolean doNotListenToBattle(Battle battle, Account account) {
+        BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
+        battleManagerContext.getBattlesByAccount().remove(account);
+        return battleManagerContext.getBattleListeners().get(battle).remove(account);
     }
 
     public boolean isReady(BattleGroup group) {

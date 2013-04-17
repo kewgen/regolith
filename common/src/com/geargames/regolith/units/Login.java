@@ -23,4 +23,10 @@ public class Login extends Entity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "; name='" + getName() + "'";
+    }
+
 }

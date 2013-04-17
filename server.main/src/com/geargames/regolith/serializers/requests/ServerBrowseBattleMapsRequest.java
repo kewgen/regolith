@@ -27,8 +27,9 @@ public class ServerBrowseBattleMapsRequest extends MainOneToClientRequest {
         BattleType type = ServerDataBaseHelper.getBattleTypeById(SimpleDeserializer.deserializeInt(from));
         if (type != null) {
             return new ServerBrowseBattleMapsAnswer(writeBuffer, battleMarketManager.browseBattleMaps(type).toArray(new BattleMap[]{}));
-        }else{
+        } else {
             return new ServerBrowseBattleMapsAnswer(writeBuffer, new BattleMap[]{});
         }
     }
+
 }

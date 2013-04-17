@@ -11,6 +11,7 @@ import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.service.MainServiceManager;
 import com.geargames.regolith.service.SimpleService;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleMap;
 import junit.framework.Assert;
@@ -63,7 +64,10 @@ public class BattleCreationTest {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
 
-        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("clientA", "секрет", true);
+        Login login = new Login();
+        login.setName("clientA");
+        login.setPassword("секрет");
+        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon(login, true);
 
         System.out.println("Configuring the client...");
 
@@ -96,7 +100,7 @@ public class BattleCreationTest {
         ClientTestHelper.checkAsyncMessages();
 
         BattleType bt = BattleTypeHelper.findBattleTypeById(battleType.getId(), map.getPossibleBattleTypes());
-        Assert.assertNotNull("Map does not support the type of battle '1:1x1'", bt);
+        Assert.assertNotNull("Map does not support the type of battle '1x1:1'", bt);
 
         // -------------------------------------------------------------------------------------------------------------
 

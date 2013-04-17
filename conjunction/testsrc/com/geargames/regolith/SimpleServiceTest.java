@@ -47,7 +47,7 @@ public class SimpleServiceTest {
         Assert.assertTrue(message.isConfirm());
 
 
-        ClientLoginAnswer loginAnswer = managerInterface.login(login);;
+        ClientLoginAnswer loginAnswer = managerInterface.login(login);
         Assert.assertNull(loginAnswer.getError());
 
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());
@@ -55,7 +55,7 @@ public class SimpleServiceTest {
         Account account = loginAnswer.getAccount();
 
         Assert.assertEquals(account.getName(), login.getName());
-        managerInterface.logout(login);
+        managerInterface.logout();
     }
 
     @AfterClass

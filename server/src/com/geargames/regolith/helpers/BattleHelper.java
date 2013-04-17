@@ -186,7 +186,7 @@ public class BattleHelper {
         return (BattleCell[][]) (new ObjectInputStream(input).readObject());
     }
 
-    public static BattleAlliance findAlliance(Battle battle, int allianceId) {
+    public static BattleAlliance findAllianceById(Battle battle, int allianceId) {
         for (BattleAlliance battleAlliance : battle.getAlliances()) {
             if (battleAlliance.getId() == allianceId) {
                 return battleAlliance;
@@ -195,7 +195,20 @@ public class BattleHelper {
         return null;
     }
 
-    public static BattleGroup findBattleGroup(BattleAlliance alliance, int groupId) {
+    public static BattleGroup findBattleGroupByAccountId(Battle battle, int accountId) {
+        for (BattleAlliance alliance : battle.getAlliances()) {
+            ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
+            for (BattleGroup battleGroup : groups.getBattleGroups()) {
+                Account account = battleGroup.getAccount();
+                if (account != null && account.getId() == accountId) {
+                    return battleGroup;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static BattleGroup findBattleGroupById(BattleAlliance alliance, int groupId) {
         ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
         for (BattleGroup battleGroup : groups.getBattleGroups()) {
             if (battleGroup.getId() == groupId) {
@@ -205,7 +218,7 @@ public class BattleHelper {
         return null;
     }
 
-    public static Warrior findWarriorInAccount(Account account, int warriorId) throws RegolithException{
+    public static Warrior getWarriorInAccountById(Account account, int warriorId) throws RegolithException{
         ServerWarriorCollection warriors = (ServerWarriorCollection)account.getWarriors();
 
         for(Warrior warrior : warriors.getWarriors()){

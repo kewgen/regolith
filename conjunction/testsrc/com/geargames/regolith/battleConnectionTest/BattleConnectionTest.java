@@ -11,6 +11,7 @@ import com.geargames.regolith.application.ObjectManager;
 import com.geargames.regolith.managers.*;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ClientBattleCollection;
 import junit.framework.Assert;
@@ -53,7 +54,10 @@ public class BattleConnectionTest {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
         clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
 
-        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon("clientC", "секрет", true);
+        Login login = new Login();
+        login.setName("clientC");
+        login.setPassword("секрет");
+        ClientLoginAnswer loginAnswer = ClientTestHelper.clientLogon(login, true);
 
         System.out.println("Configuring the client...");
 
