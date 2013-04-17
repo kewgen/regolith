@@ -8,8 +8,9 @@ import com.geargames.regolith.units.Unit;
  * Date: 02.04.13
  */
 public abstract class UnitState {
+
     /**
-     * Перейти га следующее остояние из PUnitScript.
+     * Перейти на следующее состояние из PUnitScript.
      */
     public abstract void next( Unit unit);
 
@@ -18,4 +19,5 @@ public abstract class UnitState {
      * @return
      */
     public abstract PUnit current();
+
 }

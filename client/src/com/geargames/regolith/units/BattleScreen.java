@@ -512,6 +512,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         return user;
     }
 
+    public ArrayList getGroup() {
+        return group;
+    }
+
     @Override
     public void onShow() {
         if (battle != null) {

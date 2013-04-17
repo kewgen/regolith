@@ -1,4 +1,4 @@
-package com.geargames.regolith.awt.components.battles;
+package com.geargames.regolith.awt.components.battleList;
 
 import com.geargames.common.network.DataMessageListener;
 import com.geargames.common.packer.PObject;

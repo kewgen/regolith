@@ -1,5 +1,5 @@
 //../regolith/_port/packer_320_480_full
-//Wed Apr 17 10:28:41 GMT+04:00 2013 , version: 108
+//Wed Apr 17 12:42:14 GMT+04:00 2013 , version: 108
 
 package com.geargames.regolith.application;
 
@@ -421,9 +421,9 @@ public class Graph {
     final static public byte PAN_WAITING_SERVER = 19;
     final static public byte PAN_BAT_MENU = 20;
     final static public byte PAN_BAT_WEAPON = 21;
-    final static public byte PAN_BAT_FIGHTER = 22;
-    final static public byte PAN_BAT_FIRE = 23;
-    final static public byte PAN_BAT_SEL_FIGHTER = 24;
+    final static public byte PAN_BAT_SEL_FIGHTER = 22;
+    final static public byte PAN_BAT_FIGHTER = 23;
+    final static public byte PAN_BAT_FIRE = 24;
     final static public byte OBJ_SUBPANEL_WEAPON_LEFT = 25;
     final static public byte OBJ_LIST_WEAPON_ITEM = 26;
     final static public byte OBJ_LIST_BATTLE_ITEM = 27;
