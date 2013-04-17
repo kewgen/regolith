@@ -221,6 +221,11 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         panelManager.show(panelManager.getBattlesWindow());
     }
 
+    /**
+     * Получение события начало боя.
+     *
+     * @param message
+     */
     public void onStartBattleReceive(ClientDeSerializedMessage message) {
         ClientStartBattleAnswer answer = (ClientStartBattleAnswer) message;
         if (answer.isSuccess()) {
@@ -230,10 +235,16 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             LoginToBattleServiceRequest request = new LoginToBattleServiceRequest();
             request.setBattle(answer.getBattle());
             request.setConfiguration(configuration);
+            try {
+                request.setAlliance(ClientBattleHelper.findBattleAlliance(configuration.getBattle(), configuration.getAccount()));
+            } catch (Exception e) {
+                Debug.error("A battle alliance was not found...", e);
+                return;
+            }
             Network network = configuration.getNetwork();
-            Debug.debug("Disconnecting from the main server." + network.getAddress() + ":" + network.getPort());
+            Debug.debug("Disconnecting from the main server " + network.getAddress() + ":" + network.getPort());
             network.disconnect();
-            Debug.debug("Connecting to the battle server." + answer.getHost() + ":" + answer.getPort());
+            Debug.debug("Connecting to the battle server " + answer.getHost() + ":" + answer.getPort());
             network.connect(answer.getHost(), answer.getPort());
             PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
             manager.showModal(manager.getLoginBattleServiceWait());

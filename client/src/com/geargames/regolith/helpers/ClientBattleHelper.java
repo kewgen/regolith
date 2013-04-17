@@ -64,6 +64,7 @@ public class ClientBattleHelper {
 
     /**
      * Вернуть солдатиков аккаунта account для BattleScreen из битвы battle.
+     *
      * @param battle
      * @param account
      * @return
@@ -96,6 +97,7 @@ public class ClientBattleHelper {
 
     /**
      * Вернуть солдатиков для  отрисовки на BattleScreen для всех союзников account по битве battle.
+     *
      * @param battle
      * @param account
      * @return
@@ -137,7 +139,8 @@ public class ClientBattleHelper {
     }
 
     /**
-     *  Вернуть солдатиков для отрисовки на BattleScreen -  противников по битве battle для account.
+     * Вернуть солдатиков для отрисовки на BattleScreen -  противников по битве battle для account.
+     *
      * @param battle
      * @param account
      * @return
@@ -224,6 +227,15 @@ public class ClientBattleHelper {
         throw new RegolithException();
     }
 
+    public static BattleAlliance findBattleAlliance(Battle battle, Account account) throws Exception {
+        BattleGroup group = tryFindBattleGroupByAccountId(battle, account.getId());
+        if (group != null) {
+            return group.getAlliance();
+        } else {
+            throw new Exception();
+        }
+    }
+
     public static BattleGroup tryFindBattleGroupByAccountId(Battle battle, int accountId) {
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
@@ -285,9 +297,9 @@ public class ClientBattleHelper {
         throw new RegolithException();
     }
 
-    public static BattleUnit getBattleUnitByWarrior(ArrayList battleUnits, Warrior warrior){
+    public static BattleUnit getBattleUnitByWarrior(ArrayList battleUnits, Warrior warrior) {
         for (int i = 0; i < battleUnits.size(); i++) {
-            BattleUnit battleUnit = ((BattleUnit)battleUnits.get(i));
+            BattleUnit battleUnit = ((BattleUnit) battleUnits.get(i));
             if (warrior == battleUnit.getUnit().getWarrior()) {
                 return battleUnit;
             }
