@@ -17,7 +17,7 @@ public class PSelectNextWeaponButton extends PTouchButton {
 
     @Override
     public void onClick() {
-        PRegolithPanelManager.getInstance().getWeaponMenuPanel().onSelectNextWeaponButtonClick();
+        PRegolithPanelManager.getInstance().getBattleWeaponMenuPanel().onSelectNextWeaponButtonClick();
     }
 
 }

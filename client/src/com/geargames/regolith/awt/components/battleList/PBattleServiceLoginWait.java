@@ -15,7 +15,6 @@ import com.geargames.regolith.serializers.answers.ClientBattleLoginAnswer;
  * User: m/v/kutuzov
  * Date: 16.04.13
  * Time: 10:07
- * To change this template use File | Settings | File Templates.
  */
 public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessageListener {
     private short[] types;
@@ -29,7 +28,6 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
     public void onHide() {
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().unregister(this);
     }
-
 
     @Override
     public void onShow() {
@@ -49,16 +47,20 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
 
     @Override
     public void onReceive(ClientDeSerializedMessage message, short type) {
-        ClientBattleLoginAnswer battleLogin = (ClientBattleLoginAnswer)message;
-        if(battleLogin.isSuccess()){
+        ClientBattleLoginAnswer battleLogin = (ClientBattleLoginAnswer) message;
+        if (battleLogin.isSuccess()) {
             //todo забрать из сообщения группы которые уже залогинились и сообщить о них
             PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
             manager.hideMiddle();
             manager.show(manager.getBattleScreen());
+            manager.show(manager.getBattleMenuWindow());
+            manager.show(manager.getBattleSelectWarriorWindow());
+            manager.show(manager.getBattleWeaponMenuWindow());
         } else {
-            NotificationBox.error(LocalizedStrings.COULD_NOT_LOGIN_TO_BATTLE , this);
+            NotificationBox.error(LocalizedStrings.COULD_NOT_LOGIN_TO_BATTLE, this);
         }
     }
+
 }
 
 

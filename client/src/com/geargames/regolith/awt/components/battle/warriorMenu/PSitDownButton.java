@@ -17,7 +17,7 @@ public class PSitDownButton extends PTouchButton {
 
     @Override
     public void onClick() {
-        PRegolithPanelManager.getInstance().getWarriorMenuPanel().onSitDownButtonClick();
+        PRegolithPanelManager.getInstance().getBattleWarriorMenuPanel().onSitDownButtonClick();
     }
 
 }

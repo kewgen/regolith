@@ -17,7 +17,7 @@ public class PStandUpButton extends PTouchButton {
 
     @Override
     public void onClick() {
-        PRegolithPanelManager.getInstance().getWarriorMenuPanel().onStandUpButtonClick();
+        PRegolithPanelManager.getInstance().getBattleWarriorMenuPanel().onStandUpButtonClick();
     }
 
 }

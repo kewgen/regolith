@@ -17,7 +17,7 @@ public class PHastilyShotButton extends PTouchButton {
 
     @Override
     public void onClick() {
-        PRegolithPanelManager.getInstance().getShotMenuPanel().onHastilyShotButtonClick();
+        PRegolithPanelManager.getInstance().getBattleShotMenuPanel().onHastilyShotButtonClick();
     }
 
 }

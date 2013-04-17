@@ -9,9 +9,9 @@ import com.geargames.regolith.awt.components.PRootContentPanel;
  * 17.04.13
  * Панель, на которой располагается кнопки выстрела наспех и прицельного выстрела.
  */
-public class PShotMenuPanel extends PRootContentPanel {
+public class PBattleShotMenuPanel extends PRootContentPanel {
 
-    public PShotMenuPanel(PObject prototype) {
+    public PBattleShotMenuPanel(PObject prototype) {
         super(prototype);
     }
 

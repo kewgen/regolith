@@ -237,7 +237,8 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             try {
                 request.setAlliance(ClientBattleHelper.findBattleAlliance(configuration.getBattle(), configuration.getAccount()));
             } catch (Exception e) {
-                Debug.error("A battle alliance was not found...", e);
+                Debug.error("A battle alliance was not found", e);
+                NotificationBox.error(LocalizedStrings.COULD_NOT_START_BATTLE, this);
                 return;
             }
             Network network = configuration.getNetwork();

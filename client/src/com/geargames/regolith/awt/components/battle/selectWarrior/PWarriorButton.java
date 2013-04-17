@@ -19,7 +19,7 @@ public class PWarriorButton extends PRadioButton {
 
     @Override
     public void onClick() {
-        PRegolithPanelManager.getInstance().getWarriorListPanel().onWarriorButtonClick(warrior);
+        PRegolithPanelManager.getInstance().getBattleWarriorListPanel().onWarriorButtonClick(warrior);
     }
 
     public void setWarrior(Warrior warrior) {

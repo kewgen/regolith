@@ -15,17 +15,17 @@ import com.geargames.regolith.units.battle.Warrior;
  * 17.04.13
  * Панель, на которой располагается список бойцов игрока.
  */
-public class PSelectWarriorPanel extends PRootContentPanel {
+public class PBattleSelectWarriorPanel extends PRootContentPanel {
     private PWarriorButton[] warriorButtons;
     private PRadioGroup radioGroup;
 
     private static final int WARRIOR_BUTTON_COUNT_MAX = 4;
 
-    public PSelectWarriorPanel(PObject prototype) {
+    public PBattleSelectWarriorPanel(PObject prototype) {
         super(prototype);
         for (int i = 0; i < WARRIOR_BUTTON_COUNT_MAX; i++) {
             if (warriorButtons[i] == null) {
-                Debug.error("PSelectWarriorPanel: warriorButtons[" + i + "] == null");
+                Debug.error("PBattleSelectWarriorPanel: warriorButtons[" + i + "] == null");
             }
         }
     }
@@ -62,7 +62,7 @@ public class PSelectWarriorPanel extends PRootContentPanel {
         ArrayList group = PRegolithPanelManager.getInstance().getBattleScreen().getGroup();
         int size = group.size();
         if (size > WARRIOR_BUTTON_COUNT_MAX) {
-            Debug.error("PSelectWarriorPanel: size > WARRIOR_BUTTON_COUNT_MAX (" + size + " > " + WARRIOR_BUTTON_COUNT_MAX + ")");
+            Debug.error("PBattleSelectWarriorPanel: size > WARRIOR_BUTTON_COUNT_MAX (" + size + " > " + WARRIOR_BUTTON_COUNT_MAX + ")");
             size = WARRIOR_BUTTON_COUNT_MAX;
         }
         int index = 0;

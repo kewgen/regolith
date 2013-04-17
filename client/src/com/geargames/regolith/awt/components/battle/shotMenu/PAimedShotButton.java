@@ -17,7 +17,7 @@ public class PAimedShotButton extends PTouchButton {
 
     @Override
     public void onClick() {
-        PRegolithPanelManager.getInstance().getShotMenuPanel().onAimedShotButtonClick();
+        PRegolithPanelManager.getInstance().getBattleShotMenuPanel().onAimedShotButtonClick();
     }
 
 }

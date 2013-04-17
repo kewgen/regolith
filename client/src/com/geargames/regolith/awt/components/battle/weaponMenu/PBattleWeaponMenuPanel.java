@@ -9,9 +9,9 @@ import com.geargames.regolith.awt.components.PRootContentPanel;
  * 17.04.13
  * Панель, на которой располагаются кнопки переключения оружия, его перезарядки и информация об оружии и боеприпасах.
  */
-public class PWeaponMenuPanel extends PRootContentPanel {
+public class PBattleWeaponMenuPanel extends PRootContentPanel {
 
-    public PWeaponMenuPanel(PObject prototype) {
+    public PBattleWeaponMenuPanel(PObject prototype) {
         super(prototype);
     }
 

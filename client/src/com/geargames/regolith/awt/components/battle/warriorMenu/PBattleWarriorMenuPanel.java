@@ -9,10 +9,10 @@ import com.geargames.regolith.awt.components.PRootContentPanel;
  * 17.04.13
  * Панель, на которой располагается кнопка переключения положения Стоит/Сидит у активного бойца.
  */
-public class PWarriorMenuPanel extends PRootContentPanel {
+public class PBattleWarriorMenuPanel extends PRootContentPanel {
     private PStandUpButton leaveBattleButton;
 
-    public PWarriorMenuPanel(PObject prototype) {
+    public PBattleWarriorMenuPanel(PObject prototype) {
         super(prototype);
     }
 
