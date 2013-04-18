@@ -8,7 +8,6 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.awt.components.battles.PBattleServiceLoginWait;
 import com.geargames.regolith.serializers.answers.*;
 
 /**
