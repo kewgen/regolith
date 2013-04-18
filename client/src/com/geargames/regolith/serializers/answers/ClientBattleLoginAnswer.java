@@ -1,5 +1,6 @@
 package com.geargames.regolith.serializers.answers;
 
+import com.geargames.common.logging.Debug;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
@@ -18,9 +19,12 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
     private BattleGroup[] battleGroups;
     private boolean success;
 
-    public ClientBattleLoginAnswer(Battle battle) {
-        this.battle = battle;
+    public ClientBattleLoginAnswer() {
         battleGroups = new BattleGroup[battle.getBattleType().getAllianceSize()];
+    }
+
+    public void setBattle(Battle battle) {
+        this.battle = battle;
     }
 
     public boolean isSuccess() {
@@ -58,6 +62,8 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
                     battleGroups[i] = group;
                 }
             }
+        } else {
+            Debug.warning("An alien battle has confirmed our login");
         }
     }
 }

@@ -51,6 +51,7 @@ public class ConcurrentBattleServiceContext implements BattleServiceContext {
             }
         }
         serverBattle.setClients(new HashSet<BattleClient>());
+        serverBattle.setReadyGroups(new HashSet<BattleGroup>());
 
         return serverBattle;
     }

@@ -67,6 +67,7 @@ public class BattleDeserializer {
                                           BaseConfiguration configuration, Battle battle, Account account) {
         battleAlliance.setId(SimpleDeserializer.deserializeInt(buffer));
         battleAlliance.setNumber(buffer.get());
+        battleAlliance.setBattle(battle);
         ExitZone exit = new ExitZone();
         battleAlliance.setExit(exit);
         deserialize(exit, buffer);
@@ -113,6 +114,7 @@ public class BattleDeserializer {
                                            BaseConfiguration configuration, Battle battle, Account account) {
         battleAlliance.setId(SimpleDeserializer.deserializeInt(buffer));
         battleAlliance.setNumber(buffer.get());
+        battleAlliance.setBattle(battle);
         ExitZone exit = new ExitZone();
         battleAlliance.setExit(exit);
         deserialize(exit, buffer);

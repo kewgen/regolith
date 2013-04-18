@@ -35,7 +35,6 @@ public class ClientBattleHelper {
     public static void trace(Warrior warrior, int x, int y) {
         BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
         BattleMapHelper.makeShortestRoute(x, y, warrior);
-        //warrior.setDirection(WarriorHelper.getStepDirection(warrior, warrior.getBattleGroup().getAlliance().getBattle().getMap().getCells()));
     }
 
     /**
@@ -305,6 +304,31 @@ public class ClientBattleHelper {
             }
         }
         return null;
+    }
+
+    /**
+     * Слить аккаунты боевых групп из битвы from в into.
+     * @param into
+     * @param from
+     * @throws Exception если битвы не совместимы по типу
+     */
+    public static void mergeBattlesAccounts(Battle into, Battle from) throws Exception {
+        if (into.getBattleType() != from.getBattleType()) {
+            throw new Exception();
+        }
+        BattleAlliance[] intoAlliances = into.getAlliances();
+        BattleAlliance[] fromAlliances = from.getAlliances();
+        int length = intoAlliances.length;
+        if (length != fromAlliances.length) {
+            throw new Exception();
+        }
+        for (int i = 0; i < length; i++) {
+            BattleGroupCollection intoGroups = intoAlliances[i].getAllies();
+            BattleGroupCollection fromGroups = fromAlliances[i].getAllies();
+            for (int j = 0; j < intoGroups.size(); j++) {
+                intoGroups.get(j).setAccount(fromGroups.get(j).getAccount());
+            }
+        }
     }
 
 }

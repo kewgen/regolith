@@ -6,7 +6,9 @@ import com.geargames.common.network.MessageDispatcher;
 import com.geargames.common.network.Network;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.awt.components.battles.PBattleServiceLoginWait;
 import com.geargames.regolith.serializers.answers.*;
 
 /**
@@ -45,6 +47,14 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
                 break;
             case Packets.START_BATTLE:
                 message = new ClientStartBattleAnswer();
+                break;
+            case Packets.BATTLE_SERVICE_LOGIN:
+                message = new ClientBattleLoginAnswer();
+                ((ClientBattleLoginAnswer)message).setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
+                break;
+            case Packets.BATTLE_SERVICE_NEW_CLIENT_LOGIN:
+                 message = new ClientNewBattleClientLogin();
+                ((ClientNewBattleClientLogin)message).setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
                 break;
             default:
                 Debug.critical("RegolithMessageDispatcher: Unknown message type (" + dataMessage.getMessageType() + ")");

@@ -231,7 +231,15 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         if (answer.isSuccess()) {
             Debug.debug("The battle has begun.");
             ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
-            configuration.setBattle(answer.getBattle());
+            Battle preBattle = configuration.getBattle();
+            Battle battle = answer.getBattle();
+            try{
+                ClientBattleHelper.mergeBattlesAccounts(battle, preBattle);
+            }catch (Exception e){
+                Debug.error("Battles are not complementary by type...", e);
+                return;
+            }
+            configuration.setBattle(battle);
             LoginToBattleServiceRequest request = new LoginToBattleServiceRequest();
             request.setBattle(answer.getBattle());
             request.setConfiguration(configuration);
