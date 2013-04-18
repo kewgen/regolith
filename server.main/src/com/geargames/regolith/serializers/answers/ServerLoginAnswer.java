@@ -31,7 +31,9 @@ public class ServerLoginAnswer extends SerializedMessage {
         this.account = account;
         this.buffer = buffer;
         this.success = success;
-        this.baseConfiguration = serverConfiguration.getRegolithConfiguration().getBaseConfiguration();
+        if(serverConfiguration != null){
+            this.baseConfiguration = serverConfiguration.getRegolithConfiguration().getBaseConfiguration();
+        }
     }
 
     @Override
