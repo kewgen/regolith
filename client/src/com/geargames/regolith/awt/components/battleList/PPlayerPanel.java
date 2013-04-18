@@ -1,4 +1,4 @@
-package com.geargames.regolith.awt.components.battles;
+package com.geargames.regolith.awt.components.battleList;
 
 import com.geargames.awt.components.PContentPanel;
 import com.geargames.common.Graphics;

@@ -1,4 +1,4 @@
-package com.geargames.regolith.awt.components.battles;
+package com.geargames.regolith.awt.components.battleList;
 
 import com.geargames.awt.DrawablePPanel;
 import com.geargames.awt.utils.ScrollHelper;
@@ -22,7 +22,6 @@ import com.geargames.regolith.managers.ClientBattleMarketManager;
 import com.geargames.regolith.network.ClientRequestHelper;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.LoginToBattleServiceRequest;
-import com.geargames.regolith.serializers.requests.StartBattleRequest;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -246,7 +245,8 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             try {
                 request.setAlliance(ClientBattleHelper.findBattleAlliance(configuration.getBattle(), configuration.getAccount()));
             } catch (Exception e) {
-                Debug.error("A battle alliance was not found...", e);
+                Debug.error("A battle alliance was not found", e);
+                NotificationBox.error(LocalizedStrings.COULD_NOT_START_BATTLE, this);
                 return;
             }
             Network network = configuration.getNetwork();
@@ -417,6 +417,9 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         panelManager.getSelectWarriorsPanel().showPanel(targetBattleGroup);
     }
 
+    /**
+     * Обработчик нажатия на кнопку "В бой".
+     */
     public void onStartBattleButtonClick() {
         ClientRequestHelper.startBattle(this, LocalizedStrings.BATTLES_MSG_START_BATTLE_EXCEPTION);
     }

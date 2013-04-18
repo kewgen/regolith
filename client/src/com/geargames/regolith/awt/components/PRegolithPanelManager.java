@@ -4,8 +4,13 @@ import com.geargames.awt.*;
 import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
-import com.geargames.regolith.awt.components.battles.PBattleServiceLoginWait;
-import com.geargames.regolith.awt.components.battles.PBattlesPanel;
+import com.geargames.regolith.awt.components.battle.battleMenu.PBattleMenuPanel;
+import com.geargames.regolith.awt.components.battle.selectWarrior.PBattleSelectWarriorPanel;
+import com.geargames.regolith.awt.components.battle.shotMenu.PBattleShotMenuPanel;
+import com.geargames.regolith.awt.components.battle.warriorMenu.PBattleWarriorMenuPanel;
+import com.geargames.regolith.awt.components.battle.weaponMenu.PBattleWeaponMenuPanel;
+import com.geargames.regolith.awt.components.battleList.PBattleServiceLoginWait;
+import com.geargames.regolith.awt.components.battleList.PBattlesPanel;
 import com.geargames.regolith.awt.components.main.*;
 import com.geargames.regolith.awt.components.playerInfo.PPlayerInfoPanel;
 import com.geargames.regolith.awt.components.selectMap.PSelectMapPanel;
@@ -62,7 +67,13 @@ public class PRegolithPanelManager extends PPanelManager {
     private BattleScreen battleScreen;
 
     private DefaultDrawablePPanel fontTestWindow;
-    private TopDrawablePPanel loginBattleServiceWait;
+    private DefaultDrawablePPanel loginBattleServiceWait;
+
+    private DefaultDrawablePPanel battleMenuWindow;
+    private DefaultDrawablePPanel battleWarriorMenuWindow;
+    private DefaultDrawablePPanel battleShotMenuWindow;
+    private DefaultDrawablePPanel battleWeaponMenuWindow;
+    private DefaultDrawablePPanel battleSelectWarriorWindow;
 
     private PRegolithPanelManager() {
     }
@@ -207,9 +218,34 @@ public class PRegolithPanelManager extends PPanelManager {
         loginBattleServiceWait = new TopDrawablePPanel();
         loginBattleServiceWait.setAnchor(Anchors.CENTER_ANCHOR);
         loginBattleServiceWait.setElement(startBattleWaitPanel);
+
+        PBattleMenuPanel battleMenuPanel = new PBattleMenuPanel(render.getObject(Graph.PAN_BAT_MENU));
+        battleMenuWindow = new MiddleDrawablePPanel();
+        battleMenuWindow.setAnchor(Anchors.BOTTOM_LEFT_ANCHOR);
+        battleMenuWindow.setElement(battleMenuPanel);
+
+        PBattleWarriorMenuPanel battleWarriorMenuPanel = new PBattleWarriorMenuPanel(render.getObject(Graph.PAN_BAT_FIGHTER));
+        battleWarriorMenuWindow = new MiddleDrawablePPanel();
+//        battleWarriorMenuWindow.setAnchor(Anchors.BOTTOM_LEFT_ANCHOR);
+        battleWarriorMenuWindow.setElement(battleWarriorMenuPanel);
+
+        PBattleShotMenuPanel battleShotMenuPanel = new PBattleShotMenuPanel(render.getObject(Graph.PAN_BAT_FIRE));
+        battleShotMenuWindow = new MiddleDrawablePPanel();
+//        battleShotMenuWindow.setAnchor(Anchors.BOTTOM_LEFT_ANCHOR);
+        battleShotMenuWindow.setElement(battleShotMenuPanel);
+
+        PBattleWeaponMenuPanel battleWeaponMenuPanel = new PBattleWeaponMenuPanel(render.getObject(Graph.PAN_BAT_WEAPON));
+        battleWeaponMenuWindow = new MiddleDrawablePPanel();
+        battleWeaponMenuWindow.setAnchor(Anchors.BOTTOM_RIGHT_ANCHOR);
+        battleWeaponMenuWindow.setElement(battleWeaponMenuPanel);
+
+        PBattleSelectWarriorPanel battleSelectWarriorPanel = new PBattleSelectWarriorPanel(render.getObject(Graph.PAN_BAT_SEL_FIGHTER));
+        battleSelectWarriorWindow = new MiddleDrawablePPanel();
+        battleSelectWarriorWindow.setAnchor(Anchors.TOP_LEFT_ANCHOR);
+        battleSelectWarriorWindow.setElement(battleSelectWarriorPanel);
     }
 
-    public TopDrawablePPanel getLoginBattleServiceWait() {
+    public DefaultDrawablePPanel getLoginBattleServiceWait() {
         return loginBattleServiceWait;
     }
 
@@ -323,6 +359,46 @@ public class PRegolithPanelManager extends PPanelManager {
 
     public DefaultDrawablePPanel getFontTestWindow() {
         return fontTestWindow;
+    }
+
+    public DefaultDrawablePPanel getBattleMenuWindow() {
+        return battleMenuWindow;
+    }
+
+    public PBattleMenuPanel getBattleMenuPanel() {
+        return (PBattleMenuPanel) battleMenuWindow.getElement();
+    }
+
+    public DefaultDrawablePPanel getBattleWarriorMenuWindow() {
+        return battleWarriorMenuWindow;
+    }
+
+    public PBattleWarriorMenuPanel getBattleWarriorMenuPanel() {
+        return (PBattleWarriorMenuPanel) battleWarriorMenuWindow.getElement();
+    }
+
+    public DefaultDrawablePPanel getBattleShotMenuWindow() {
+        return battleShotMenuWindow;
+    }
+
+    public PBattleShotMenuPanel getBattleShotMenuPanel() {
+        return (PBattleShotMenuPanel) battleShotMenuWindow.getElement();
+    }
+
+    public DefaultDrawablePPanel getBattleWeaponMenuWindow() {
+        return battleWeaponMenuWindow;
+    }
+
+    public PBattleWeaponMenuPanel getBattleWeaponMenuPanel() {
+        return (PBattleWeaponMenuPanel) battleWeaponMenuWindow.getElement();
+    }
+
+    public DefaultDrawablePPanel getBattleSelectWarriorWindow() {
+        return battleSelectWarriorWindow;
+    }
+
+    public PBattleSelectWarriorPanel getBattleWarriorListPanel() {
+        return (PBattleSelectWarriorPanel) battleSelectWarriorWindow.getElement();
     }
 
 }
