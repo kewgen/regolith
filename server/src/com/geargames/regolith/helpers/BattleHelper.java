@@ -39,6 +39,7 @@ public class BattleHelper {
                 int y = yBegin + n / xAmount;
                 int x = xBegin + (n % xAmount > 1 ? (n % xAmount - 1) : 0);
                 WarriorHelper.putWarriorIntoMap(warrior, battleMap, x, y);
+                warrior.setDirection(Direction.UP_DOWN);
                 n += cellsPerWarrior;
             }
         }

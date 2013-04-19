@@ -4,6 +4,13 @@ import com.geargames.common.logging.Debug;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
+import com.geargames.regolith.BattleConfiguration;
+import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.helpers.ClientBattleHelper;
+import com.geargames.regolith.map.observer.StrictPerimeterObserver;
+import com.geargames.regolith.map.router.RecursiveWaveRouter;
+import com.geargames.regolith.serializers.ConfigurationDeserializer;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
@@ -20,7 +27,6 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
     private boolean success;
 
     public ClientBattleLoginAnswer() {
-        battleGroups = new BattleGroup[battle.getBattleType().getAllianceSize()];
     }
 
     public void setBattle(Battle battle) {
@@ -38,11 +44,11 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
     @Override
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         success = false;
-        battleGroups = null;
         int battleId = SimpleDeserializer.deserializeInt(buffer);
-        if (battle.getId() != battleId) {
+        if (battle.getId() == battleId) {
             success = SimpleDeserializer.deserializeBoolean(buffer);
             if (success) {
+                battleGroups = new BattleGroup[battle.getBattleType().getAllianceSize()*battle.getBattleType().getAllianceAmount()];
                 int size = SimpleDeserializer.deserializeInt(buffer);
                 for (int i = 0; i < size; i++) {
                     int battleGroupId = SimpleDeserializer.deserializeInt(buffer);
@@ -61,9 +67,14 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
                     }
                     battleGroups[i] = group;
                 }
+                ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
+                configuration.setBattleConfiguration(ConfigurationDeserializer.deserializeBattleConfiguration(buffer));
+                BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
+                battleConfiguration.setObserver(new StrictPerimeterObserver(ClientBattleHelper.getAllies(battle, configuration.getAccount())));
+                battleConfiguration.setRouter(new RecursiveWaveRouter());
+            } else {
+                Debug.warning("An alien battle has confirmed our login");
             }
-        } else {
-            Debug.warning("An alien battle has confirmed our login");
         }
     }
 }

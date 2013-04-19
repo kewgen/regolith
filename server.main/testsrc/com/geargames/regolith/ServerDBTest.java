@@ -529,6 +529,16 @@ public class ServerDBTest {
         battleConfiguration.setRevision((short) 1);
         battleConfiguration.setAbilityMax(skills[skills.length - 1].getAction());
 
+        ActionFees fees = new ActionFees();
+        fees.setChangeWeapon((byte)1);
+        fees.setMove((byte)1);
+        fees.setPickupTackle((byte)1);
+        fees.setRechargeWeapon((byte)1);
+        fees.setShutOrOpen((byte)1);
+        fees.setSitOrStand((byte)1);
+
+        battleConfiguration.setActionFees(fees);
+
         Warrior[] baseWarriors = new Warrior[2];
 
         List<StateTackle> tackles = new LinkedList<StateTackle>();

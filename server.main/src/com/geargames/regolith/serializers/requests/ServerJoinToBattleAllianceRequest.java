@@ -42,6 +42,7 @@ public class ServerJoinToBattleAllianceRequest extends ServerRequest {
         BattleAlliance alliance = null;
         List<SocketChannel> recipients;
         SerializedMessage message;
+        List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
         if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) != null) {
             int alliance_id = SimpleDeserializer.deserializeInt(from);
             for (BattleAlliance battleAlliance : battle.getAlliances()) {
@@ -54,11 +55,18 @@ public class ServerJoinToBattleAllianceRequest extends ServerRequest {
                 BattleGroup group = battleCreationManager.joinToAlliance(alliance, client.getAccount());
                 if (group != null) {
                     recipients = MainServerRequestUtils.recipientsByCreatedBattle(battle);
+                    recipients.remove(client.getChannel());
                     browseBattlesSchedulerService.updateBattle(battle);
                     message = ServerJoinToBattleAllianceAnswer.AnswerSuccess(to, group, client.getAccount());
+                    messages.add(new MainMessageToClient(recipients, message.serialize()));
+
+                    recipients = MainServerRequestUtils.singleRecipientByClient(client);
+                    message = ServerJoinToBattleAllianceAnswer.AnswerSelfSuccess(to, group);
+                    messages.add(new MainMessageToClient(recipients, message.serialize()));
                 } else {
                     recipients = MainServerRequestUtils.singleRecipientByClient(client);
                     message = ServerJoinToBattleAllianceAnswer.AnswerFailure(to);
+                    messages.add(new MainMessageToClient(recipients, message.serialize()));
                 }
             } else {
                 throw new RegolithException();
@@ -67,9 +75,10 @@ public class ServerJoinToBattleAllianceRequest extends ServerRequest {
             recipients = new ArrayList<SocketChannel>(1);
             recipients.add(serverContext.getChannel(client.getAccount()));
             message = ServerJoinToBattleAllianceAnswer.AnswerFailure(to);
+            messages.add(new MainMessageToClient(recipients, message.serialize()));
         }
-        List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
-        messages.add(new MainMessageToClient(recipients, message.serialize()));
+
+
         return messages;
     }
 }

@@ -14,20 +14,6 @@ public interface Packets {
     byte SUCCESS = 0;
     byte FAILURE = 1;
 
-    short MESSAGE_TYPE_NULL = -1;
-
-    short MESSAGE_IS_LATE = -2;
-
-    short BATCH_MESSAGE = -3;
-
-    short FRAME_MESSAGE = -4;
-    /*
-    Общий формат посылки любого пакета
-        size short       - размер пакета
-        pid  short       - ид пакета
-        packet[size]    - пакет
-    */
-    //***************************** Пакеты ********************************
 
     short CLIENT_RECONNECT = 0;
 
@@ -194,5 +180,18 @@ public interface Packets {
     short BATTLE_SERVICE_LOGOUT = 202;
 
     short BATTLE_SERVICE_NEW_CLIENT_LOGIN = 203;
+
+
+
+    short MESSAGE_TYPE_NULL = 300;
+
+    short MESSAGE_IS_LATE = 301;
+
+    short BATCH_MESSAGE = 302;
+
+    short FRAME_MESSAGE = 303;
+
+
+    short MESSAGES_AMOUNT = 304;
 
 }

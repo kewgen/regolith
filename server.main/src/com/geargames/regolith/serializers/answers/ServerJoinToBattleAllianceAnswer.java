@@ -19,6 +19,10 @@ public class ServerJoinToBattleAllianceAnswer extends SerializedMessage {
     private Account account;
     private boolean success;
 
+    public static ServerJoinToBattleAllianceAnswer AnswerSelfSuccess(MicroByteBuffer buffer, BattleGroup battleGroup) {
+        return new ServerJoinToBattleAllianceAnswer(buffer, battleGroup, null, true);
+    }
+
     public static ServerJoinToBattleAllianceAnswer AnswerSuccess(MicroByteBuffer buffer, BattleGroup battleGroup, Account account) {
         return new ServerJoinToBattleAllianceAnswer(buffer, battleGroup, account, true);
     }
@@ -46,7 +50,12 @@ public class ServerJoinToBattleAllianceAnswer extends SerializedMessage {
         SimpleSerializer.serialize(success, buffer);
         if (success) {
             SerializeHelper.serializeEntityReference(battleGroup, buffer);
-            AccountSerializer.serialize(account, buffer);
+            if (account != null) {
+                SimpleSerializer.serialize(true, buffer);
+                AccountSerializer.serialize(account, buffer);
+            } else {
+                SimpleSerializer.serialize(false, buffer);
+            }
         }
     }
 

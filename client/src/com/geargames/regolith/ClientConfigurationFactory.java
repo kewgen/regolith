@@ -39,25 +39,12 @@ public class ClientConfigurationFactory {
         configuration.setPort(1238);
         configuration.setServer("localhost");
 
-        configuration.setMessageDispatcher(new RegolithMessageDispatcher(configuration.getNetwork(), Packets.BATTLE_SERVICE_NEW_CLIENT_LOGIN));
+        configuration.setMessageDispatcher(new RegolithMessageDispatcher(configuration.getNetwork(), Packets.MESSAGES_AMOUNT));
         configuration.setBattleCreationManager(new ClientBattleCreationManager(configuration));
         configuration.setCommonManager(new ClientCommonManager(configuration));
         configuration.setBattleMarketManager(new ClientBattleMarketManager(configuration));
         configuration.setBaseManager(new ClientBaseManager(configuration));
         configuration.setBaseWarriorMarketManager(new ClientBaseWarriorMarketManager(configuration));
-
-
-
-        short[] stepLengths = new short[8];
-        stepLengths[0] = (short)Port.getConvertedValue(63);
-        stepLengths[1] = (short)Port.getConvertedValue(63);
-        stepLengths[2] = (short)Port.getConvertedValue(63);
-        stepLengths[3] = (short)Port.getConvertedValue(63);
-        stepLengths[4] = (short)Port.getConvertedValue(63);
-        stepLengths[5] = (short)Port.getConvertedValue(63);
-        stepLengths[6] = (short)Port.getConvertedValue(63);
-        stepLengths[7] = (short)Port.getConvertedValue(63);
-        configuration.setStepLengths(stepLengths);
 
         return configuration;
     }

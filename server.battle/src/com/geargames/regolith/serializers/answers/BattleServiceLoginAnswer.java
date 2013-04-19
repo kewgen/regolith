@@ -4,7 +4,9 @@ import com.geargames.regolith.Packets;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.serializers.ConfigurationSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
+import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -56,6 +58,7 @@ public class BattleServiceLoginAnswer extends SerializedMessage {
             for (BattleGroup group : groups) {
                 SerializeHelper.serializeEntityReference(group, buffer);
             }
+            ConfigurationSerializer.serialize(BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration().getBattleConfiguration(), buffer);
         }
     }
 }

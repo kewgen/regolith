@@ -48,10 +48,11 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
     @Override
     public void onReceive(ClientDeSerializedMessage message, short type) {
         ClientBattleLoginAnswer battleLogin = (ClientBattleLoginAnswer) message;
+        PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
         if (battleLogin.isSuccess()) {
             //todo забрать из сообщения группы которые уже залогинились и сообщить о них
-            PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
             manager.hideMiddle();
+            manager.getBattleScreen().setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
             manager.show(manager.getBattleScreen());
             manager.show(manager.getBattleMenuWindow());
             manager.show(manager.getBattleSelectWarriorWindow());
@@ -59,6 +60,7 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
         } else {
             NotificationBox.error(LocalizedStrings.COULD_NOT_LOGIN_TO_BATTLE, this);
         }
+        manager.hide(manager.getLoginBattleServiceWait());
     }
 
 }

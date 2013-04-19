@@ -34,10 +34,11 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
     private PBattlesList battleList;
     private PBattleCreateButton battleCreateButton;
     private short[] types;
+    private boolean browsing;
 
     public PBattlesPanel(PObject prototype) {
         super(prototype);
-        types = new short[] {
+        types = new short[]{
                 Packets.BROWSE_CREATED_BATTLES,
                 Packets.JOIN_TO_BATTLE_ALLIANCE,
                 Packets.EVICT_ACCOUNT_FROM_ALLIANCE,
@@ -172,6 +173,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             if (confirmationAnswer.isConfirm()) {
                 ObjectManager.getInstance().getBattleCollection().getBattles().clear();
                 registerMessageListener();
+                browsing = true;
             } else {
                 Debug.error("ListenToCreatedBattles: Request rejected");
                 NotificationBox.error(LocalizedStrings.BATTLES_MSG_LISTEN_TO_CREATED_BATTLES_EXCEPTION, this);
@@ -188,10 +190,14 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
         ClientBattleMarketManager battleMarket = configuration.getBattleMarketManager();
         try {
-            ClientConfirmationAnswer confirmationAnswer = battleMarket.doNotListenToCreatedBattles();
-            if (!confirmationAnswer.isConfirm()) {
-                Debug.error("DoNotListenToCreatedBattles: Request rejected");
-                NotificationBox.error(LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_CREATED_BATTLES_EXCEPTION, this);
+            if (browsing) {
+                ClientConfirmationAnswer confirmationAnswer = battleMarket.doNotListenToCreatedBattles();
+                if (!confirmationAnswer.isConfirm()) {
+                    Debug.error("DoNotListenToCreatedBattles: Request rejected");
+                    NotificationBox.error(LocalizedStrings.BATTLES_MSG_DO_NOT_LISTEN_TO_CREATED_BATTLES_EXCEPTION, this);
+                } else {
+                    browsing = false;
+                }
             }
             unregisterMessageListener();
         } catch (Exception e) {
@@ -227,14 +233,15 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
      */
     public void onStartBattleReceive(ClientDeSerializedMessage message) {
         ClientStartBattleAnswer answer = (ClientStartBattleAnswer) message;
-        if (answer.isSuccess()) {
+        if (answer != null && answer.isSuccess()) {
             Debug.debug("The battle has begun.");
+            browsing = false;
             ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
             Battle preBattle = configuration.getBattle();
             Battle battle = answer.getBattle();
-            try{
+            try {
                 ClientBattleHelper.mergeBattlesAccounts(battle, preBattle);
-            }catch (Exception e){
+            } catch (Exception e) {
                 Debug.error("Battles are not complementary by type...", e);
                 return;
             }
@@ -271,8 +278,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         if (listenedBattle == null) {
             // Нет битв, которую я создал или в которую вступил => можно смело создавать битву
             // Особой реакции на этот случай не требуется
-        } else
-        if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
+        } else if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
             // Битва была создана мною => нужно заканселить ее
             // Этой ситуации вообще происходить не должно, но, на всякий случай, обработаем ее
             Debug.error("There was an attempt to create a battle, when there are already created battle");
@@ -342,8 +348,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
             if (listenedBattle == null) {
                 // У меня нет своей битвы и я не вхожу ни в одну другую битву => могу смело выбирать бойцов и вступать в чужую битву
                 // Особой реакции на этот случай не требуется
-            } else
-            if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: сравнивать сущности по id или по ссылке?
+            } else if (listenedBattle.getAuthor().getId() == configuration.getAccount().getId()) { //todo: сравнивать сущности по id или по ссылке?
                 // У меня есть своя битва
                 if (targetBattleGroup.getAlliance().getBattle().getId() == listenedBattle.getId()) {
                     // Я собираюсь вступить в боевую группу своей битвы => сначало нужно освободить занятую боевую группу перед вступлением в другую
@@ -403,8 +408,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                     }
                 }
             }
-        } else
-        if (targetBattleGroup.getAccount().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
+        } else if (targetBattleGroup.getAccount().getId() == configuration.getAccount().getId()) { //todo: id или ссылка?
             // Боевая группа занята мною => посмотрим каких бойцов я выбрал и, при необходимости, перевыберем их
             // Особой реакции на этот случай не требуется
         } else {
@@ -421,7 +425,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
      * Обработчик нажатия на кнопку "В бой".
      */
     public void onStartBattleButtonClick() {
-        ClientRequestHelper.startBattle(this, LocalizedStrings.BATTLES_MSG_START_BATTLE_EXCEPTION);
+        onStartBattleReceive(ClientRequestHelper.startBattle(this, LocalizedStrings.BATTLES_MSG_START_BATTLE_EXCEPTION));
     }
 
 }

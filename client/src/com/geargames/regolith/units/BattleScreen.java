@@ -15,9 +15,12 @@ import com.geargames.common.Graphics;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.application.Event;
 import com.geargames.regolith.Graph;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.map.Pair;
@@ -278,11 +281,22 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     @Override
     public short[] getTypes() {
-        return new short[]{Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT};
+        return new short[]{Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE};
     }
 
     @Override
     public void onReceive(ClientDeSerializedMessage message, short type) {
+        switch (type) {
+            case Packets.CHANGE_ACTIVE_ALLIANCE:
+                ClientChangeActiveAllianceAnswer change = (ClientChangeActiveAllianceAnswer) message;
+                myTurn = WarriorHelper.isAlly(change.getAlliance(), ClientConfigurationFactory.getConfiguration().getAccount());
+                if (myTurn) {
+                    ClientBattleHelper.resetActionScores(group);
+                }
+                break;
+            case Packets.MOVE_ALLY:
+                break;
+        }
 
     }
 
@@ -529,6 +543,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public void onShow() {
         if (battle != null) {
             Account account = ClientConfigurationFactory.getConfiguration().getAccount();
+            //todo тут ли устанавливать SecurityOperationManager
+            account.setSecurity(new SecurityOperationManager());
+            account.getSecurity().setAccount(account);
+
             group = ClientBattleHelper.getBattleUnits(battle, account);
             allies = ClientBattleHelper.getAllyBattleUnits(battle, account);
             enemies = ClientBattleHelper.getEnemyBattleUnits(battle, account);

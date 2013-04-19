@@ -1,8 +1,8 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;

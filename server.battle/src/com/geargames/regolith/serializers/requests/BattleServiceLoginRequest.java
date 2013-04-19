@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
@@ -10,7 +11,6 @@ import com.geargames.regolith.serializers.answers.BattleServiceNewClientLogin;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.service.state.ClientActivationAwaiting;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;

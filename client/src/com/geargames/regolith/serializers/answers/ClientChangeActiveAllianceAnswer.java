@@ -18,10 +18,6 @@ public class ClientChangeActiveAllianceAnswer extends ClientDeSerializedMessage 
 
     public ClientChangeActiveAllianceAnswer(){}
 
-    public ClientChangeActiveAllianceAnswer(Battle battle) {
-        this.battle = battle;
-    }
-
     public BattleAlliance getAlliance() {
         return alliance;
     }

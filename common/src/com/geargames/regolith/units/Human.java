@@ -1,5 +1,6 @@
 package com.geargames.regolith.units;
 
+import com.geargames.regolith.units.battle.Direction;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.Weapon;
 import com.geargames.regolith.units.tackle.WeaponCategory;
@@ -22,6 +23,19 @@ public class Human extends CellElement {
     private boolean shooting;
     private boolean sitting;
     private boolean moving;
+    private Direction direction;
+
+    /**
+     * Направление в котором боец повёрнут.
+     * @return
+     */
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 
     public boolean isMoving() {
         return moving;

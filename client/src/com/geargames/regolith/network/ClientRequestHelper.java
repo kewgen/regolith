@@ -164,7 +164,7 @@ public class ClientRequestHelper {
      * Вспомогательная функция. Начинает битву.
      * @return - true, если битва началась успешно.
      */
-    public static boolean startBattle(PObjectElement element, String textError) {
+    public static ClientStartBattleAnswer startBattle(PObjectElement element, String textError) {
         ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
         ClientBattleCreationManager battleCreationManager = configuration.getBattleCreationManager();
         try {
@@ -173,15 +173,15 @@ public class ClientRequestHelper {
             if (!startBattleAnswer.isSuccess()) {
                 Debug.error("StartBattle: Request rejected (battle id = " + configuration.getBattle().getId() + ")");
                 NotificationBox.error(textError, element);
-                return false;
+                return startBattleAnswer;
             }
             Debug.debug("The client begun the battle (battle id = " + startBattleAnswer.getBattle().getId() +
                     "; address: " + startBattleAnswer.getHost() + ":" + startBattleAnswer.getPort() + ")");
-            return true;
+            return startBattleAnswer;
         } catch (Exception e) {
             Debug.error("StartBattle: Send request and receive answer is failed (battle id = " + configuration.getBattle().getId() + ")", e);
             NotificationBox.error(textError, element);
-            return false;
+            return null;
         }
     }
 
