@@ -34,8 +34,9 @@ public class PCampButton extends PTouchButton {
     @Override
     public void onClick() {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
+        BaseConfiguration baseConfiguration = ClientConfigurationFactory.getConfiguration().getBaseConfiguration();
         Account account = clientConfiguration.getAccount();
-        BattleTypeCollection types = ClientConfigurationFactory.getConfiguration().getBaseConfiguration().getBattleTypes();
+        BattleTypeCollection types = baseConfiguration.getBattleTypes();
         BattleType type = null;
         for (int i = 0; i < types.size(); i++) {
             type = types.get(i);
@@ -75,16 +76,54 @@ public class PCampButton extends PTouchButton {
             tmp[0] = type;
             battleMap.setPossibleBattleTypes(tmp);
 
-            Barrier barrier = new ClientBarrier();
-            barrier.setAbleToLookThrough(false);
-            barrier.setFrameId(1216);
+            Barrier barBarrier0    = baseConfiguration.getBarriers().get(0);
+            Barrier barBarrier1    = baseConfiguration.getBarriers().get(1);
+            Barrier fenceBarrier0l = baseConfiguration.getBarriers().get(2);
+            Barrier fenceBarrier0r = baseConfiguration.getBarriers().get(3);
+            Barrier fenceBarrier1l = baseConfiguration.getBarriers().get(4);
+            Barrier fenceBarrier1r = baseConfiguration.getBarriers().get(5);
 
-            battleMap.getCells()[1][2].addElement(barrier);
-            battleMap.getCells()[2][2].addElement(barrier);
-            battleMap.getCells()[3][2].addElement(barrier);
-            battleMap.getCells()[3][3].addElement(barrier);
-            battleMap.getCells()[3][4].addElement(barrier);
-            battleMap.getCells()[3][5].addElement(barrier);
+            battleMap.getCells()[2][0].addElement(barBarrier0);
+            battleMap.getCells()[2][1].addElement(barBarrier0);
+            battleMap.getCells()[3][1].addElement(fenceBarrier1l);
+            battleMap.getCells()[4][1].addElement(fenceBarrier1r);
+            battleMap.getCells()[5][1].addElement(fenceBarrier1l);
+            battleMap.getCells()[6][1].addElement(fenceBarrier1r);
+            battleMap.getCells()[7][1].addElement(barBarrier1);
+            battleMap.getCells()[7][2].addElement(barBarrier1);
+            battleMap.getCells()[9][1].addElement(barBarrier1);
+            battleMap.getCells()[9][2].addElement(barBarrier1);
+            battleMap.getCells()[4][2].addElement(fenceBarrier0r);
+            battleMap.getCells()[4][3].addElement(fenceBarrier0l);
+            battleMap.getCells()[4][4].addElement(barBarrier1);
+            battleMap.getCells()[5][4].addElement(barBarrier1);
+            battleMap.getCells()[6][4].addElement(barBarrier1);
+            battleMap.getCells()[6][5].addElement(fenceBarrier0r);
+            battleMap.getCells()[6][6].addElement(fenceBarrier0l);
+            battleMap.getCells()[8][4].addElement(barBarrier1);
+            battleMap.getCells()[9][4].addElement(barBarrier1);
+            battleMap.getCells()[8][5].addElement(fenceBarrier0r);
+            battleMap.getCells()[8][6].addElement(fenceBarrier0l);
+
+            battleMap.getCells()[0][2].addElement(barBarrier1);
+            battleMap.getCells()[0][3].addElement(fenceBarrier1l);
+            battleMap.getCells()[1][3].addElement(fenceBarrier1r);
+            battleMap.getCells()[2][3].addElement(barBarrier0);
+            battleMap.getCells()[2][4].addElement(barBarrier0);
+            battleMap.getCells()[2][5].addElement(barBarrier0);
+            battleMap.getCells()[1][5].addElement(barBarrier1);
+
+            battleMap.getCells()[1][8].addElement(barBarrier1);
+            battleMap.getCells()[1][7].addElement(barBarrier1);
+            battleMap.getCells()[2][7].addElement(barBarrier1);
+            battleMap.getCells()[3][7].addElement(fenceBarrier1l);
+            battleMap.getCells()[4][7].addElement(fenceBarrier1r);
+            battleMap.getCells()[4][6].addElement(barBarrier0);
+            battleMap.getCells()[4][8].addElement(barBarrier0);
+
+            battleMap.getCells()[6][8].addElement(fenceBarrier0r);
+            battleMap.getCells()[6][9].addElement(fenceBarrier0l);
+            battleMap.getCells()[8][7].addElement(barBarrier1);
 
             Warrior mine = account.getWarriors().get(0);
             mine.setDirection(Direction.LEFT_RIGHT);

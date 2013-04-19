@@ -1,7 +1,7 @@
 //../regolith/_port/packer_320_480_full
 //Wed Apr 17 12:42:14 GMT+04:00 2013 , version: 108
 
-package com.geargames.regolith.application;
+package com.geargames.regolith;
 
 public class Graph {
 

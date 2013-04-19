@@ -3,7 +3,7 @@ package com.geargames.regolith.awt.components;
 import com.geargames.awt.*;
 import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
-import com.geargames.regolith.application.Graph;
+import com.geargames.regolith.Graph;
 import com.geargames.regolith.awt.components.battle.battleMenu.PBattleMenuPanel;
 import com.geargames.regolith.awt.components.battle.warriorList.PBattleWarriorListPanel;
 import com.geargames.regolith.awt.components.battle.shotMenu.PBattleShotMenuPanel;

@@ -10,7 +10,7 @@ import com.geargames.common.logging.Debug;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.application.Graph;
+import com.geargames.regolith.Graph;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.Account;

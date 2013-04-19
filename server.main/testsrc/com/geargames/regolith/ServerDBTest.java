@@ -190,19 +190,17 @@ public class ServerDBTest {
         baseConfiguration.setMaxWorkShopLevel((byte) 10);
 
 
-        ServerWeaponCategoryCollection weaponCategories;
-
-        weaponCategories = new ServerWeaponCategoryCollection();
+        ServerWeaponCategoryCollection weaponCategories = new ServerWeaponCategoryCollection();
         weaponCategories.setCategories(new LinkedList<WeaponCategory>());
 
-        WeaponCategory weaponCategory = new WeaponCategory();
-        weaponCategory.setPackerId(0);
-        weaponCategory.setName("ХОЛОДНОЕ");
+        WeaponCategory bladesWeaponCategory = new WeaponCategory();
+        bladesWeaponCategory.setPackerId(0);
+        bladesWeaponCategory.setName("ХОЛОДНОЕ");
         ServerWeaponTypeCollection blades = new ServerWeaponTypeCollection();
         blades.setWeaponTypes(new LinkedList<WeaponType>());
-        weaponCategory.setWeaponTypes(blades);
+        bladesWeaponCategory.setWeaponTypes(blades);
 
-        weaponCategories.add(weaponCategory);
+        weaponCategories.add(bladesWeaponCategory);
 
         WeaponType weaponType = new WeaponType();
         weaponType.setName("НОЖ");
@@ -210,8 +208,8 @@ public class ServerDBTest {
         bladeProjectiles.setProjectiles(new LinkedList<Projectile>());
         weaponType.setProjectiles(bladeProjectiles);
         blades.add(weaponType);
-        weaponType.setCategory(weaponCategory);
-        weaponCategory.getWeaponTypes().add(weaponType);
+        weaponType.setCategory(bladesWeaponCategory);
+        bladesWeaponCategory.getWeaponTypes().add(weaponType);
 
         weaponType.setAccuracy((byte) 100);
         weaponType.setAccurateAction((byte) 1);
@@ -240,32 +238,40 @@ public class ServerDBTest {
         weaponType.setMinSkill(skills[0]);
 
 
-        weaponCategory = new WeaponCategory();
-        weaponCategory.setPackerId(0);
-        weaponCategories.add(weaponCategory);
-        weaponCategory.setName("МЕТАТЕЛЬНЫЕ");
+        WeaponCategory thrownWeaponCategory = new WeaponCategory();
+        thrownWeaponCategory.setPackerId(0);
+        weaponCategories.add(thrownWeaponCategory);
+        thrownWeaponCategory.setName("МЕТАТЕЛЬНЫЕ");
         ServerWeaponTypeCollection thrown = new ServerWeaponTypeCollection();
         thrown.setWeaponTypes(new LinkedList<WeaponType>());
 
-        weaponCategory = new WeaponCategory();
-        weaponCategory.setPackerId(0);
-        weaponCategories.add(weaponCategory);
-        weaponCategory.setName("ЛЕГКОЕ");
+        WeaponCategory lightWeaponCategory = new WeaponCategory();
+        lightWeaponCategory.setPackerId(0);
+        weaponCategories.add(lightWeaponCategory);
+        lightWeaponCategory.setName("ЛЕГКОЕ");
         ServerWeaponTypeCollection light = new ServerWeaponTypeCollection();
         light.setWeaponTypes(new LinkedList<WeaponType>());
 
-        weaponCategory = new WeaponCategory();
-        weaponCategory.setPackerId(0);
-        weaponCategories.add(weaponCategory);
-        weaponCategory.setName("ТЯЖЕЛОЕ");
+        WeaponCategory heavyWeaponCategory = new WeaponCategory();
+        heavyWeaponCategory.setPackerId(0);
+        weaponCategories.add(heavyWeaponCategory);
+        heavyWeaponCategory.setName("ТЯЖЕЛОЕ");
         ServerWeaponTypeCollection heavy = new ServerWeaponTypeCollection();
         heavy.setWeaponTypes(new LinkedList<WeaponType>());
 
+        WeaponCategory automaticWeaponCategory = new WeaponCategory();
+        automaticWeaponCategory.setPackerId(0);
+        weaponCategories.add(automaticWeaponCategory);
+        automaticWeaponCategory.setName("АВТОМАТИЧЕСКОЕ");
+        ServerWeaponTypeCollection automatic = new ServerWeaponTypeCollection();
+        automatic.setWeaponTypes(new LinkedList<WeaponType>());
 
-        weaponCategory = new WeaponCategory();
+        WeaponCategory weaponCategory = new WeaponCategory();
         weaponCategory.setPackerId(0);
         weaponCategories.add(weaponCategory);
         weaponCategory.setName("ДАЛЬНОБОЙНОЕ");
+
+        baseConfiguration.setWeaponCategories(weaponCategories);
 
         ServerWeaponTypeCollection firearms = new ServerWeaponTypeCollection();
         firearms.setWeaponTypes(new LinkedList<WeaponType>());
@@ -359,7 +365,6 @@ public class ServerDBTest {
         ammunitionCategory.setQuality(1.0);
         ammunitionCategoryCollection.add(ammunitionCategory);
         projectiles.get(2).setCategory(ammunitionCategory);
-        baseConfiguration.setWeaponCategories(weaponCategories);
 
         ammunitionCategory = new AmmunitionCategory();
         ammunitionCategory.setName("УСИЛЕННЫЕ");
@@ -375,13 +380,6 @@ public class ServerDBTest {
         ammunitionCategoryCollection.add(ammunitionCategory);
 
         baseConfiguration.setAmmunitionCategories(ammunitionCategoryCollection);
-
-        weaponCategory = new WeaponCategory();
-        weaponCategory.setPackerId(0);
-        weaponCategories.add(weaponCategory);
-        weaponCategory.setName("АВТОМАТИЧЕСКОЕ");
-        ServerWeaponTypeCollection automatic = new ServerWeaponTypeCollection();
-        automatic.setWeaponTypes(new LinkedList<WeaponType>());
 
         ServerArmorTypeCollection armorTypes = new ServerArmorTypeCollection();
         armorTypes.setArmorTypes(new LinkedList<ArmorType>());
@@ -656,27 +654,79 @@ public class ServerDBTest {
         barriers.setBarriers(new LinkedList<Barrier>());
         baseConfiguration.setBarriers(barriers);
 
-        // Простое невидимое препятствие. Устарело.
+        // ----- Простой ящик в полроста, направленный на юго-восток ---------------------------------------------------
         ServerBarrier barrier = new ServerBarrier();
         barriers.add(barrier);
         barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
-        barrier.setAbleToLookThrough(true);
         for (int i = 0; i < weaponCategories.size(); i++) {
             barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
         }
+        barrier.setAbleToLookThrough(true);
         barrier.setAbleToWalkThrough(false);
         barrier.setHalfLong(true);
+        barrier.setFrameId(Graph.OBJ_BAR);
 
-//        // Препятствие в виде забора. Левая часть, направленная на юго-восток
-//        barrier = new ServerBarrier();
-//        barriers.add(barrier);
-//        barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
-//        barrier.setAbleToLookThrough(true);
-//        for (int i = 0; i < weaponCategories.size(); i++) {
-//            barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
-//        }
-//        barrier.setAbleToWalkThrough(false);
-//        barrier.setHalfLong(true);
+        // ----- Простой ящик в полроста, направленный на юго-запад ----------------------------------------------------
+        barrier = new ServerBarrier();
+        barriers.add(barrier);
+        barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
+        for (int i = 0; i < weaponCategories.size(); i++) {
+            barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
+        }
+        barrier.setAbleToLookThrough(true);
+        barrier.setAbleToWalkThrough(false);
+        barrier.setHalfLong(true);
+        barrier.setFrameId(Graph.OBJ_BAR + 1);
+
+        // ----- Препятствие в виде забора. Левая часть, направленная на юго-восток ------------------------------------
+        barrier = new ServerBarrier();
+        barriers.add(barrier);
+        barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
+        for (int i = 0; i < weaponCategories.size(); i++) {
+            barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
+        }
+        barrier.setAbleToLookThrough(true);
+        barrier.setAbleToWalkThrough(false);
+        barrier.setHalfLong(false);
+        barrier.setFrameId(Graph.OBJ_FENCE);
+
+        // ----- Препятствие в виде забора. Правая часть, направленная на юго-восток -----------------------------------
+        barrier = new ServerBarrier();
+        barriers.add(barrier);
+        barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
+        for (int i = 0; i < weaponCategories.size(); i++) {
+            barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
+        }
+        barrier.setAbleToLookThrough(true);
+        barrier.setAbleToWalkThrough(false);
+        barrier.setHalfLong(false);
+        barrier.setFrameId(Graph.OBJ_FENCE + 1);
+
+        // ----- Препятствие в виде забора. Левая часть, направленная на юго-запад -------------------------------------
+        barrier = new ServerBarrier();
+        barriers.add(barrier);
+        barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
+        for (int i = 0; i < weaponCategories.size(); i++) {
+            barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
+        }
+        barrier.setAbleToLookThrough(true);
+        barrier.setAbleToWalkThrough(false);
+        barrier.setHalfLong(false);
+        barrier.setFrameId(Graph.OBJ_FENCE + 2);
+
+        // ----- Препятствие в виде забора. Правая часть, направленная на юго-запад ------------------------------------
+        barrier = new ServerBarrier();
+        barriers.add(barrier);
+        barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
+        for (int i = 0; i < weaponCategories.size(); i++) {
+            barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
+        }
+        barrier.setAbleToLookThrough(true);
+        barrier.setAbleToWalkThrough(false);
+        barrier.setHalfLong(false);
+        barrier.setFrameId(Graph.OBJ_FENCE + 3);
+
+        // -------------------------------------------------------------------------------------------------------------
 
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
@@ -851,8 +901,54 @@ public class ServerDBTest {
         Battle battle = BattleHelper.createBattle("qqq", map1, types[0]);
         BattleHelper.prepareBattle(battle);
 
-        Barrier barrier = baseConfiguration.getBarriers().get(0);
-        map1.getCells()[3][3].setElement(barrier);
+        Barrier barBarrier0    = baseConfiguration.getBarriers().get(0);
+        Barrier barBarrier1    = baseConfiguration.getBarriers().get(1);
+        Barrier fenceBarrier0l = baseConfiguration.getBarriers().get(2);
+        Barrier fenceBarrier0r = baseConfiguration.getBarriers().get(3);
+        Barrier fenceBarrier1l = baseConfiguration.getBarriers().get(4);
+        Barrier fenceBarrier1r = baseConfiguration.getBarriers().get(5);
+
+        map1.getCells()[2][0].addElement(barBarrier0);
+        map1.getCells()[2][1].addElement(barBarrier0);
+        map1.getCells()[3][1].addElement(fenceBarrier1l);
+        map1.getCells()[4][1].addElement(fenceBarrier1r);
+        map1.getCells()[5][1].addElement(fenceBarrier1l);
+        map1.getCells()[6][1].addElement(fenceBarrier1r);
+        map1.getCells()[7][1].addElement(barBarrier1);
+        map1.getCells()[7][2].addElement(barBarrier1);
+        map1.getCells()[9][1].addElement(barBarrier1);
+        map1.getCells()[9][2].addElement(barBarrier1);
+        map1.getCells()[4][2].addElement(fenceBarrier0r);
+        map1.getCells()[4][3].addElement(fenceBarrier0l);
+        map1.getCells()[4][4].addElement(barBarrier1);
+        map1.getCells()[5][4].addElement(barBarrier1);
+        map1.getCells()[6][4].addElement(barBarrier1);
+        map1.getCells()[6][5].addElement(fenceBarrier0r);
+        map1.getCells()[6][6].addElement(fenceBarrier0l);
+        map1.getCells()[8][4].addElement(barBarrier1);
+        map1.getCells()[9][4].addElement(barBarrier1);
+        map1.getCells()[8][5].addElement(fenceBarrier0r);
+        map1.getCells()[8][6].addElement(fenceBarrier0l);
+
+        map1.getCells()[0][2].addElement(barBarrier1);
+        map1.getCells()[0][3].addElement(fenceBarrier1l);
+        map1.getCells()[1][3].addElement(fenceBarrier1r);
+        map1.getCells()[2][3].addElement(barBarrier0);
+        map1.getCells()[2][4].addElement(barBarrier0);
+        map1.getCells()[2][5].addElement(barBarrier0);
+        map1.getCells()[1][5].addElement(barBarrier1);
+
+        map1.getCells()[1][8].addElement(barBarrier1);
+        map1.getCells()[1][7].addElement(barBarrier1);
+        map1.getCells()[2][7].addElement(barBarrier1);
+        map1.getCells()[3][7].addElement(fenceBarrier1l);
+        map1.getCells()[4][7].addElement(fenceBarrier1r);
+        map1.getCells()[4][6].addElement(barBarrier0);
+        map1.getCells()[4][8].addElement(barBarrier0);
+
+        map1.getCells()[6][8].addElement(fenceBarrier0r);
+        map1.getCells()[6][9].addElement(fenceBarrier0l);
+        map1.getCells()[8][7].addElement(barBarrier1);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -872,7 +968,8 @@ public class ServerDBTest {
         rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
 
         box.getTackles().add(rifle);
-        map1.getCells()[1][1].setElement(box);
+        map1.getCells()[1][1].addElement(box);
+
         map1.setContent(BattleHelper.serializeBattleCells(map1.getCells()));
 
         session = sessionFactory.openSession();
@@ -889,10 +986,10 @@ public class ServerDBTest {
         session.close();
 
         newBattle.getMap().setCells(BattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
-        Assert.assertTrue(battle.getMap().getCells()[1][1].getElement() instanceof Box);
-        Assert.assertTrue(battle.getMap().getCells()[3][3].getElement() instanceof Barrier);
+        Assert.assertTrue(battle.getMap().getCells()[1][1].getElements()[0] instanceof Box);
+        Assert.assertTrue(battle.getMap().getCells()[4][3].getElements()[0] instanceof Barrier);
 
-        Box newBox = (Box) battle.getMap().getCells()[1][1].getElement();
+        Box newBox = (Box) battle.getMap().getCells()[1][1].getElements()[0];
 
         Assert.assertEquals(newBox.getTackles().get(0).getName(), rifle.getName());
     }

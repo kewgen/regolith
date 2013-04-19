@@ -1,6 +1,5 @@
 package com.geargames.regolith.units.battle;
 
-import com.geargames.regolith.units.CellElementLayers;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
 /**
@@ -30,11 +29,6 @@ public class ClientBarrier extends Barrier {
 
     public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
         return ((shootThrough >> weaponCategory.getId()) & 1) != 0;
-    }
-
-    @Override
-    public byte getLayer() {
-        return CellElementLayers.DINAMIC;
     }
 
 }

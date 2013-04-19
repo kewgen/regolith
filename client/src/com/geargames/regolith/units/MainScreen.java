@@ -3,7 +3,7 @@ package com.geargames.regolith.units;
 import com.geargames.awt.Screen;
 import com.geargames.common.Graphics;
 import com.geargames.common.env.Environment;
-import com.geargames.regolith.application.Graph;
+import com.geargames.regolith.Graph;
 
 /**
  * User: mkutuzov

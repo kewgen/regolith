@@ -1,6 +1,7 @@
 package com.geargames.regolith.application;
 
 import com.geargames.common.packer.PManager;
+import com.geargames.regolith.Graph;
 
 /**
  * User: mikhail v. kutuzov

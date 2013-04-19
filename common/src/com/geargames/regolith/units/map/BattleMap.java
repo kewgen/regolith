@@ -47,6 +47,7 @@ public class BattleMap extends Entity {
         this.exits = exits;
     }
 
+    // BattleCell[y][x]
     public BattleCell[][] getCells() {
         return cells;
     }

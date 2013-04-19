@@ -29,6 +29,10 @@ public abstract class BattleCell implements Serializable {
         return elements;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     @Deprecated
     public CellElement getElement() {
         if (size == 0) {

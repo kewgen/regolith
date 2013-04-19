@@ -1,6 +1,7 @@
 package com.geargames.regolith.units.battle;
 
 import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.CellElementLayers;
 import com.geargames.regolith.units.CellElementTypes;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
@@ -70,5 +71,10 @@ public abstract class Barrier extends CellElement {
      * @param able
      */
     public abstract void setAbleToShootThrough(WeaponCategory category, boolean able);
+
+    @Override
+    public byte getLayer() {
+        return CellElementLayers.DINAMIC;
+    }
 
 }

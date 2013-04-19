@@ -4,6 +4,8 @@ import com.geargames.awt.Screen;
 import com.geargames.common.env.Environment;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.network.DataMessageListener;
+import com.geargames.common.packer.PFrame;
+import com.geargames.common.packer.PObject;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
@@ -14,7 +16,7 @@ import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.application.Event;
-import com.geargames.regolith.application.Graph;
+import com.geargames.regolith.Graph;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
@@ -109,6 +111,13 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             graphics.drawLine(x - HORIZONTAL_RADIUS, y, x, y - VERTICAL_RADIUS);
             graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
         }
+        CellElement[] elements = cell.getElements();
+        for (int i = 0; i < cell.getSize(); i++) {
+            PObject obj = Environment.getRender().getObject(elements[i].getFrameId());
+            if (obj != null) {
+                obj.draw(graphics, x, y);
+            }
+        }
         if (path) {
             Environment.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x, y);
         }
@@ -133,15 +142,15 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         BattleCell[][] cells = battle.getMap().getCells();
         int length = cells.length;
         int x, y;
-        for (int j = 0; j < length; j++) {
-            y = j * VERTICAL_RADIUS;
-            x = (length - 1 + j) * HORIZONTAL_RADIUS;
-            for (int i = 0; i < length; i++) {
+        for (int yCell = 0; yCell < length; yCell++) {
+            y = yCell * VERTICAL_RADIUS;
+            x = (length - 1 + yCell) * HORIZONTAL_RADIUS;
+            for (int xCell = 0; xCell < length; xCell++) {
                 if (isOnTheScreen(x, y)) {
-                    if (BattleMapHelper.isShortestPathCell(cells[j][i], user.getUnit().getWarrior())) {
-                        drawCell(graphics, x - mapX, y - mapY, cells[j][i], true);
+                    if (BattleMapHelper.isShortestPathCell(cells[yCell][xCell], user.getUnit().getWarrior())) {
+                        drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell], true);
                     } else {
-                        drawCell(graphics, x - mapX, y - mapY, cells[j][i], false);
+                        drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell], false);
                     }
                 }
                 x -= HORIZONTAL_RADIUS;

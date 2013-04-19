@@ -10,6 +10,7 @@ import com.geargames.common.util.ArrayIntegerDual;
 import com.geargames.common.util.Recorder;
 import com.geargames.platform.packer.Graphics;
 import com.geargames.platform.packer.Image;
+import com.geargames.regolith.Graph;
 import com.geargames.regolith.Port;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 

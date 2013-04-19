@@ -119,9 +119,9 @@ public class BattleHelper {
                 cell.setVisited(new HashMap<BattleAlliance, Boolean>());
                 for (int k = 0; k < allianceAmount; k++) {
                     BattleAlliance alliance = battle.getAlliances()[k];
-                    cell.getPaths().put(alliance, (short) 0);
-                    cell.getVisibilities().put(alliance, (short) 0);
-                    cell.getVisited().put(alliance, false);
+                    cell.setOptimalPath(alliance, (short) 0);
+                    cell.setVisibility(alliance, (short) 0);
+                    cell.setVisited(alliance, false);
                 }
             }
         }

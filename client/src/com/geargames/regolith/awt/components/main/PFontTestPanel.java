@@ -7,7 +7,7 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PFont;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.util.Region;
-import com.geargames.regolith.application.Graph;
+import com.geargames.regolith.Graph;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
