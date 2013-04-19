@@ -8,13 +8,13 @@ import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
-import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.dictionaries.WarriorCollection;
+import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.map.Pair;
+
+import java.util.Vector;
 
 /**
  * Users: mkutuzov, abarakov
@@ -82,7 +82,9 @@ public class ClientBattleHelper {
                     for (int k = 0; k < groupSize; k++) {
                         BattleUnit battleUnit = new BattleUnit();
                         Unit unit = new Unit();
-                        unit.setWarrior(warriors.get(k));
+                        Warrior warrior = warriors.get(k);
+                        warrior.setDirection(Direction.UP_DOWN);
+                        unit.setWarrior(warrior);
                         unit.init();
                         battleUnit.setUnit(unit);
                         battleUnits.add(battleUnit);
@@ -123,7 +125,9 @@ public class ClientBattleHelper {
                         for (int k = 0; k < groupSize; k++) {
                             BattleUnit battleUnit = new BattleUnit();
                             Unit unit = new Unit();
-                            unit.setWarrior(warriors.get(k));
+                            Warrior warrior = warriors.get(k);
+                            warrior.setDirection(Direction.UP_DOWN);
+                            unit.setWarrior(warrior);
                             unit.init();
                             battleUnit.setUnit(unit);
                             battleUnits.add(battleUnit);
@@ -171,7 +175,9 @@ public class ClientBattleHelper {
                 for (int k = 0; k < groupSize; k++) {
                     BattleUnit battleUnit = new BattleUnit();
                     Unit unit = new Unit();
-                    unit.setWarrior(warriors.get(k));
+                    Warrior warrior = warriors.get(k);
+                    warrior.setDirection(Direction.UP_DOWN);
+                    unit.setWarrior(warrior);
                     unit.init();
                     battleUnit.setUnit(unit);
                     battleUnits.add(battleUnit);
@@ -210,6 +216,21 @@ public class ClientBattleHelper {
             }
         }
         throw new RegolithException();
+    }
+
+    public static AllyCollection getAllies(Battle battle, Account account) throws Exception {
+        BattleAlliance alliance = findBattleAlliance(battle, account);
+        BattleGroupCollection groups = alliance.getAllies();
+        ClientAllyCollection allies = new ClientAllyCollection();
+        allies.setAllies(new Vector());
+        for(int i = 0; i < groups.size(); i++){
+            BattleGroup group = groups.get(i);
+            WarriorCollection warriors = group.getWarriors();
+            for(int j = 0; j < warriors.size(); j++){
+                allies.add(warriors.get(j));
+            }
+        }
+        return allies;
     }
 
     public static BattleGroup findBattleGroupById(Battle battle, int battleGroupId) throws RegolithException {
@@ -331,4 +352,11 @@ public class ClientBattleHelper {
         }
     }
 
+
+    public static void resetActionScores(ArrayList battleUnits){
+        int size = battleUnits.size();
+        for(int i = 0; i < size; i++){
+            ((BattleUnit)battleUnits.get(i)).getUnit().getWarrior().setActionScore((short)100);
+        }
+    }
 }

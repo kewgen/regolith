@@ -24,7 +24,6 @@ public class Warrior extends Ally {
     private int experience;
     private Bag bag;
     private AmmunitionBag ammunitionBag;
-    private Direction direction;
     private Hashtable victimsDamages;
 
     /**
@@ -37,18 +36,6 @@ public class Warrior extends Ally {
 
     public void setAmmunitionBag(AmmunitionBag ammunitionBag) {
         this.ammunitionBag = ammunitionBag;
-    }
-
-    /**
-     * Направление в котором боец повёрнут.
-     * @return
-     */
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 
     /**

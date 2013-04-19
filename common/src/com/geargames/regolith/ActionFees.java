@@ -1,10 +1,12 @@
 package com.geargames.regolith;
 
+import java.io.Serializable;
+
 /**
  * User: mkutuzov
  * Date: 17.03.12
  */
-public class ActionFees {
+public class ActionFees implements Serializable {
     private byte move;
     private byte sitOrStand;
     private byte shutOrOpen;

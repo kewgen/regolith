@@ -16,24 +16,26 @@ import com.geargames.regolith.units.battle.BattleGroup;
  * Сообщение-ответ о присоединении пользователя к военному союзу (альянсу). Рассылается всем слушателям битвы.
  */
 public class ClientJoinToBattleAllianceAnswer extends ClientDeSerializedMessage {
-//    private Battle battle;
     private BattleGroup battleGroup;
     private boolean isSuccess;
-
-//    public void setBattle(Battle battle) {
-//        this.battle = battle;
-//    }
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         battleGroup = null;
         isSuccess = SimpleDeserializer.deserializeBoolean(buffer);
         if (isSuccess) {
             int id = SimpleDeserializer.deserializeInt(buffer);
-            Account account = AccountDeserializer.deserialize(
-                    buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
+            Account account = null;
+            if (SimpleDeserializer.deserializeBoolean(buffer)) {
+                account = AccountDeserializer.deserialize(
+                        buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
+            }
             Battle battle = ClientConfigurationFactory.getConfiguration().getBattle();
             battleGroup = ClientBattleHelper.findBattleGroupById(battle, id);
-            battleGroup.setAccount(account);
+            if (account != null) {
+                battleGroup.setAccount(account);
+            } else {
+                battleGroup.setAccount(ClientConfigurationFactory.getConfiguration().getAccount());
+            }
             battleGroup.setWarriors(null);
         }
     }

@@ -55,6 +55,10 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
                  message = new ClientNewBattleClientLogin();
                 ((ClientNewBattleClientLogin)message).setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
                 break;
+            case Packets.CHANGE_ACTIVE_ALLIANCE:
+                message = new ClientChangeActiveAllianceAnswer();
+                ((ClientChangeActiveAllianceAnswer)message).setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
+                break;
             default:
                 Debug.critical("RegolithMessageDispatcher: Unknown message type (" + dataMessage.getMessageType() + ")");
                 return null;
