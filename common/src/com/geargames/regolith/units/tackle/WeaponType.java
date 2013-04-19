@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.ElementTypes;
+import com.geargames.regolith.units.CellElementTypes;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.dictionaries.ProjectileCollection;
 
@@ -138,7 +138,7 @@ public class WeaponType extends Tackle {
 
     @Override
     public short getElementType() {
-        return ElementTypes.NULL;
+        return CellElementTypes.NULL;
     }
 
 }

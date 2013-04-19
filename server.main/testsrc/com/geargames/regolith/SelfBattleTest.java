@@ -13,7 +13,6 @@ import java.util.List;
  * User: mvkutuzov
  * Date: 18.04.13
  * Time: 11:50
- * To change this template use File | Settings | File Templates.
  */
 public class SelfBattleTest {
     private static SessionFactory sessionFactory;
@@ -34,7 +33,7 @@ public class SelfBattleTest {
         List<BattleMap> battleMaps = session.createQuery("from BattleMap").list();
         session.close();
 
-        //вот тут расставим на map солдатиков и посреляем
+        //вот тут расставим на map солдатиков и постреляем
 
 
     }

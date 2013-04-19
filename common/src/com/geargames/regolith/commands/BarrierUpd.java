@@ -2,8 +2,8 @@ package com.geargames.regolith.commands;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationCommand;
-import com.geargames.regolith.units.battle.Border;
-import com.geargames.regolith.units.dictionaries.BorderCollection;
+import com.geargames.regolith.units.battle.Barrier;
+import com.geargames.regolith.units.dictionaries.BarrierCollection;
 import com.geargames.regolith.units.dictionaries.WeaponCategoryCollection;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
@@ -11,32 +11,33 @@ import com.geargames.regolith.units.tackle.WeaponCategory;
  * User: mkutuzov
  * Date: 28.04.12
  */
-public class BorderUpd extends BaseConfigurationCommand {
-    private Border border;
+public class BarrierUpd extends BaseConfigurationCommand {
+    private Barrier barrier;
 
-    public BorderUpd(Border border) {
-        this.border = border;
+    public BarrierUpd(Barrier barrier) {
+        this.barrier = barrier;
     }
 
     public void command(BaseConfiguration configuration) {
-        BorderCollection collection = configuration.getBorders();
+        BarrierCollection collection = configuration.getBarriers();
         int length = collection.size();
-        int id = border.getId();
+        int id = barrier.getId();
         for (int i = 0; i < length; i++) {
             if (collection.get(i).getId() == id) {
-                Border local = collection.get(i);
-                local.setAbleToLookThrough(border.isAbleToLookThrough());
-                local.setAbleToWalkThrough(border.isAbleToWalkThrough());
-                local.setFrameId(border.getFrameId());
-                local.setHalfLong(border.isHalfLong());
+                Barrier local = collection.get(i);
+                local.setAbleToLookThrough(barrier.isAbleToLookThrough());
+                local.setAbleToWalkThrough(barrier.isAbleToWalkThrough());
+                local.setFrameId(barrier.getFrameId());
+                local.setHalfLong(barrier.isHalfLong());
                 WeaponCategoryCollection weaponCategoryDictionary = configuration.getWeaponCategories();
                 int size = weaponCategoryDictionary.size();
                 for(int j = 0; j < size; j++){
                     WeaponCategory category = weaponCategoryDictionary.get(j);
-                    local.setAbleToShootThrough(category, border.isAbleToShootThrough(category));
+                    local.setAbleToShootThrough(category, barrier.isAbleToShootThrough(category));
                 }
                 break;
             }
         }
     }
+
 }

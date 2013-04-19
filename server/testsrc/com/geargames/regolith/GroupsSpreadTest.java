@@ -6,7 +6,7 @@ import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.battle.ServerBorder;
+import com.geargames.regolith.units.battle.ServerBarrier;
 import com.geargames.regolith.units.map.ExitZone;
 import junit.framework.Assert;
 import org.junit.Before;
@@ -25,8 +25,8 @@ public class GroupsSpreadTest {
     @Before
     public void befor() throws Exception{
         ServerTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
-        Border border = new ServerBorder();
-        border.setAbleToLookThrough(false);
+        Barrier barrier = new ServerBarrier();
+        barrier.setAbleToLookThrough(false);
 
         Warrior warrior = new Warrior();
         warrior.setName("Вася1");

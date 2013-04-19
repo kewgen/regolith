@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.*;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.tackle.*;
 
 /**
@@ -14,12 +14,12 @@ import com.geargames.regolith.units.tackle.*;
  */
 public class ServerBag2BoxAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
-    private Element element;
+    private CellElement element;
     private short x;
     private short y;
     private short type;
 
-    public ServerBag2BoxAnswer(MicroByteBuffer buffer, Element element, short x, short y, short type) {
+    public ServerBag2BoxAnswer(MicroByteBuffer buffer, CellElement element, short x, short y, short type) {
         this.buffer = buffer;
         this.element = element;
         this.x = x;

@@ -8,7 +8,7 @@ import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.SubordinationDamage;
 import com.geargames.regolith.units.battle.BattleType;
-import com.geargames.regolith.units.battle.Border;
+import com.geargames.regolith.units.battle.Barrier;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.tackle.*;
 
@@ -18,24 +18,24 @@ import com.geargames.regolith.units.tackle.*;
  */
 public class ConfigurationSerializer {
 
-    private static void serialize(Border border, MicroByteBuffer buffer, ServerWeaponCategoryCollection weaponCategories) {
-        SerializeHelper.serializeEntityReference(border, buffer);
-        SimpleSerializer.serialize(border.getFrameId(), buffer);
+    private static void serialize(Barrier barrier, MicroByteBuffer buffer, ServerWeaponCategoryCollection weaponCategories) {
+        SerializeHelper.serializeEntityReference(barrier, buffer);
+        SimpleSerializer.serialize(barrier.getFrameId(), buffer);
         byte simpleTrio = 0;
-        if (border.isAbleToLookThrough()) {
+        if (barrier.isAbleToLookThrough()) {
             simpleTrio |= 1;
         }
-        if (border.isAbleToWalkThrough()) {
+        if (barrier.isAbleToWalkThrough()) {
             simpleTrio |= 2;
         }
-        if (border.isHalfLong()) {
+        if (barrier.isHalfLong()) {
             simpleTrio |= 4;
         }
         SimpleSerializer.serialize(simpleTrio, buffer);
 
         byte shootThrough = 0;
         for (WeaponCategory weaponCategory : weaponCategories.getCategories()) {
-            boolean able = border.isAbleToShootThrough(weaponCategory);
+            boolean able = barrier.isAbleToShootThrough(weaponCategory);
             if (able) {
                 shootThrough |= 1 << weaponCategory.getId();
             }
@@ -139,10 +139,10 @@ public class ConfigurationSerializer {
         for (Medikit medikit : medikits.getMedikits()) {
             TackleSerializer.serializeMedikit(medikit, buffer);
         }
-        ServerBorderCollection borders = (ServerBorderCollection)configuration.getBorders();
-        SimpleSerializer.serialize(borders.size(), buffer);
-        for (Border border : borders.getBorders()) {
-            serialize(border, buffer, weaponCategories);
+        ServerBarrierCollection barriers = (ServerBarrierCollection)configuration.getBarriers();
+        SimpleSerializer.serialize(barriers.size(), buffer);
+        for (Barrier barrier : barriers.getBarriers()) {
+            serialize(barrier, buffer, weaponCategories);
         }
 
         SimpleSerializer.serialize(configuration.getMaxDamage(), buffer);

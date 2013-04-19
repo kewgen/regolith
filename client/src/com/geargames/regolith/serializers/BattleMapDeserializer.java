@@ -99,8 +99,8 @@ public class BattleMapDeserializer {
                 deserializeBox(box, buffer, baseConfiguration);
             } else if (typeId == SerializeHelper.findTypeId("Magazine")) {
                 cells[x][y].setElement(deserializeMagazine(buffer, baseConfiguration));
-            } else if (typeId == SerializeHelper.findTypeId("Border")) {
-                cells[x][y].setElement(BaseConfigurationHelper.findBorderById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
+            } else if (typeId == SerializeHelper.findTypeId("Barrier")) {
+                cells[x][y].setElement(BaseConfigurationHelper.findBarrierById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
             } else if (typeId == SerializeHelper.findTypeId("Armor")) {
                 Armor armor = new Armor();
                 cells[x][y].setElement(armor);

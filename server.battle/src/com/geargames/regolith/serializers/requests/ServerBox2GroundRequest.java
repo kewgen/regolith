@@ -10,7 +10,7 @@ import com.geargames.regolith.serializers.answers.ServerBox2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
@@ -36,7 +36,7 @@ public abstract class ServerBox2GroundRequest extends ServerRequest {
         this.type = type;
     }
 
-    protected abstract Element putOut(int elementId, Box box, Warrior warrior, short x, short y) throws RegolithException;
+    protected abstract CellElement putOut(int elementId, Box box, Warrior warrior, short x, short y) throws RegolithException;
 
     @Override
     public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException {
@@ -58,7 +58,7 @@ public abstract class ServerBox2GroundRequest extends ServerRequest {
         if (BattleMapHelper.ableToPut(warrior, cells, xGround, yGround) && BattleMapHelper.isNear(warrior, xBox, yBox)
                 && cells[xBox][yBox].getElement() != null && cells[xBox][yBox].getElement() instanceof Box) {
             Box box = (Box)cells[xBox][yBox].getElement();
-            Element element = putOut(elementId, box, warrior, xGround, yGround);
+            CellElement element = putOut(elementId, box, warrior, xGround, yGround);
             if (element != null){
                 Set<Client> clients = new HashSet<Client>();
                 clients.addAll(serverBattle.getClients());

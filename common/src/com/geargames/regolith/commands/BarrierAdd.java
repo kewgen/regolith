@@ -2,21 +2,22 @@ package com.geargames.regolith.commands;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationCommand;
-import com.geargames.regolith.units.battle.Border;
+import com.geargames.regolith.units.battle.Barrier;
 
 /**
  * User: mkutuzov
  * Date: 28.04.12
  */
-public class BorderAdd extends BaseConfigurationCommand{
+public class BarrierAdd extends BaseConfigurationCommand {
 
-    private Border border;
+    private Barrier barrier;
 
-    public BorderAdd(Border border) {
-        this.border = border;
+    public BarrierAdd(Barrier barrier) {
+        this.barrier = barrier;
     }
 
     public void command(BaseConfiguration configuration) {
-        configuration.getBorders().add(border);
+        configuration.getBarriers().add(barrier);
     }
+
 }

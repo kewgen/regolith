@@ -62,5 +62,3 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
     }
 
 }
-
-

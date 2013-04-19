@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.ElementTypes;
+import com.geargames.regolith.units.CellElementTypes;
 
 /**
  * User: mkutuzov
@@ -14,6 +14,6 @@ public class Harvester extends Tackle {
 
     @Override
     public short getElementType() {
-        return ElementTypes.HARVESTER;
+        return CellElementTypes.HARVESTER;
     }
 }

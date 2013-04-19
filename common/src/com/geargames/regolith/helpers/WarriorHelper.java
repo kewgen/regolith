@@ -33,7 +33,7 @@ public class WarriorHelper {
     }
 
     /**
-     * Вернуть радиус наибольшей лостижимости бойца warrior.
+     * Вернуть радиус наибольшей достижимости бойца warrior.
      *
      * @param warrior
      * @return
@@ -48,7 +48,7 @@ public class WarriorHelper {
 
     /**
      * Переместить бойца warrior в клетку x;y на карте.
-     * ANNOTATION этот код работает с экземплярами Warrior не используя их идентификторов
+     * ANNOTATION этот код работает с экземплярами Warrior не используя их идентификаторов
      *
      * @param warrior
      * @param x
@@ -72,7 +72,7 @@ public class WarriorHelper {
     }
 
     /**
-     * Сделать шаг на соседнюю c warrior клетку. Длина этого шага по каждой из осей не может привышать 1 клетку.
+     * Сделать шаг на соседнюю c warrior клетку. Длина этого шага, по каждой из осей, не может превышать 1 клетку.
      *
      * @param warrior
      * @param stepX
@@ -534,7 +534,7 @@ public class WarriorHelper {
 
     /**
      * Добавить аммуницию в сумку.
-     * Сдесь накладываем ограничения на грузоподъёмность бойца.
+     * Здесь накладываем ограничения на грузоподъёмность бойца.
      *
      * @param warrior
      * @param ammunition
@@ -771,6 +771,15 @@ public class WarriorHelper {
             weapon.setLoad((short) (weapon.getLoad() + amount));
             return 0;
         }
+    }
+
+    /**
+     * Проверить, мертвый ли боец. Вернет true, если боец мертвый.
+     * @param human
+     * @return
+     */
+    public static boolean isDeadHuman(Human human) {
+        return human.getHealth() <= 0;
     }
 
 }

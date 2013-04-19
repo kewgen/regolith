@@ -8,7 +8,7 @@ import com.geargames.regolith.units.tackle.WeaponCategory;
  * User: mkutuzov
  * Date: 30.03.12
  */
-public class Human extends Element {
+public class Human extends CellElement {
     private int frameId;
     private String name;
     private Rank rank;
@@ -129,6 +129,12 @@ public class Human extends Element {
 
     @Override
     public short getElementType() {
-        return ElementTypes.HUMAN;
+        return CellElementTypes.HUMAN;
     }
+
+    @Override
+    public byte getLayer() {
+        return CellElementLayers.HUMAN;
+    }
+
 }

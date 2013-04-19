@@ -3,7 +3,7 @@ package com.geargames.regolith.helpers;
 import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.map.Pair;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
@@ -21,14 +21,14 @@ public class BattleMapHelper {
     private static final int VISIT_BIT = (1 << 7);
     public static final byte UN_ROUTED = 100;
 
-    public static void putIn(Element element, BattleMap map, int x, int y) {
+    public static void putIn(CellElement element, BattleMap map, int x, int y) {
         BattleCell cell = map.getCells()[x][y];
         cell.setElement(element);
     }
 
-    public static Element putOut(BattleMap map, int x, int y) {
+    public static CellElement putOut(BattleMap map, int x, int y) {
         BattleCell cell = map.getCells()[x][y];
-        Element element = cell.getElement();
+        CellElement element = cell.getElement();
         cell.setElement(null);
         return element;
     }

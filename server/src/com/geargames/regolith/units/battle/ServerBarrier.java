@@ -1,5 +1,6 @@
 package com.geargames.regolith.units.battle;
 
+import com.geargames.regolith.units.CellElementLayers;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
  * User: mkutuzov
  * Date: 28.03.12
  */
-public class ServerBorder extends Border {
+public class ServerBarrier extends Barrier {
     private Map<WeaponCategory, Boolean> shootThrough;
 
     public Map<WeaponCategory, Boolean> getShootThrough() {
@@ -26,4 +27,10 @@ public class ServerBorder extends Border {
     public void setAbleToShootThrough(WeaponCategory category, boolean able) {
         shootThrough.put(category, able);
     }
+
+    @Override
+    public byte getLayer() {
+        return CellElementLayers.DINAMIC;
+    }
+
 }

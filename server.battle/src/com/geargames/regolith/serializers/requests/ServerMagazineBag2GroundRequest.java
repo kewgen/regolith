@@ -3,7 +3,7 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.helpers.AmmunitionBagHelper;
 import com.geargames.regolith.units.AmmunitionBag;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.Ammunition;
@@ -20,7 +20,7 @@ public class ServerMagazineBag2GroundRequest extends ServerBag2GroundRequest {
     }
 
     @Override
-    public Element putOut(short number, Warrior warrior) {
+    public CellElement putOut(short number, Warrior warrior) {
         AmmunitionBag bag = warrior.getAmmunitionBag();
         if (bag.getSize() > number) {
             Ammunition ammunition = bag.getPackets().get(number).getAmmunition();

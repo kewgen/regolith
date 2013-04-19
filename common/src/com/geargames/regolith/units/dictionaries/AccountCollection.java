@@ -1,7 +1,6 @@
 package com.geargames.regolith.units.dictionaries;
 
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.battle.Border;
 
 /**
  * User: mkutuzov

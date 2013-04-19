@@ -75,16 +75,16 @@ public class PCampButton extends PTouchButton {
             tmp[0] = type;
             battleMap.setPossibleBattleTypes(tmp);
 
-            Border border = new ClientBorder();
-            border.setAbleToLookThrough(false);
-            border.setFrameId(1216);
+            Barrier barrier = new ClientBarrier();
+            barrier.setAbleToLookThrough(false);
+            barrier.setFrameId(1216);
 
-            battleMap.getCells()[1][2].setElement(border);
-            battleMap.getCells()[2][2].setElement(border);
-            battleMap.getCells()[3][2].setElement(border);
-            battleMap.getCells()[3][3].setElement(border);
-            battleMap.getCells()[3][4].setElement(border);
-            battleMap.getCells()[3][5].setElement(border);
+            battleMap.getCells()[1][2].addElement(barrier);
+            battleMap.getCells()[2][2].addElement(barrier);
+            battleMap.getCells()[3][2].addElement(barrier);
+            battleMap.getCells()[3][3].addElement(barrier);
+            battleMap.getCells()[3][4].addElement(barrier);
+            battleMap.getCells()[3][5].addElement(barrier);
 
             Warrior mine = account.getWarriors().get(0);
             mine.setDirection(Direction.LEFT_RIGHT);
@@ -188,6 +188,9 @@ public class PCampButton extends PTouchButton {
             manager.hideAll();
             manager.getBattleScreen().setBattle(battle);
             manager.show(manager.getBattleScreen());
+            manager.show(manager.getBattleMenuWindow());
+            manager.show(manager.getBattleSelectWarriorWindow());
+            manager.show(manager.getBattleWeaponMenuWindow());
         }
     }
 }

@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 
 /**
  * User: mkutuzov
@@ -15,10 +15,10 @@ public class ServerBox2WarriorAnswer extends SerializedMessage {
     private short type;
     private short boxX;
     private short boxY;
-    private Element element;
+    private CellElement element;
 
 
-    public ServerBox2WarriorAnswer(MicroByteBuffer buffer, short type, short boxX, short boxY, Element element) {
+    public ServerBox2WarriorAnswer(MicroByteBuffer buffer, short type, short boxX, short boxY, CellElement element) {
         this.buffer = buffer;
         this.type = type;
         this.element = element;

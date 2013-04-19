@@ -2,10 +2,10 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.geargames.regolith.units.battle.ServerBorder" table="server_border">
+    <class name="com.geargames.regolith.units.battle.ServerBarrier" table="server_barrier">
         <id name="id" type="int" column="id">
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">server_border_sequence</param>
+                <param name="sequence_name">server_barrier_sequence</param>
             </generator>
         </id>
         <property name="frameId" column="frame_id" type="int"/>
@@ -13,7 +13,7 @@
         <property name="ableToWalkThrough" column="able_to_walk_through" type="boolean"/>
         <property name="halfLong" column="half_long" type="boolean"/>
         <map name="shootThrough" table="weapon_category_shoot_through" lazy="false">
-            <key column="border_id"/>
+            <key column="barrier_id"/>
             <map-key-many-to-many class="com.geargames.regolith.units.tackle.WeaponCategory"
                                   column="weapon_category_id"/>
             <element column="shoot_through" type="java.lang.Boolean"/>

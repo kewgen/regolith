@@ -1,7 +1,8 @@
 package com.geargames.regolith.units.battle;
 
-import com.geargames.regolith.units.Element;
-import com.geargames.regolith.units.ElementTypes;
+import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.CellElementLayers;
+import com.geargames.regolith.units.CellElementTypes;
 import com.geargames.regolith.units.dictionaries.MagazineCollection;
 import com.geargames.regolith.units.dictionaries.MedikitCollection;
 import com.geargames.regolith.units.dictionaries.StateTackleCollection;
@@ -12,7 +13,7 @@ import com.geargames.regolith.units.tackle.*;
  * User: mkutuzov
  * Date: 29.03.12
  */
-public class Box extends Element {
+public class Box extends CellElement {
     public static final byte TACKLE = 0;
     public static final byte MEDIKIT = 1;
     public static final byte MAGAZINE = 2;
@@ -71,7 +72,12 @@ public class Box extends Element {
     }
     @Override
     public short getElementType() {
-        return ElementTypes.BOX;
+        return CellElementTypes.BOX;
+    }
+
+    @Override
+    public byte getLayer() {
+        return CellElementLayers.DINAMIC;
     }
 
 }

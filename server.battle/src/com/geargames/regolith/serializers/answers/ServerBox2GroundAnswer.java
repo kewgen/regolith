@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 
 /**
  * User: mikhail v. kutuzov
@@ -16,11 +16,11 @@ public class ServerBox2GroundAnswer extends SerializedMessage {
     private short type;
     private short boxX;
     private short boxY;
-    private Element element;
+    private CellElement element;
     private short x;
     private short y;
 
-    public ServerBox2GroundAnswer(MicroByteBuffer buffer, short type, short boxX, short boxY, Element element, short x, short y) {
+    public ServerBox2GroundAnswer(MicroByteBuffer buffer, short type, short boxX, short boxY, CellElement element, short x, short y) {
         this.buffer = buffer;
         this.type = type;
         this.boxX = boxX;

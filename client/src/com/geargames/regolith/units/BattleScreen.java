@@ -233,8 +233,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                         if (Mathematics.abs(touchedXX - x) <= SPOT && Mathematics.abs(touchedYY - y) <= SPOT) {
                             Pair cell = cellFinder.find(x + mapX, y + mapY, this);
                             BattleCell battleCell = battle.getMap().getCells()[cell.getX()][cell.getY()];
-                            Element element = battleCell.getElement();
-                            if (element != null && element.getElementType() == ElementTypes.HUMAN && ((Warrior) element).getBattleGroup() == battleGroup) {
+                            CellElement element = battleCell.getElement();
+                            if (element != null && element.getElementType() == CellElementTypes.HUMAN && ((Warrior) element).getBattleGroup() == battleGroup) {
                                 user = ClientBattleHelper.getBattleUnitByWarrior(group, (Warrior) element);
                                 ClientBattleHelper.route(user.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
                                 Debug.debug("the current user number = " + user.getUnit().getWarrior().getNumber());

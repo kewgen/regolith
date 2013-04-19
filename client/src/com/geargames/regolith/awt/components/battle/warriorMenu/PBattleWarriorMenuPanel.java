@@ -2,6 +2,7 @@ package com.geargames.regolith.awt.components.battle.warriorMenu;
 
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 
 /**
@@ -42,17 +43,17 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     }
 
     /**
-     * Обработчик нажатия на кнопку "Посадить игрока".
+     * Обработчик нажатия на кнопку "Посадить бойца".
      */
     public void onStandUpButtonClick() {
-
+        NotificationBox.info("Посадить бойца", this);
     }
 
     /**
-     * Обработчик нажатия на кнопку "Поднять игрока".
+     * Обработчик нажатия на кнопку "Поднять бойца".
      */
     public void onSitDownButtonClick() {
-
+        NotificationBox.info("Поднять бойца", this);
     }
 
 }

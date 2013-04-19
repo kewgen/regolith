@@ -3,7 +3,7 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.tackle.StateTackle;
@@ -20,7 +20,7 @@ public class ServerTackleGround2BagRequest extends ServerGround2WarriorRequest {
     }
 
     @Override
-    protected boolean putStateTackle(Element element, BattleCell cell, Warrior warrior) {
+    protected boolean putStateTackle(CellElement element, BattleCell cell, Warrior warrior) {
         if (element instanceof StateTackle) {
             boolean result = WarriorHelper.putInToBag(warrior, (StateTackle) element, baseConfiguration);
             if (result) {

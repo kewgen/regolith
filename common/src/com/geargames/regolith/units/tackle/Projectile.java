@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.ElementTypes;
+import com.geargames.regolith.units.CellElementTypes;
 import com.geargames.regolith.units.dictionaries.WeaponTypeCollection;
 
 /**
@@ -24,6 +24,6 @@ public class Projectile extends Ammunition {
 
     @Override
     public short getElementType() {
-        return ElementTypes.PROJECTILE;
+        return CellElementTypes.PROJECTILE;
     }
 }

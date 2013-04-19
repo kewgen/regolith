@@ -10,7 +10,7 @@ import com.geargames.regolith.serializers.answers.ServerGround2BoxAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
@@ -57,7 +57,7 @@ public abstract class ServerGround2BoxRequest extends ServerRequest {
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(2);
 
         if (BattleMapHelper.ableToPeek(warrior, cells, groundX, groundY)) {
-            Element boxElement = cells[boxX][boxY].getElement();
+            CellElement boxElement = cells[boxX][boxY].getElement();
             if (BattleMapHelper.isNear(warrior, boxX, boxY) && boxElement != null && boxElement instanceof Box) {
                 moveGround2Box(cells[groundX][groundY], (Box) boxElement);
 

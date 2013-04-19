@@ -2,6 +2,7 @@ package com.geargames.regolith.awt.components.battle.battleMenu;
 
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 
 /**
@@ -38,7 +39,7 @@ public class PBattleMenuPanel extends PRootContentPanel {
 
     @Override
     public void onShow() {
-
+        panelUpdate();
     }
 
     @Override
@@ -47,24 +48,40 @@ public class PBattleMenuPanel extends PRootContentPanel {
     }
 
     /**
+     * Обновить доступность кнопок.
+     */
+    public void panelUpdate() {
+//        ArrayList group = PRegolithPanelManager.getInstance().getBattleScreen().getGroup();
+//        boolean exitAllowed = group.size() > 0;
+//        for (int i = 0; i < group.size(); i++) {
+//            BattleUnit battleUnit = (BattleUnit) group.get(i);
+//            if (!battleUnit.getUnit().locatedInExitZone()) { //todo: Как реализовать locatedInExitZone() ?
+//                exitAllowed = false;
+//                break;
+//            }
+//        }
+//        leaveBattleButton.setVisible(exitAllowed);
+    }
+
+    /**
      * Обработчик нажатия на кнопку "Передать ход следующему игроку".
      */
     public void onSkipMoveButtonClick() {
-
+        NotificationBox.info("Передать ход следующему игроку", this);
     }
 
     /**
      * Обработчик нажатия на кнопку "Открыть чат".
      */
     public void onOpenChatButtonClick() {
-
+        NotificationBox.info("Открыть чат", this);
     }
 
     /**
      * Обработчик нажатия на кнопку "Выйти из битвы".
      */
     public void onLeaveBattleButtonClick() {
-
+        NotificationBox.info("Выйти из битвы", this);
     }
 
 }

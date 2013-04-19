@@ -10,7 +10,7 @@ import com.geargames.regolith.serializers.answers.ServerTackleBody2BoxAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
@@ -46,7 +46,7 @@ public class ServerTackleBody2BoxRequest extends ServerRequest {
 
         BattleCell[][] cells = serverBattle.getBattle().getMap().getCells();
 
-        Element element = cells[xBox][yBox].getElement();
+        CellElement element = cells[xBox][yBox].getElement();
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
         StateTackle stateTackle = null;

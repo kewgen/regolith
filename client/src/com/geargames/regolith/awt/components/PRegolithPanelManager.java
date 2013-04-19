@@ -5,7 +5,7 @@ import com.geargames.common.Render;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.application.Graph;
 import com.geargames.regolith.awt.components.battle.battleMenu.PBattleMenuPanel;
-import com.geargames.regolith.awt.components.battle.selectWarrior.PBattleSelectWarriorPanel;
+import com.geargames.regolith.awt.components.battle.warriorList.PBattleWarriorListPanel;
 import com.geargames.regolith.awt.components.battle.shotMenu.PBattleShotMenuPanel;
 import com.geargames.regolith.awt.components.battle.warriorMenu.PBattleWarriorMenuPanel;
 import com.geargames.regolith.awt.components.battle.weaponMenu.PBattleWeaponMenuPanel;
@@ -239,7 +239,7 @@ public class PRegolithPanelManager extends PPanelManager {
         battleWeaponMenuWindow.setAnchor(Anchors.BOTTOM_RIGHT_ANCHOR);
         battleWeaponMenuWindow.setElement(battleWeaponMenuPanel);
 
-        PBattleSelectWarriorPanel battleSelectWarriorPanel = new PBattleSelectWarriorPanel(render.getObject(Graph.PAN_BAT_SEL_FIGHTER));
+        PBattleWarriorListPanel battleSelectWarriorPanel = new PBattleWarriorListPanel(render.getObject(Graph.PAN_BAT_SEL_FIGHTER));
         battleSelectWarriorWindow = new MiddleDrawablePPanel();
         battleSelectWarriorWindow.setAnchor(Anchors.TOP_LEFT_ANCHOR);
         battleSelectWarriorWindow.setElement(battleSelectWarriorPanel);
@@ -397,8 +397,8 @@ public class PRegolithPanelManager extends PPanelManager {
         return battleSelectWarriorWindow;
     }
 
-    public PBattleSelectWarriorPanel getBattleWarriorListPanel() {
-        return (PBattleSelectWarriorPanel) battleSelectWarriorWindow.getElement();
+    public PBattleWarriorListPanel getBattleWarriorListPanel() {
+        return (PBattleWarriorListPanel) battleSelectWarriorWindow.getElement();
     }
 
 }

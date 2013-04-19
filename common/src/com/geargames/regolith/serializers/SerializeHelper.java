@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.units.Entity;
 import com.geargames.regolith.units.battle.Ally;
-import com.geargames.regolith.units.battle.Border;
+import com.geargames.regolith.units.battle.Barrier;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.EntityCollection;
@@ -40,7 +40,7 @@ public class SerializeHelper {
             Warrior.class.getSimpleName(),
             Box.class.getSimpleName(),
             Magazine.class.getSimpleName(),
-            Border.class.getSimpleName(),
+            Barrier.class.getSimpleName(),
             Armor.class.getSimpleName(),
             Weapon.class.getSimpleName(),
             Medikit.class.getSimpleName(),

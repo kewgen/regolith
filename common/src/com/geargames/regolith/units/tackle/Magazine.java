@@ -1,7 +1,8 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.Element;
-import com.geargames.regolith.units.ElementTypes;
+import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.CellElementLayers;
+import com.geargames.regolith.units.CellElementTypes;
 
 /**
  * Особая сущность - куча зарядов, существует только когда бойцу надо выложить(забрать) заряды из сумки
@@ -9,7 +10,7 @@ import com.geargames.regolith.units.ElementTypes;
  * User: mkutuzov
  * Date: 29.03.12
  */
-public class Magazine extends Element {
+public class Magazine extends CellElement {
     private Projectile projectile;
     private short count;
 
@@ -55,7 +56,12 @@ public class Magazine extends Element {
 
     @Override
     public short getElementType() {
-        return ElementTypes.MAGAZINE;
+        return CellElementTypes.MAGAZINE;
+    }
+
+    @Override
+    public byte getLayer() {
+        return CellElementLayers.DINAMIC;
     }
 
 }

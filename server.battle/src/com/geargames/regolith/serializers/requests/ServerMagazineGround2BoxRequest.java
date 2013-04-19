@@ -1,7 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.map.BattleCell;
@@ -20,7 +20,7 @@ public class ServerMagazineGround2BoxRequest extends ServerGround2BoxRequest {
 
     @Override
     protected void moveGround2Box(BattleCell cell, Box to) throws RuntimeException {
-        Element element = cell.getElement();
+        CellElement element = cell.getElement();
         if (element != null && element instanceof Magazine) {
             Magazine magazine = (Magazine) element;
             to.getMagazines().add(magazine);

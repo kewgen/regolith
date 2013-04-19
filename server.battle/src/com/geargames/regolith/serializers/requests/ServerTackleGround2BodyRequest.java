@@ -4,7 +4,7 @@ import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.BodyParticles;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
@@ -24,7 +24,7 @@ public class ServerTackleGround2BodyRequest extends ServerGround2WarriorRequest 
     }
 
     @Override
-    protected boolean putStateTackle(Element stateTackle, BattleCell cell, Warrior warrior) {
+    protected boolean putStateTackle(CellElement stateTackle, BattleCell cell, Warrior warrior) {
         if (stateTackle instanceof Weapon) {
             Weapon weapon = (Weapon) stateTackle;
             if (warrior.getWeapon() != null) {

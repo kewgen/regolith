@@ -10,7 +10,7 @@ import com.geargames.regolith.serializers.answers.ServerGround2WarriorAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.tackle.StateTackle;
@@ -37,7 +37,7 @@ public abstract class ServerGround2WarriorRequest extends ServerRequest {
         this.type = type;
     }
 
-    protected abstract boolean putStateTackle(Element element, BattleCell cell, Warrior warrior);
+    protected abstract boolean putStateTackle(CellElement element, BattleCell cell, Warrior warrior);
 
 
     @Override

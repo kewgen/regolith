@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.ElementTypes;
+import com.geargames.regolith.units.CellElementTypes;
 
 /**
  * Позиция из каталога бони. Представляет базовые характеристи - тип брони.
@@ -97,6 +97,6 @@ public class ArmorType extends Tackle {
 
     @Override
     public short getElementType() {
-        return ElementTypes.NULL;
+        return CellElementTypes.NULL;
     }
 }

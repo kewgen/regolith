@@ -8,7 +8,7 @@ import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.SubordinationDamage;
 import com.geargames.regolith.units.battle.BattleType;
-import com.geargames.regolith.units.battle.ClientBorder;
+import com.geargames.regolith.units.battle.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.tackle.*;
 
@@ -152,7 +152,7 @@ public class ConfigurationDeserializer {
         configuration.setProjectiles(deserializeProjectiles(buffer, configuration));
         deserializeWeaponCategories(buffer, configuration);
         configuration.setMedikits(deserializeMedikits(buffer, configuration));
-        configuration.setBorders(deserializeBorders(buffer));
+        configuration.setBarriers(deserializeBarriers(buffer));
 
         configuration.setMaxDamage(buffer.get());
         configuration.setMaxDistance(buffer.get());
@@ -161,39 +161,38 @@ public class ConfigurationDeserializer {
         return configuration;
     }
 
-    private static void deserializeBorder(ClientBorder border, MicroByteBuffer buffer) {
-        border.setId(SimpleDeserializer.deserializeInt(buffer));
-        border.setFrameId(SimpleDeserializer.deserializeInt(buffer));
+    private static void deserializeBarrier(ClientBarrier barrier, MicroByteBuffer buffer) {
+        barrier.setId(SimpleDeserializer.deserializeInt(buffer));
+        barrier.setFrameId(SimpleDeserializer.deserializeInt(buffer));
         byte simpleTrio = buffer.get();
         if ((simpleTrio & 1) != 0) {
-            border.setAbleToLookThrough(true);
+            barrier.setAbleToLookThrough(true);
         } else {
-            border.setAbleToLookThrough(false);
+            barrier.setAbleToLookThrough(false);
         }
         if ((simpleTrio & 2) != 0) {
-            border.setAbleToWalkThrough(true);
+            barrier.setAbleToWalkThrough(true);
         } else {
-            border.setAbleToWalkThrough(false);
+            barrier.setAbleToWalkThrough(false);
         }
         if ((simpleTrio & 4) != 0) {
-            border.setHalfLong(true);
+            barrier.setHalfLong(true);
         } else {
-            border.setHalfLong(false);
+            barrier.setHalfLong(false);
         }
-        border.setShootThrough(buffer.get());
+        barrier.setShootThrough(buffer.get());
     }
 
-    private static BorderCollection deserializeBorders(MicroByteBuffer buffer) {
+    private static BarrierCollection deserializeBarriers(MicroByteBuffer buffer) {
         int length = SimpleDeserializer.deserializeInt(buffer);
-        ClientBorderCollection borders = new ClientBorderCollection();
-        borders.setBorders(new Vector(length));
+        ClientBarrierCollection barriers = new ClientBarrierCollection();
+        barriers.setBarriers(new Vector(length));
         for (int i = 0; i < length; i++) {
-            ClientBorder border = new ClientBorder();
-            borders.add(border);
-            deserializeBorder(border, buffer);
+            ClientBarrier barrier = new ClientBarrier();
+            barriers.add(barrier);
+            deserializeBarrier(barrier, buffer);
         }
-
-        return borders;
+        return barriers;
     }
 
     private static ClientMedikitCollection deserializeMedikits(MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {

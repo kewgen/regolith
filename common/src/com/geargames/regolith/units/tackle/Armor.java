@@ -1,7 +1,7 @@
 package com.geargames.regolith.units.tackle;
 
 import com.geargames.regolith.BattleConfiguration;
-import com.geargames.regolith.units.ElementTypes;
+import com.geargames.regolith.units.CellElementTypes;
 
 /**
  * User: mkutuzov
@@ -31,7 +31,7 @@ public class Armor extends StateTackle {
     }
 
     /**
-     * Здесь меняем состояние брони в случае удара по ней с силой = damage едениц.
+     * Здесь меняем состояние брони в случае удара по ней с силой = damage единиц.
      * @param damage
      */
     public void onHit(int damage, BattleConfiguration battleConfiguration){
@@ -44,6 +44,6 @@ public class Armor extends StateTackle {
 
     @Override
     public short getElementType() {
-        return ElementTypes.ARMOR;
+        return CellElementTypes.ARMOR;
     }
 }

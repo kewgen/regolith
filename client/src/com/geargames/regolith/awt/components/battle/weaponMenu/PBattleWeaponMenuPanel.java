@@ -2,6 +2,7 @@ package com.geargames.regolith.awt.components.battle.weaponMenu;
 
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 
 /**
@@ -18,10 +19,11 @@ public class PBattleWeaponMenuPanel extends PRootContentPanel {
     @Override
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
-//            case 0:
+            case 0:
+                super.createDefaultElementByIndex(index, prototype);
 //                PSelectNextWeaponButton selectNextWeaponButton = new PSelectNextWeaponButton((PObject) index.getPrototype());
 //                addActiveChild(selectNextWeaponButton, index);
-//                break;
+                break;
         }
     }
 
@@ -39,7 +41,7 @@ public class PBattleWeaponMenuPanel extends PRootContentPanel {
      * Обработчик нажатия на кнопку "Выбрать следующее оружие".
      */
     public void onSelectNextWeaponButtonClick() {
-
+        NotificationBox.info("Оружие", this);
     }
 
 }

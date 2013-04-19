@@ -3,12 +3,12 @@ package com.geargames.regolith.serializers;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.*;
 import com.geargames.regolith.units.tackle.Weapon;
@@ -23,8 +23,8 @@ public class BattleMapSerializer {
         SerializeHelper.serializeEntityReference(warrior, buffer);
     }
 
-    private static void serialize(Border border, MicroByteBuffer buffer) {
-        SerializeHelper.serializeEntityReference(border, buffer);
+    private static void serialize(Barrier barrier, MicroByteBuffer buffer) {
+        SerializeHelper.serializeEntityReference(barrier, buffer);
     }
 
     public static void serialize(Magazine magazine, MicroByteBuffer buffer) {
@@ -72,7 +72,7 @@ public class BattleMapSerializer {
      * @param buffer
      */
     public static void serialize(BattleCell[][] cells, short x, short y, Account account, MicroByteBuffer buffer) {
-        Element element = cells[x][y].getElement();
+        CellElement element = cells[x][y].getElement();
         if (element != null) {
             if (element instanceof Warrior) {
                 Warrior warrior = (Warrior) element;
@@ -87,11 +87,11 @@ public class BattleMapSerializer {
                     SimpleSerializer.serialize(SerializeHelper.findTypeId("Ally"), buffer);
                     serialize(warrior, buffer);
                 }
-            } else if (element instanceof Border) {
+            } else if (element instanceof Barrier) {
                 SimpleSerializer.serialize(x, buffer);
                 SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Border"), buffer);
-                serialize((Border) element, buffer);
+                SimpleSerializer.serialize(SerializeHelper.findTypeId("Barrier"), buffer);
+                serialize((Barrier) element, buffer);
             } else if (element instanceof Armor) {
                 SimpleSerializer.serialize(x, buffer);
                 SimpleSerializer.serialize(y, buffer);

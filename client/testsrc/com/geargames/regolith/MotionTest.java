@@ -4,7 +4,7 @@ import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.battle.ClientBorder;
+import com.geargames.regolith.units.battle.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
 import org.junit.Before;
@@ -23,8 +23,8 @@ public class MotionTest {
     @Before
     public void before(){
         ClientTestConfigurationFactory.getDefaultConfiguration();
-        Border border = new ClientBorder();
-        border.setAbleToLookThrough(false);
+        Barrier barrier = new ClientBarrier();
+        barrier.setAbleToLookThrough(false);
         warrior = new Warrior();
         warrior.setName("Вася");
         warrior.setActionScore((short)5);

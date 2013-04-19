@@ -9,7 +9,7 @@ import com.geargames.regolith.serializers.answers.ServerBox2WarriorAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
 
@@ -47,7 +47,7 @@ public abstract class ServerBox2WarriorRequest extends ServerRequest {
         int elementId = SimpleDeserializer.deserializeInt(from);
 
         BattleCell[][] cells = serverBattle.getBattle().getMap().getCells();
-        Element element = cells[x][y].getElement();
+        CellElement element = cells[x][y].getElement();
         if (element != null && element instanceof Box) {
             Box box = (Box) element;
 

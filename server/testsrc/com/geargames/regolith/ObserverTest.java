@@ -13,7 +13,7 @@ import com.geargames.regolith.map.router.RecursiveWaveRouter;
 import com.geargames.regolith.map.router.Router;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.battle.ServerBorder;
+import com.geargames.regolith.units.battle.ServerBarrier;
 import com.geargames.regolith.units.map.ExitZone;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,7 +28,7 @@ import java.util.LinkedList;
 public class ObserverTest {
     private Warrior warrior;
     private BattleMap battleMap;
-    private Border border;
+    private Barrier barrier;
     private Observer observer;
     private Router router;
 
@@ -40,8 +40,8 @@ public class ObserverTest {
         manager.setAccount(account);
 
         observer = new StrictPerimeterObserver(new ServerAllyCollection());
-        border = new ServerBorder();
-        border.setAbleToLookThrough(false);
+        barrier = new ServerBarrier();
+        barrier.setAbleToLookThrough(false);
         warrior = new Warrior();
         warrior.setName("Вася");
 
@@ -103,9 +103,9 @@ public class ObserverTest {
     public void observe(){
         WarriorHelper.putWarriorIntoMap(warrior, battleMap, 0, 5);
         BattleCell[][] cells = battleMap.getCells();
-        cells[0][2].setElement(border);
-        cells[1][2].setElement(border);
-        cells[2][2].setElement(border);
+        cells[0][2].addElement(barrier);
+        cells[1][2].addElement(barrier);
+        cells[2][2].addElement(barrier);
         BattleMapHelper.clearViewAround(warrior);
         observer.observe(warrior);
         TestHelper.printViewMap(battleMap,warrior.getBattleGroup().getAlliance());
@@ -120,15 +120,15 @@ public class ObserverTest {
     public void route(){
         WarriorHelper.putWarriorIntoMap(warrior, battleMap, 1, 5);
         BattleCell[][] cells = battleMap.getCells();
-        cells[0][2].setElement(border);
-        cells[1][2].setElement(border);
-        cells[2][2].setElement(border);
+        cells[0][2].addElement(barrier);
+        cells[1][2].addElement(barrier);
+        cells[2][2].addElement(barrier);
 
-        cells[1][4].setElement(border);
-        cells[2][4].setElement(border);
-        cells[3][4].setElement(border);
-        cells[4][4].setElement(border);
-        cells[5][4].setElement(border);
+        cells[1][4].addElement(barrier);
+        cells[2][4].addElement(barrier);
+        cells[3][4].addElement(barrier);
+        cells[4][4].addElement(barrier);
+        cells[5][4].addElement(barrier);
 
         warrior.setActionScore((short)10);
         BattleMapHelper.prepare(battleMap);

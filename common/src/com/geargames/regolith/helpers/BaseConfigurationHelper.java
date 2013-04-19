@@ -5,7 +5,7 @@ import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.battle.BattleType;
-import com.geargames.regolith.units.battle.Border;
+import com.geargames.regolith.units.battle.Barrier;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.tackle.*;
 
@@ -144,14 +144,14 @@ public class BaseConfigurationHelper {
         }
     }
 
-    public static Border findBorderById(int id, BaseConfiguration configuration) {
+    public static Barrier findBarrierById(int id, BaseConfiguration configuration) {
         if (id == SerializeHelper.NULL_REFERENCE) {
             return null;
         } else {
-            BorderCollection borders = configuration.getBorders();
-            for (int i = 0; i < borders.size(); i++) {
-                if (borders.get(i).getId() == id) {
-                    return borders.get(i);
+            BarrierCollection barriers = configuration.getBarriers();
+            for (int i = 0; i < barriers.size(); i++) {
+                if (barriers.get(i).getId() == id) {
+                    return barriers.get(i);
                 }
             }
             throw new IllegalArgumentException();

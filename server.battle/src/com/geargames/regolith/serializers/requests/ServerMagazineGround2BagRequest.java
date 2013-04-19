@@ -3,7 +3,7 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
@@ -21,7 +21,7 @@ public class ServerMagazineGround2BagRequest extends ServerGround2WarriorRequest
     }
 
     @Override
-    protected boolean putStateTackle(Element element, BattleCell cell, Warrior warrior) {
+    protected boolean putStateTackle(CellElement element, BattleCell cell, Warrior warrior) {
         if (element instanceof Magazine) {
             Magazine magazine = (Magazine) element;
             short count = magazine.getCount();

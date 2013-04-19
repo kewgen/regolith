@@ -35,7 +35,7 @@ public class BaseConfiguration implements Serializable {
     private ProjectileCollection projectiles;
     private WeaponCategoryCollection weaponCategories;
     private MedikitCollection medikits;
-    private BorderCollection borders;
+    private BarrierCollection barriers;
     private BattleTypeCollection battleTypes;
 
     private byte initWarriorsAmount;
@@ -119,12 +119,12 @@ public class BaseConfiguration implements Serializable {
         this.battleTypes = battleTypes;
     }
 
-    public BorderCollection getBorders() {
-        return borders;
+    public BarrierCollection getBarriers() {
+        return barriers;
     }
 
-    public void setBorders(BorderCollection borders) {
-        this.borders = borders;
+    public void setBarriers(BarrierCollection barriers) {
+        this.barriers = barriers;
     }
 
     public MedikitCollection getMedikits() {

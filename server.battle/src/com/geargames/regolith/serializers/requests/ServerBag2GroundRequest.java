@@ -10,7 +10,7 @@ import com.geargames.regolith.serializers.answers.ServerBag2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
@@ -36,7 +36,7 @@ public abstract class ServerBag2GroundRequest extends ServerRequest {
         this.type = type;
     }
 
-    public abstract Element putOut(short number, Warrior warrior);
+    public abstract CellElement putOut(short number, Warrior warrior);
 
     @Override
     public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException {
@@ -56,7 +56,7 @@ public abstract class ServerBag2GroundRequest extends ServerRequest {
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
 
         if (BattleMapHelper.ableToPut(warrior, cells, x, y)) {
-            Element element = putOut(number, warrior);
+            CellElement element = putOut(number, warrior);
             if (element != null) {
                 BattleMapHelper.putIn(element,map,x,y);
 

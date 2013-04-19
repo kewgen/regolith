@@ -7,11 +7,11 @@ import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.helpers.WeaponHelper;
 import com.geargames.regolith.map.observer.ShootBarriersFinder;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.map.Pair;
 import com.geargames.regolith.map.observer.LineViewCaster;
-import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.SubordinationDamage;
 import com.geargames.regolith.units.tackle.*;
@@ -374,7 +374,7 @@ public class FightHelper {
         ShootProbability probability = new ShootProbability();
         probability.inLegs = true;
         if (BattleMapHelper.isAimed(cells[x1][y1], hunter)) {
-            Element element = cells[barriersCoordinates.getX()][barriersCoordinates.getY()].getElement();
+            CellElement element = cells[barriersCoordinates.getX()][barriersCoordinates.getY()].getElement();
             if (element.isHalfLong()) {
                 double distance = getDistance(hunter, victim);
                 int criticalBarrierPercent = battleConfiguration.getCriticalBarrierToVictimDistance();

@@ -9,7 +9,7 @@ import com.geargames.regolith.service.BattleClient;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
@@ -37,7 +37,7 @@ public abstract class ServerBag2BoxRequest extends ServerRequest {
         this.type = type;
     }
 
-    protected abstract Element moveBag2Box(short bagNumber, Box box, Warrior warrior) throws RegolithException;
+    protected abstract CellElement moveBag2Box(short bagNumber, Box box, Warrior warrior) throws RegolithException;
 
     @Override
     public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException {
@@ -57,7 +57,7 @@ public abstract class ServerBag2BoxRequest extends ServerRequest {
 
         Box box = (Box) cells[x][y].getElement();
 
-        Element element = moveBag2Box(bagNumber, box, warrior);
+        CellElement element = moveBag2Box(bagNumber, box, warrior);
         if (element != null) {
             Set<BattleClient> others = new HashSet<BattleClient>();
             others.addAll(serverBattle.getClients());

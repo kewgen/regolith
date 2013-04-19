@@ -7,7 +7,7 @@ import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.battle.ClientBorder;
+import com.geargames.regolith.units.battle.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.finder.ProjectionFinder;
 import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
@@ -37,8 +37,8 @@ public class SynchronizationTest {
         account.getSecurity().setAccount(account);
 
         ClientTestConfigurationFactory.getDefaultConfiguration();
-        Border border = new ClientBorder();
-        border.setAbleToLookThrough(false);
+        Barrier barrier = new ClientBarrier();
+        barrier.setAbleToLookThrough(false);
         warrior = new Warrior();
         account.getWarriors().add(warrior);
         warrior.setName("Вася");
@@ -54,12 +54,12 @@ public class SynchronizationTest {
         WarriorHelper.addGroupIntoAlliance(battleAlliance, battleGroup);
 
         battleMap = battle.getMap();
-        battleMap.getCells()[1][2].setElement(border);
-        battleMap.getCells()[2][2].setElement(border);
-        battleMap.getCells()[3][2].setElement(border);
-        battleMap.getCells()[3][3].setElement(border);
-        battleMap.getCells()[3][4].setElement(border);
-        battleMap.getCells()[3][5].setElement(border);
+        battleMap.getCells()[1][2].addElement(barrier);
+        battleMap.getCells()[2][2].addElement(barrier);
+        battleMap.getCells()[3][2].addElement(barrier);
+        battleMap.getCells()[3][3].addElement(barrier);
+        battleMap.getCells()[3][4].addElement(barrier);
+        battleMap.getCells()[3][5].addElement(barrier);
     }
 
     @Test

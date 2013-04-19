@@ -70,11 +70,11 @@
                 <many-to-many column="medikit_id" class="com.geargames.regolith.units.tackle.Medikit" unique="true"/>
             </list>
         </component>
-        <component name="borders" class="com.geargames.regolith.units.dictionaries.ServerBorderCollection">
-            <list name="borders" cascade="save-update" table="base_configuration_border">
+        <component name="barriers" class="com.geargames.regolith.units.dictionaries.ServerBarrierCollection">
+            <list name="barriers" cascade="save-update" table="base_configuration_barrier">
                 <key column="base_configuration_id"/>
                 <index column="number"/>
-                <many-to-many column="border_id" class="com.geargames.regolith.units.battle.ServerBorder" unique="true"/>
+                <many-to-many column="barrier_id" class="com.geargames.regolith.units.battle.ServerBarrier" unique="true"/>
             </list>
         </component>
         <component name="battleTypes" class="com.geargames.regolith.units.dictionaries.ServerBattleTypeCollection">

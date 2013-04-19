@@ -652,20 +652,31 @@ public class ServerDBTest {
 
         baseConfiguration.setInitWarriorsAmount((byte) 2);
 
-        ServerBorder border = new ServerBorder();
-        border.setShootThrough(new HashMap<WeaponCategory, Boolean>());
-        border.setAbleToLookThrough(true);
+        ServerBarrierCollection barriers = new ServerBarrierCollection();
+        barriers.setBarriers(new LinkedList<Barrier>());
+        baseConfiguration.setBarriers(barriers);
+
+        // Простое невидимое препятствие. Устарело.
+        ServerBarrier barrier = new ServerBarrier();
+        barriers.add(barrier);
+        barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
+        barrier.setAbleToLookThrough(true);
         for (int i = 0; i < weaponCategories.size(); i++) {
-            border.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
+            barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
         }
+        barrier.setAbleToWalkThrough(false);
+        barrier.setHalfLong(true);
 
-        border.setAbleToWalkThrough(false);
-        border.setHalfLong(true);
-
-        ServerBorderCollection borders = new ServerBorderCollection();
-        borders.setBorders(new LinkedList<Border>());
-        borders.add(border);
-        baseConfiguration.setBorders(borders);
+//        // Препятствие в виде забора. Левая часть, направленная на юго-восток
+//        barrier = new ServerBarrier();
+//        barriers.add(barrier);
+//        barrier.setShootThrough(new HashMap<WeaponCategory, Boolean>());
+//        barrier.setAbleToLookThrough(true);
+//        for (int i = 0; i < weaponCategories.size(); i++) {
+//            barrier.setAbleToShootThrough(baseConfiguration.getWeaponCategories().get(i), i % 2 == 0);
+//        }
+//        barrier.setAbleToWalkThrough(false);
+//        barrier.setHalfLong(true);
 
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
@@ -840,8 +851,8 @@ public class ServerDBTest {
         Battle battle = BattleHelper.createBattle("qqq", map1, types[0]);
         BattleHelper.prepareBattle(battle);
 
-        Border border = baseConfiguration.getBorders().get(0);
-        map1.getCells()[3][3].setElement(border);
+        Barrier barrier = baseConfiguration.getBarriers().get(0);
+        map1.getCells()[3][3].setElement(barrier);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -879,7 +890,7 @@ public class ServerDBTest {
 
         newBattle.getMap().setCells(BattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
         Assert.assertTrue(battle.getMap().getCells()[1][1].getElement() instanceof Box);
-        Assert.assertTrue(battle.getMap().getCells()[3][3].getElement() instanceof Border);
+        Assert.assertTrue(battle.getMap().getCells()[3][3].getElement() instanceof Barrier);
 
         Box newBox = (Box) battle.getMap().getCells()[1][1].getElement();
 
@@ -924,8 +935,8 @@ public class ServerDBTest {
 //        Battle battle = BattleHelper.createBattle("qqq", map2, types[0]);
 //        BattleHelper.prepareBattle(battle);
 
-        Border border = baseConfiguration.getBorders().get(0);
-        map2.getCells()[3][3].setElement(border);
+        Barrier barrier = baseConfiguration.getBarriers().get(0);
+        map2.getCells()[3][3].addElement(barrier);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -945,7 +956,7 @@ public class ServerDBTest {
         rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
 
         box.getTackles().add(rifle);
-        map2.getCells()[1][1].setElement(box);
+        map2.getCells()[1][1].addElement(box);
         map2.setContent(BattleHelper.serializeBattleCells(map2.getCells()));
 
         session = sessionFactory.openSession();
@@ -963,7 +974,7 @@ public class ServerDBTest {
 //
 //        newBattle.getMap().setCells(BattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
 //        Assert.assertTrue(battle.getMap().getCells()[1][1].getElement() instanceof Box);
-//        Assert.assertTrue(battle.getMap().getCells()[3][3].getElement() instanceof Border);
+//        Assert.assertTrue(battle.getMap().getCells()[3][3].getElement() instanceof Barrier);
 //
 //        Box newBox = (Box) battle.getMap().getCells()[1][1].getElement();
 //
@@ -1011,8 +1022,8 @@ public class ServerDBTest {
         types[0] = baseConfiguration.getBattleTypes().get(0); // 1x1
         types[1] = baseConfiguration.getBattleTypes().get(3); // 2x2
 
-        Border border = baseConfiguration.getBorders().get(0);
-        map3.getCells()[3][3].setElement(border);
+        Barrier barrier = baseConfiguration.getBarriers().get(0);
+        map3.getCells()[3][3].addElement(barrier);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -1032,7 +1043,7 @@ public class ServerDBTest {
         rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
 
         box.getTackles().add(rifle);
-        map3.getCells()[1][1].setElement(box);
+        map3.getCells()[1][1].addElement(box);
         map3.setContent(BattleHelper.serializeBattleCells(map3.getCells()));
 
         session = sessionFactory.openSession();
@@ -1084,8 +1095,8 @@ public class ServerDBTest {
         types[1] = baseConfiguration.getBattleTypes().get(2); // 1x1x1x1
         types[2] = baseConfiguration.getBattleTypes().get(3); // 2x2
 
-        Border border = baseConfiguration.getBorders().get(0);
-        map4.getCells()[3][3].setElement(border);
+        Barrier barrier = baseConfiguration.getBarriers().get(0);
+        map4.getCells()[3][3].addElement(barrier);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -1105,7 +1116,7 @@ public class ServerDBTest {
         rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
 
         box.getTackles().add(rifle);
-        map4.getCells()[1][1].setElement(box);
+        map4.getCells()[1][1].addElement(box);
         map4.setContent(BattleHelper.serializeBattleCells(map4.getCells()));
 
         session = sessionFactory.openSession();
@@ -1158,8 +1169,8 @@ public class ServerDBTest {
         types[2] = baseConfiguration.getBattleTypes().get(2); // 1x1x1x1
         types[3] = baseConfiguration.getBattleTypes().get(3); // 2x2
 
-        Border border = baseConfiguration.getBorders().get(0);
-        map5.getCells()[3][3].setElement(border);
+        Barrier barrier = baseConfiguration.getBarriers().get(0);
+        map5.getCells()[3][3].addElement(barrier);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -1179,7 +1190,7 @@ public class ServerDBTest {
         rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
 
         box.getTackles().add(rifle);
-        map5.getCells()[1][1].setElement(box);
+        map5.getCells()[1][1].addElement(box);
         map5.setContent(BattleHelper.serializeBattleCells(map5.getCells()));
 
         session = sessionFactory.openSession();
@@ -1230,8 +1241,8 @@ public class ServerDBTest {
         types[0] = baseConfiguration.getBattleTypes().get(0); // 1x1*1
         types[1] = baseConfiguration.getBattleTypes().get(4); // 1x1*2
 
-        Border border = baseConfiguration.getBorders().get(0);
-        map5.getCells()[3][3].setElement(border);
+        Barrier barrier = baseConfiguration.getBarriers().get(0);
+        map5.getCells()[3][3].addElement(barrier);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -1251,7 +1262,7 @@ public class ServerDBTest {
         rifle.setWeaponType(baseConfiguration.getWeaponCategories().get(0).getWeaponTypes().get(0));
 
         box.getTackles().add(rifle);
-        map5.getCells()[1][1].setElement(box);
+        map5.getCells()[1][1].addElement(box);
         map5.setContent(BattleHelper.serializeBattleCells(map5.getCells()));
 
         session = sessionFactory.openSession();

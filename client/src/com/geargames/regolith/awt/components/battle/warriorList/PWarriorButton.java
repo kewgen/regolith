@@ -1,4 +1,4 @@
-package com.geargames.regolith.awt.components.battle.selectWarrior;
+package com.geargames.regolith.awt.components.battle.warriorList;
 
 import com.geargames.awt.components.PRadioButton;
 import com.geargames.common.packer.PObject;
@@ -23,7 +23,7 @@ public class PWarriorButton extends PRadioButton {
     }
 
     public void setWarrior(Warrior warrior) {
-
+        this.warrior = warrior;
     }
 
 }

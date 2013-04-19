@@ -1,8 +1,8 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.map.Pair;
-import com.geargames.regolith.units.Element;
 import com.geargames.regolith.units.battle.Ally;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
@@ -30,7 +30,7 @@ public class ShootBarriersFinder extends BattleCellMaintainer {
      * @return
      */
     public boolean maintain(BattleCell[][] cells, Ally warrior, boolean toDo, int x, int y) {
-        Element element = cells[x][y].getElement();
+        CellElement element = cells[x][y].getElement();
         if (element != null && toDo) {
             WeaponCategory category = warrior.getWeapon().getWeaponType().getCategory();
             if (!element.isAbleToShootThrough(category)) {

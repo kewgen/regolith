@@ -2,7 +2,7 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.Element;
+import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 
@@ -18,7 +18,7 @@ public class ServerTackleBag2GroundRequest extends ServerBag2GroundRequest {
     }
 
     @Override
-    public Element putOut(short number, Warrior warrior) {
+    public CellElement putOut(short number, Warrior warrior) {
         return WarriorHelper.putOutOfBag(warrior, number);
     }
 }
