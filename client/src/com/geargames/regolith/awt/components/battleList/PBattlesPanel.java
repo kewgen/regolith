@@ -190,7 +190,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
         ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
         ClientBattleMarketManager battleMarket = configuration.getBattleMarketManager();
         try {
-            if (browsing) {
+            if (browsing) { //todo: использовать Application.isTerminated вместо browsing
                 ClientConfirmationAnswer confirmationAnswer = battleMarket.doNotListenToCreatedBattles();
                 if (!confirmationAnswer.isConfirm()) {
                     Debug.error("DoNotListenToCreatedBattles: Request rejected");
