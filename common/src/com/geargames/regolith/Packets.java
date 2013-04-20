@@ -19,18 +19,7 @@ public interface Packets {
 
     short CLIENT_CONNECT_TO_BATTLE_SEVER = 1;
 
-    /*
-    Регистрация клиента
-        client_id[int]  - ид клиента - приложения установленного на девайсе. При первой регистрации 0.
-        user_id[int]    - ид пользователя
-    */
     short CLIENT_REGISTRATION = 2;
-
-    /*
-    Подтверждение регистрации сервером
-        client_id[int]  - ид клиента - новое, если клиент не был зарегистрирован
-        user_id[int]    - ид пользователя - новое, если пользователь не был зарегистрирован
-    */
 
     short CHECK_FOR_NAME = 3;
     short LOGIN = 4;
