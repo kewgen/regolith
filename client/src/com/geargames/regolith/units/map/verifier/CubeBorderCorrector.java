@@ -17,8 +17,8 @@ public class CubeBorderCorrector extends MapCorrector {
         } else if (x > battleMap.getCells().length * BattleScreen.HORIZONTAL_DIAGONAL - Port.getW() - BattleScreen.HORIZONTAL_RADIUS) {
             battleScreen.setMapX(battleMap.getCells().length * BattleScreen.HORIZONTAL_DIAGONAL - Port.getW() - BattleScreen.HORIZONTAL_RADIUS);
         }
-        if (y < -BattleScreen.VERTICAL_RADIUS) {
-            battleScreen.setMapY(-BattleScreen.VERTICAL_RADIUS);
+        if (y < -BattleScreen.VERTICAL_RADIUS*3) {
+            battleScreen.setMapY(-BattleScreen.VERTICAL_RADIUS*3);
         } else if (y > battleMap.getCells().length * BattleScreen.VERTICAL_DIAGONAL - Port.getH() - BattleScreen.VERTICAL_RADIUS) {
             battleScreen.setMapY(battleMap.getCells().length * BattleScreen.VERTICAL_DIAGONAL - Port.getH() - BattleScreen.VERTICAL_RADIUS);
         }
