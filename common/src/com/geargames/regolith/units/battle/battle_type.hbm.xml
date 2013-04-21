@@ -10,9 +10,10 @@
         <discriminator column="discriminator" type="string"/>
         <property name="name" column="name" type="string"/>
         <property name="scores" column="scores" type="byte"/>
-        <property name="allianceAmount" column="min_alliance_amount" type="int"/>
-        <property name="allianceSize" column="min_group_amount" type="int"/>
-        <property name="groupSize" column="min_group_size" type="int"/>
+        <property name="allianceAmount" column="min_alliance_amount"/>
+        <property name="allianceSize" column="min_group_amount"/>
+        <property name="groupSize" column="min_group_size"/>
+        <property name="turnTime" column="turn_time"/>
 
         <subclass name="com.geargames.regolith.units.battle.TrainingBattle" discriminator-value="T"/>
     </class>

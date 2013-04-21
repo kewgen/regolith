@@ -44,14 +44,15 @@ public class BattleSchedulerService {
         }
     }
 
-    public void add(final List<MessageToClient> messages){
+    public void add(final List<MessageToClient> messages) {
         scheduler.execute(new Runnable() {
             @Override
             public void run() {
                 if (Thread.currentThread().isInterrupted()) {
+                    logger.debug("Could not add an immediate message(the service has been interrupted) ");
                     return;
                 }
-                for(MessageToClient message : messages){
+                for (MessageToClient message : messages) {
                     writer.addMessageToClient(message);
                 }
             }
@@ -64,13 +65,16 @@ public class BattleSchedulerService {
                     @Override
                     public void run() {
                         if (Thread.currentThread().isInterrupted()) {
+                            logger.debug("Could not add a battle(the service has been interrupted)" + serverBattle.getBattle().getName());
                             return;
                         }
                         int index = serverBattle.getActive();
-                        for (BattleClient client : serverBattle.getAlliances().get(index)) {
-                            client.lock();
-                            client.setState(new ClientCheckSumAwaiting());
-                            client.release();
+                        if (index != ServerBattle.NONE) {
+                            for (BattleClient client : serverBattle.getAlliances().get(index)) {
+                                client.lock();
+                                client.setState(new ClientCheckSumAwaiting());
+                                client.release();
+                            }
                         }
                         index = (index + 1) % serverBattle.getAlliances().size();
                         for (BattleClient client : serverBattle.getAlliances().get(index)) {
@@ -97,15 +101,15 @@ public class BattleSchedulerService {
                                 }
                             }
                             writer.addMessageToClient(new BattleMessageToClient(
-                                 BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
-                                 new FinishBattleMessage(new MicroByteBuffer(new byte[20]), winner).serialize()));
+                                    BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
+                                    new FinishBattleMessage(new MicroByteBuffer(new byte[20]), winner).serialize()));
                         } else {
                             writer.addMessageToClient(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
                                     new ServerChangeActiveAllianceMessage(new MicroByteBuffer(new byte[20]),
                                             serverBattle.getBattle().getAlliances()[serverBattle.getActive()]).serialize()));
                         }
                     }
-                }, beginDelay, actionTime, TimeUnit.SECONDS));
+                }, beginDelay, serverBattle.getBattle().getBattleType().getTurnTime(), TimeUnit.SECONDS));
     }
 
     public void remove(final ServerBattle serverBattle) {

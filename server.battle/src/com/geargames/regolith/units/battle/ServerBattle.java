@@ -10,6 +10,7 @@ import java.util.concurrent.ScheduledFuture;
  * Date: 20.07.12
  */
 public class ServerBattle {
+    public static  final int NONE = -1;
     private int active;
     private Battle battle;
     private Collection<BattleGroup> groups;
@@ -20,7 +21,7 @@ public class ServerBattle {
 
     public ServerBattle(Battle battle) {
         this.battle = battle;
-        active = 0;
+        active = NONE;
     }
 
     public Collection<BattleGroup> getGroups() {
