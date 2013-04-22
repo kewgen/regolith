@@ -4,7 +4,6 @@ import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.BattleAlliance;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * Абстрактная клетка игрового поля, должна расширяться клиентской и серверной версиями.
@@ -55,7 +54,11 @@ public abstract class BattleCell implements Serializable {
         // Увеличиваем размер массива, если необходимо
         int capacity = elements.length;
         if (size == capacity) {
-            elements = Arrays.copyOf(elements, capacity + 2); //todo: Избавиться от Array
+            CellElement[] oldElements = elements;
+            elements = new CellElement[capacity + 2];
+            for (int i = 0; i < capacity; i++) {
+                elements[i] = oldElements[i];
+            }
         }
         // Ищем место для вставки
         int insertIndex = 0;
