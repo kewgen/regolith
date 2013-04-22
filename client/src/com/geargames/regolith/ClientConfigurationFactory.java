@@ -45,6 +45,7 @@ public class ClientConfigurationFactory {
         configuration.setBattleMarketManager(new ClientBattleMarketManager(configuration));
         configuration.setBaseManager(new ClientBaseManager(configuration));
         configuration.setBaseWarriorMarketManager(new ClientBaseWarriorMarketManager(configuration));
+        configuration.setBattleServiceManager(new ClientBattleServiceManager(configuration));
 
         return configuration;
     }

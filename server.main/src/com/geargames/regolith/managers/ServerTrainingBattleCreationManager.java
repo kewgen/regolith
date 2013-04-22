@@ -71,6 +71,12 @@ public class ServerTrainingBattleCreationManager {
         }
         BattleHelper.spreadAlliancesOnTheMap(battle);
 
+        for (BattleAlliance alliance : battle.getAlliances()) {
+            ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
+            for (BattleGroup group : groups.getBattleGroups()) {
+                WarriorHelper.numerateWarriors(alliance, group);
+            }
+        }
         return battle;
     }
 
@@ -101,11 +107,11 @@ public class ServerTrainingBattleCreationManager {
         }
     }
 
-    public void removeWarriors(BattleGroup group){
-        for(Warrior warrior : ((ServerWarriorCollection)group.getWarriors()).getWarriors()){
+    public void removeWarriors(BattleGroup group) {
+        for (Warrior warrior : ((ServerWarriorCollection) group.getWarriors()).getWarriors()) {
             warrior.setBattleGroup(null);
         }
-        ((ServerWarriorCollection)group.getWarriors()).getWarriors().clear();
+        ((ServerWarriorCollection) group.getWarriors()).getWarriors().clear();
     }
 
     public boolean doNotListenToBattle(Battle battle, Account account) {
@@ -135,6 +141,7 @@ public class ServerTrainingBattleCreationManager {
 
     /**
      * Исключить группу из списка готовых к битве.
+     *
      * @param group
      * @return
      */

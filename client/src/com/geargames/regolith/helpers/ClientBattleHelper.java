@@ -1,6 +1,7 @@
 package com.geargames.regolith.helpers;
 
 import com.geargames.common.util.ArrayList;
+import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.units.Account;
@@ -352,11 +353,16 @@ public class ClientBattleHelper {
         }
     }
 
-
-    public static void resetActionScores(ArrayList battleUnits){
+    /**
+     * Заполнить очки действия на начало хода.
+     * @param battleUnits
+     * @param baseConfiguration
+     */
+    public static void resetActionScores(ArrayList battleUnits, BaseConfiguration baseConfiguration){
         int size = battleUnits.size();
         for(int i = 0; i < size; i++){
-            ((BattleUnit)battleUnits.get(i)).getUnit().getWarrior().setActionScore((short)100);
+            Warrior warrior = ((BattleUnit) battleUnits.get(i)).getUnit().getWarrior();
+            warrior.setActionScore(WarriorHelper.getMaxActionScores(warrior, baseConfiguration));
         }
     }
 }

@@ -64,7 +64,7 @@ public class ServerTackleGround2BodyRequest extends ServerGround2WarriorRequest 
                     return false;
             }
         }
-        cell.setElement(null);
+        cell.removeElement(stateTackle);
         return true;
     }
 }

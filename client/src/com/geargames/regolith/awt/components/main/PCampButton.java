@@ -140,7 +140,7 @@ public class PCampButton extends PTouchButton {
             WarriorHelper.putWarriorIntoMap(mine, battleMap, 0, 0);
             mine.setNumber((short)1);
             mine.setActionScore((short)100);
-            mine.setSpeed((byte)8);
+            mine.setSpeed((byte)100);
             battle.getAlliances()[0].setExit(exit);
             exits[0] = exit;
 
@@ -153,7 +153,7 @@ public class PCampButton extends PTouchButton {
             WarriorHelper.putWarriorIntoMap(another, battleMap, 18, 18);
             another.setNumber((short)2);
             another.setActionScore((short)100);
-            another.setSpeed((byte)10);
+            another.setSpeed((byte)100);
             exits[1] = exit;
 
             WarriorHelper.addWarriorToGroup(battle.getAlliances()[0].getAllies().get(0), mine);

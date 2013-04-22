@@ -4,6 +4,7 @@ import com.geargames.awt.Screen;
 import com.geargames.common.env.Environment;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.network.DataMessageListener;
+import com.geargames.common.network.Network;
 import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
@@ -12,12 +13,8 @@ import com.geargames.common.timers.TimerManager;
 import com.geargames.common.util.ArrayList;
 import com.geargames.common.util.Mathematics;
 import com.geargames.common.Graphics;
-import com.geargames.regolith.BattleConfiguration;
-import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.Packets;
-import com.geargames.regolith.SecurityOperationManager;
+import com.geargames.regolith.*;
 import com.geargames.regolith.application.Event;
-import com.geargames.regolith.Graph;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.network.RegolithMessageDispatcher;
@@ -83,12 +80,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private int b4;
 
     private Pair center;
+    private ClientConfiguration configuration;
 
     private int timerId;
 
     public BattleScreen() {
         steps = new Vector();
         timerId = -1;
+        configuration = ClientConfigurationFactory.getConfiguration();
     }
 
     public void draw(Graphics graphics) {
@@ -247,27 +246,37 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                             Pair cell = cellFinder.find(x + mapX, y + mapY, this);
                             BattleCell battleCell = battle.getMap().getCells()[cell.getX()][cell.getY()];
                             CellElement element = battleCell.getElement();
+                            Warrior warrior = user.getUnit().getWarrior();
                             if (element != null && element.getElementType() == CellElementTypes.HUMAN && ((Warrior) element).getBattleGroup() == battleGroup) {
                                 user = ClientBattleHelper.getBattleUnitByWarrior(group, (Warrior) element);
-                                ClientBattleHelper.route(user.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
-                                Debug.debug("the current user number = " + user.getUnit().getWarrior().getNumber());
-                            } else if (BattleMapHelper.isReachable(battleCell) && !user.getUnit().getWarrior().isMoving()) {
+                                ClientBattleHelper.route(warrior, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+                                Debug.debug("the current user number = " + warrior.getNumber());
+                            } else if (BattleMapHelper.isReachable(battleCell) && !warrior.isMoving()) {
                                 ClientBattleHelper.trace(user.getUnit().getWarrior(), cell.getX(), cell.getY());
-                                Debug.debug("trace for a user " + user.getUnit().getWarrior().getNumber());
+                                Debug.debug("trace for a user " + warrior.getNumber());
+                            } else {
+                                Debug.debug("point " + cell.getX() + ":" + cell.getY() + "is not reachable");
                             }
+                            Debug.debug("is warrior " + warrior.getName() + " moving? = " + warrior.isMoving());
                         }
                     }
                 }
                 break;
             case Event.EVENT_TOUCH_DOUBLE_CLICK:
                 if (myTurn) {
+                    Debug.debug("my turn & i want to move " + x + ":" + y);
                     if (isOnTheMap(x, y)) {
                         Pair cell = cellFinder.find(x + mapX, y + mapY, this);
+                        Debug.debug("a cell to go " + cell.getX() + ":" + cell.getY() + " action scores " + user.getUnit().getWarrior().getActionScore());
                         if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getUnit().getWarrior())) {
                             //ClientBattleHelper.move(this, cell.getX(), cell.getY());
                             System.out.println("move an user " + user.getUnit().getWarrior().getNumber());
                             moveUser(cell.getX(), cell.getY());
+                        } else {
+                            Debug.debug("Not a shortest path");
                         }
+                    } else {
+                        Debug.debug("out of the map touch");
                     }
                 }
                 break;
@@ -290,10 +299,16 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         switch (type) {
             case Packets.CHANGE_ACTIVE_ALLIANCE:
                 ClientChangeActiveAllianceAnswer change = (ClientChangeActiveAllianceAnswer) message;
+                if (myTurn) {
+                    Debug.debug("my turn has been finished");
+                    configuration.getBattleServiceManager().checkSum();
+                }
                 myTurn = WarriorHelper.isAlly(change.getAlliance(), ClientConfigurationFactory.getConfiguration().getAccount());
                 if (myTurn) {
-                    ClientBattleHelper.resetActionScores(group);
+                    Debug.debug("MY TURN");
+                    ClientBattleHelper.resetActionScores(group,configuration.getBaseConfiguration());
                 }
+
                 break;
             case Packets.MOVE_ALLY:
                 break;

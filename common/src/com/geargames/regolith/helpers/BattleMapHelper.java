@@ -23,13 +23,13 @@ public class BattleMapHelper {
 
     public static void putIn(CellElement element, BattleMap map, int x, int y) {
         BattleCell cell = map.getCells()[x][y];
-        cell.setElement(element);
+        cell.addElement(element);
     }
 
     public static CellElement putOut(BattleMap map, int x, int y) {
         BattleCell cell = map.getCells()[x][y];
         CellElement element = cell.getElement();
-        cell.setElement(null);
+        cell.addElement(null);
         return element;
     }
 
@@ -411,8 +411,8 @@ public class BattleMapHelper {
      */
     public static boolean moveBetweenCells(Warrior warrior, BattleCell[][] cells, short x1, short y1, short x2, short y2) {
         if (isNear(warrior, x1, y1) && isNear(warrior, x2, y2) && cells[x2][y2].getElement() == null) {
-            cells[x2][y2].setElement(cells[x1][y1].getElement());
-            cells[x1][y1].setElement(null);
+            cells[x2][y2].addElement(cells[x1][y1].getElement());
+            cells[x1][y1].addElement(null);
             return true;
         } else {
             return false;

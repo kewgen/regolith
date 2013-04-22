@@ -1,8 +1,6 @@
 package com.geargames.regolith.service;
 
 import com.geargames.regolith.service.remote.MainServiceRegister;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

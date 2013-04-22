@@ -69,4 +69,8 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
         return message;
     }
 
+    @Override
+    protected void unhandledMessageHandler(DataMessage message) {
+        Debug.debug(message.getMessageType() + " was not handled");
+    }
 }
