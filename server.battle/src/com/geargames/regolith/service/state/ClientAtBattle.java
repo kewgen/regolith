@@ -5,11 +5,15 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.units.battle.ServerBattle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ClientAtBattle extends BattleState {
+    private static Logger logger = LoggerFactory.getLogger(ClientAtBattle.class);
     private ServerBattle serverBattle;
     private ClientWriter writer;
     private RegolithConfiguration regolithConfiguration;
@@ -126,8 +130,15 @@ public class ClientAtBattle extends BattleState {
             case Packets.USE_MEDIKIT:
                 request = new ServerUseMedikitRequest(serverBattle, regolithConfiguration);
                 break;
+            default:
+                logger.debug("An unknown battle type {} ", type);
         }
-        List<MessageToClient> messages = request.request(from, getWriteBuffer(), client);
+        List<MessageToClient> messages = null;
+        if (request != null) {
+            messages = request.request(from, getWriteBuffer(), client);
+        } else {
+            messages = new ArrayList<MessageToClient>(0);
+        }
         for (MessageToClient message : messages) {
             writer.addMessageToClient(message);
         }

@@ -39,7 +39,7 @@ public class WarriorHelper {
      * @return
      */
     public static int getRoutableRadius(Warrior warrior) {
-        return 10;
+        return warrior.getActionScore();
     }
 
     public static int getReachableRadius(Warrior warrior) {
@@ -57,14 +57,14 @@ public class WarriorHelper {
     public static boolean putWarriorIntoMap(Warrior warrior, BattleMap battleMap, int x, int y) {
         BattleCell previous = battleMap.getCells()[warrior.getX()][warrior.getY()];
         if (previous.getElement() == warrior) {
-            previous.setElement(null);
+            previous.removeElement(warrior);
         }
         BattleCell next = battleMap.getCells()[x][y];
         warrior.setX((short) x);
         warrior.setY((short) y);
 
         if (next.getElement() == null) {
-            next.setElement(warrior);
+            next.addElement(warrior);
             return true;
         } else {
             return false;
@@ -259,9 +259,19 @@ public class WarriorHelper {
      */
     public static void numerateWarriors(BattleAlliance alliance, BattleGroup group) {
         WarriorCollection warriors = group.getWarriors();
-        if (warriors != null) {
-            for (byte j = 0; j < warriors.size(); j++) {
-                warriors.get(j).setNumber(getNumberByIndex(warriors.size() * alliance.getAllies().size() + j));
+
+        BattleGroupCollection groups = alliance.getAllies();
+        int groupNumber = -1;
+        for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i) == group) {
+                groupNumber = i;
+            }
+        }
+        if (groupNumber != -1) {
+            if (warriors != null) {
+                for (byte j = 0; j < warriors.size(); j++) {
+                    warriors.get(j).setNumber(getNumberByIndex(groupNumber + j));
+                }
             }
         }
     }
@@ -775,6 +785,7 @@ public class WarriorHelper {
 
     /**
      * Проверить, мертвый ли боец. Вернет true, если боец мертвый.
+     *
      * @param human
      * @return
      */

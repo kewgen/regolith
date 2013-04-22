@@ -712,7 +712,7 @@ public class SerializerTest {
         weapon.setFirmness((short) 150);
         weapon.setState((short) 150);
 
-        cells[10][10].setElement(weapon);
+        cells[10][10].addElement(weapon);
 
         MicroByteBuffer buffer = new MicroByteBuffer(new byte[2000]);
         buffer.setLimit(2000);

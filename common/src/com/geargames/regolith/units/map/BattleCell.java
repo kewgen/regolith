@@ -22,6 +22,7 @@ public abstract class BattleCell implements Serializable {
 
     /**
      * Вернуть массив элементов находящихся в этой ячейке карты.
+     *
      * @return
      */
     public CellElement[] getElements() {
@@ -41,36 +42,31 @@ public abstract class BattleCell implements Serializable {
         }
     }
 
-    @Deprecated
-    public void setElement(CellElement element) {
-        addElement(element);
-    }
-
     /**
      * Добавить элемент в ячейку.
+     *
      * @param element
      */
     public void addElement(CellElement element) {
-        // Увеличиваем размер массива, если необходимо
         int capacity = elements.length;
-        if (size == capacity) {
-            CellElement[] oldElements = elements;
-            elements = new CellElement[capacity + 2];
-            for (int i = 0; i < capacity; i++) {
-                elements[i] = oldElements[i];
-            }
-        }
-        // Ищем место для вставки
         int insertIndex = 0;
-        for (int i = size - 1; i >= 0; i--) {
-            if (elements[i].getLayer() <= element.getLayer()) {
-                insertIndex = i + 1;
-                break;
+        if (size > 0) {
+            if (size == capacity) {
+                CellElement[] oldElements = elements;
+                elements = new CellElement[capacity + 2];
+                for (int i = 0; i < capacity; i++) {
+                    elements[i] = oldElements[i];
+                }
             }
-        }
-        // Вставляем элемент
-        for (int i = size - 1; i >= insertIndex; i++) {
-            elements[i + 1] = elements[i];
+            for (int i = size - 1; i >= 0; i--) {
+                if (elements[i].getLayer() <= element.getLayer()) {
+                    insertIndex = i + 1;
+                    break;
+                }
+            }
+            for (int i = size - 1; i >= insertIndex; i--) {
+                elements[i + 1] = elements[i];
+            }
         }
         elements[insertIndex] = element;
         size++;
@@ -78,6 +74,7 @@ public abstract class BattleCell implements Serializable {
 
     /**
      * Удалить элемент из ячейки.
+     *
      * @param element
      */
     public void removeElement(CellElement element) {
@@ -95,6 +92,7 @@ public abstract class BattleCell implements Serializable {
     /**
      * Вернуть битовую маску достижимости ячейки карты.
      * 0-6 биты содержат наименьшее количество клеток (до 64 клеток), которое надо будет преодолеть бойцу, чтобы добраться до этой точки.
+     *
      * @return
      */
     //todo: 64 клетки на длинну пути это слишком мало. Ситуация может быть такой:
@@ -113,6 +111,7 @@ public abstract class BattleCell implements Serializable {
     /**
      * Вернуть битовую маску видимости клеток бойцами военного союза battleAlliance.
      * Если клетка видима бойцом с номером N в военном союзе, то бит карты установлен.
+     *
      * @param battleAlliance
      * @return
      */
@@ -121,6 +120,7 @@ public abstract class BattleCell implements Serializable {
     /**
      * Вернуть битовую маску оптимального пути бойцов военного союза battleAlliance.
      * Если клетка принадлежит оптимальному пути
+     *
      * @param battleAlliance
      * @return
      */
@@ -128,6 +128,7 @@ public abstract class BattleCell implements Serializable {
 
     /**
      * Была ли точка засвечена бойцами военного союза battleAlliance.
+     *
      * @param battleAlliance
      * @return
      */

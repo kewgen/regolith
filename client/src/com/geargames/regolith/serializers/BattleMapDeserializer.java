@@ -95,23 +95,23 @@ public class BattleMapDeserializer {
                 }
             } else if (typeId == SerializeHelper.findTypeId("Box")) {
                 Box box = new Box();
-                cells[x][y].setElement(box);
+                cells[x][y].addElement(box);
                 deserializeBox(box, buffer, baseConfiguration);
             } else if (typeId == SerializeHelper.findTypeId("Magazine")) {
-                cells[x][y].setElement(deserializeMagazine(buffer, baseConfiguration));
+                cells[x][y].addElement(deserializeMagazine(buffer, baseConfiguration));
             } else if (typeId == SerializeHelper.findTypeId("Barrier")) {
-                cells[x][y].setElement(BaseConfigurationHelper.findBarrierById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
+                cells[x][y].addElement(BaseConfigurationHelper.findBarrierById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
             } else if (typeId == SerializeHelper.findTypeId("Armor")) {
                 Armor armor = new Armor();
-                cells[x][y].setElement(armor);
+                cells[x][y].addElement(armor);
                 TackleDeserializer.deSerialize(armor, buffer, baseConfiguration);
             } else if (typeId == SerializeHelper.findTypeId("Weapon")) {
                 Weapon weapon = new Weapon();
-                cells[x][y].setElement(weapon);
+                cells[x][y].addElement(weapon);
                 TackleDeserializer.deSerialize(weapon, buffer, baseConfiguration);
             } else if (typeId == SerializeHelper.findTypeId("Medikit")) {
                 Medikit medikit = new Medikit();
-                cells[x][y].setElement(medikit);
+                cells[x][y].addElement(medikit);
                 TackleDeserializer.deserializeMedikit(medikit, buffer, baseConfiguration);
             } else if (typeId == SerializeHelper.findTypeId("Ally")) {
                 int allyId = SimpleDeserializer.deserializeInt(buffer);

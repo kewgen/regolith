@@ -24,7 +24,7 @@ public class ServerMagazineGround2BoxRequest extends ServerGround2BoxRequest {
         if (element != null && element instanceof Magazine) {
             Magazine magazine = (Magazine) element;
             to.getMagazines().add(magazine);
-            cell.setElement(null);
+            cell.removeElement(magazine);
         } else {
             throw new RuntimeException();
         }

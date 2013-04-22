@@ -24,7 +24,7 @@ public class ServerTackleGround2BagRequest extends ServerGround2WarriorRequest {
         if (element instanceof StateTackle) {
             boolean result = WarriorHelper.putInToBag(warrior, (StateTackle) element, baseConfiguration);
             if (result) {
-                cell.setElement(null);
+                cell.removeElement(element);
             }
             return result;
         } else {

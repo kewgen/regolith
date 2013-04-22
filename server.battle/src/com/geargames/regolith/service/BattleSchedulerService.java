@@ -43,7 +43,7 @@ public class BattleSchedulerService {
     }
 
     public void add(final List<MessageToClient> messages) {
-        logger.debug("add rough messages to writer ( size {} ) " + messages.size());
+        logger.debug("add rough messages to writer size {} ", messages.size());
         scheduler.execute(new Runnable() {
             @Override
             public void run() {
