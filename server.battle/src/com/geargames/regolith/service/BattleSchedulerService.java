@@ -20,7 +20,6 @@ import java.util.concurrent.*;
 public class BattleSchedulerService {
     private Logger logger = LoggerFactory.getLogger(BattleSchedulerService.class);
     private ScheduledExecutorService scheduler;
-    private int actionTime;
     private int beginDelay;
     private ClientWriter writer;
 
@@ -30,7 +29,6 @@ public class BattleSchedulerService {
     public void start() {
         BattleServiceConfiguration battleServiceConfiguration = BattleServiceConfigurationFactory.getConfiguration();
         scheduler = Executors.newScheduledThreadPool(1);
-        actionTime = battleServiceConfiguration.getActionTime();
         beginDelay = battleServiceConfiguration.getBeginDelay();
         writer = battleServiceConfiguration.getWriter();
     }
@@ -45,6 +43,7 @@ public class BattleSchedulerService {
     }
 
     public void add(final List<MessageToClient> messages) {
+        logger.debug("add rough messages to writer ( size {} ) " + messages.size());
         scheduler.execute(new Runnable() {
             @Override
             public void run() {
@@ -65,7 +64,7 @@ public class BattleSchedulerService {
                     @Override
                     public void run() {
                         if (Thread.currentThread().isInterrupted()) {
-                            logger.debug("Could not add a battle(the service has been interrupted)" + serverBattle.getBattle().getName());
+                            logger.debug("Could not run a battle cycle(the service has been interrupted)" + serverBattle.getBattle().getName());
                             return;
                         }
                         int index = serverBattle.getActive();

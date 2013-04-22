@@ -26,7 +26,7 @@ public class ClientBattleServiceManager {
     public ClientDeSerializedMessage login(Battle battle, BattleAlliance alliance) throws Exception{
         configuration.getNetwork().sendSynchronousMessage(
                 new ClientBattleServiceLoginRequest(configuration, battle, alliance, configuration.getAccount()),
-                clientListenToBattleAnswer,100);
+                clientListenToBattleAnswer,30000);
         return clientListenToBattleAnswer;
     }
 

@@ -77,7 +77,7 @@ public class Box extends CellElement {
 
     @Override
     public byte getLayer() {
-        return CellElementLayers.DINAMIC;
+        return CellElementLayers.DYNAMIC;
     }
 
 }

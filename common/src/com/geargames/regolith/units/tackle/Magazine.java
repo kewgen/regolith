@@ -61,7 +61,7 @@ public class Magazine extends CellElement {
 
     @Override
     public byte getLayer() {
-        return CellElementLayers.DINAMIC;
+        return CellElementLayers.TACKLE;
     }
 
 }

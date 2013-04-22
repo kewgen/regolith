@@ -20,6 +20,7 @@ import com.geargames.regolith.units.battle.ServerBattle;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -57,6 +58,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
                 String name = SimpleDeserializer.deserializeString(from);
                 String password = SimpleDeserializer.deserializeString(from);
                 if (account.getName().equals(name) && account.getPassword().equals(password)) {
+                    client.setAccount(account);
                     Battle battle = serverBattle.getBattle();
                     BattleAlliance alliance = BattleHelper.findAllianceById(battle, allianceId);
                     serverBattle.getAlliances().get(alliance.getNumber()).add((BattleClient) client);
@@ -71,7 +73,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
                     messages.add(new BattleMessageToClient(recipient, message.serialize()));
                     client.setState(new ClientActivationAwaiting());
                     SecurityOperationManager securityOperationManager = new SecurityOperationManager();
-                    client.getAccount().setSecurity(securityOperationManager);
+                    account.setSecurity(securityOperationManager);
                     securityOperationManager.setAccount(client.getAccount());
                     message = new BattleServiceNewClientLogin(to, battle, battleGroup);
                     messages.add(new BattleMessageToClient(recipients, message.serialize()));
@@ -79,7 +81,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
                     if (serverBattle.getClients().size() == serverBattle.getGroups().size()) {
                         configuration.getBattleSchedulerService().add(messages);
                         configuration.getBattleSchedulerService().add(serverBattle);
-                        messages.clear();
+                        return new ArrayList<MessageToClient>();
                     }
                 } else {
                     List<SocketChannel> recipient = new ArrayList<SocketChannel>(1);
