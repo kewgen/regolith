@@ -10,7 +10,6 @@ public class RunMainService {
 
     public static void main(String[] args) throws Exception {
         MainServiceManager.runMainService();
-        System.out.println("Main service was started");
     }
 
 }

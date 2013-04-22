@@ -232,6 +232,7 @@
             <fileset dir="${server.dir}/src">
                 <patternset>
                     <include name="**/*.xml"/>
+                    <include name="**/*.properties"/>
                 </patternset>
             </fileset>
         </copy>

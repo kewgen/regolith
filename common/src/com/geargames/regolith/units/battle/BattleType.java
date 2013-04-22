@@ -13,8 +13,17 @@ public class BattleType extends Entity {
     private int allianceAmount;
     private int allianceSize;
     private int groupSize;
+    private int turnTime;
 
     public BattleType() {
+    }
+
+    public int getTurnTime() {
+        return turnTime;
+    }
+
+    public void setTurnTime(int turnTime) {
+        this.turnTime = turnTime;
     }
 
     /**

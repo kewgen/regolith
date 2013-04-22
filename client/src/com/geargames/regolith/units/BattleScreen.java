@@ -20,6 +20,7 @@ import com.geargames.regolith.application.Event;
 import com.geargames.regolith.Graph;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.network.RegolithMessageDispatcher;
 import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
@@ -601,6 +602,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             ClientBattleHelper.route(user.getUnit().getWarrior(), battleConfiguration);
             timerId = TimerManager.setPeriodicTimer(100, this);
 
+            ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
             setNetColor(255);
         }
     }
@@ -608,5 +610,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     @Override
     public void onHide() {
         TimerManager.killTimer(timerId);
+        ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
     }
 }

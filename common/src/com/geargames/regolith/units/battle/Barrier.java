@@ -74,7 +74,7 @@ public abstract class Barrier extends CellElement {
 
     @Override
     public byte getLayer() {
-        return CellElementLayers.DINAMIC;
+        return CellElementLayers.DYNAMIC;
     }
 
 }

@@ -428,6 +428,7 @@ public class ServerDBTest {
         battleType1x1.setAllianceAmount((short)2);
         battleType1x1.setAllianceSize((short)1);
         battleType1x1.setGroupSize((short)1);
+        battleType1x1.setTurnTime((short)30);
         battleTypes.add(battleType1x1);
 
         BattleType battleType1x1x1 = new TrainingBattle();
@@ -436,6 +437,7 @@ public class ServerDBTest {
         battleType1x1x1.setAllianceAmount((short)3);
         battleType1x1x1.setAllianceSize((short)1);
         battleType1x1x1.setGroupSize((short)1);
+        battleType1x1x1.setTurnTime((short)30);
         battleTypes.add(battleType1x1x1);
 
         BattleType battleType1x1x1x1 = new TrainingBattle();
@@ -444,6 +446,7 @@ public class ServerDBTest {
         battleType1x1x1x1.setAllianceAmount((short)4);
         battleType1x1x1x1.setAllianceSize((short)1);
         battleType1x1x1x1.setGroupSize((short)1);
+        battleType1x1x1x1.setTurnTime((short)30);
         battleTypes.add(battleType1x1x1x1);
 
         BattleType battleType2x2 = new TrainingBattle();
@@ -452,6 +455,7 @@ public class ServerDBTest {
         battleType2x2.setAllianceAmount((short)2);
         battleType2x2.setAllianceSize((short)2);
         battleType2x2.setGroupSize((short)1);
+        battleType2x2.setTurnTime((short)30);
         battleTypes.add(battleType2x2);
 
         BattleType battleType1x1_2 = new TrainingBattle();
@@ -460,6 +464,7 @@ public class ServerDBTest {
         battleType1x1_2.setAllianceAmount((short)2);
         battleType1x1_2.setAllianceSize((short)1);
         battleType1x1_2.setGroupSize((short)2);
+        battleType1x1_2.setTurnTime((short)30);
         battleTypes.add(battleType1x1_2);
 
         baseConfiguration.setBattleTypes(battleTypes);

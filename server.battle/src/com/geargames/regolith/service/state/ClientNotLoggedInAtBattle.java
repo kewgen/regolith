@@ -4,6 +4,7 @@ import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.requests.BattleServiceLoginRequest;
+import com.geargames.regolith.serializers.requests.ServerBattleServiceLogoutRequest;
 import com.geargames.regolith.serializers.requests.ServerRequest;
 import com.geargames.regolith.service.*;
 
@@ -24,8 +25,11 @@ public class ClientNotLoggedInAtBattle extends BattleState {
             case Packets.BATTLE_SERVICE_LOGIN:
                 request = new BattleServiceLoginRequest();
                 break;
+            case Packets.LOGOUT:
+                request = new ServerBattleServiceLogoutRequest();
+                break;
             default:
-                throw new RuntimeException();
+                throw new RuntimeException("An unidentified message type " + type);
         }
         List<MessageToClient> messages = request.request(from, getWriteBuffer(), client);
         for (MessageToClient message : messages) {
