@@ -43,14 +43,14 @@ public abstract class BattleCell implements Serializable {
     }
 
     /**
-     * Добавить элемент в ячейку.
+     * Добавить элемент в ячейку в соответствующий слой.
      *
      * @param element
      */
     public void addElement(CellElement element) {
-        int capacity = elements.length;
         int insertIndex = 0;
         if (size > 0) {
+            int capacity = elements.length;
             if (size == capacity) {
                 CellElement[] oldElements = elements;
                 elements = new CellElement[capacity + 2];
@@ -59,13 +59,12 @@ public abstract class BattleCell implements Serializable {
                 }
             }
             for (int i = size - 1; i >= 0; i--) {
-                if (elements[i].getLayer() <= element.getLayer()) {
+                if (elements[i].getLayer() > element.getLayer()) {
+                    elements[i + 1] = elements[i];
+                } else {
                     insertIndex = i + 1;
                     break;
                 }
-            }
-            for (int i = size - 1; i >= insertIndex; i--) {
-                elements[i + 1] = elements[i];
             }
         }
         elements[insertIndex] = element;
