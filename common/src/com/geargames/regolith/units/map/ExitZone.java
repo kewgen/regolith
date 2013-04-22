@@ -29,6 +29,11 @@ public class ExitZone extends Entity {
         this.y = y;
     }
 
+    /**
+     * Получить радиус зоны высадки/посадки по горизонтали. Значение 1, например, означает, что зона высадки/посадки
+     * будет шириной 3 клетки, т.е. центр зоны + по одной клетке влево и вправо.
+     * @return
+     */
     public byte getxRadius() {
         return xRadius;
     }
@@ -37,6 +42,11 @@ public class ExitZone extends Entity {
         this.xRadius = xRadius;
     }
 
+    /**
+     * Получить радиус зоны высадки/посадки по вертикали. Значение 1, например, означает, что зона высадки/посадки
+     * будет высотой 3 клетки, т.е. центр зоны + по одной клетке вверх и вниз.
+     * @return
+     */
     public byte getyRadius() {
         return yRadius;
     }
@@ -46,7 +56,7 @@ public class ExitZone extends Entity {
     }
 
     public boolean isWithIn(int xx, int yy){
-        return x - xRadius <= xx && y - yRadius <= yy && xx <= x + xRadius && yy <= y + yRadius;
+        return x - xRadius <= xx && xx <= x + xRadius && y - yRadius <= yy && yy <= y + yRadius;
     }
 
     @Override
