@@ -83,8 +83,7 @@ public class PCampButton extends PTouchButton {
             Barrier fenceBarrier1l = baseConfiguration.getBarriers().get(4);
             Barrier fenceBarrier1r = baseConfiguration.getBarriers().get(5);
 
-            battleMap.getCells()[2][0].addElement(barBarrier0);
-            battleMap.getCells()[2][1].addElement(barBarrier0);
+            battleMap.getCells()[3][0].addElement(barBarrier0);
             battleMap.getCells()[3][1].addElement(fenceBarrier1l);
             battleMap.getCells()[4][1].addElement(fenceBarrier1r);
             battleMap.getCells()[5][1].addElement(fenceBarrier1l);
@@ -105,7 +104,6 @@ public class PCampButton extends PTouchButton {
             battleMap.getCells()[8][5].addElement(fenceBarrier0r);
             battleMap.getCells()[8][6].addElement(fenceBarrier0l);
 
-            battleMap.getCells()[0][2].addElement(barBarrier1);
             battleMap.getCells()[0][3].addElement(fenceBarrier1l);
             battleMap.getCells()[1][3].addElement(fenceBarrier1r);
             battleMap.getCells()[2][3].addElement(barBarrier0);
