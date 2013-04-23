@@ -309,8 +309,12 @@ public class PRegolithPanelManager extends PPanelManager {
         return left;
     }
 
-    public DefaultDrawablePPanel getHeadline() {
+    public DefaultDrawablePPanel getHeadlineWindow() {
         return headline;
+    }
+
+    public PHeadlinePanel getHeadlinePanel() {
+        return (PHeadlinePanel) headline.getElement();
     }
 
     public DefaultDrawablePPanel getRight() {
