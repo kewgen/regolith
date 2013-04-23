@@ -543,6 +543,7 @@ public class ServerDBTest {
         fees.setSitOrStand((byte)1);
 
         battleConfiguration.setActionFees(fees);
+        battleConfiguration.setWalkSpeed(4);
 
         Warrior[] baseWarriors = new Warrior[2];
 

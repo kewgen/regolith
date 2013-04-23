@@ -36,6 +36,8 @@ public class Step {
 
     public Step() {
         initiated = false;
+        BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
+        speed = battleConfiguration.getWalkSpeed();
     }
 
     /**
@@ -49,7 +51,6 @@ public class Step {
         beginMapX = battleUnit.getMapX();
         beginMapY = battleUnit.getMapY();
         warrior = battleUnit.getUnit().getWarrior();
-        speed = warrior.getSpeed();
         shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
         shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
         battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();

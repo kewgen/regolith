@@ -85,6 +85,8 @@ public class BattleSerializer {
                 SimpleSerializer.serialize(SimpleSerializer.YES, buffer);
                 for (Warrior mine : ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors()) {
                     SerializeHelper.serializeEntityReference(mine, buffer);
+                    SimpleSerializer.serialize(mine.getNumber(), buffer);
+                    SimpleSerializer.serialize(mine.getDirection().getNumber(), buffer);
                 }
             }
         }

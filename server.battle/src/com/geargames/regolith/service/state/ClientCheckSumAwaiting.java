@@ -7,6 +7,7 @@ import com.geargames.regolith.serializers.requests.ServerCheckSumRequest;
 import com.geargames.regolith.serializers.requests.ServerRequest;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.service.Client;
+import com.geargames.regolith.service.MessageToClient;
 
 /**
  * User: mikhail v. kutuzov
@@ -24,7 +25,8 @@ public class ClientCheckSumAwaiting extends BattleState {
             default:
                 throw new RegolithException();
         }
-        BattleServiceConfigurationFactory.getConfiguration().getWriter().addMessageToClient(request.request(from, getWriteBuffer(), client).get(0));
-        client.setState(new ClientActivationAwaiting());
+        for(MessageToClient message : request.request(from, getWriteBuffer(), client)){
+            BattleServiceConfigurationFactory.getConfiguration().getWriter().addMessageToClient(message);
+        }
     }
 }

@@ -92,10 +92,14 @@ public class BattleDeserializer {
                 int mineLength = mineWarriors.size();
                 for (int j = 0; j < battle.getBattleType().getGroupSize(); j++) {
                     int warriorId = SimpleDeserializer.deserializeInt(buffer);
+                    short number = SimpleDeserializer.deserializeShort(buffer);
+                    int direction = SimpleDeserializer.deserializeInt(buffer);
                     Warrior warrior = null;
                     for (int k = 0; k < mineLength; k++) {
                         if (mineWarriors.get(k).getId() == warriorId) {
                             warrior = mineWarriors.get(k);
+                            warrior.setNumber(number);
+                            warrior.setDirection(Direction.getByNumber(direction));
                             break;
                         }
                     }

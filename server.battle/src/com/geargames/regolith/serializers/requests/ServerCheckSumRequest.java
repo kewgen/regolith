@@ -24,7 +24,6 @@ public class ServerCheckSumRequest extends ServerRequest {
     public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException {
         List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
         if (SimpleDeserializer.deserializeInt(from) != client.getAccount().getSecurity().getObserve()) {
-
             ServerBattle serverBattle = ((BattleClient) client).getServerBattle();
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
                     new BattleClientIsCheating(to, client.getAccount()).serialize()));

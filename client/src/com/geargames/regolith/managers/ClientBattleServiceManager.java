@@ -24,7 +24,7 @@ public class ClientBattleServiceManager {
         this.configuration = configuration;
         clientListenToBattleAnswer = new ClientListenToBattleAnswer();
         checkSumRequest = new ClientCheckSumRequest();
-        checkSumRequest.setAccount(configuration.getAccount());
+        checkSumRequest.setConfiguration(configuration);
     }
 
     public ClientDeSerializedMessage login(Battle battle, BattleAlliance alliance) throws Exception {
@@ -48,6 +48,7 @@ public class ClientBattleServiceManager {
      * Посылаем проверочную сумму в конце каждого хода.
      */
     public void checkSum() {
+        checkSumRequest.setAccount(configuration.getAccount());
         configuration.getAccount().getSecurity().setObserve(0);
         configuration.getNetwork().sendMessage(checkSumRequest);
     }
