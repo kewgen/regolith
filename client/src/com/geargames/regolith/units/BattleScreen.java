@@ -122,7 +122,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             }
         }
         if (path) {
-            Environment.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x, y);
+            Environment.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x - 29/*width*/, y - 20/*height*/);
         }
     }
 
@@ -329,7 +329,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     /**
-     * Разрешить двинуть бойца warrior принадлежащего союзуснику в точку x;y
+     * Разрешить двинуть бойца warrior принадлежащего союзнику в точку (x;y)
      *
      * @param warrior
      * @param x
@@ -341,7 +341,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     /**
-     * Разрешить двинуть бойца warrior пренадлежащего врагу в точку x;y
+     * Разрешить двинуть бойца warrior принадлежащего врагу в точку (x;y)
      *
      * @param warrior
      * @param x

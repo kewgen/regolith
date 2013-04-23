@@ -14,6 +14,9 @@ public class ActionFees implements Serializable {
     private byte pickupTackle;
     private byte rechargeWeapon;
 
+    /**
+     * Получить число ОД необходимых для перемещения на одну клетку карты.
+     */
     public byte getMove() {
         return move;
     }
@@ -22,6 +25,9 @@ public class ActionFees implements Serializable {
         this.move = move;
     }
 
+    /**
+     * Получить число ОД необходимых для того, чтобы боец мог присесть или встать.
+     */
     public byte getSitOrStand() {
         return sitOrStand;
     }
@@ -30,6 +36,9 @@ public class ActionFees implements Serializable {
         this.sitOrStand = sitOrStand;
     }
 
+    /**
+     * Получить число ОД необходимых для открытия или закрытия двери.
+     */
     public byte getShutOrOpen() {
         return shutOrOpen;
     }
@@ -38,6 +47,9 @@ public class ActionFees implements Serializable {
         this.shutOrOpen = shutOrOpen;
     }
 
+    /**
+     * Получить число ОД необходимых для смены оружия.
+     */
     public byte getChangeWeapon() {
         return changeWeapon;
     }
@@ -46,6 +58,9 @@ public class ActionFees implements Serializable {
         this.changeWeapon = changeWeapon;
     }
 
+    /**
+     * Получить число ОД необходимых для поднятия бойцом одного (???) предмета с земли.
+     */
     public byte getPickupTackle() {
         return pickupTackle;
     }
@@ -54,6 +69,9 @@ public class ActionFees implements Serializable {
         this.pickupTackle = pickupTackle;
     }
 
+    /**
+     * Получить число ОД необходимых для перезарядки оружия.
+     */
     public byte getRechargeWeapon() {
         return rechargeWeapon;
     }
@@ -61,4 +79,5 @@ public class ActionFees implements Serializable {
     public void setRechargeWeapon(byte rechargeWeapon) {
         this.rechargeWeapon = rechargeWeapon;
     }
+
 }

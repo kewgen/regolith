@@ -133,7 +133,7 @@ public class BattleMapHelper {
     }
 
     /**
-     * Является ли ячейка cell частью кратчайшего пути бойца warrior.
+     * Является ли ячейка cell частью кротчайшего пути бойца warrior.
      *
      * @param warrior
      * @param cell

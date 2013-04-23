@@ -18,7 +18,7 @@ public class WeaponType extends Tackle {
     private byte accuracy;
     private short capacity;
     private byte ammunitionPerShoot;
-    private byte quickAction;
+    private byte quickAction; //todo: quickAction -> hastilyAction
     private byte accurateAction;
     private short criticalDamage;
     private short baseFirmness;

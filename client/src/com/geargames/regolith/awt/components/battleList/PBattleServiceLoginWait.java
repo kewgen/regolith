@@ -57,6 +57,8 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
             manager.show(manager.getBattleMenuWindow());
             manager.show(manager.getBattleSelectWarriorWindow());
             manager.show(manager.getBattleWeaponMenuWindow());
+            manager.show(manager.getBattleWarriorMenuWindow());
+            manager.show(manager.getBattleShotMenuWindow());
         } else {
             NotificationBox.error(LocalizedStrings.COULD_NOT_LOGIN_TO_BATTLE, this);
         }

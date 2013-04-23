@@ -61,7 +61,7 @@ public class PHeadlinePanel extends PRootContentPanel implements TimerListener {
     }
 
     public void changeLabel() {
-        long remainingTime = (Environment.currentTimeMillis() - expirationTime) / 1000;
+        long remainingTime = (expirationTime - Environment.currentTimeMillis()) / 1000;
         if (remainingTime < 0 ) {
             remainingTime = 0;
         }

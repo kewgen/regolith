@@ -1,5 +1,5 @@
 //../regolith/_port/packer_320_480_full
-//Wed Apr 17 12:42:14 GMT+04:00 2013 , version: 108
+//Tue Apr 23 18:38:13 GMT+04:00 2013 , version: 108
 
 package com.geargames.regolith;
 
@@ -246,9 +246,9 @@ public class Graph {
     final static public byte UN_MAN_SHOT_RIFLE_2 = 17;
     final static public byte UN_MAN_SHOT_RIFLE_3 = 18;
     final static public byte UN_MAN_SHOT_RIFLE_4 = 19;
-    final static public byte UN_MAN_SHOT_RIFLE_6 = 20;
-    final static public byte UN_MAN_SHOT_RIFLE_7 = 21;
-    final static public byte UN_MAN_SHOT_RIFLE_5 = 22;
+    final static public byte UN_MAN_SHOT_RIFLE_5 = 20;
+    final static public byte UN_MAN_SHOT_RIFLE_6 = 21;
+    final static public byte UN_MAN_SHOT_RIFLE_7 = 22;
     final static public byte UN_MAN_SHOT_RIFLE_8 = 23;
     final static public byte UN_MAN_DOWN_RIFLE_1 = 24;
     final static public byte UN_MAN_DOWN_RIFLE_2 = 25;

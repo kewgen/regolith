@@ -9,15 +9,15 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
  * Date: 17.04.13
  * Кнопка, при нажатии на которую, боец делает прицельный выстрел.
  */
-public class PAimedShotButton extends PTouchButton {
+public class PAccurateShotButton extends PTouchButton {
 
-    public PAimedShotButton(PObject prototype) {
+    public PAccurateShotButton(PObject prototype) {
         super(prototype);
     }
 
     @Override
     public void onClick() {
-        PRegolithPanelManager.getInstance().getBattleShotMenuPanel().onAimedShotButtonClick();
+        PRegolithPanelManager.getInstance().getBattleShotMenuPanel().onAccurateShotButtonClick();
     }
 
 }
