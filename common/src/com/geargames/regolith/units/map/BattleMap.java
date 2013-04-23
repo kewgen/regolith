@@ -6,7 +6,11 @@ import com.geargames.regolith.units.battle.BattleType;
 /**
  * User: mkutuzov
  * Date: 14.02.12
- * Игровая карта.
+ * Игровая карта в 2d изометрии (псевдо 3d).
+ *
+ *         /\
+ *      X /  \ Y
+ *       /    \
  */
 public class BattleMap extends Entity {
     private String name;
