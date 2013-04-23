@@ -13,6 +13,7 @@ import com.geargames.common.util.Mathematics;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.*;
 import com.geargames.regolith.application.Event;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
@@ -81,12 +82,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private Pair center;
     private ClientConfiguration configuration;
 
+    private short[] listenedTypes;
     private int timerId;
 
     public BattleScreen() {
         steps = new Vector();
-        timerId = -1;
+        timerId = TimerManager.NULL_TIMER;
         configuration = ClientConfigurationFactory.getConfiguration();
+        listenedTypes = new short[]{Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE};
     }
 
     public void draw(Graphics graphics) {
@@ -254,7 +257,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                                 ClientBattleHelper.trace(user.getUnit().getWarrior(), cell.getX(), cell.getY());
                                 Debug.debug("trace for a user " + warrior.getNumber());
                             } else {
-                                Debug.debug("point " + cell.getX() + ":" + cell.getY() + "is not reachable");
+                                Debug.debug("point " + cell.getX() + ":" + cell.getY() + " is not reachable");
                             }
                             Debug.debug("is warrior " + warrior.getName() + " moving? = " + warrior.isMoving());
                         }
@@ -289,7 +292,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     @Override
     public short[] getTypes() {
-        return new short[]{Packets.MOVE_WARRIOR, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE};
+        return listenedTypes;
     }
 
     @Override
@@ -306,12 +309,11 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                     Debug.debug("MY TURN");
                     ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
                 }
-
+                onChangeActiveAlliance(change.getAlliance());
                 break;
             case Packets.MOVE_WARRIOR:
                 break;
         }
-
     }
 
     private Step getStep(BattleUnit unit) {
@@ -361,7 +363,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public void moveEnemy(Warrior warrior, short[] x, short[] y) {
 
     }
-
 
     /**
      * Покрывает ли наш экран эту точку карты?
@@ -637,4 +638,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         TimerManager.killTimer(timerId);
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
     }
+
+    /**
+     * Обработчик события об изменении активного военного союза, того чей, в данный момент, ход.
+     */
+    // onTurnChanged
+    public void onChangeActiveAlliance(BattleAlliance alliance) {
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.getHeadlinePanel().setActiveAlliance(alliance);
+    }
+
 }

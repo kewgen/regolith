@@ -894,14 +894,14 @@ public class ServerDBTest {
         ExitZone exit = new ExitZone();
         exit.setX((short) 1);
         exit.setY((short) 1);
-        exit.setxRadius((byte) 2);
-        exit.setyRadius((byte) 2);
+        exit.setxRadius((byte) 1);
+        exit.setyRadius((byte) 1);
         exits[0] = exit;
         exit = new ExitZone();
         exit.setX((short) 8);
         exit.setY((short) 8);
-        exit.setxRadius((byte) 2);
-        exit.setyRadius((byte) 2);
+        exit.setxRadius((byte) 1);
+        exit.setyRadius((byte) 1);
         exits[1] = exit;
 
         map1.setExits(exits);

@@ -1,7 +1,6 @@
 package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
@@ -20,23 +19,38 @@ import java.util.*;
  * Date: 07.03.12
  */
 public class BattleHelper {
+
     public static void putAllianceOnMap(BattleAlliance alliance, ExitZone exit) {
         BattleGroupCollection groups = alliance.getAllies();
-        int xAmount = (exit.getxRadius() << 1) + 1;
-        int yAmount = (exit.getyRadius() << 1) + 1;
-        int yBegin = exit.getY() - exit.getyRadius();
+        int xAmount = (exit.getxRadius() * 2) + 1;
+        int yAmount = (exit.getyRadius() * 2) + 1;
         int xBegin = exit.getX() - exit.getxRadius();
+        int yBegin = exit.getY() - exit.getyRadius();
+        if (xBegin < 0) {
+            xBegin = 0;
+        }
+        if (yBegin < 0) {
+            yBegin = 0;
+        }
+        BattleMap battleMap = groups.get(0).getAlliance().getBattle().getMap();
+        int mapWidth = battleMap.getCells()[0].length;
+        int mapHeight = battleMap.getCells().length;
+        if (xBegin + xAmount > mapWidth) {
+            xAmount = mapWidth - xBegin;
+        }
+        if (yBegin + yAmount > mapHeight) {
+            yAmount = mapHeight - yBegin;
+        }
         int cellsPerWarrior = (xAmount * yAmount) / (groups.size() * groups.get(0).getWarriors().size());
         if (cellsPerWarrior < 1) {
             throw new IllegalArgumentException("There is no enough free space for warriors to be spread.");
         }
         int n = 0;
-        BattleMap battleMap = groups.get(0).getAlliance().getBattle().getMap();
         for (int j = 0; j < groups.size(); j++) {
             BattleGroup group = groups.get(j);
             for (int i = 0; i < group.getWarriors().size(); i++) {
                 Warrior warrior = group.getWarriors().get(i);
-                int y = yBegin + n / xAmount;
+                int y = yBegin + n / yAmount;
                 int x = xBegin + (n % xAmount > 1 ? (n % xAmount - 1) : 0);
                 WarriorHelper.putWarriorIntoMap(warrior, battleMap, x, y);
                 warrior.setDirection(Direction.UP_DOWN);
