@@ -789,8 +789,33 @@ public class WarriorHelper {
      * @param human
      * @return
      */
-    public static boolean isDeadHuman(Human human) {
+    public static boolean isDead(Human human) {
         return human.getHealth() <= 0;
     }
+
+    public static boolean maySit(Warrior warrior, BattleConfiguration battleConfiguration){
+        if(!warrior.isSitting()){
+            return warrior.getActionScore() >= battleConfiguration.getActionFees().getSitOrStand();
+        }
+        return false;
+    }
+
+    public static boolean mayStand(Warrior warrior, BattleConfiguration battleConfiguration){
+        if(warrior.isSitting()){
+            return warrior.getActionScore() >= battleConfiguration.getActionFees().getSitOrStand();
+        }
+        return false;
+    }
+
+    public static void stand(Warrior warrior, BattleConfiguration battleConfiguration){
+        warrior.setSitting(false);
+        warrior.setActionScore((short)(warrior.getActionScore() - battleConfiguration.getActionFees().getSitOrStand()));
+    }
+
+    public static void sit(Warrior warrior, BattleConfiguration battleConfiguration){
+        warrior.setSitting(true);
+        warrior.setActionScore((short)(warrior.getActionScore() - battleConfiguration.getActionFees().getSitOrStand()));
+    }
+
 
 }
