@@ -28,7 +28,7 @@ public class ServerMoveWarriorAllyAnswer extends SerializedMessage {
 
     @Override
     public short getType() {
-        return Packets.MOVE_ALLY;
+        return Packets.MOVE_WARRIOR;
     }
 
     @Override

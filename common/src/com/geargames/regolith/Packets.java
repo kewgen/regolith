@@ -70,10 +70,11 @@ public interface Packets {
 
     short SHOOT = 49;
 
-    short MOVE_ALLY = 50;
+    short MOVE_WARRIOR = 50;
 
     short MOVE_ENEMY = 51;
 
+    short MOVE_ALLY = 52;
 
 
 

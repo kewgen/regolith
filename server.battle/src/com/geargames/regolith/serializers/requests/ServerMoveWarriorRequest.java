@@ -42,8 +42,13 @@ public class ServerMoveWarriorRequest extends ServerRequest {
         int warriorId = SimpleDeserializer.deserializeInt(from);
 
         BattleGroup warriorGroup = BattleServiceRequestUtils.getBattleGroupFromServerBattle(serverBattle, warriorAllianceNumber, warriorGroupId);
-        Warrior warrior = BattleServiceRequestUtils.getWarriorFromGroup(warriorGroup, warriorId);
+        if(warriorGroup != null){
 
+        }
+        Warrior warrior = BattleServiceRequestUtils.getWarriorFromGroup(warriorGroup, warriorId);
+        if(warrior != null){
+
+        }
         int x = SimpleDeserializer.deserializeShort(from);
         int y = SimpleDeserializer.deserializeShort(from);
         BattleMapHelper.clearRoutes(warrior, warrior.getX(), warrior.getY());
@@ -52,6 +57,7 @@ public class ServerMoveWarriorRequest extends ServerRequest {
 
         final BattleAlliance warriorAlliance = warrior.getBattleGroup().getAlliance();
         final Battle battle = serverBattle.getBattle();
+        final BattleCell[][] cells = battle.getMap().getCells();
 
         for (BattleAlliance alliance : alliancesTraces.keySet()) {
             if (alliance != warriorAlliance) {
@@ -64,8 +70,6 @@ public class ServerMoveWarriorRequest extends ServerRequest {
             public void onStep(Warrior warrior, int x, int y) {
                 int nx = warrior.getX() + x;
                 int ny = warrior.getY() + y;
-                BattleMap map = battle.getMap();
-                BattleCell[][] cells = map.getCells();
                 for (BattleAlliance alliance : battle.getAlliances()) {
                     if (alliance != warriorAlliance) {
                         Pair pair;

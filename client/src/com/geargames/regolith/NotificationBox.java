@@ -33,4 +33,8 @@ public class NotificationBox {
         message(text, element/*, x, y*/);
     }
 
+    public static void error(String text){
+        message(text);
+    }
+
 }

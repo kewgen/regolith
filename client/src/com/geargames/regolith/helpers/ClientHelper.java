@@ -25,7 +25,6 @@ import java.util.Vector;
  * Реализация хелпера основана на том, что все действия происходят из одного потока.
  */
 public class ClientHelper {
-    private static ClientChangeActiveAllianceAnswer changeActiveAllianceAnswer = new ClientChangeActiveAllianceAnswer();
     private static ClientWeaponCategoryCollection categories = new ClientWeaponCategoryCollection(6);
 
     public static StoreHouse createStoreHouse(BaseConfiguration baseConfiguration){
@@ -51,23 +50,6 @@ public class ClientHelper {
         bag.setReserve(packets);
         bag.setWeight(0);
         return bag;
-    }
-
-
-    /**
-     * Сейчас наша очередь ходить?
-     *
-     * @param network  сеть, в которой происходит игра
-     * @param alliance наш военный союз
-     * @param active   признак нашей активности после предыдущей проверки
-     * @return
-     */
-    public static boolean isOurTurn(Network network, BattleAlliance alliance, boolean active) throws Exception {
-        if (network.getAsynchronousAnswer(changeActiveAllianceAnswer, Packets.CHANGE_ACTIVE_ALLIANCE)) {
-            return changeActiveAllianceAnswer.getAlliance() == alliance;
-        } else {
-            return active;
-        }
     }
 
 

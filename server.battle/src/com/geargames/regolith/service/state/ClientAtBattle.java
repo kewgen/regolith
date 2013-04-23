@@ -32,7 +32,7 @@ public class ClientAtBattle extends BattleState {
             case Packets.EXIT_BATTLE:
 
                 break;
-            case Packets.MOVE_ALLY:
+            case Packets.MOVE_WARRIOR:
                 request = new ServerMoveWarriorRequest(serverBattle);
                 break;
             case Packets.SHOOT:

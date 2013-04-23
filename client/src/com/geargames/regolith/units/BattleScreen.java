@@ -16,7 +16,9 @@ import com.geargames.regolith.application.Event;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
+import com.geargames.regolith.serializers.answers.ClientMoveMyWarriorAnswer;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.map.Pair;
@@ -269,7 +271,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                         Pair cell = cellFinder.find(x + mapX, y + mapY, this);
                         Debug.debug("a cell to go " + cell.getX() + ":" + cell.getY() + " action scores " + user.getUnit().getWarrior().getActionScore());
                         if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getUnit().getWarrior())) {
-                            //ClientBattleHelper.move(this, cell.getX(), cell.getY());
                             System.out.println("move an user " + user.getUnit().getWarrior().getNumber());
                             moveUser(cell.getX(), cell.getY());
                         } else {
@@ -310,7 +311,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 }
                 onChangeActiveAlliance(change.getAlliance());
                 break;
-            case Packets.MOVE_ALLY:
+            case Packets.MOVE_WARRIOR:
                 break;
         }
     }
@@ -325,7 +326,19 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void moveUser(int x, int y) {
-        getStep(user).init();
+        try {
+            Warrior warrior = user.getUnit().getWarrior();
+            ClientMoveMyWarriorAnswer move = (ClientMoveMyWarriorAnswer) configuration.getBattleServiceManager().move(warrior, (short) x, (short) y);
+            short xx = move.getX();
+            short yy = move.getY();
+            if (xx != x || yy != y) {
+                ClientBattleHelper.trace(warrior, xx, yy);
+            }
+            getStep(user).init();
+        } catch (Exception e) {
+            NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
+            Debug.error(LocalizedStrings.MOVEMENT_RESTRICTION, e);
+        }
     }
 
     /**
