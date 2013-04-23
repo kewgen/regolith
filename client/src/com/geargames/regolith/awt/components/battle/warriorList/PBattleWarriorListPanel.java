@@ -68,7 +68,7 @@ public class PBattleWarriorListPanel extends PRootContentPanel {
         int index = 0;
         for (int i = 0; i < size; i++) {
             BattleUnit battleUnit = (BattleUnit) group.get(i);
-            if (!WarriorHelper.isDeadHuman(battleUnit.getUnit().getWarrior())) {
+            if (!WarriorHelper.isDead(battleUnit.getUnit().getWarrior())) {
                 warriorButtons[index].setWarrior(battleUnit.getUnit().getWarrior());
                 warriorButtons[index].setVisible(true);
                 warriorButtons[index].setChecked(battleUnit == activeUnit);
@@ -89,7 +89,7 @@ public class PBattleWarriorListPanel extends PRootContentPanel {
         int index = 0;
         for (int i = 0; i < group.size(); i++) {
             BattleUnit battleUnit = (BattleUnit) group.get(i);
-            if (!WarriorHelper.isDeadHuman(battleUnit.getUnit().getWarrior())) {
+            if (!WarriorHelper.isDead(battleUnit.getUnit().getWarrior())) {
                 if (battleUnit == activeUnit) {
                     warriorButtons[index].setChecked(true);
                     break;

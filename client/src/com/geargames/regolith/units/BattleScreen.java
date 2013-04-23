@@ -4,8 +4,6 @@ import com.geargames.awt.Screen;
 import com.geargames.common.env.Environment;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.network.DataMessageListener;
-import com.geargames.common.network.Network;
-import com.geargames.common.packer.PFrame;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.timers.TimerListener;
@@ -17,8 +15,9 @@ import com.geargames.regolith.*;
 import com.geargames.regolith.application.Event;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.network.RegolithMessageDispatcher;
+import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
+import com.geargames.regolith.serializers.answers.ClientMoveMyWarriorAnswer;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.map.Pair;
@@ -269,7 +268,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                         Pair cell = cellFinder.find(x + mapX, y + mapY, this);
                         Debug.debug("a cell to go " + cell.getX() + ":" + cell.getY() + " action scores " + user.getUnit().getWarrior().getActionScore());
                         if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getUnit().getWarrior())) {
-                            //ClientBattleHelper.move(this, cell.getX(), cell.getY());
                             System.out.println("move an user " + user.getUnit().getWarrior().getNumber());
                             moveUser(cell.getX(), cell.getY());
                         } else {
@@ -291,7 +289,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     @Override
     public short[] getTypes() {
-        return new short[]{Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE};
+        return new short[]{Packets.MOVE_WARRIOR, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE};
     }
 
     @Override
@@ -306,11 +304,11 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 myTurn = WarriorHelper.isAlly(change.getAlliance(), ClientConfigurationFactory.getConfiguration().getAccount());
                 if (myTurn) {
                     Debug.debug("MY TURN");
-                    ClientBattleHelper.resetActionScores(group,configuration.getBaseConfiguration());
+                    ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
                 }
 
                 break;
-            case Packets.MOVE_ALLY:
+            case Packets.MOVE_WARRIOR:
                 break;
         }
 
@@ -326,7 +324,19 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void moveUser(int x, int y) {
-        getStep(user).init();
+        try {
+            Warrior warrior = user.getUnit().getWarrior();
+            ClientMoveMyWarriorAnswer move = (ClientMoveMyWarriorAnswer) configuration.getBattleServiceManager().move(warrior, (short) x, (short) y);
+            short xx = move.getX();
+            short yy = move.getY();
+            if (xx != x || yy != y) {
+                ClientBattleHelper.trace(warrior, xx, yy);
+            }
+            getStep(user).init();
+        } catch (Exception e) {
+            NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
+            Debug.error(LocalizedStrings.MOVEMENT_RESTRICTION, e);
+        }
     }
 
     /**

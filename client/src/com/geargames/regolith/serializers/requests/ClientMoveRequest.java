@@ -22,7 +22,7 @@ public class ClientMoveRequest extends ClientSerializedMessage {
     }
 
     public short getType() {
-        return Packets.MOVE_ALLY;
+        return Packets.MOVE_WARRIOR;
     }
 
     public void serialize(MicroByteBuffer buffer) {
