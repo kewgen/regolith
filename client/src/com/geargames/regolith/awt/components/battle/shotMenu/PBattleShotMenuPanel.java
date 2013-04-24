@@ -62,7 +62,7 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
         if (panelManager.getBattleScreen().isMyTurn() && WarriorHelper.mayHastilyShot(battleUnit.getUnit().getWarrior())) {
             battleUnit.getUnit().stop(); //todo: Нужно ли?
             battleUnit.getUnit().shoot();
-            WarriorHelper.mayHastilyShot(battleUnit.getUnit().getWarrior());
+            WarriorHelper.doHastilyShot(battleUnit.getUnit().getWarrior());
         }
     }
 

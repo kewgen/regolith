@@ -213,6 +213,7 @@ public class ServerDBTest {
 
         weaponType.setAccuracy((byte) 100);
         weaponType.setAccurateAction((byte) 1);
+        weaponType.setQuickAction((byte) 1);
         weaponType.setAmmunitionPerShoot((byte) 0);
         weaponType.setBaseFirmness((byte) 50);
         weaponType.setFrameId(75);

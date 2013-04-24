@@ -104,6 +104,9 @@ public class WeaponType extends Tackle {
         this.ammunitionPerShoot = ammunitionPerShoot;
     }
 
+    /**
+     * Получить число ОД необходимых для совершения выстрела "наспех".
+     */
     public byte getQuickAction() {
         return quickAction;
     }
@@ -112,6 +115,9 @@ public class WeaponType extends Tackle {
         this.quickAction = quickAction;
     }
 
+    /**
+     * Получить число ОД необходимых для совершения прицельного выстрела.
+     */
     public byte getAccurateAction() {
         return accurateAction;
     }
