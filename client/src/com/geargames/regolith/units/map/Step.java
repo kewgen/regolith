@@ -43,15 +43,18 @@ public abstract class Step {
         speed = battleConfiguration.getWalkSpeed();
         shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
         shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
-        warrior = battleUnit.getUnit().getWarrior();
-        alliance = warrior.getBattleGroup().getAlliance();
-        map = warrior.getBattleGroup().getAlliance().getBattle().getMap();
     }
+
+
 
     /**
      * Дёргаем затевая движение.
      */
     public void init() {
+        warrior = battleUnit.getUnit().getWarrior();
+        alliance = warrior.getBattleGroup().getAlliance();
+        map = warrior.getBattleGroup().getAlliance().getBattle().getMap();
+
         ticks = 0;
         extensionX = 0;
         extensionY = 0;

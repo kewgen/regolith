@@ -16,11 +16,14 @@ public class Sit extends CyclicWarriorState {
             case Actions.STAND_UP:
             case Actions.SIT_AND_DIE:
                 break;
+/*
             case Actions.RUN:
                 LinearWarriorState process = unit.getProcess();
                 process.setAction(Actions.STAND_UP);
                 process.setFinishState(unit.getRun());
                 process.init(unit);
+                return;
+*/
             default:
                 return;
         }
