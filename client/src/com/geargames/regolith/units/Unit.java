@@ -1,6 +1,5 @@
 package com.geargames.regolith.units;
 
-import com.geargames.awt.Eventable;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.states.*;
@@ -9,7 +8,7 @@ import com.geargames.regolith.units.map.states.*;
  * User: m.v.kutuzov
  * Date: 03.04.13
  */
-public class Unit extends Eventable {
+public class Unit {
     private Warrior warrior;
     private AbstractWarriorState state;
 
@@ -111,6 +110,26 @@ public class Unit extends Eventable {
 
     public void setState(AbstractWarriorState state) {
         this.state = state;
+    }
+
+    public Stand getStand() {
+        return stand;
+    }
+
+    public Sit getSit() {
+        return sit;
+    }
+
+    public Run getRun() {
+        return run;
+    }
+
+    public Die getDie() {
+        return die;
+    }
+
+    public LinearWarriorState getProcess() {
+        return process;
     }
 
     /**

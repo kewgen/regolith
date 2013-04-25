@@ -109,8 +109,6 @@ public class SynchronizationTest {
         unit.init();
         battleUnit.setUnit(unit);
         BattleScreen screen = new BattleScreen();
-        screen.setCoordinateFinder(new ReverseProjectionFinder());
-        screen.setCellFinder(new ProjectionFinder());
         screen.setCorrector(new CubeBorderCorrector());
         screen.setMyTurn(true);
         screen.setBattle(battle);

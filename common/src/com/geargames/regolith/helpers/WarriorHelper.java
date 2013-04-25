@@ -77,7 +77,7 @@ public class WarriorHelper {
      * @param warrior
      * @param stepX
      * @param stepY
-     * @return закончим ли ходить
+     * @return засвеченных бойцов противника
      */
     public static AllyCollection step(Warrior warrior, int stepX, int stepY, BattleConfiguration battleConfiguration) {
         BattleAlliance alliance = warrior.getBattleGroup().getAlliance();

@@ -18,7 +18,7 @@ public class ReverseProjectionFinder extends Finder {
     public Pair find(int left, int right, BattleScreen battleScreen) {
         Pair topCenter = battleScreen.getTopCenter();
 
-        double k = BattleScreen.TANGENS;
+        double k = BattleScreen.TANGENT;
         int leftY = topCenter.getY() + BattleScreen.VERTICAL_RADIUS*left;
         int leftX = topCenter.getX() - BattleScreen.HORIZONTAL_RADIUS*left;
         int leftB = leftY - (int)(leftX*k);

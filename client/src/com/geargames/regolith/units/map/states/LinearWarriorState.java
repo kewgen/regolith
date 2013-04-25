@@ -16,12 +16,15 @@ public class LinearWarriorState extends AbstractWarriorState {
         current++;
         if (current >= limit) {
             getFinishState().init(unit);
+            if (getListener() != null) {
+                getListener().onFinish(this, getFinishState());
+            }
         }
     }
 
     @Override
     public PUnit current() {
-        return (PUnit)defaultScript.getIndex(current).getPrototype();
+        return (PUnit) defaultScript.getIndex(current).getPrototype();
     }
 
     public void setFinishState(AbstractWarriorState finishState) {

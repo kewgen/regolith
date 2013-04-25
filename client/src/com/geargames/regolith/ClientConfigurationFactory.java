@@ -6,6 +6,8 @@ import com.geargames.platform.util.JavaLock;
 import com.geargames.regolith.managers.*;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.network.RegolithMessageDispatcher;
+import com.geargames.regolith.units.map.finder.ProjectionFinder;
+import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
 
 /**
  * @author Mikhail_Kutuzov
@@ -46,7 +48,8 @@ public class ClientConfigurationFactory {
         configuration.setBaseManager(new ClientBaseManager(configuration));
         configuration.setBaseWarriorMarketManager(new ClientBaseWarriorMarketManager(configuration));
         configuration.setBattleServiceManager(new ClientBattleServiceManager(configuration));
-
+        configuration.setCellFinder(new ProjectionFinder());
+        configuration.setCoordinateFinder(new ReverseProjectionFinder());
         return configuration;
     }
 

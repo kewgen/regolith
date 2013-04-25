@@ -3,6 +3,7 @@ package com.geargames.regolith.helpers;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BattleConfiguration;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
@@ -56,7 +57,7 @@ public class ClientBattleHelper {
      * @param unit
      */
     public static void initMapXY(BattleScreen screen, BattleUnit unit) {
-        Pair pair = screen.getCoordinateFinder().find(unit.getUnit().getWarrior().getY(), unit.getUnit().getWarrior().getX(), screen);
+        Pair pair = ClientConfigurationFactory.getConfiguration().getCoordinateFinder().find(unit.getUnit().getWarrior().getY(), unit.getUnit().getWarrior().getX(), screen);
         unit.setMapX(pair.getX());
         unit.setMapY(pair.getY());
     }
@@ -186,6 +187,10 @@ public class ClientBattleHelper {
             }
         }
         return battleUnits;
+    }
+
+    public static void position(BattleUnit battleUnit, BattleScreen screen){
+
     }
 
 
@@ -318,7 +323,7 @@ public class ClientBattleHelper {
         throw new RegolithException();
     }
 
-    public static BattleUnit getBattleUnitByWarrior(ArrayList battleUnits, Warrior warrior) {
+    public static BattleUnit findBattleUnitByWarrior(ArrayList battleUnits, Warrior warrior) {
         for (int i = 0; i < battleUnits.size(); i++) {
             BattleUnit battleUnit = ((BattleUnit) battleUnits.get(i));
             if (warrior == battleUnit.getUnit().getWarrior()) {
@@ -326,6 +331,16 @@ public class ClientBattleHelper {
             }
         }
         return null;
+    }
+
+    public static BattleUnit findBattleUnitByWarriorId(ArrayList units, int id) throws Exception {
+        for(int i = 0; i < units.size(); i++){
+            BattleUnit unit = (BattleUnit)units.get(i);
+            if(unit.getUnit().getWarrior().getId() == id){
+                return unit;
+            }
+        }
+        throw new Exception("Battle unit for a warrior id " + id + " was not found.");
     }
 
     /**

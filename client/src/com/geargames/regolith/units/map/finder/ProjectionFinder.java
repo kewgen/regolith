@@ -24,7 +24,7 @@ public class ProjectionFinder extends Finder {
 
     public Pair find(int x, int y, BattleScreen battleScreen) {
         int length = battleScreen.getBattle().getMap().getCells().length;
-        double k = BattleScreen.TANGENS;
+        double k = BattleScreen.TANGENT;
         int b1 = battleScreen.getB1();
         int b4 = battleScreen.getB4();
         int b41 = (int)(y - k*x);

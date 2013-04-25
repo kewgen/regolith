@@ -12,6 +12,9 @@ public abstract class CyclicWarriorState extends AbstractWarriorState {
     public void next(Unit unit) {
         current++;
         current%=limit;
+        if(current == 0 && getListener()!=null){
+            getListener().onFinish(this, this);
+        }
     }
 
     @Override

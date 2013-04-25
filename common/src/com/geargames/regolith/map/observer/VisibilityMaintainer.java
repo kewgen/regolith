@@ -1,5 +1,6 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.dictionaries.AllyCollection;
 import com.geargames.regolith.units.map.BattleCell;
@@ -30,12 +31,15 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
         if (!hidden) {
             BattleCell cell = cells[x][y];
             boolean was = BattleMapHelper.isVisible(cell, warrior.getBattleGroup().getAlliance());
-            warrior.getBattleGroup().getAccount().getSecurity().adjustObserve(x + y);
+            SecurityOperationManager security = warrior.getBattleGroup().getAccount().getSecurity();
+            if (security != null) {
+                security.adjustObserve(x + y);
+            }
             BattleMapHelper.show(cell, warrior);
             if (cell.getElement() != null) {
                 hidden = !cell.getElement().isAbleToLookThrough();
                 if (!was && cell.getElement() instanceof Ally) {
-                    allies.add((Ally)cell.getElement());
+                    allies.add((Ally) cell.getElement());
                 }
             }
         }
