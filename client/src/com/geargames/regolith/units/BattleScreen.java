@@ -149,12 +149,13 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         BattleCell[][] cells = battle.getMap().getCells();
         int length = cells.length;
         int x, y;
+        Warrior warrior = user.getUnit().getWarrior();
         for (int yCell = 0; yCell < length; yCell++) {
             y = yCell * VERTICAL_RADIUS;
             x = (length - 1 + yCell) * HORIZONTAL_RADIUS;
             for (int xCell = 0; xCell < length; xCell++) {
                 if (isOnTheScreen(x, y)) {
-                    if (BattleMapHelper.isShortestPathCell(cells[yCell][xCell], user.getUnit().getWarrior())) {
+                    if (BattleMapHelper.isShortestPathCell(cells[yCell][xCell], warrior)) {
                         drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell], true);
                     } else {
                         drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell], false);
@@ -252,7 +253,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                             CellElement element = battleCell.getElement();
                             Warrior warrior = user.getUnit().getWarrior();
                             if (element != null && element.getElementType() == CellElementTypes.HUMAN && ((Warrior) element).getBattleGroup() == battleGroup) {
-//                                onChangeActiveWarrior()
                                 user = ClientBattleHelper.findBattleUnitByWarrior(group, (Warrior) element);
                                 ClientBattleHelper.route(warrior, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
                                 Debug.debug("the current user number = " + warrior.getNumber());
@@ -314,7 +314,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 }
                 activeAlliance = change.getAlliance();
                 if (isMyTurn()) {
-                    Debug.debug("my turn");
+                    Debug.debug("my turn has begun");
                     ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
                 }
                 onChangeActiveAlliance(change.getAlliance());
