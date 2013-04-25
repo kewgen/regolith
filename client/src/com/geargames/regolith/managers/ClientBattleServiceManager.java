@@ -59,7 +59,6 @@ public class ClientBattleServiceManager {
      */
     public void checkSum() {
         checkSumRequest.setAccount(configuration.getAccount());
-        configuration.getAccount().getSecurity().setObserve(0);
         configuration.getNetwork().sendMessage(checkSumRequest);
     }
 

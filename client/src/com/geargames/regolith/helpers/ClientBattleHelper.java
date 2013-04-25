@@ -64,6 +64,62 @@ public class ClientBattleHelper {
 
 
     /**
+     * Ускоренно перемещаем бойца противника(warrior) в расчётную точку.
+     * @param warrior
+     * @param map
+     */
+    public static void moveEnemy(Warrior warrior, BattleMap map){
+        BattleCell[][] cells = map.getCells();
+        Direction direction;
+        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
+        do{
+            direction = WarriorHelper.getStepDirection(warrior,cells);
+            BattleMapHelper.resetShortestCell(cells[warrior.getX()][warrior.getY()], alliance, warrior);
+            WarriorHelper.putWarriorIntoMap(warrior, map, warrior.getX() + direction.getX(), warrior.getY() + direction.getY());
+        }
+        while(direction != Direction.NONE);
+    }
+
+    /**
+     * Быстро переместить созные войска battleUnits в место назначения на экране screen.
+     * @param battleUnits
+     * @param battle
+     * @param battleConfiguration
+     * @param screen
+     */
+    public static void immediateMoveAllyies(ArrayList battleUnits, Battle battle, BattleConfiguration battleConfiguration, BattleScreen screen){
+        int size = battleUnits.size();
+        for(int i =0 ; i < size; i++){
+            BattleUnit battleUnit = ((BattleUnit)battleUnits.get(i));
+            Warrior warrior = battleUnit.getUnit().getWarrior();
+            if(warrior.isMoving()){
+                WarriorHelper.move(warrior, battle.getMap().getCells(), NullStepListener.instance, battleConfiguration);
+                ClientBattleHelper.initMapXY(screen, battleUnit);
+            }
+        }
+    }
+
+
+    /**
+     * Быстро переместить врага на его место назначения на экране screen.
+     * @param enemies
+     * @param battle
+     * @param screen
+     */
+    public static void immediateMoveEnemies(ArrayList enemies, Battle battle, BattleScreen screen){
+        int size = enemies.size();
+        for(int i = 0; i < size; i++){
+            BattleUnit battleUnit = (BattleUnit)enemies.get(i);
+            Warrior warrior = battleUnit.getUnit().getWarrior();
+            if(warrior.isMoving()){
+                ClientBattleHelper.moveEnemy(warrior, battle.getMap());
+                ClientBattleHelper.initMapXY(screen, battleUnit);
+            }
+        }
+    }
+
+
+    /**
      * Вернуть солдатиков аккаунта account для BattleScreen из битвы battle.
      *
      * @param battle
