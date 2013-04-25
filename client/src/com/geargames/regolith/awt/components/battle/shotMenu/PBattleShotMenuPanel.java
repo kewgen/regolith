@@ -52,6 +52,13 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
     }
 
     /**
+     * Обработчик события изменения активного бойца.
+     */
+    public void onActiveUnitChanged(BattleUnit activeUnit) {
+
+    }
+
+    /**
      * Обработчик нажатия на кнопку "Выстрел наспех".
      */
     public void onHastilyShotButtonClick() {
@@ -63,6 +70,7 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
             battleUnit.getUnit().stop(); //todo: Нужно ли?
             battleUnit.getUnit().shoot();
             WarriorHelper.doHastilyShot(battleUnit.getUnit().getWarrior());
+            panelManager.getBattleScreen().doMapReachabilityUpdate();
         }
     }
 

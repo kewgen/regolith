@@ -20,6 +20,7 @@ import com.geargames.regolith.units.battle.Warrior;
 public class PBattleWarriorListPanel extends PRootContentPanel {
     private PWarriorButton[] warriorButtons;
     private PRadioGroup radioGroup;
+    private boolean isBusy = false;
 
     private static final int WARRIOR_BUTTON_COUNT_MAX = 4;
 
@@ -83,15 +84,19 @@ public class PBattleWarriorListPanel extends PRootContentPanel {
     /**
      * Обработчик события изменения активного бойца.
      */
-    public void onActiveUnitChanged() {
+    public void onActiveUnitChanged(BattleUnit activeUnit) {
         ArrayList group = PRegolithPanelManager.getInstance().getBattleScreen().getGroup();
-        BattleUnit activeUnit = PRegolithPanelManager.getInstance().getBattleScreen().getUser();
         int index = 0;
         for (int i = 0; i < group.size(); i++) {
             BattleUnit battleUnit = (BattleUnit) group.get(i);
             if (!WarriorHelper.isDead(battleUnit.getUnit().getWarrior())) {
                 if (battleUnit == activeUnit) {
-                    warriorButtons[index].setChecked(true);
+                    isBusy = true;
+                    try {
+                        warriorButtons[index].setChecked(true);
+                    } finally {
+                        isBusy = false;
+                    }
                     break;
                 }
                 index++;
@@ -113,7 +118,11 @@ public class PBattleWarriorListPanel extends PRootContentPanel {
      * Обработчик нажатия на кнопку выбора бойца.
      */
     public void onWarriorButtonClick(Warrior warrior) {
-        NotificationBox.info("Боец '" + warrior.getName() + "' (id = " + warrior.getId() + ")", this);
+        if (!isBusy) {
+            NotificationBox.info("Боец '" + warrior.getName() + "' (id = " + warrior.getId() + ")", this);
+            PRegolithPanelManager.getInstance().getBattleScreen().doChangeActiveWarrior(warrior);
+            PRegolithPanelManager.getInstance().getBattleScreen().displayWarrior(warrior);
+        }
     }
 
 }

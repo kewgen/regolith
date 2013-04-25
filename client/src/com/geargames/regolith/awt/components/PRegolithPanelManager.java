@@ -30,8 +30,6 @@ import com.geargames.regolith.awt.components.warrior.exchange.warrior.PArmorFrom
 import com.geargames.regolith.awt.components.warrior.exchange.warrior.PWeaponFromWarriorPanel;
 import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.MainScreen;
-import com.geargames.regolith.units.map.finder.ProjectionFinder;
-import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
 import com.geargames.regolith.units.map.verifier.CubeBorderCorrector;
 
 public class PRegolithPanelManager extends PPanelManager {
@@ -73,7 +71,7 @@ public class PRegolithPanelManager extends PPanelManager {
     private DefaultDrawablePPanel battleWarriorMenuWindow;
     private DefaultDrawablePPanel battleShotMenuWindow;
     private DefaultDrawablePPanel battleWeaponMenuWindow;
-    private DefaultDrawablePPanel battleSelectWarriorWindow;
+    private DefaultDrawablePPanel battleWarriorListWindow;
 
     private PRegolithPanelManager() {
     }
@@ -238,9 +236,9 @@ public class PRegolithPanelManager extends PPanelManager {
         battleWeaponMenuWindow.setElement(battleWeaponMenuPanel);
 
         PBattleWarriorListPanel battleSelectWarriorPanel = new PBattleWarriorListPanel(render.getObject(Graph.PAN_BAT_SEL_FIGHTER));
-        battleSelectWarriorWindow = new MiddleDrawablePPanel();
-        battleSelectWarriorWindow.setAnchor(Anchors.TOP_LEFT_ANCHOR);
-        battleSelectWarriorWindow.setElement(battleSelectWarriorPanel);
+        battleWarriorListWindow = new MiddleDrawablePPanel();
+        battleWarriorListWindow.setAnchor(Anchors.TOP_LEFT_ANCHOR);
+        battleWarriorListWindow.setElement(battleSelectWarriorPanel);
     }
 
     public DefaultDrawablePPanel getLoginBattleServiceWait() {
@@ -395,12 +393,12 @@ public class PRegolithPanelManager extends PPanelManager {
         return (PBattleWeaponMenuPanel) battleWeaponMenuWindow.getElement();
     }
 
-    public DefaultDrawablePPanel getBattleSelectWarriorWindow() {
-        return battleSelectWarriorWindow;
+    public DefaultDrawablePPanel getBattleWarriorListWindow() {
+        return battleWarriorListWindow;
     }
 
     public PBattleWarriorListPanel getBattleWarriorListPanel() {
-        return (PBattleWarriorListPanel) battleSelectWarriorWindow.getElement();
+        return (PBattleWarriorListPanel) battleWarriorListWindow.getElement();
     }
 
 }
