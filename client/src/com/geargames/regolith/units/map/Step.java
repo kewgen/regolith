@@ -16,7 +16,7 @@ import com.geargames.regolith.units.battle.Warrior;
  * Задача этого класса - совместить раздельные шаги по клеткам карты и обозрение окружающих ячеек с плавным перемещением
  * бойца по игровому полю.
  */
-public abstract class Step {
+public abstract class Step implements Tickable {
     private BattleScreen screen;
     private BattleUnit battleUnit;
     private Direction step;
@@ -121,12 +121,13 @@ public abstract class Step {
     protected abstract void doStepOnMap(Warrior warrior, int stepX, int stepY);
 
     /**
-     * Каждый тик приложения дёргаем это метод.
+     * В каждый цикл игрового обновления дёргаем это метод.
      * Оно будет дёргаться только если мы затеяли движение и двигаться вообще стоит.
      * Заданное число тиков боец движется от середины одной ячейки к середине следующей,
      * по окончании: мы определяемся со следующей ячейкой и исправляем возможные ошибки, рисуя бойца точно
      * в середине текущей клетки.
      */
+    @Override
     public void onTick() {
         if (initiated && warrior.isMoving()) {
             if (speed - ticks > 1) {
@@ -158,7 +159,7 @@ public abstract class Step {
     }
 
     /**
-     * Юнит путь которого должен быть прорисован.
+     * Юнит, путь которого, должен быть прорисован.
      *
      * @return
      */

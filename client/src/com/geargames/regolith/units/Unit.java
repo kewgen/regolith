@@ -1,8 +1,6 @@
 package com.geargames.regolith.units;
 
-import com.geargames.awt.components.PElement;
 import com.geargames.common.Graphics;
-import com.geargames.common.util.Region;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.states.*;
 
@@ -57,7 +55,7 @@ public class Unit {
     public void shoot() {
         if (state != process) {
             process.setFinishState(state);
-            if (warrior.isHalfLong()) {
+            if (warrior.isSitting()) {
                 process.setAction(Actions.SIT_AND_SHOOT);
             } else {
                 process.setAction(Actions.STAND_AND_SHOOT);
@@ -69,7 +67,7 @@ public class Unit {
     public void hit() {
         if (state != process) {
             process.setFinishState(state);
-            if (warrior.isHalfLong()) {
+            if (warrior.isSitting()) {
                 process.setAction(Actions.SIT_AND_HIT);
             } else {
                 process.setAction(Actions.STAND_AND_HIT);
@@ -133,4 +131,13 @@ public class Unit {
     public LinearWarriorState getProcess() {
         return process;
     }
+
+    /**
+     * Вернет true, если боец бездействует.
+     * @return
+     */
+    public boolean isIdleState() {
+        return state == stand || state == sit;
+    }
+
 }

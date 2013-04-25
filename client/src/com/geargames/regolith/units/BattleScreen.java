@@ -29,8 +29,6 @@ import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.*;
 
-import java.util.Vector;
-
 /**
  * User: mkutuzov
  * Date: 13.02.12
@@ -49,7 +47,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private ArrayList allies;
     private ArrayList group;
 
-    private Vector steps;
+    private ArrayList steps;
     private Battle battle;
     private BattleGroup battleGroup;
 
@@ -87,7 +85,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private BattleAlliance activeAlliance;
 
     public BattleScreen() {
-        steps = new Vector();
+        steps = new ArrayList();
         timerId = TimerManager.NULL_TIMER;
         configuration = ClientConfigurationFactory.getConfiguration();
         listenedTypes = new short[]{Packets.MOVE_WARRIOR, Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE};
@@ -209,7 +207,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     public void onTimer(int timerId) {
         for (int i = 0; i < steps.size(); i++) {
-            ((Step) steps.elementAt(i)).onTick();
+            ((Step) steps.get(i)).onTick();
         }
         for (int i = 0; i < group.size(); i++) {
             ((BattleUnit) group.get(i)).getUnit().next();
@@ -332,8 +330,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     private Step getStep(BattleUnit unit) {
         for (int i = 0; i < steps.size(); i++) {
-            if (((Step) steps.elementAt(i)).getBattleUnit() == unit) {
-                return (Step) steps.elementAt(i);
+            if (((Step) steps.get(i)).getBattleUnit() == unit) {
+                return (Step) steps.get(i);
             }
         }
         return null;
@@ -601,6 +599,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             ExitZone exit = alliance.getExit();
             setCellCenter(exit.getX(), exit.getY());
             BattleGroupCollection clients = alliance.getAllies();
+            steps.clear();
             for (int j = 0; j < clients.size(); j++) {
                 if (battleGroup == clients.get(j)) {
                     WarriorCollection warriors = battleGroup.getWarriors();
@@ -629,7 +628,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         Step step = new AllyStep();
         step.setScreen(this);
         step.setBattleUnit(unit);
-        steps.addElement(step);
+        steps.add(step);
     }
 
     public void putEnemyInPosition(BattleUnit enemy, int x, int y) {
@@ -660,4 +659,5 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public ArrayList getEnemies() {
         return enemies;
     }
+
 }
