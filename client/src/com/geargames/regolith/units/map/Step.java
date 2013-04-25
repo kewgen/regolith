@@ -15,7 +15,7 @@ import com.geargames.regolith.units.battle.Warrior;
  * Задача этого класса - совместить раздельные шаги по клеткам карты и обозрение окружающих ячеек с плавным перемещением
  * бойца по игровому полю.
  */
-public class Step {
+public class Step implements Tickable {
     private BattleScreen screen;
     private BattleUnit battleUnit;
     private Direction step;
@@ -36,7 +36,7 @@ public class Step {
 
     public Step() {
         initiated = false;
-        BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
+        battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
         speed = battleConfiguration.getWalkSpeed();
     }
 
@@ -53,7 +53,6 @@ public class Step {
         warrior = battleUnit.getUnit().getWarrior();
         shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
         shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
-        battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
 
         boolean isMoving = true;
         if (WarriorHelper.getReachableRadius(warrior) == 0) {
@@ -75,17 +74,18 @@ public class Step {
 
         warrior.setMoving(isMoving);
         if (!isMoving && screen.getUser() == battleUnit) {
-            ClientBattleHelper.route(warrior, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+            ClientBattleHelper.route(warrior, battleConfiguration);
         }
     }
 
     /**
-     * Каждый тик приложения дёргаем это метод.
+     * В каждый цикл обновления приложения дёргаем это метод.
      * Оно будет дёргаться только если мы затеяли движение и двигаться вообще стоит.
      * Заданное число тиков боец движется от середины одной ячейки к середине следующей,
      * по окончании: мы определяемся со следующей ячейкой и исправляем возможные ошибки, рисуя бойца точно
      * в середине текущей клетки.
      */
+    @Override
     public void onTick() {
         if (initiated && warrior.isMoving()) {
             if (speed - ticks > 0) {

@@ -11,8 +11,8 @@ import com.geargames.regolith.units.Unit;
  * Date: 03.04.13
  */
 public abstract class AbstractWarriorState extends UnitState {
-    protected byte current;
-    protected byte limit;
+    protected byte current;              // номер шага анимации
+    protected byte limit;                // количество шагов анимации
     protected PUnitScript defaultScript;
 
     /**
@@ -27,9 +27,10 @@ public abstract class AbstractWarriorState extends UnitState {
         Warrior warrior = unit.getWarrior();
         defaultScript = Environment.getRender().getUnitScript(warrior.getWeapon().getWeaponType().getCategory().getPackerId() + getAction() + ClientGUIHelper.convertPackerScriptsDirection(warrior.getDirection()));
         current = 0;
-        limit = (byte)defaultScript.getIndexes().size();
+        limit = (byte) defaultScript.getIndexes().size();
         unit.setState(this);
     }
 
     public abstract byte getAction();
+
 }

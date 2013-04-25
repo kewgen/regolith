@@ -1,8 +1,7 @@
 package com.geargames.regolith.units;
 
-import com.geargames.awt.components.PElement;
+import com.geargames.awt.Eventable;
 import com.geargames.common.Graphics;
-import com.geargames.common.util.Region;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.states.*;
 
@@ -10,7 +9,7 @@ import com.geargames.regolith.units.map.states.*;
  * User: m.v.kutuzov
  * Date: 03.04.13
  */
-public class Unit extends PElement {
+public class Unit extends Eventable {
     private Warrior warrior;
     private AbstractWarriorState state;
 
@@ -57,7 +56,7 @@ public class Unit extends PElement {
     public void shoot() {
         if (state != process) {
             process.setFinishState(state);
-            if (warrior.isHalfLong()) {
+            if (warrior.isSitting()) {
                 process.setAction(Actions.SIT_AND_SHOOT);
             } else {
                 process.setAction(Actions.STAND_AND_SHOOT);
@@ -69,7 +68,7 @@ public class Unit extends PElement {
     public void hit() {
         if (state != process) {
             process.setFinishState(state);
-            if (warrior.isHalfLong()) {
+            if (warrior.isSitting()) {
                 process.setAction(Actions.SIT_AND_HIT);
             } else {
                 process.setAction(Actions.STAND_AND_HIT);
@@ -94,19 +93,8 @@ public class Unit extends PElement {
         state.next(this);
     }
 
-    @Override
     public void draw(Graphics graphics, int x, int y) {
         state.current().draw(graphics, x, y, warrior);
-    }
-
-    @Override
-    public Region getDrawRegion() {
-        return null;
-    }
-
-    @Override
-    public Region getTouchRegion() {
-        return null;
     }
 
     public Warrior getWarrior() {
@@ -124,4 +112,13 @@ public class Unit extends PElement {
     public void setState(AbstractWarriorState state) {
         this.state = state;
     }
+
+    /**
+     * Вернет true, если боец бездействует.
+     * @return
+     */
+    public boolean isIdleState() {
+        return state == stand || state == sit;
+    }
+
 }
