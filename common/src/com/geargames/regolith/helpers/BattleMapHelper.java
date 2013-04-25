@@ -279,7 +279,7 @@ public class BattleMapHelper {
     }
 
     /**
-     * Видима ли ячейка cell бойцом отряда warrior.
+     * Видима ли ячейка cell бойцом warrior.
      *
      * @param cell
      * @param warrior
@@ -291,7 +291,7 @@ public class BattleMapHelper {
     }
 
     /**
-     * Видима ли ячеейка cell бойцами военного союза .
+     * Видима ли ячейка cell бойцами активного военного союза.
      *
      * @param cell
      * @return
@@ -308,11 +308,11 @@ public class BattleMapHelper {
      * @param alliance
      * @return
      */
-    public static boolean isVisibilityTerminator(BattleCell[][] cells, int x, int y, BattleAlliance alliance){
-        if(isVisible(cells[x][y], alliance)){
-            //проверяем
+    // isCellAtBoundaryVisibility
+    public static boolean isBoundaryVisibility(BattleCell[][] cells, int x, int y, BattleAlliance alliance){
+        if (isVisible(cells[x][y], alliance)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -435,5 +435,6 @@ public class BattleMapHelper {
             return false;
         }
     }
+
 }
 

@@ -48,21 +48,24 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
     @Override
     public void onReceive(ClientDeSerializedMessage message, short type) {
         ClientBattleLoginAnswer battleLogin = (ClientBattleLoginAnswer) message;
-        PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         if (battleLogin.isSuccess()) {
             //todo забрать из сообщения группы которые уже залогинились и сообщить о них
-            manager.hideMiddle();
-            manager.getBattleScreen().setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
-            manager.show(manager.getBattleScreen());
-            manager.show(manager.getBattleMenuWindow());
-            manager.show(manager.getBattleSelectWarriorWindow());
-            manager.show(manager.getBattleWeaponMenuWindow());
-            manager.show(manager.getBattleWarriorMenuWindow());
-            manager.show(manager.getBattleShotMenuWindow());
+            panelManager.hideAll();
+            panelManager.getBattleScreen().setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
+            panelManager.show(panelManager.getHeadlineWindow());
+//            panelManager.show(panelManager.getLeft());
+            panelManager.show(panelManager.getRight());
+            panelManager.show(panelManager.getBattleScreen());
+            panelManager.show(panelManager.getBattleMenuWindow());
+            panelManager.show(panelManager.getBattleSelectWarriorWindow());
+            panelManager.show(panelManager.getBattleWeaponMenuWindow());
+            panelManager.show(panelManager.getBattleWarriorMenuWindow());
+            panelManager.show(panelManager.getBattleShotMenuWindow());
         } else {
             NotificationBox.error(LocalizedStrings.COULD_NOT_LOGIN_TO_BATTLE, this);
         }
-        manager.hide(manager.getLoginBattleServiceWait());
+        panelManager.hide(panelManager.getLoginBattleServiceWait());
     }
 
 }

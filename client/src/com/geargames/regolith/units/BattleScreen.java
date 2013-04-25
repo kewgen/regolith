@@ -251,6 +251,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                             CellElement element = battleCell.getElement();
                             Warrior warrior = user.getUnit().getWarrior();
                             if (element != null && element.getElementType() == CellElementTypes.HUMAN && ((Warrior) element).getBattleGroup() == battleGroup) {
+//                                onChangeActiveWarrior()
                                 user = ClientBattleHelper.findBattleUnitByWarrior(group, (Warrior) element);
                                 ClientBattleHelper.route(warrior, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
                                 Debug.debug("the current user number = " + warrior.getNumber());
@@ -634,6 +635,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public void onChangeActiveAlliance(BattleAlliance alliance) {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.getHeadlinePanel().setActiveAlliance(alliance);
+    }
+
+    public void onChangeActiveWarrior() {
+
     }
 
     public ArrayList getAllies() {
