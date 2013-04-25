@@ -224,7 +224,7 @@ public class PCampButton extends PTouchButton {
             manager.getBattleScreen().setBattle(battle);
             manager.show(manager.getBattleScreen());
             manager.show(manager.getBattleMenuWindow());
-            manager.show(manager.getBattleSelectWarriorWindow());
+            manager.show(manager.getBattleWarriorListWindow());
             manager.show(manager.getBattleWeaponMenuWindow());
             manager.show(manager.getBattleWarriorMenuWindow());
             manager.show(manager.getBattleShotMenuWindow());

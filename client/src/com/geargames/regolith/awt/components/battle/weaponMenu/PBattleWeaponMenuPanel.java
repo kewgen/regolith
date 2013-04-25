@@ -4,6 +4,7 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRootContentPanel;
+import com.geargames.regolith.units.BattleUnit;
 
 /**
  * User: abarakov
@@ -34,6 +35,13 @@ public class PBattleWeaponMenuPanel extends PRootContentPanel {
 
     @Override
     public void onHide() {
+
+    }
+
+    /**
+     * Обработчик события изменения активного бойца.
+     */
+    public void onActiveUnitChanged(BattleUnit activeUnit) {
 
     }
 

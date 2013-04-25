@@ -1,15 +1,12 @@
 package com.geargames.regolith.awt.components.battle.warriorMenu;
 
-import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.BattleUnit;
-import com.geargames.regolith.units.Unit;
 
 /**
  * User: abarakov
@@ -56,6 +53,19 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     }
 
     /**
+     * Обработчик события изменения активного бойца.
+     */
+    public void onActiveUnitChanged(BattleUnit activeUnit) {
+        if (activeUnit.getUnit().getWarrior().isSitting()) {
+            standUpButton.setVisible(true);
+            sitDownButton.setVisible(false);
+        } else {
+            standUpButton.setVisible(false);
+            sitDownButton.setVisible(true);
+        }
+    }
+
+    /**
      * Обработчик нажатия на кнопку "Посадить бойца".
      */
     public void onSitDownButtonClick() {
@@ -68,6 +78,7 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
             battleUnit.getUnit().stop(); //todo: Нужно ли?
             battleUnit.getUnit().sitDown();
             WarriorHelper.sit(battleUnit.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+            panelManager.getBattleScreen().doMapReachabilityUpdate();
             //todo: Менять кнопки можно только в случае, если боец действительно присел
             standUpButton.setVisible(true);
             sitDownButton.setVisible(false);
@@ -87,6 +98,7 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
             battleUnit.getUnit().stop(); //todo: Нужно ли?
             battleUnit.getUnit().standUp();
             WarriorHelper.stand(battleUnit.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+            panelManager.getBattleScreen().doMapReachabilityUpdate();
             //todo: Менять кнопки можно только в случае, если боец действительно поднялся
             standUpButton.setVisible(false);
             sitDownButton.setVisible(true);
