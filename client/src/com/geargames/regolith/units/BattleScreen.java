@@ -16,7 +16,6 @@ import com.geargames.regolith.application.Event;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
 import com.geargames.regolith.serializers.answers.ClientMoveAllyAnswer;
 import com.geargames.regolith.serializers.answers.ClientMoveMyWarriorAnswer;
@@ -128,7 +127,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             }
         }
         if (path) {
-            Environment.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x, y);
+            Environment.getRender().getSprite(Graph.SPR_SHADOW).draw(graphics, x - 29/*width*/, y - 20/*height*/);
         }
     }
 
@@ -334,23 +333,27 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void moveUser(int x, int y) {
-        try {
-            Warrior warrior = user.getUnit().getWarrior();
-            ClientMoveMyWarriorAnswer move = (ClientMoveMyWarriorAnswer) configuration.getBattleServiceManager().move(warrior, (short) x, (short) y);
-            short xx = move.getX();
-            short yy = move.getY();
-            if (xx != x || yy != y) {
-                ClientBattleHelper.trace(warrior, xx, yy);
-            }
+//        try {
+//            Warrior warrior = user.getUnit().getWarrior();
+//            ClientMoveMyWarriorAnswer move = (ClientMoveMyWarriorAnswer) configuration.getBattleServiceManager().move(warrior, (short) x, (short) y);
+//            short xx = move.getX();
+//            short yy = move.getY();
+//            if (xx != x || yy != y) {
+//                ClientBattleHelper.trace(warrior, xx, yy);
+//            }
             getStep(user).init();
-        } catch (Exception e) {
-            NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
-            Debug.error(LocalizedStrings.MOVEMENT_RESTRICTION, e);
-        }
+//        } catch (Exception e) {
+//            NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
+//            Debug.error(LocalizedStrings.MOVEMENT_RESTRICTION, e);
+//        }
     }
 
     /**
+<<<<<<< .mine
      * Разрешить двинуть бойца warrior принадлежащего союзнику в точку x:y
+=======
+     * Разрешить двинуть бойца warrior принадлежащего союзнику в точку (x;y)
+>>>>>>> .theirs
      *
      * @param warrior
      * @param x
@@ -527,6 +530,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     public ArrayList getGroup() {
         return group;
+    }
+
+    public boolean isShowGrid() {
+        return showGrid;
+    }
+
+    public void setShowGrid(boolean value) {
+        showGrid = value;
     }
 
     @Override

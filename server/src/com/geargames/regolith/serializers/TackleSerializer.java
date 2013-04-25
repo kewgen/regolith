@@ -64,6 +64,7 @@ public class TackleSerializer {
 
         buffer.put(weaponType.getAccuracy());
         buffer.put(weaponType.getAccurateAction());
+        buffer.put(weaponType.getQuickAction());
         buffer.put(weaponType.getAmmunitionPerShoot());
         SimpleSerializer.serialize(weaponType.getBaseFirmness(), buffer);
         SimpleSerializer.serialize(weaponType.getCapacity(), buffer);

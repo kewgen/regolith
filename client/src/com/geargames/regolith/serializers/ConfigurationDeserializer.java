@@ -111,6 +111,7 @@ public class ConfigurationDeserializer {
         battleType.setAllianceAmount(SimpleDeserializer.deserializeInt(buffer));
         battleType.setAllianceSize(SimpleDeserializer.deserializeInt(buffer));
         battleType.setGroupSize(SimpleDeserializer.deserializeInt(buffer));
+        battleType.setTurnTime(SimpleDeserializer.deserializeInt(buffer));
         return battleType;
     }
 

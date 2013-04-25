@@ -793,29 +793,68 @@ public class WarriorHelper {
         return human.getHealth() <= 0;
     }
 
-    public static boolean maySit(Warrior warrior, BattleConfiguration battleConfiguration){
-        if(!warrior.isSitting()){
-            return warrior.getActionScore() >= battleConfiguration.getActionFees().getSitOrStand();
-        }
-        return false;
+    /**
+     * Вернет true, если боец может сесть.
+     */
+    public static boolean maySit(Warrior warrior, BattleConfiguration battleConfiguration) {
+        return !warrior.isSitting() && !warrior.isMoving() && !warrior.isShooting() &&
+                warrior.getActionScore() >= battleConfiguration.getActionFees().getSitOrStand();
     }
 
-    public static boolean mayStand(Warrior warrior, BattleConfiguration battleConfiguration){
-        if(warrior.isSitting()){
-            return warrior.getActionScore() >= battleConfiguration.getActionFees().getSitOrStand();
-        }
-        return false;
+    /**
+     * Вернет true, если боец может встать.
+     */
+    public static boolean mayStand(Warrior warrior, BattleConfiguration battleConfiguration) {
+        return warrior.isSitting() && !warrior.isMoving() && !warrior.isShooting() &&
+                warrior.getActionScore() >= battleConfiguration.getActionFees().getSitOrStand();
     }
 
-    public static void stand(Warrior warrior, BattleConfiguration battleConfiguration){
+    /**
+     * Вернет true, если боец может "наспех" выстрелить.
+     */
+    public static boolean mayHastilyShot(Warrior warrior) {
+        return !warrior.isMoving() && !warrior.isShooting() &&
+                warrior.getActionScore() >= warrior.getWeapon().getWeaponType().getQuickAction(); //todo: getQuickAction - правильно?
+    }
+
+    /**
+     * Вернет true, если боец может прицельно выстрелить.
+     */
+    public static boolean mayAccurateShot(Warrior warrior) {
+        return !warrior.isMoving() && !warrior.isShooting() &&
+                warrior.getActionScore() >= warrior.getWeapon().getWeaponType().getAccurateAction(); //todo: getAccurateAction - правильно?
+    }
+
+    /**
+     * Приказать бойцу встать.
+     */
+    public static void stand(Warrior warrior, BattleConfiguration battleConfiguration) {
         warrior.setSitting(false);
-        warrior.setActionScore((short)(warrior.getActionScore() - battleConfiguration.getActionFees().getSitOrStand()));
+        warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getSitOrStand()));
     }
 
-    public static void sit(Warrior warrior, BattleConfiguration battleConfiguration){
+    /**
+     * Приказать бойцу сесть.
+     */
+    public static void sit(Warrior warrior, BattleConfiguration battleConfiguration) {
         warrior.setSitting(true);
-        warrior.setActionScore((short)(warrior.getActionScore() - battleConfiguration.getActionFees().getSitOrStand()));
+        warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getSitOrStand()));
     }
 
+    /**
+     * Приказать бойцу сделать выстрел "наспех".
+     */
+    public static void doHastilyShot(Warrior warrior) {
+//        warrior.setShooting(true);
+        warrior.setActionScore((short) (warrior.getActionScore() - warrior.getWeapon().getWeaponType().getQuickAction())); //todo: getQuickAction - правильно?
+    }
+
+    /**
+     * Приказать бойцу сделать прицельный выстрел.
+     */
+    public static void doAccurateShot(Warrior warrior) {
+//        warrior.setShooting(true);
+        warrior.setActionScore((short) (warrior.getActionScore() - warrior.getWeapon().getWeaponType().getAccurateAction())); //todo: getAccurateAction - правильно?
+    }
 
 }

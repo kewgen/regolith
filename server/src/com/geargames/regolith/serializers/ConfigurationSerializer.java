@@ -76,6 +76,7 @@ public class ConfigurationSerializer {
         SimpleSerializer.serialize(battleType.getAllianceAmount(), buffer);
         SimpleSerializer.serialize(battleType.getAllianceSize(), buffer);
         SimpleSerializer.serialize(battleType.getGroupSize(), buffer);
+        SimpleSerializer.serialize(battleType.getTurnTime(), buffer);
     }
 
     public static void serialize(BaseConfiguration configuration, MicroByteBuffer buffer) {

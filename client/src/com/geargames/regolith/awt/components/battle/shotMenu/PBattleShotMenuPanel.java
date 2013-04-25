@@ -3,7 +3,9 @@ package com.geargames.regolith.awt.components.battle.shotMenu;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.NotificationBox;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.BattleUnit;
 
 /**
@@ -21,12 +23,12 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
             case 0:
-                PHastilyShotButton hastilyShotButton = new PHastilyShotButton((PObject) index.getPrototype());
-                addActiveChild(hastilyShotButton, index);
+                PAccurateShotButton accurateShotButton = new PAccurateShotButton((PObject) index.getPrototype());
+                addActiveChild(accurateShotButton, index);
                 break;
             case 1:
-                PAimedShotButton aimedShotButton = new PAimedShotButton((PObject) index.getPrototype());
-                addActiveChild(aimedShotButton, index);
+                PHastilyShotButton hastilyShotButton = new PHastilyShotButton((PObject) index.getPrototype());
+                addActiveChild(hastilyShotButton, index);
                 break;
         }
     }
@@ -54,13 +56,28 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
      */
     public void onHastilyShotButtonClick() {
         NotificationBox.info("Выстрел наспех", this);
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        BattleUnit battleUnit = panelManager.getBattleScreen().getUser();
+        //todo: Боец может стрелять только в случае, если сейчас наш ход и он сейчас не выполняет других команд
+        if (panelManager.getBattleScreen().isMyTurn() && WarriorHelper.mayHastilyShot(battleUnit.getUnit().getWarrior())) {
+            battleUnit.getUnit().stop(); //todo: Нужно ли?
+            battleUnit.getUnit().shoot();
+            WarriorHelper.doHastilyShot(battleUnit.getUnit().getWarrior());
+        }
     }
 
     /**
      * Обработчик нажатия на кнопку "Прицельный выстрел".
      */
-    public void onAimedShotButtonClick() {
+    public void onAccurateShotButtonClick() {
         NotificationBox.info("Прицельный выстрел", this);
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        BattleUnit battleUnit = panelManager.getBattleScreen().getUser();
+        //todo: Боец может стрелять только в случае, если сейчас наш ход и он сейчас не выполняет других команд
+        if (panelManager.getBattleScreen().isMyTurn()) {
+            battleUnit.getUnit().stop(); //todo: Нужно ли?
+            battleUnit.getUnit().hit();
+        }
     }
 
 }

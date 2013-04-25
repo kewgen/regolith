@@ -9,7 +9,9 @@ import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
 import com.geargames.common.util.NullRegion;
 import com.geargames.common.util.Region;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
+import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.battle.BattleAlliance;
 
 /**
@@ -40,15 +42,15 @@ public class PHeadlinePanel extends PRootContentPanel implements TimerListener {
         }
     }
 
-    @Override
-    public Region getDrawRegion() {
-        return NullRegion.instance;
-    }
-
-    @Override
-    public Region getTouchRegion() {
-        return NullRegion.instance;
-    }
+//    @Override
+//    public Region getDrawRegion() {
+//        return NullRegion.instance;
+//    }
+//
+//    @Override
+//    public Region getTouchRegion() {
+//        return NullRegion.instance;
+//    }
 
     @Override
     public void onShow() {
@@ -61,11 +63,16 @@ public class PHeadlinePanel extends PRootContentPanel implements TimerListener {
     }
 
     public void changeLabel() {
-        long remainingTime = (Environment.currentTimeMillis() - expirationTime) / 1000;
+        long remainingTime = (expirationTime - Environment.currentTimeMillis()) / 1000;
         if (remainingTime < 0 ) {
             remainingTime = 0;
         }
-        label.setText("ХОД АЛЬЯНСА #" + alliance.getNumber() + " (ID=" + alliance.getId() + ") ВРЕМЯ = " + remainingTime);
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        BattleUnit battleUnit = panelManager.getBattleScreen().getUser();
+        label.setText(
+                (panelManager.getBattleScreen().isMyTurn() ? "Наш ход" : "Ход альянса #" + alliance.getNumber() + " (id=" + alliance.getId() + ")") +
+                ", время=" + remainingTime +
+                ", ОД=" + battleUnit.getUnit().getWarrior().getActionScore());
     }
 
     public void onTimer(int timerId) {

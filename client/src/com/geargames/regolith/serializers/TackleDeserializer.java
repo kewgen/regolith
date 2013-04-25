@@ -60,6 +60,7 @@ public class TackleDeserializer {
 
         weaponType.setAccuracy(buffer.get());
         weaponType.setAccurateAction(buffer.get());
+        weaponType.setQuickAction(buffer.get());
         weaponType.setAmmunitionPerShoot(buffer.get());
 
         weaponType.setBaseFirmness(SimpleDeserializer.deserializeShort(buffer));

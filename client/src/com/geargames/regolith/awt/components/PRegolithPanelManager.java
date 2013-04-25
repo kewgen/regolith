@@ -224,12 +224,12 @@ public class PRegolithPanelManager extends PPanelManager {
 
         PBattleWarriorMenuPanel battleWarriorMenuPanel = new PBattleWarriorMenuPanel(render.getObject(Graph.PAN_BAT_FIGHTER));
         battleWarriorMenuWindow = new MiddleDrawablePPanel();
-//        battleWarriorMenuWindow.setAnchor(Anchors.BOTTOM_LEFT_ANCHOR);
+        battleWarriorMenuWindow.setAnchor(Anchors.CENTER_LEFT_ANCHOR);
         battleWarriorMenuWindow.setElement(battleWarriorMenuPanel);
 
         PBattleShotMenuPanel battleShotMenuPanel = new PBattleShotMenuPanel(render.getObject(Graph.PAN_BAT_FIRE));
         battleShotMenuWindow = new MiddleDrawablePPanel();
-//        battleShotMenuWindow.setAnchor(Anchors.BOTTOM_LEFT_ANCHOR);
+        battleShotMenuWindow.setAnchor(Anchors.BOTTOM_CENTER_ANCHOR);
         battleShotMenuWindow.setElement(battleShotMenuPanel);
 
         PBattleWeaponMenuPanel battleWeaponMenuPanel = new PBattleWeaponMenuPanel(render.getObject(Graph.PAN_BAT_WEAPON));

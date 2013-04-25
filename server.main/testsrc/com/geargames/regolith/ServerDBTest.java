@@ -213,6 +213,7 @@ public class ServerDBTest {
 
         weaponType.setAccuracy((byte) 100);
         weaponType.setAccurateAction((byte) 1);
+        weaponType.setQuickAction((byte) 1);
         weaponType.setAmmunitionPerShoot((byte) 0);
         weaponType.setBaseFirmness((byte) 50);
         weaponType.setFrameId(75);
@@ -1313,8 +1314,8 @@ public class ServerDBTest {
         map5.getCells()[5][5].addElement(fenceBarrier1r);
         map5.getCells()[6][5].addElement(fenceBarrier1l);
         map5.getCells()[7][5].addElement(fenceBarrier1r);
-        map5.getCells()[8][5].addElement(fenceBarrier1l);
-        map5.getCells()[9][5].addElement(fenceBarrier1r);
+//        map5.getCells()[8][5].addElement(fenceBarrier1l);
+//        map5.getCells()[9][5].addElement(fenceBarrier1r);
 
         map5.getCells()[4][7].addElement(barBarrier0);
         map5.getCells()[4][8].addElement(barBarrier0);
@@ -1345,10 +1346,10 @@ public class ServerDBTest {
         map5.getCells()[10][13].addElement(fenceBarrier0l);
         map5.getCells()[10][14].addElement(fenceBarrier0r);
         map5.getCells()[10][15].addElement(fenceBarrier0l);
-        map5.getCells()[10][16].addElement(fenceBarrier1r);
-        map5.getCells()[11][16].addElement(fenceBarrier1l);
-        map5.getCells()[12][16].addElement(fenceBarrier1r);
-        map5.getCells()[13][16].addElement(fenceBarrier1l);
+        map5.getCells()[10][16].addElement(fenceBarrier1l);
+        map5.getCells()[11][16].addElement(fenceBarrier1r);
+        map5.getCells()[12][16].addElement(fenceBarrier1l);
+        map5.getCells()[13][16].addElement(fenceBarrier1r);
         map5.getCells()[14][16].addElement(fenceBarrier0r);
         map5.getCells()[14][17].addElement(fenceBarrier0l);
         map5.getCells()[12][18].addElement(barBarrier1);
@@ -1369,8 +1370,8 @@ public class ServerDBTest {
         map5.getCells()[16][18].addElement(fenceBarrier0r);
         map5.getCells()[16][19].addElement(fenceBarrier0l);
 
-        map5.getCells()[18][16].addElement(fenceBarrier1r);
-        map5.getCells()[19][16].addElement(fenceBarrier1l);
+        map5.getCells()[18][16].addElement(fenceBarrier1l);
+        map5.getCells()[19][16].addElement(fenceBarrier1r);
 
         Box box = new Box();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();

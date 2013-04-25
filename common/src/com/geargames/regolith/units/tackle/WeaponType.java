@@ -18,7 +18,7 @@ public class WeaponType extends Tackle {
     private byte accuracy;
     private short capacity;
     private byte ammunitionPerShoot;
-    private byte quickAction;
+    private byte quickAction; //todo: quickAction -> hastilyAction
     private byte accurateAction;
     private short criticalDamage;
     private short baseFirmness;
@@ -104,6 +104,9 @@ public class WeaponType extends Tackle {
         this.ammunitionPerShoot = ammunitionPerShoot;
     }
 
+    /**
+     * Получить число ОД необходимых для совершения выстрела "наспех".
+     */
     public byte getQuickAction() {
         return quickAction;
     }
@@ -112,6 +115,9 @@ public class WeaponType extends Tackle {
         this.quickAction = quickAction;
     }
 
+    /**
+     * Получить число ОД необходимых для совершения прицельного выстрела.
+     */
     public byte getAccurateAction() {
         return accurateAction;
     }
