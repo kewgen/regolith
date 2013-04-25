@@ -10,7 +10,7 @@ import com.geargames.regolith.units.map.states.*;
  * User: m.v.kutuzov
  * Date: 03.04.13
  */
-public class Unit extends PElement {
+public class Unit {
     private Warrior warrior;
     private AbstractWarriorState state;
 
@@ -94,19 +94,8 @@ public class Unit extends PElement {
         state.next(this);
     }
 
-    @Override
     public void draw(Graphics graphics, int x, int y) {
         state.current().draw(graphics, x, y, warrior);
-    }
-
-    @Override
-    public Region getDrawRegion() {
-        return null;
-    }
-
-    @Override
-    public Region getTouchRegion() {
-        return null;
     }
 
     public Warrior getWarrior() {
@@ -123,5 +112,25 @@ public class Unit extends PElement {
 
     public void setState(AbstractWarriorState state) {
         this.state = state;
+    }
+
+    public Stand getStand() {
+        return stand;
+    }
+
+    public Sit getSit() {
+        return sit;
+    }
+
+    public Run getRun() {
+        return run;
+    }
+
+    public Die getDie() {
+        return die;
+    }
+
+    public LinearWarriorState getProcess() {
+        return process;
     }
 }

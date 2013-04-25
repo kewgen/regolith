@@ -77,7 +77,7 @@ public class WarriorHelper {
      * @param warrior
      * @param stepX
      * @param stepY
-     * @return закончим ли ходить
+     * @return засвеченных бойцов противника
      */
     public static AllyCollection step(Warrior warrior, int stepX, int stepY, BattleConfiguration battleConfiguration) {
         BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
@@ -86,7 +86,7 @@ public class WarriorHelper {
         BattleMapHelper.clearViewAround(warrior);
         BattleMapHelper.resetShortestCell(cells[warrior.getX()][warrior.getY()], alliance, warrior);
         putWarriorIntoMap(warrior, battleMap, warrior.getX() + stepX, warrior.getY() + stepY);
-        warrior.setActionScore((short) (warrior.getActionScore() - 1));
+        warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getMove()));
 
         return battleConfiguration.getObserver().observe(warrior);
     }

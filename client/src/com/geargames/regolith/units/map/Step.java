@@ -6,6 +6,7 @@ import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.BattleUnit;
+import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.Direction;
 import com.geargames.regolith.units.battle.Warrior;
 
@@ -15,7 +16,7 @@ import com.geargames.regolith.units.battle.Warrior;
  * Задача этого класса - совместить раздельные шаги по клеткам карты и обозрение окружающих ячеек с плавным перемещением
  * бойца по игровому полю.
  */
-public class Step {
+public abstract class Step {
     private BattleScreen screen;
     private BattleUnit battleUnit;
     private Direction step;
@@ -31,32 +32,34 @@ public class Step {
     private int shiftOnTickY;
     private int speed;
     private Warrior warrior;
+    private BattleMap map;
+    private BattleAlliance alliance;
 
     private BattleConfiguration battleConfiguration;
 
     public Step() {
         initiated = false;
-        BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
+        battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
         speed = battleConfiguration.getWalkSpeed();
+        shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
+        shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
+        warrior = battleUnit.getUnit().getWarrior();
+        alliance = warrior.getBattleGroup().getAlliance();
+        map = warrior.getBattleGroup().getAlliance().getBattle().getMap();
     }
 
     /**
      * Дёргаем затевая движение.
      */
     public void init() {
-        initiated = true;
         ticks = 0;
         extensionX = 0;
         extensionY = 0;
         beginMapX = battleUnit.getMapX();
         beginMapY = battleUnit.getMapY();
-        warrior = battleUnit.getUnit().getWarrior();
-        shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
-        shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
-        battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
 
         boolean isMoving = true;
-        if (WarriorHelper.getReachableRadius(warrior) == 0) {
+        if (hasToStop(warrior)) {
             isMoving = false;
             battleUnit.getUnit().stop();
         } else {
@@ -74,10 +77,44 @@ public class Step {
         }
 
         warrior.setMoving(isMoving);
-        if (!isMoving && screen.getUser() == battleUnit) {
-            ClientBattleHelper.route(warrior, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+        if (!warrior.isMoving() && screen.getUser() == battleUnit) {
+            routeMap(warrior);
         }
+        initiated = true;
     }
+
+    protected BattleAlliance getAlliance() {
+        return alliance;
+    }
+
+    protected BattleConfiguration getBattleConfiguration() {
+        return battleConfiguration;
+    }
+
+    protected BattleMap getBattleMap(){
+        return map;
+    }
+
+    /**
+     * Отметить стоимость достижимости достижимых точек.
+     * @param warrior
+     */
+    protected abstract void routeMap(Warrior warrior);
+
+    /**
+     * Должен ли остановится в начале текущего шага.
+     * @param warrior
+     * @return
+     */
+    protected abstract boolean hasToStop(Warrior warrior);
+
+    /**
+     * Перевести бойца на следующую клетку карты произведя полное изменение его состояния на сколько это возможно.
+     * @param warrior
+     * @param stepX
+     * @param stepY
+     */
+    protected abstract void doStepOnMap(Warrior warrior, int stepX, int stepY);
 
     /**
      * Каждый тик приложения дёргаем это метод.
@@ -88,7 +125,7 @@ public class Step {
      */
     public void onTick() {
         if (initiated && warrior.isMoving()) {
-            if (speed - ticks > 0) {
+            if (speed - ticks > 1) {
                 extensionX += shiftOnTickX * (step.getX() - step.getY());
                 extensionY += shiftOnTickY * (step.getY() + step.getX());
                 battleUnit.setMapX(extensionX + beginMapX);
@@ -97,7 +134,7 @@ public class Step {
             } else {
                 battleUnit.setMapX(BattleScreen.HORIZONTAL_RADIUS * (step.getX() - step.getY()) + beginMapX);
                 battleUnit.setMapY(BattleScreen.VERTICAL_RADIUS * (step.getY() + step.getX()) + beginMapY);
-                WarriorHelper.step(battleUnit.getUnit().getWarrior(), step.getX(), step.getY(), battleConfiguration);
+                doStepOnMap(warrior, step.getX(), step.getY());
                 init();
             }
         }
@@ -117,7 +154,7 @@ public class Step {
     }
 
     /**
-     * Юнит battleUnit бойца, путь которого должен быть прорисован.
+     * Юнит путь которого должен быть прорисован.
      *
      * @return
      */

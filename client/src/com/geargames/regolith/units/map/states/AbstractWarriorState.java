@@ -14,6 +14,7 @@ public abstract class AbstractWarriorState extends UnitState {
     protected byte current;
     protected byte limit;
     protected PUnitScript defaultScript;
+    private UnitFinishListener listener;
 
     /**
      * Перейти на новый PUnitScript для отображения бойца.
@@ -22,6 +23,14 @@ public abstract class AbstractWarriorState extends UnitState {
      * @return
      */
     public abstract void change(Unit unit, AbstractWarriorState state);
+
+    public UnitFinishListener getListener() {
+        return listener;
+    }
+
+    public void setListener(UnitFinishListener listener) {
+        this.listener = listener;
+    }
 
     public void init(Unit unit) {
         Warrior warrior = unit.getWarrior();

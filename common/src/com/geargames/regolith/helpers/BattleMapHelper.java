@@ -301,6 +301,23 @@ public class BattleMapHelper {
     }
 
     /**
+     * Определить находится ли точка на границе видимости для союза alliance в точке x:y.
+     * @param cells массив ячеек карты
+     * @param x первая координата в массиве ячеек
+     * @param y вторая координата в массиве ячеек
+     * @param alliance
+     * @return
+     */
+    public static boolean isVisibilityTerminator(BattleCell[][] cells, int x, int y, BattleAlliance alliance){
+        if(isVisible(cells[x][y], alliance)){
+            //проверяем
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
      * Скрыть все ячейки карты от бойца warrior.
      * Очистка проходит в пределах радиуса видимости бойца warrior.
      *

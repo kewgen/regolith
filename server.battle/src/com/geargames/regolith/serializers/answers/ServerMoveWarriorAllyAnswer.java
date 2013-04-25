@@ -18,17 +18,26 @@ public class ServerMoveWarriorAllyAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
     private Warrior warrior;
     private ServerAllyCollection enemies;
+    private short type;
 
+    public static ServerMoveWarriorAllyAnswer moveMine(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies){
+        return new ServerMoveWarriorAllyAnswer(buffer,warrior,enemies, Packets.MOVE_WARRIOR);
+    }
 
-    public ServerMoveWarriorAllyAnswer(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies) {
+    public static ServerMoveWarriorAllyAnswer moveAlly(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies){
+        return new ServerMoveWarriorAllyAnswer(buffer,warrior,enemies, Packets.MOVE_ALLY);
+    }
+
+    private ServerMoveWarriorAllyAnswer(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies, short type) {
         this.buffer = buffer;
         this.warrior = warrior;
+        this.type = type;
         this.enemies = enemies;
     }
 
     @Override
     public short getType() {
-        return Packets.MOVE_WARRIOR;
+        return type;
     }
 
     @Override

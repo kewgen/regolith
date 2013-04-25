@@ -95,8 +95,6 @@ public class PRegolithPanelManager extends PPanelManager {
         mainScreen = new MainScreen();
 
         battleScreen = new BattleScreen();
-        battleScreen.setCoordinateFinder(new ReverseProjectionFinder());
-        battleScreen.setCellFinder(new ProjectionFinder());
         battleScreen.setCorrector(new CubeBorderCorrector());
 
         left = new TopDrawablePPanel();
