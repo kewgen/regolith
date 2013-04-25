@@ -1,43 +1,35 @@
 package com.geargames.regolith.serializers.answers;
 
-import com.geargames.regolith.Packets;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Ally;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
 
 /**
- * User: mikhail v. kutuzov
- * Date: 23.08.12
- * Time: 13:56
+ * Created with IntelliJ IDEA.
+ * User: gear
+ * Date: 25.04.13
+ * Time: 22:13
+ * To change this template use File | Settings | File Templates.
  */
-public class ServerMoveWarriorAllyAnswer extends SerializedMessage {
+public class ServerMoveAllyAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
     private Warrior warrior;
     private ServerAllyCollection enemies;
-    private short type;
 
-    public static ServerMoveWarriorAllyAnswer moveMine(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies){
-        return new ServerMoveWarriorAllyAnswer(buffer,warrior,enemies, Packets.MOVE_WARRIOR);
-    }
-
-    public static ServerMoveWarriorAllyAnswer moveAlly(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies){
-        return new ServerMoveWarriorAllyAnswer(buffer,warrior,enemies, Packets.MOVE_ALLY);
-    }
-
-    private ServerMoveWarriorAllyAnswer(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies, short type) {
+    public ServerMoveAllyAnswer(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies) {
         this.buffer = buffer;
         this.warrior = warrior;
-        this.type = type;
         this.enemies = enemies;
     }
 
     @Override
     public short getType() {
-        return type;
+        return Packets.MOVE_ALLY;
     }
 
     @Override
@@ -56,11 +48,16 @@ public class ServerMoveWarriorAllyAnswer extends SerializedMessage {
         SerializeHelper.serializeEntityReference(warrior, buffer);
         SimpleSerializer.serialize(warrior.getX(), buffer);
         SimpleSerializer.serialize(warrior.getY(), buffer);
+        if(enemies != null){
         SimpleSerializer.serialize(enemies.size(), buffer);
         for (Ally human : enemies.getAllies()) {
             SerializeHelper.serializeEntityReference(human, buffer);
             SimpleSerializer.serialize(human.getX(), buffer);
             SimpleSerializer.serialize(human.getY(), buffer);
         }
+        }else{
+            SimpleSerializer.serialize(0,buffer);
+        }
     }
+
 }
