@@ -79,6 +79,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
                     messages.add(new BattleMessageToClient(recipients, message.serialize()));
 
                     if (serverBattle.getClients().size() == serverBattle.getGroups().size()) {
+                        BattleHelper.prepareBattle(serverBattle.getBattle());
                         configuration.getBattleSchedulerService().add(messages);
                         configuration.getBattleSchedulerService().add(serverBattle);
                         return new ArrayList<MessageToClient>();

@@ -133,11 +133,22 @@ public class WarriorHelper {
      * @param y
      */
     public static AllyCollection move(Warrior warrior, int x, int y, MoveOneStepListener listener, BattleConfiguration battleConfiguration) {
-        int steps = getReachableRadius(warrior);
         BattleMap battleMap = warrior.getBattleGroup().getAlliance().getBattle().getMap();
-        BattleCell[][] cells = battleMap.getCells();
         BattleMapHelper.makeShortestRoute(x, y, warrior);
         warrior.setMoving(true);
+        return  move(warrior, battleMap.getCells(), listener, battleConfiguration);
+    }
+
+    /**
+     * Переместить бойца warrior по отмеченному на карте кратчайшему пути.
+     * @param warrior
+     * @param cells
+     * @param listener
+     * @param battleConfiguration
+     * @return
+     */
+    public static AllyCollection move(Warrior warrior, BattleCell[][] cells, MoveOneStepListener listener, BattleConfiguration battleConfiguration){
+        int steps = getReachableRadius(warrior);
         AllyCollection result = null;
         for (int i = 0; i < steps && warrior.isMoving(); i++) {
             Direction direction = getStepDirection(warrior, cells);

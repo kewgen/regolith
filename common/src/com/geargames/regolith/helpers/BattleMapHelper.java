@@ -302,15 +302,17 @@ public class BattleMapHelper {
 
     /**
      * Определить находится ли точка на границе видимости для союза alliance в точке x:y.
-     * @param cells массив ячеек карты
-     * @param x первая координата в массиве ячеек
-     * @param y вторая координата в массиве ячеек
+     *
+     * @param cells    массив ячеек карты
+     * @param x        первая координата в массиве ячеек
+     * @param y        вторая координата в массиве ячеек
      * @param alliance
      * @return
      */
     // isCellAtBoundaryVisibility
-    public static boolean isBoundaryVisibility(BattleCell[][] cells, int x, int y, BattleAlliance alliance){
+    public static boolean isBoundaryVisibility(BattleCell[][] cells, int x, int y, BattleAlliance alliance) {
         if (isVisible(cells[x][y], alliance)) {
+            //проверяем
             return true;
         } else {
             return false;

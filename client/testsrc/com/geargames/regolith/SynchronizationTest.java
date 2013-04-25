@@ -110,7 +110,7 @@ public class SynchronizationTest {
         battleUnit.setUnit(unit);
         BattleScreen screen = new BattleScreen();
         screen.setCorrector(new CubeBorderCorrector());
-        screen.setMyTurn(true);
+        screen.setActiveAlliance(warrior.getBattleGroup().getAlliance());
         screen.setBattle(battle);
         screen.onShow();
 

@@ -16,8 +16,8 @@ import com.geargames.regolith.application.Event;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.serializers.answers.ClientChangeActiveAllianceAnswer;
-import com.geargames.regolith.serializers.answers.ClientMoveAllyAnswer;
 import com.geargames.regolith.serializers.answers.ClientMoveMyWarriorAnswer;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.helpers.ClientBattleHelper;
@@ -55,7 +55,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private MapCorrector corrector;
     private Finder cellFinder;
     private Finder coordinateFinder;
-    private boolean myTurn;
     private boolean showGrid;
 
     private int mapX;
@@ -82,6 +81,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     private short[] listenedTypes;
     private int timerId;
+
+    private BattleAlliance activeAlliance;
 
     public BattleScreen() {
         steps = new ArrayList();
@@ -243,7 +244,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 corrector.correct(mapX, mapY, this);
                 break;
             case Event.EVENT_TOUCH_RELEASED:
-                if (myTurn) {
+                if (isMyTurn()) {
                     if (isOnTheMap(x, y)) {
                         if (Mathematics.abs(touchedXX - x) <= SPOT && Mathematics.abs(touchedYY - y) <= SPOT) {
                             Pair cell = cellFinder.find(x + mapX, y + mapY, this);
@@ -267,7 +268,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 }
                 break;
             case Event.EVENT_TOUCH_DOUBLE_CLICK:
-                if (myTurn) {
+                if (isMyTurn()) {
                     Debug.debug("my turn & i want to move " + x + ":" + y);
                     if (isOnTheMap(x, y)) {
                         Pair cell = cellFinder.find(x + mapX, y + mapY, this);
@@ -301,19 +302,25 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public void onReceive(ClientDeSerializedMessage message, short type) {
         switch (type) {
             case Packets.CHANGE_ACTIVE_ALLIANCE:
+                BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
+                ClientBattleHelper.immediateMoveAllyies(group, battle, battleConfiguration, this);
+                ClientBattleHelper.immediateMoveAllyies(allies, battle, battleConfiguration, this);
+                ClientBattleHelper.immediateMoveEnemies(enemies, battle, this);
+
                 ClientChangeActiveAllianceAnswer change = (ClientChangeActiveAllianceAnswer) message;
-                if (myTurn) {
+                if (isMyTurn()) {
                     Debug.debug("my turn has been finished");
                     configuration.getBattleServiceManager().checkSum();
                 }
-                myTurn = WarriorHelper.isAlly(change.getAlliance(), ClientConfigurationFactory.getConfiguration().getAccount());
-                if (myTurn) {
-                    Debug.debug("MY TURN");
+                activeAlliance = change.getAlliance();
+                if (isMyTurn()) {
+                    Debug.debug("my turn");
                     ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
                 }
                 onChangeActiveAlliance(change.getAlliance());
                 break;
             case Packets.MOVE_WARRIOR:
+
                 break;
             case Packets.MOVE_ALLY:
                 break;
@@ -332,25 +339,23 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void moveUser(int x, int y) {
-//        try {
-//            Warrior warrior = user.getUnit().getWarrior();
-//            ClientMoveMyWarriorAnswer move = (ClientMoveMyWarriorAnswer) configuration.getBattleServiceManager().move(warrior, (short) x, (short) y);
-//            short xx = move.getX();
-//            short yy = move.getY();
-//            if (xx != x || yy != y) {
-//                ClientBattleHelper.trace(warrior, xx, yy);
-//            }
+        try {
+            Warrior warrior = user.getUnit().getWarrior();
+            ClientMoveMyWarriorAnswer move = (ClientMoveMyWarriorAnswer) configuration.getBattleServiceManager().move(warrior, (short) x, (short) y);
+            short xx = move.getX();
+            short yy = move.getY();
+            if (xx != x || yy != y) {
+                ClientBattleHelper.trace(warrior, xx, yy);
+            }
             getStep(user).init();
-//        } catch (Exception e) {
-//            NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
-//            Debug.error(LocalizedStrings.MOVEMENT_RESTRICTION, e);
-//        }
+        } catch (Exception e) {
+            NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
+            Debug.error(LocalizedStrings.MOVEMENT_RESTRICTION, e);
+        }
     }
 
     /**
-
      * Разрешить двинуть бойца warrior принадлежащего союзнику в точку (x;y)
-
      *
      * @param warrior
      * @param x
@@ -360,6 +365,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         ClientBattleHelper.trace(warrior, x, y);
         getStep(ClientBattleHelper.findBattleUnitByWarrior(allies, warrior)).init();
     }
+
 
     /**
      * Покрывает ли наш экран эту точку карты?
@@ -509,11 +515,21 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * @return
      */
     public boolean isMyTurn() {
-        return myTurn;
+        return battleGroup.getAlliance() == activeAlliance;
     }
 
-    public void setMyTurn(boolean myTurn) {
-        this.myTurn = myTurn;
+
+    /**
+     * Вернуть активный боевой союз.
+     *
+     * @return
+     */
+    public BattleAlliance getActiveAlliance() {
+        return activeAlliance;
+    }
+
+    public void setActiveAlliance(BattleAlliance activeAlliance) {
+        this.activeAlliance = activeAlliance;
     }
 
     /**
@@ -607,7 +623,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         }
     }
 
-    private void initBattleUnit(BattleUnit unit, BattleConfiguration battleConfiguration){
+    private void initBattleUnit(BattleUnit unit, BattleConfiguration battleConfiguration) {
         ClientBattleHelper.observe(unit.getUnit().getWarrior(), battleConfiguration);
         ClientBattleHelper.initMapXY(this, unit);
         Step step = new AllyStep();
@@ -616,7 +632,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         steps.add(step);
     }
 
-    public void putEnemyInPosition(BattleUnit enemy , int x, int y){
+    public void putEnemyInPosition(BattleUnit enemy, int x, int y) {
         Pair coordinates = coordinateFinder.find(x, y, this);
         WarriorHelper.putWarriorIntoMap(enemy.getUnit().getWarrior(), battle.getMap(), x, y);
         enemy.setMapX(coordinates.getX());
