@@ -30,7 +30,7 @@ import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.*;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 13.02.12
  */
 public class BattleScreen extends Screen implements TimerListener, DataMessageListener {
@@ -53,13 +53,12 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     private BattleUnit user;
     private MapCorrector corrector;
-    private Finder cellFinder;
-    private Finder coordinateFinder;
+    private Finder cellFinder;       // Определяет номер клетки из коорддинат на карте
+    private Finder coordinateFinder; // Переводит номер клетки в координаты центра клетки на карте
     private boolean showGrid;
 
     private int mapX;
     private int mapY;
-    private int netColor;
 
     private int touchedX;
     private int touchedY;
@@ -86,6 +85,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     private PSprite shadowSprite;
     private PSprite reachableCellSprite;
+    private PSprite unreachableCellSprite;
     private PObject symbolOfProtectionObject;
     private PObject iconHeightOfBarriersObject;
 
@@ -96,10 +96,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         listenedTypes = new short[]{Packets.MOVE_WARRIOR, Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE};
         cellFinder = configuration.getCellFinder();
         coordinateFinder = configuration.getCoordinateFinder();
-        netColor = 255;
 
         shadowSprite = Environment.getRender().getSprite(Graph.SPR_SHADOW);
         reachableCellSprite = Environment.getRender().getSprite(Graph.SPR_DISTANCE);
+        unreachableCellSprite = Environment.getRender().getSprite(Graph.SPR_DISTANCE + 1);
         symbolOfProtectionObject = Environment.getRender().getObject(Graph.OBJ_BAR + 2);
         iconHeightOfBarriersObject = Environment.getRender().getObject(Graph.OBJ_BAR + 3);
     }
@@ -107,7 +107,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public void draw(Graphics graphics) {
         drawGround(graphics);
         drawBattleMap(graphics);
-        drawGroup(graphics);
     }
 
     /**
@@ -123,15 +122,13 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private void drawCell(Graphics graphics, int x, int y, BattleCell cell, boolean path) {
         if (isMyTurn()) {
             boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
-//            if (showGrid) {
-                if (isReachableCell) {
-                    reachableCellSprite.draw(graphics, x, y);
+            if (isReachableCell) {
+                reachableCellSprite.draw(graphics, x, y);
+            } else {
+                if (BattleMapHelper.isBarrier(cell)) {
+                    unreachableCellSprite.draw(graphics, x, y);
                 }
-//                graphics.drawLine(x, y - VERTICAL_RADIUS, x + HORIZONTAL_RADIUS, y);
-//                graphics.drawLine(x + HORIZONTAL_RADIUS, y, x, y + VERTICAL_RADIUS);
-//                graphics.drawLine(x, y + VERTICAL_RADIUS, x - HORIZONTAL_RADIUS, y);
-//                graphics.drawLine(x - HORIZONTAL_RADIUS, y, x, y - VERTICAL_RADIUS);
-//            }
+            }
             if (path) {
                 shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
             }
@@ -141,132 +138,105 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         }
         CellElement[] elements = cell.getElements();
         for (int i = 0; i < cell.getSize(); i++) {
-            PObject obj = Environment.getRender().getObject(elements[i].getFrameId());
-            if (obj != null) {
-                obj.draw(graphics, x, y);
+            CellElement element = elements[i];
+            if (element.getElementType() == CellElementTypes.HUMAN) {
+                BattleUnit unit = ClientBattleHelper.findBattleUnitByWarrior(group, (Warrior) element);
+                drawUnit(graphics, unit);
+            } else {
+                PObject obj = Environment.getRender().getObject(element.getFrameId());
+                if (obj != null) {
+                    obj.draw(graphics, x, y);
+                }
             }
         }
     }
 
-    public static final byte NONE      = 0;    // без направления
-    public static final byte NORTH     = 1;    // север
-    public static final byte NORTHEAST = 2;    // северо-восток
-    public static final byte EAST      = 4;    // восток
-    public static final byte SOUTHEAST = 8;    // юго-восток
-    public static final byte SOUTH     = 16;   // юг
-    public static final byte SOUTHWEST = 32;   // юго-запад
-    public static final byte WEST      = 64;   // запад
-    public static final byte NORTHWEST = -128; // северо-запад
-    /**          1
-     *      128     2
-     *   64            4
-     *       32     8
-     *          16
+    private class Dir {
+        public static final byte NONE      = 0;    // без направления
+        public static final byte NORTH     = 1;    // север
+        public static final byte NORTHEAST = 2;    // северо-восток
+        public static final byte EAST      = 4;    // восток
+        public static final byte SOUTHEAST = 8;    // юго-восток
+        public static final byte SOUTH     = 16;   // юг
+        public static final byte SOUTHWEST = 32;   // юго-запад
+        public static final byte WEST      = 64;   // запад
+        public static final byte NORTHWEST = -128; // северо-запад
+    }
+    /**       128
+     *     64      1
+     *  32            2
+     *     16      4
+     *         8
      */
 
     /**
-     * Рисуем бойцов, которые принадлежат клиентскому приложению.
+     * Рисуем бойца.
      *
      * @param graphics
      */
-    private void drawGroup(Graphics graphics) {
-        for (int i = 0; i < group.size(); i++) {
-            BattleUnit battleUnit = (BattleUnit) group.get(i);
-            if (isOnTheScreen(battleUnit.getMapX(), battleUnit.getMapY())) {
-                if (user == battleUnit) {
-                    byte barrierBits = NONE;
-
-//                    Pair pair = cellFinder.find(battleUnit.getMapX(), battleUnit.getMapY(), this);
-                    Warrior warrior = battleUnit.getUnit().getWarrior();
-                    BattleCell[][] battleCells = battle.getMap().getCells();
-                    if (warrior.getX() > 0 && warrior.getY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getX() - 1][warrior.getY() - 1])) {
-                        barrierBits |= NORTHWEST;
-                    }
-                    if (warrior.getY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getX()][warrior.getY() - 1])) {
-                        barrierBits |= NORTH;
-                    }
-                    if (warrior.getX() < battleCells.length - 1 && warrior.getY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getX() + 1][warrior.getY() - 1])) {
-                        barrierBits |= NORTHEAST;
-                    }
-                    if (warrior.getX() < battleCells.length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getX() + 1][warrior.getY()])) {
-                        barrierBits |= EAST;
-                    }
-                    if (warrior.getX() < battleCells.length - 1 && warrior.getY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getX() + 1][warrior.getY() + 1])) {
-                        barrierBits |= SOUTHEAST;
-                    }
-                    if (warrior.getY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getX()][warrior.getY() + 1])) {
-                        barrierBits |= SOUTH;
-                    }
-                    if (warrior.getX() > 0 && warrior.getY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getX() - 1][warrior.getY() + 1])) {
-                        barrierBits |= SOUTHWEST;
-                    }
-                    if (warrior.getX() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getX() - 1][warrior.getY()])) {
-                        barrierBits |= WEST;
-                    }
-//                    final byte NONE      = 0;    // без направления
-//                    final byte NORTH     = 1;    // север
-//                    final byte NORTHEAST = 2;    // северо-восток
-//                    final byte EAST      = 4;    // восток
-//                    final byte SOUTHEAST = 8;    // юго-восток
-//                    final byte SOUTH     = 16;   // юг
-//                    final byte SOUTHWEST = 32;   // юго-запад
-//                    final byte WEST      = 64;   // запад
-//                    final byte NORTHWEST = -128; // северо-запад
-                    Index index = null;
-                    if ((barrierBits & (WEST | NORTHWEST | NORTH)) == (WEST | NORTHWEST | NORTH)) {
-                        index = symbolOfProtectionObject.getIndexBySlot(1);
-                    } else
-                    if ((barrierBits & (NORTH | NORTHEAST | EAST)) == (NORTH | NORTHEAST | EAST)) {
-                        index = symbolOfProtectionObject.getIndexBySlot(3);
-                    } else
-                    if ((barrierBits & (EAST | SOUTHEAST | SOUTH)) == (EAST | SOUTHEAST | SOUTH)) {
-                        index = symbolOfProtectionObject.getIndexBySlot(5);
-                    } else
-                    if ((barrierBits & (SOUTH | SOUTHWEST | WEST)) == (SOUTH | SOUTHWEST | WEST)) {
-                        index = symbolOfProtectionObject.getIndexBySlot(7);
-                    } else
-                    if ((barrierBits & NORTH) == NORTH) {
-                        index = symbolOfProtectionObject.getIndexBySlot(2);
-                    } else
-                    if ((barrierBits & EAST) == EAST) {
-                        index = symbolOfProtectionObject.getIndexBySlot(4);
-                    } else
-                    if ((barrierBits & SOUTH) == SOUTH) {
-                        index = symbolOfProtectionObject.getIndexBySlot(6);
-                    } else
-                    if ((barrierBits & WEST) == WEST) {
-                        index = symbolOfProtectionObject.getIndexBySlot(8);
-                    }
-
-//                    switch (barrierBits) {
-//                        case NONE: break;
-//                        case (byte)(WEST | NORTHWEST | NORTH): index = symbolOfProtectionObject.getIndexBySlot(1); break;
-//                        case NORTH:                            index = symbolOfProtectionObject.getIndexBySlot(2); break;
-//                        case (byte)(NORTH | NORTHEAST | EAST): index = symbolOfProtectionObject.getIndexBySlot(3); break;
-//                        case EAST:                             index = symbolOfProtectionObject.getIndexBySlot(4); break;
-//                        case (byte)(EAST | SOUTHEAST | SOUTH): index = symbolOfProtectionObject.getIndexBySlot(5); break;
-//                        case SOUTH:                            index = symbolOfProtectionObject.getIndexBySlot(6); break;
-//                        case (byte)(SOUTH | SOUTHWEST | WEST): index = symbolOfProtectionObject.getIndexBySlot(7); break;
-//                        case WEST:                             index = symbolOfProtectionObject.getIndexBySlot(8); break;
-//                        default: Debug.debug("drawGroup: barrierBits = " + barrierBits);
-//                    }
-
-//                    BattleCell unitCell = battle.getMap().getCells()[pair.getX()][pair.getY()];
-//                    unitCell.
-
-//                    symbolOfProtectionObject.getIndexBySlot(0).draw(graphics, x, y);
-                    if (index != null) {
-                        Pair pair = coordinateFinder.find(warrior.getY(), warrior.getX(), this);
-                        index.draw(graphics, pair.getX() - mapX, pair.getY() - mapY);
-                    }
-                }
-                battleUnit.getUnit().draw(graphics, battleUnit.getMapX() - mapX, battleUnit.getMapY() - mapY);
+    private void drawUnit(Graphics graphics, BattleUnit unit) {
+        if (isMyTurn() && user == unit) {
+            byte barrierBits = Dir.NONE;
+            Warrior warrior = unit.getUnit().getWarrior();
+            BattleCell[][] battleCells = battle.getMap().getCells();
+            if (warrior.getX() > 0 && warrior.getY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getX() - 1][warrior.getY() - 1])) {
+                barrierBits |= Dir.NORTHWEST;
+            }
+            if (warrior.getY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getX()][warrior.getY() - 1])) {
+                barrierBits |= Dir.NORTH;
+            }
+            if (warrior.getX() < battleCells.length - 1 && warrior.getY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getX() + 1][warrior.getY() - 1])) {
+                barrierBits |= Dir.NORTHEAST;
+            }
+            if (warrior.getX() < battleCells.length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getX() + 1][warrior.getY()])) {
+                barrierBits |= Dir.EAST;
+            }
+            if (warrior.getX() < battleCells.length - 1 && warrior.getY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getX() + 1][warrior.getY() + 1])) {
+                barrierBits |= Dir.SOUTHEAST;
+            }
+            if (warrior.getY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getX()][warrior.getY() + 1])) {
+                barrierBits |= Dir.SOUTH;
+            }
+            if (warrior.getX() > 0 && warrior.getY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getX() - 1][warrior.getY() + 1])) {
+                barrierBits |= Dir.SOUTHWEST;
+            }
+            if (warrior.getX() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getX() - 1][warrior.getY()])) {
+                barrierBits |= Dir.WEST;
+            }
+            Index index = null;
+            if ((barrierBits & (Dir.WEST | Dir.NORTHWEST | Dir.NORTH)) == (Dir.WEST | Dir.NORTHWEST | Dir.NORTH)) {
+                index = symbolOfProtectionObject.getIndexBySlot(1);
+            } else
+            if ((barrierBits & (Dir.NORTH | Dir.NORTHEAST | Dir.EAST)) == (Dir.NORTH | Dir.NORTHEAST | Dir.EAST)) {
+                index = symbolOfProtectionObject.getIndexBySlot(3);
+            } else
+            if ((barrierBits & (Dir.EAST | Dir.SOUTHEAST | Dir.SOUTH)) == (Dir.EAST | Dir.SOUTHEAST | Dir.SOUTH)) {
+                index = symbolOfProtectionObject.getIndexBySlot(5);
+            } else
+            if ((barrierBits & (Dir.SOUTH | Dir.SOUTHWEST | Dir.WEST)) == (Dir.SOUTH | Dir.SOUTHWEST | Dir.WEST)) {
+                index = symbolOfProtectionObject.getIndexBySlot(7);
+            } else
+            if ((barrierBits & Dir.NORTH) == Dir.NORTH) {
+                index = symbolOfProtectionObject.getIndexBySlot(2);
+            } else
+            if ((barrierBits & Dir.EAST) == Dir.EAST) {
+                index = symbolOfProtectionObject.getIndexBySlot(4);
+            } else
+            if ((barrierBits & Dir.SOUTH) == Dir.SOUTH) {
+                index = symbolOfProtectionObject.getIndexBySlot(6);
+            } else
+            if ((barrierBits & Dir.WEST) == Dir.WEST) {
+                index = symbolOfProtectionObject.getIndexBySlot(8);
+            }
+            if (index != null) {
+                Pair pair = coordinateFinder.find(warrior.getY(), warrior.getX(), this);
+                index.draw(graphics, pair.getX() - mapX, pair.getY() - mapY);
             }
         }
+        unit.getUnit().draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY);
     }
 
     private void drawBattleMap(Graphics graphics) {
-        graphics.setColor(netColor);
         BattleCell[][] cells = battle.getMap().getCells();
         int length = cells.length;
         int x, y;
@@ -299,6 +269,27 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             }
             x += GROUND_WIDTH;
         }
+        // Рисуем границу вокруг игрового поля
+        graphics.setColor(0x0000FF);
+        BattleCell[][] battleCells = battle.getMap().getCells();
+        int[] points = new int[8];
+        Pair pair = coordinateFinder.find(0, 0, this);
+        points[0] = pair.getX() - mapX;
+        points[1] = pair.getY() - VERTICAL_RADIUS - mapY;
+        pair = coordinateFinder.find(0, battleCells[0].length - 1, this);
+        points[2] = pair.getX() + HORIZONTAL_RADIUS - mapX;
+        points[3] = pair.getY() - mapY;
+        pair = coordinateFinder.find(battleCells.length - 1, battleCells[0].length - 1, this);
+        points[4] = pair.getX() - mapX;
+        points[5] = pair.getY() + VERTICAL_RADIUS - mapY;
+        pair = coordinateFinder.find(battleCells.length - 1, 0, this);
+        points[6] = pair.getX() - HORIZONTAL_RADIUS - mapX;
+        points[7] = pair.getY() - mapY;
+        graphics.drawLine(points[0], points[1], points[2], points[3]);
+        graphics.drawLine(points[2], points[3], points[4], points[5]);
+        graphics.drawLine(points[4], points[5], points[6], points[7]);
+        graphics.drawLine(points[6], points[7], points[0], points[1]);
+        graphics.setColor(0xFFFFFF);
     }
 
     /**
