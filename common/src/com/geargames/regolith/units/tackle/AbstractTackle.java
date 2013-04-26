@@ -16,7 +16,7 @@ public abstract class AbstractTackle extends CellElement {
     public abstract int getType();
 
     /**
-     * Вернуть наменование клади.
+     * Вернуть наименование клади.
      * @return
      */
     public abstract String getName();
@@ -45,6 +45,11 @@ public abstract class AbstractTackle extends CellElement {
     @Override
     public boolean isHalfLong() {
         return true;
+    }
+
+    @Override
+    public boolean isBarrier() {
+        return false;
     }
 
     @Override

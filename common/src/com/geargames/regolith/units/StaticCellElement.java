@@ -18,11 +18,15 @@ public abstract class StaticCellElement extends CellElement {
     /**
      * Возможно ли видеть через этот элемент?
      */
-    public abstract boolean isAbleToLookThrough();
+    @Override
+    public boolean isAbleToLookThrough() {
+        return true;
+    }
 
     /**
      * Возможно ли ходить через этот элемент?
      */
+    @Override
     public boolean isAbleToWalkThrough() {
         return true;
     }
@@ -30,6 +34,7 @@ public abstract class StaticCellElement extends CellElement {
     /**
      * Возможно ли стрелять через этот элемент оружием данного вида?
      */
+    @Override
     public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
         return true;
     }
@@ -37,7 +42,16 @@ public abstract class StaticCellElement extends CellElement {
     /**
      * Это препятствие в половину роста бойца?
      */
+    @Override
     public boolean isHalfLong() {
+        return false;
+    }
+
+    /**
+     * Вернет true, если элемент является барьером.
+     */
+    @Override
+    public boolean isBarrier() {
         return false;
     }
 
@@ -45,6 +59,7 @@ public abstract class StaticCellElement extends CellElement {
      * Получить тип элемента.
      * @return - одно из значений CellElementTypes
      */
+    @Override
     public short getElementType() {
         return CellElementTypes.STATIC;
     }
@@ -53,6 +68,7 @@ public abstract class StaticCellElement extends CellElement {
      * Получить номер слоя, в котором должен располагаться элемент ячейки.
      * @return - одно из значений CellElementLayers
      */
+    @Override
     public byte getLayer() {
         return CellElementLayers.STATIC;
     }

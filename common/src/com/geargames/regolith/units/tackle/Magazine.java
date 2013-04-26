@@ -34,24 +34,34 @@ public class Magazine extends CellElement {
         this.count = count;
     }
 
+    @Override
     public boolean isAbleToLookThrough() {
         return true;
     }
 
+    @Override
     public boolean isAbleToWalkThrough() {
         return true;
     }
 
+    @Override
     public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
         return true;
     }
 
+    @Override
     public boolean isHalfLong() {
         return true;
     }
 
+    @Override
     public int getFrameId() {
         return projectile.getFrameId();
+    }
+
+    @Override
+    public boolean isBarrier() {
+        return false;
     }
 
     @Override

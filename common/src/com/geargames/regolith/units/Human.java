@@ -125,19 +125,28 @@ public class Human extends CellElement {
         this.name = name;
     }
 
+    @Override
     public boolean isHalfLong() {
         return isSitting();
     }
 
+    @Override
     public boolean isAbleToLookThrough() {
         return isSitting();
     }
 
+    @Override
     public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
         return isSitting();
     }
 
+    @Override
     public boolean isAbleToWalkThrough() {
+        return false;
+    }
+
+    @Override
+    public boolean isBarrier() {
         return false;
     }
 

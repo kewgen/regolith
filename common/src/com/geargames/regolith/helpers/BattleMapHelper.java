@@ -12,9 +12,8 @@ import com.geargames.regolith.units.tackle.Magazine;
 import com.geargames.regolith.units.tackle.Medikit;
 import com.geargames.regolith.units.tackle.StateTackle;
 
-
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 19.02.12
  */
 public class BattleMapHelper {
@@ -177,7 +176,7 @@ public class BattleMapHelper {
     }
 
     /**
-     * Зачистить окрестность точки x y  от отметок кратчайшего пути пользователя warrior.
+     * Зачистить окрестность точки (x;y) от отметок кратчайшего пути пользователя warrior.
      *
      * @param warrior
      * @param x
@@ -204,7 +203,7 @@ public class BattleMapHelper {
     }
 
     /**
-     * Снять отметку с ячейки cell о том что она часть кротчайшего пути бойца с warrior.
+     * Снять отметку с ячейки cell о том, что она часть кратчайшего пути бойца с warrior.
      *
      * @param warrior
      * @param cell
@@ -229,7 +228,7 @@ public class BattleMapHelper {
     }
 
     /**
-     * Зачистить карту battleMap от маршрутов бойца warrior начиная с точки x;y.
+     * Зачистить карту battleMap от маршрутов бойца warrior начиная с точки (x;y).
      *
      * @param warrior
      * @param x
@@ -301,7 +300,7 @@ public class BattleMapHelper {
     }
 
     /**
-     * Определить находится ли точка на границе видимости для союза alliance в точке x:y.
+     * Определить находится ли точка на границе видимости для союза alliance в точке (x;y).
      *
      * @param cells    массив ячеек карты
      * @param x        первая координата в массиве ячеек
@@ -418,7 +417,7 @@ public class BattleMapHelper {
 
 
     /**
-     * Переместить предмет из одной точки на катре в другую(находящуюся рядом с бойцом warrior).
+     * Переместить предмет из одной точки на катре в другую (находящуюся рядом с бойцом warrior).
      *
      * @param warrior
      * @param cells
@@ -437,6 +436,21 @@ public class BattleMapHelper {
             return false;
         }
     }
+
+    /**
+     * Вернет true, если на ячейке карты есть элемент-барьер.
+     * @return
+     */
+    public static boolean isBarrier(BattleCell cell) {
+        CellElement[] elements = cell.getElements();
+        for (int i = cell.getSize() - 1; i >= 0; i--) {
+            if (elements[i].isBarrier()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
 

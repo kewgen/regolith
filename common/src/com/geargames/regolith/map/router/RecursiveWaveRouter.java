@@ -28,7 +28,7 @@ public class RecursiveWaveRouter extends  Router{
         int y0 = warrior.getY();
 
         BattleMapHelper.setZeroOrder(warrior);
-        tryNeighbours(cells, warrior, x0, y0, actionScore-1, 0);
+        tryNeighbours(cells, warrior, x0, y0, actionScore, 0);
     }
 
 
