@@ -390,7 +390,7 @@
         <delete dir="${report.dir}"/>
         <mkdir dir="${report.dir}"/>
 
-        <junit printsummary="yes" haltonfailure="yes" fork="true">
+        <junit printsummary="yes" haltonfailure="yes" fork="true" spawn="false">
             <classpath refid="classpath.conjunction"/>
             <formatter type="plain" usefile="false"/>
             <test name="com.geargames.regolith.ServerDBTest" haltonfailure="no" outfile="${report.dir}/result"/>
@@ -424,7 +424,7 @@
                 </patternset>
             </fileset>
         </path>
-        <java classname="com.geargames.regolith.RunMainService" fork="true">
+        <java classname="com.geargames.regolith.RunMainService" fork="true" spawn="false">
             <classpath refid="classpath.run.main.server"/>
         </java>
     </target>
@@ -450,7 +450,7 @@
                 </patternset>
             </fileset>
         </path>
-        <java classname="com.geargames.regolith.service.BattleConsoleServiceManager" fork="true">
+        <java classname="com.geargames.regolith.service.BattleConsoleServiceManager" fork="true" spawn="false">
             <classpath refid="classpath.run.battle.server"/>
             <arg line="START BATTLE 127.0.0.1 127.0.0.1 2754"/>
         </java>
@@ -474,9 +474,40 @@
                 </patternset>
             </fileset>
         </path>
-        <java classname="com.geargames.regolith.MenuTest" fork="true">
+        <java classname="com.geargames.regolith.MenuTest" fork="true" spawn="false">
             <classpath refid="classpath.test"/>
             <arg value="${login.name}"/>
         </java>
     </target>
+	   
+	<target name="run.rmiregistry">
+    	 <echo message="Starting rmiregestry"/>
+			<exec dir="basedir" executable="sh">
+				<arg line="startRmiRegistry"/>
+			</exec>
+        <echo message="rmiregistry was started"/>
+	</target>
+	
+
+	
+	
+	<target name="run.all">
+		<antcall target="run.rmiregistry">
+		</antcall>
+		<sleep seconds="5"/>
+		
+		<antcall target="main.server">
+		</antcall>
+		<sleep seconds="5"/>
+		
+		<antcall target="run.battle.server">
+		</antcall>
+		<antcall target="run.client">
+			<param name="login.name" value="1"/>
+		</antcall>		
+		<antcall target="run.client">
+			<param name="login.name" value="2"/>
+		</antcall>
+	</target>
+	
 </project>
