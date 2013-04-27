@@ -6,8 +6,9 @@ import com.geargames.common.network.MessageDispatcher;
 import com.geargames.common.network.Network;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
-import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.serializers.answers.*;
 
 /**
@@ -15,9 +16,11 @@ import com.geargames.regolith.serializers.answers.*;
  * Date: 28.03.13
  */
 public class RegolithMessageDispatcher extends MessageDispatcher {
+    private ClientConfiguration configuration;
 
-    public RegolithMessageDispatcher(Network network, int size) {
+    public RegolithMessageDispatcher(Network network, int size, ClientConfiguration configuration) {
         super(network, size);
+        this.configuration = configuration;
     }
 
     @Override
@@ -49,15 +52,26 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
                 break;
             case Packets.BATTLE_SERVICE_LOGIN:
                 message = new ClientBattleLoginAnswer();
-                ((ClientBattleLoginAnswer)message).setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
+                ((ClientBattleLoginAnswer)message).setBattle(configuration.getBattle());
                 break;
             case Packets.BATTLE_SERVICE_NEW_CLIENT_LOGIN:
-                 message = new ClientNewBattleClientLogin();
-                ((ClientNewBattleClientLogin)message).setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
+                 message = new ClientNewBattleLogin();
+                ((ClientNewBattleLogin)message).setBattle(configuration.getBattle());
                 break;
             case Packets.CHANGE_ACTIVE_ALLIANCE:
                 message = new ClientChangeActiveAllianceAnswer();
-                ((ClientChangeActiveAllianceAnswer)message).setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
+                ((ClientChangeActiveAllianceAnswer)message).setBattle(configuration.getBattle());
+                break;
+            case Packets.MOVE_WARRIOR:
+                ClientMoveWarriorAnswer move = new ClientMoveWarriorAnswer();
+                move.setBattle(configuration.getBattle());
+                move.setEnemies(PRegolithPanelManager.getInstance().getBattleScreen().getEnemies());
+                message = move;
+                break;
+            case Packets.INITIALLY_OBSERVED_ENEMIES:
+                ClientInitiallyObservedEnemies init = new ClientInitiallyObservedEnemies();
+                init.setBattle(configuration.getBattle());
+                message = init;
                 break;
             default:
                 Debug.critical("RegolithMessageDispatcher: Unknown message type (" + dataMessage.getMessageType() + ")");

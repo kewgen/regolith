@@ -3,7 +3,7 @@ package com.geargames.regolith.managers;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
-import com.geargames.regolith.serializers.answers.ClientMoveMyWarriorAnswer;
+import com.geargames.regolith.serializers.answers.ClientMoveWarriorAnswer;
 import com.geargames.regolith.serializers.requests.ClientBattleServiceLoginRequest;
 import com.geargames.regolith.serializers.requests.ClientCheckSumRequest;
 import com.geargames.regolith.serializers.requests.ClientMoveRequest;
@@ -19,7 +19,7 @@ import com.geargames.regolith.units.battle.Warrior;
 public class ClientBattleServiceManager {
     private ClientConfiguration configuration;
     private ClientListenToBattleAnswer clientListenToBattleAnswer;
-    private ClientMoveMyWarriorAnswer clientMoveMyWarriorAnswer;
+    private ClientMoveWarriorAnswer clientMoveMyWarriorAnswer;
     private ClientCheckSumRequest checkSumRequest;
 
     public ClientBattleServiceManager(ClientConfiguration configuration) {
@@ -27,7 +27,7 @@ public class ClientBattleServiceManager {
         clientListenToBattleAnswer = new ClientListenToBattleAnswer();
         checkSumRequest = new ClientCheckSumRequest();
         checkSumRequest.setConfiguration(configuration);
-        clientMoveMyWarriorAnswer = new ClientMoveMyWarriorAnswer();
+        clientMoveMyWarriorAnswer = new ClientMoveWarriorAnswer();
     }
 
     public ClientDeSerializedMessage login(Battle battle, BattleAlliance alliance) throws Exception {
@@ -46,7 +46,7 @@ public class ClientBattleServiceManager {
      * @throws Exception
      */
     public ClientDeSerializedMessage move(Warrior warrior, short x, short y) throws Exception {
-        clientMoveMyWarriorAnswer.setWarrior(warrior);
+        clientMoveMyWarriorAnswer.setBattle(warrior.getBattleGroup().getAlliance().getBattle());
         configuration.getNetwork().sendSynchronousMessage(
                 new ClientMoveRequest(configuration, warrior, x, y),
                 clientMoveMyWarriorAnswer, 100);

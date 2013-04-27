@@ -5,6 +5,7 @@ import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.map.router.Router;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.BattleUnit;
@@ -24,30 +25,31 @@ import java.util.Vector;
  */
 public class ClientBattleHelper {
 
-    public static void observe(Warrior warrior, BattleConfiguration battleConfiguration) {
-        battleConfiguration.getObserver().observe(warrior);
-    }
-
-    public static void route(Warrior warrior, BattleConfiguration battleConfiguration) {
+    /**
+     * Проставить стоимости в ОД достижимости окружающих точек карты, для бойца warrior.
+     * <p/>
+     * Предворяется зачисткой старого кратчайшего пути и пометкой окружающих ячеек как UN_ROUTED.
+     *
+     * @param warrior
+     * @param router
+     */
+    public static void route(Warrior warrior, Router router) {
         BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
         BattleMapHelper.prepare(warrior.getBattleGroup().getAlliance().getBattle().getMap());
-        battleConfiguration.getRouter().route(warrior);
-    }
-
-    public static void trace(Warrior warrior, int x, int y) {
-        BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
-        BattleMapHelper.makeShortestRoute(x, y, warrior);
+        router.route(warrior);
     }
 
     /**
-     * Запросить сервер: переместить основного игрока клиентского приложения из того места где он находится в точку x;y
-     * по кратчайшему пути.
+     * На карте, с проставленными из начальной точки(где стоит warrior) стоимостями достижимости, выбрать кратчайший путь
+     * из точки x:y в точку где стоит warrior и отметить каждую ячейку этого пути как часть кратчайшего пути.
      *
+     * @param warrior
      * @param x
      * @param y
      */
-    public static void move(BattleScreen screen, int x, int y) {
-
+    public static void trace(Warrior warrior, int x, int y) {
+        BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
+        BattleMapHelper.makeShortestRoute(x, y, warrior);
     }
 
     /**
@@ -65,34 +67,36 @@ public class ClientBattleHelper {
 
     /**
      * Ускоренно перемещаем бойца противника(warrior) в расчётную точку.
+     *
      * @param warrior
      * @param map
      */
-    public static void moveEnemy(Warrior warrior, BattleMap map){
+    public static void moveEnemy(Warrior warrior, BattleMap map) {
         BattleCell[][] cells = map.getCells();
         Direction direction;
         BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
-        do{
-            direction = WarriorHelper.getStepDirection(warrior,cells);
+        do {
+            direction = WarriorHelper.getStepDirection(warrior, cells);
             BattleMapHelper.resetShortestCell(cells[warrior.getX()][warrior.getY()], alliance, warrior);
             WarriorHelper.putWarriorIntoMap(warrior, map, warrior.getX() + direction.getX(), warrior.getY() + direction.getY());
         }
-        while(direction != Direction.NONE);
+        while (direction != Direction.NONE);
     }
 
     /**
      * Быстро переместить созные войска battleUnits в место назначения на экране screen.
+     *
      * @param battleUnits
      * @param battle
      * @param battleConfiguration
      * @param screen
      */
-    public static void immediateMoveAllyies(ArrayList battleUnits, Battle battle, BattleConfiguration battleConfiguration, BattleScreen screen){
+    public static void immediateMoveAllies(ArrayList battleUnits, Battle battle, BattleConfiguration battleConfiguration, BattleScreen screen) {
         int size = battleUnits.size();
-        for(int i =0 ; i < size; i++){
-            BattleUnit battleUnit = ((BattleUnit)battleUnits.get(i));
+        for (int i = 0; i < size; i++) {
+            BattleUnit battleUnit = ((BattleUnit) battleUnits.get(i));
             Warrior warrior = battleUnit.getUnit().getWarrior();
-            if(warrior.isMoving()){
+            if (warrior.isMoving()) {
                 WarriorHelper.move(warrior, battle.getMap().getCells(), NullStepListener.instance, battleConfiguration);
                 ClientBattleHelper.initMapXY(screen, battleUnit);
             }
@@ -102,16 +106,17 @@ public class ClientBattleHelper {
 
     /**
      * Быстро переместить врага на его место назначения на экране screen.
+     *
      * @param enemies
      * @param battle
      * @param screen
      */
-    public static void immediateMoveEnemies(ArrayList enemies, Battle battle, BattleScreen screen){
+    public static void immediateMoveEnemies(ArrayList enemies, Battle battle, BattleScreen screen) {
         int size = enemies.size();
-        for(int i = 0; i < size; i++){
-            BattleUnit battleUnit = (BattleUnit)enemies.get(i);
+        for (int i = 0; i < size; i++) {
+            BattleUnit battleUnit = (BattleUnit) enemies.get(i);
             Warrior warrior = battleUnit.getUnit().getWarrior();
-            if(warrior.isMoving()){
+            if (warrior.isMoving()) {
                 ClientBattleHelper.moveEnemy(warrior, battle.getMap());
                 ClientBattleHelper.initMapXY(screen, battleUnit);
             }
@@ -245,7 +250,7 @@ public class ClientBattleHelper {
         return battleUnits;
     }
 
-    public static void position(BattleUnit battleUnit, BattleScreen screen){
+    public static void position(BattleUnit battleUnit, BattleScreen screen) {
 
     }
 
@@ -285,10 +290,10 @@ public class ClientBattleHelper {
         BattleGroupCollection groups = alliance.getAllies();
         ClientAllyCollection allies = new ClientAllyCollection();
         allies.setAllies(new Vector());
-        for(int i = 0; i < groups.size(); i++){
+        for (int i = 0; i < groups.size(); i++) {
             BattleGroup group = groups.get(i);
             WarriorCollection warriors = group.getWarriors();
-            for(int j = 0; j < warriors.size(); j++){
+            for (int j = 0; j < warriors.size(); j++) {
                 allies.add(warriors.get(j));
             }
         }
@@ -390,9 +395,9 @@ public class ClientBattleHelper {
     }
 
     public static BattleUnit findBattleUnitByWarriorId(ArrayList units, int id) throws Exception {
-        for(int i = 0; i < units.size(); i++){
-            BattleUnit unit = (BattleUnit)units.get(i);
-            if(unit.getUnit().getWarrior().getId() == id){
+        for (int i = 0; i < units.size(); i++) {
+            BattleUnit unit = (BattleUnit) units.get(i);
+            if (unit.getUnit().getWarrior().getId() == id) {
                 return unit;
             }
         }
@@ -401,6 +406,7 @@ public class ClientBattleHelper {
 
     /**
      * Слить аккаунты боевых групп из битвы from в into.
+     *
      * @param into
      * @param from
      * @throws Exception если битвы не совместимы по типу
@@ -426,12 +432,13 @@ public class ClientBattleHelper {
 
     /**
      * Заполнить очки действия на начало хода.
+     *
      * @param battleUnits
      * @param baseConfiguration
      */
-    public static void resetActionScores(ArrayList battleUnits, BaseConfiguration baseConfiguration){
+    public static void resetActionScores(ArrayList battleUnits, BaseConfiguration baseConfiguration) {
         int size = battleUnits.size();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             Warrior warrior = ((BattleUnit) battleUnits.get(i)).getUnit().getWarrior();
             warrior.setActionScore(WarriorHelper.getMaxActionScores(warrior, baseConfiguration));
         }

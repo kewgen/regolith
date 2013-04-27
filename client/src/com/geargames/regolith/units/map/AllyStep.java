@@ -12,7 +12,7 @@ import com.geargames.regolith.units.battle.Warrior;
 public class AllyStep extends Step {
 
     protected void routeMap(Warrior warrior) {
-        ClientBattleHelper.route(warrior, getBattleConfiguration());
+        ClientBattleHelper.route(warrior, getBattleConfiguration().getRouter());
     }
 
     protected boolean hasToStop(Warrior warrior) {
