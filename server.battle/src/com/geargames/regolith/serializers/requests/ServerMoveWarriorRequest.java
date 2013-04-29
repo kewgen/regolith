@@ -52,7 +52,7 @@ public class ServerMoveWarriorRequest extends ServerRequest {
 
                 int x = SimpleDeserializer.deserializeShort(from);
                 int y = SimpleDeserializer.deserializeShort(from);
-                BattleMapHelper.clearRoutes(warrior, warrior.getX(), warrior.getY());
+                BattleMapHelper.clearRoutes(warrior, warrior.getX(), warrior.getY(), regolithConfiguration.getBattleConfiguration());
                 BattleMapHelper.clearViewAround(warrior);
                 final Map<BattleAlliance, List<Pair>> alliancesTraces = new HashMap<BattleAlliance, List<Pair>>();
 

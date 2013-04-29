@@ -16,7 +16,7 @@ public class AllyStep extends Step {
     }
 
     protected boolean hasToStop(Warrior warrior) {
-        return WarriorHelper.getReachableRadius(warrior) == 0;
+        return WarriorHelper.getReachableRadius(warrior, getBattleConfiguration()) == 0;
     }
 
     protected void doStepOnMap(Warrior warrior, int stepX, int stepY) {

@@ -54,7 +54,7 @@ public class MotionTest {
         BattleMapHelper.prepare(battleMap);
         TestHelper.printRouteMap(battleMap, warrior);
         BattleConfiguration battleConfiguration = ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
-        battleConfiguration.getRouter().route(warrior);
+        battleConfiguration.getRouter().route(warrior, battleConfiguration);
         TestHelper.printRouteMap(battleMap, warrior);
         MoveOneStepListener listener = new MoveOneStepListener(){
             @Override

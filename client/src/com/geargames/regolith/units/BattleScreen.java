@@ -43,9 +43,9 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public static int VERTICAL_RADIUS = VERTICAL_DIAGONAL / 2;
     public static double TANGENT = (VERTICAL_RADIUS + 0.0) / (HORIZONTAL_RADIUS + 0.0);
 
-    private ArrayList enemies;
-    private ArrayList allies;
-    private ArrayList group;
+    private ArrayList enemies; // вражеские BattleUnit
+    private ArrayList allies;  // союзные BattleUnit
+    private ArrayList group;   // BattleUnit текущего клиента
 
     private ArrayList steps;
     private Battle battle;
@@ -393,7 +393,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                                 setActiveUnit(ClientBattleHelper.findBattleUnitByWarrior(group, (Warrior) element));
                             } else if (BattleMapHelper.isReachable(battleCell) && !warrior.isMoving()) {
                                 Debug.debug("trace for a user " + warrior.getNumber());
-                                ClientBattleHelper.trace(user.getUnit().getWarrior(), cell.getX(), cell.getY());
+                                ClientBattleHelper.trace(user.getUnit().getWarrior(), cell.getX(), cell.getY(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
                             } else {
                                 Debug.debug("point " + cell.getX() + ":" + cell.getY() + " is not reachable");
                             }
@@ -438,24 +438,22 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         switch (type) {
             case Packets.CHANGE_ACTIVE_ALLIANCE:
                 BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
+                //todo: Вызов следующих трех методов под вопросом
                 ClientBattleHelper.immediateMoveAllyies(group, battle, battleConfiguration, this);
                 ClientBattleHelper.immediateMoveAllyies(allies, battle, battleConfiguration, this);
                 ClientBattleHelper.immediateMoveEnemies(enemies, battle, this);
 
                 ClientChangeActiveAllianceAnswer change = (ClientChangeActiveAllianceAnswer) message;
                 if (isMyTurn()) {
-                    Debug.debug("my turn has been finished");
-                    configuration.getBattleServiceManager().checkSum();
+                    onMyTurnFinished();
                 }
                 activeAlliance = change.getAlliance();
                 if (isMyTurn()) {
-                    Debug.debug("my turn has begun");
-                    ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
+                    onMyTurnStarted();
                 }
-                onChangeActiveAlliance(change.getAlliance());
+                onChangeActiveAlliance(activeAlliance);
                 break;
             case Packets.MOVE_WARRIOR:
-
                 break;
             case Packets.MOVE_ALLY:
                 break;
@@ -497,7 +495,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * @param y
      */
     private void moveAlly(Warrior warrior, int x, int y) {
-        ClientBattleHelper.trace(warrior, x, y);
+        ClientBattleHelper.trace(warrior, x, y, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
         getStep(ClientBattleHelper.findBattleUnitByWarrior(allies, warrior)).init();
     }
 
@@ -721,11 +719,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             centerLeft.setY(centerRight.getY());
 
             b1 = (int) (topCenter.getY() - (topCenter.getX()) * TANGENT) - VERTICAL_RADIUS;
-
             b2 = (int) (centerRight.getY() + centerRight.getX() * TANGENT) + VERTICAL_RADIUS;
-
             b3 = (int) (bottomCenter.getY() - bottomCenter.getX() * TANGENT) + VERTICAL_RADIUS;
-
             b4 = (int) (centerLeft.getY() + centerLeft.getX() * TANGENT) - VERTICAL_RADIUS;
             center = new Pair();
             showGrid = true;
@@ -748,7 +743,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                             newActiveUnit = unit;
                         }
                     }
-//                    ClientBattleHelper.route(user.getUnit().getWarrior(), battleConfiguration);
                 } else {
                     WarriorCollection warriors = clients.get(j).getWarriors();
                     for (int i = 0; i < warriors.size(); i++) {
@@ -762,6 +756,12 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
             ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
         }
+    }
+
+    @Override
+    public void onHide() {
+        TimerManager.killTimer(timerId);
+        ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
     }
 
     private void initBattleUnit(BattleUnit unit, BattleConfiguration battleConfiguration) {
@@ -780,10 +780,34 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         enemy.setMapY(coordinates.getY());
     }
 
-    @Override
-    public void onHide() {
-        TimerManager.killTimer(timerId);
-        ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
+    /**
+     * Обработчик события сообщающего о начале хода.
+     */
+    public void onMyTurnStarted() {
+        Debug.debug("My turn has begun");
+        ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
+        BattleUnit unit = ClientBattleHelper.findBattleUnitByWarrior(group, battleGroup.getWarriors().get(0));
+        setActiveUnit(unit);
+
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.show(panelManager.getBattleWarriorListWindow());
+        panelManager.show(panelManager.getBattleWeaponMenuWindow());
+        panelManager.show(panelManager.getBattleWarriorMenuWindow());
+        panelManager.show(panelManager.getBattleShotMenuWindow());
+    }
+
+    /**
+     * Обработчик события сообщающего о завершении хода.
+     */
+    public void onMyTurnFinished() {
+        Debug.debug("My turn has been finished");
+        configuration.getBattleServiceManager().checkSum();
+
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.hide(panelManager.getBattleWarriorListWindow());
+        panelManager.hide(panelManager.getBattleWeaponMenuWindow());
+        panelManager.hide(panelManager.getBattleWarriorMenuWindow());
+        panelManager.hide(panelManager.getBattleShotMenuWindow());
     }
 
     /**
@@ -793,17 +817,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.getHeadlinePanel().setActiveAlliance(alliance);
         panelManager.getBattleMenuPanel().onActiveAllianceChanged(alliance);
-        if (isMyTurn()) {
-            panelManager.show(panelManager.getBattleWarriorListWindow());
-            panelManager.show(panelManager.getBattleWeaponMenuWindow());
-            panelManager.show(panelManager.getBattleWarriorMenuWindow());
-            panelManager.show(panelManager.getBattleShotMenuWindow());
-        } else {
-            panelManager.hide(panelManager.getBattleWarriorListWindow());
-            panelManager.hide(panelManager.getBattleWeaponMenuWindow());
-            panelManager.hide(panelManager.getBattleWarriorMenuWindow());
-            panelManager.hide(panelManager.getBattleShotMenuWindow());
-        }
     }
 
     /**
@@ -811,10 +824,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * @param unit
      */
     public void setActiveUnit(BattleUnit unit) {
-        if (this.user != unit) {
+//        if (this.user != unit) {
             this.user = unit;
             onChangeActiveUnit();
-        }
+//        }
     }
 
     /**

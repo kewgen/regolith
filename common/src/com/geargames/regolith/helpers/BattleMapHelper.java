@@ -1,5 +1,6 @@
 package com.geargames.regolith.helpers;
 
+import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.map.Pair;
@@ -11,6 +12,7 @@ import com.geargames.regolith.units.map.ExitZone;
 import com.geargames.regolith.units.tackle.Magazine;
 import com.geargames.regolith.units.tackle.Medikit;
 import com.geargames.regolith.units.tackle.StateTackle;
+import com.geargames.regolith.units.tackle.WeaponCategory;
 
 /**
  * Users: mkutuzov, abarakov
@@ -95,15 +97,14 @@ public class BattleMapHelper {
     }
 
     /**
-     * Установить наименьшее количество ходов, которое понадобится текущему бойцу для того,
-     * чтоб дойти до ячейки cell.
+     * Установить наименьшее количество ходов, которое понадобится текущему бойцу для того, чтобы дойти до ячейки cell.
      *
      * @param cell
      * @param order
      * @return
      */
     public static boolean setOrder(BattleCell cell, byte order) {
-        if ((cell.getElement() == null || cell.getElement().isAbleToWalkThrough()) && cell.getOrder() > order) {
+        if (isAbleToWalkThrough(cell) && cell.getOrder() > order) {
             cell.setOrder(order);
             return true;
         }
@@ -182,8 +183,8 @@ public class BattleMapHelper {
      * @param x
      * @param y
      */
-    public static void resetShortestPath(Warrior warrior, int x, int y) {
-        int radius = WarriorHelper.getRoutableRadius(warrior);
+    public static void resetShortestPath(Warrior warrior, int x, int y, BattleConfiguration battleConfiguration) {
+        int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration);
         BattleCell[][] cells = warrior.getBattleGroup().getAlliance().getBattle().getMap().getCells();
         BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
         int length = cells.length;
@@ -234,8 +235,8 @@ public class BattleMapHelper {
      * @param x
      * @param y
      */
-    public static void clearRoutes(Warrior warrior, int x, int y) {
-        int radius = WarriorHelper.getRoutableRadius(warrior);
+    public static void clearRoutes(Warrior warrior, int x, int y, BattleConfiguration battleConfiguration) {
+        int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration);
         BattleCell[][] cells = warrior.getBattleGroup().getAlliance().getBattle().getMap().getCells();
         int length = cells.length;
         int x0 = x - radius;
@@ -438,6 +439,48 @@ public class BattleMapHelper {
     }
 
     /**
+     * Вернет true, если через ячейку можно видеть.
+     * @return
+     */
+    public static boolean isAbleToLookThrough(BattleCell cell) {
+        CellElement[] elements = cell.getElements();
+        for (int i = cell.getSize() - 1; i >= 0; i--) {
+            if (!elements[i].isAbleToLookThrough()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Вернет true, если через ячейку можно ходить.
+     * @return
+     */
+    public static boolean isAbleToWalkThrough(BattleCell cell) {
+        CellElement[] elements = cell.getElements();
+        for (int i = cell.getSize() - 1; i >= 0; i--) {
+            if (!elements[i].isAbleToWalkThrough()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Вернет true, если ячейка является простреливаемой оружием данного вида.
+     * @return
+     */
+    public static boolean isAbleToShootThrough(BattleCell cell, WeaponCategory weaponCategory) {
+        CellElement[] elements = cell.getElements();
+        for (int i = cell.getSize() - 1; i >= 0; i--) {
+            if (!elements[i].isAbleToShootThrough(weaponCategory)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Вернет true, если на ячейке карты есть элемент-барьер.
      * @return
      */
@@ -450,7 +493,6 @@ public class BattleMapHelper {
         }
         return false;
     }
-
 
 }
 

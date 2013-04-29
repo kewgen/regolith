@@ -76,11 +76,12 @@ public class SynchronizationTest {
         manager.setX(0);
         manager.setY(0);
 
+        BattleConfiguration battleConfiguration = ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
+
         WarriorHelper.putWarriorIntoMap(warrior, battleMap, 0, 0);
-        BattleMapHelper.clearRoutes(warrior, 0, 0);
+        BattleMapHelper.clearRoutes(warrior, 0, 0, battleConfiguration);
         BattleMapHelper.clearViewAround(warrior);
         BattleMapHelper.prepare(battle.getMap());
-        BattleConfiguration battleConfiguration = ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
         battleConfiguration.getObserver().observe(warrior);
         MoveOneStepListener listener = new MoveOneStepListener() {
             @Override
@@ -91,14 +92,14 @@ public class SynchronizationTest {
         WarriorHelper.move(warrior,10, 10, listener, battleConfiguration);
         int valO = manager.getObserve();
 
-        BattleMapHelper.clearRoutes(warrior, 0, 0);
+        BattleMapHelper.clearRoutes(warrior, 0, 0, battleConfiguration);
         BattleMapHelper.clearViewAround(warrior);
         manager.setObserve(0);
         manager.setX(0);
         manager.setY(0);
 
         WarriorHelper.putWarriorIntoMap(warrior, battleMap, 0, 0);
-        BattleMapHelper.clearRoutes(warrior, 0, 0);
+        BattleMapHelper.clearRoutes(warrior, 0, 0, battleConfiguration);
         BattleMapHelper.clearViewAround(warrior);
 
         BattleUnit[] group = new BattleUnit[1];

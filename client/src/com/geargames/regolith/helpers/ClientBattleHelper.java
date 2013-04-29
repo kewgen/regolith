@@ -29,13 +29,13 @@ public class ClientBattleHelper {
     }
 
     public static void route(Warrior warrior, BattleConfiguration battleConfiguration) {
-        BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
+        BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY(), battleConfiguration);
         BattleMapHelper.prepare(warrior.getBattleGroup().getAlliance().getBattle().getMap());
-        battleConfiguration.getRouter().route(warrior);
+        battleConfiguration.getRouter().route(warrior, battleConfiguration);
     }
 
-    public static void trace(Warrior warrior, int x, int y) {
-        BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
+    public static void trace(Warrior warrior, int x, int y, BattleConfiguration battleConfiguration) {
+        BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY(), battleConfiguration);
         BattleMapHelper.makeShortestRoute(x, y, warrior);
     }
 

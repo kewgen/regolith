@@ -38,37 +38,31 @@ public class WarriorHelper {
      * @param warrior
      * @return
      */
-    public static int getRoutableRadius(Warrior warrior) {
-        return warrior.getActionScore();
+    public static int getRoutableRadius(Warrior warrior, BattleConfiguration battleConfiguration) {
+        return warrior.getActionScore() / battleConfiguration.getActionFees().getMove();
     }
 
-    public static int getReachableRadius(Warrior warrior) {
-        return warrior.getActionScore();
+    public static int getReachableRadius(Warrior warrior, BattleConfiguration battleConfiguration) {
+        return warrior.getActionScore() / battleConfiguration.getActionFees().getMove();
     }
 
     /**
-     * Переместить бойца warrior в клетку x;y на карте.
+     * Переместить бойца warrior в клетку (x;y) на карте.
      * ANNOTATION этот код работает с экземплярами Warrior не используя их идентификаторов
      *
      * @param warrior
      * @param x
      * @param y
      */
-    public static boolean putWarriorIntoMap(Warrior warrior, BattleMap battleMap, int x, int y) {
-        BattleCell previous = battleMap.getCells()[warrior.getX()][warrior.getY()];
-        if (previous.getElement() == warrior) {
-            previous.removeElement(warrior);
-        }
-        BattleCell next = battleMap.getCells()[x][y];
+    public static void putWarriorIntoMap(Warrior warrior, BattleMap battleMap, int x, int y) {
+        BattleCell previousCell = battleMap.getCells()[warrior.getX()][warrior.getY()];
+        previousCell.removeElement(warrior);
+
+        BattleCell nextCell = battleMap.getCells()[x][y];
         warrior.setX((short) x);
         warrior.setY((short) y);
 
-        if (next.getElement() == null) {
-            next.addElement(warrior);
-            return true;
-        } else {
-            return false;
-        }
+        nextCell.addElement(warrior);
     }
 
     /**
@@ -126,7 +120,7 @@ public class WarriorHelper {
     }
 
     /**
-     * Переместить бойца warrior из того места где он находится в точку x;y по кратчайшему пути.
+     * Переместить бойца warrior из того места где он находится в точку (x;y) по кратчайшему пути.
      *
      * @param warrior
      * @param x
@@ -148,7 +142,7 @@ public class WarriorHelper {
      * @return
      */
     public static AllyCollection move(Warrior warrior, BattleCell[][] cells, MoveOneStepListener listener, BattleConfiguration battleConfiguration){
-        int steps = getReachableRadius(warrior);
+        int steps = getReachableRadius(warrior, battleConfiguration);
         AllyCollection result = null;
         for (int i = 0; i < steps && warrior.isMoving(); i++) {
             Direction direction = getStepDirection(warrior, cells);

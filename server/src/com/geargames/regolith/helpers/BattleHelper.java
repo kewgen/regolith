@@ -53,7 +53,7 @@ public class BattleHelper {
                 int y = yBegin + n / yAmount;
                 int x = xBegin + (n % xAmount > 1 ? (n % xAmount - 1) : 0);
                 WarriorHelper.putWarriorIntoMap(warrior, battleMap, x, y);
-                warrior.setDirection(Direction.UP_DOWN);
+                warrior.setDirection(Direction.UP_DOWN); //todo: Класс ExitZone должен иметь поле direction, которое здесь и нужно использовать
                 n += cellsPerWarrior;
             }
         }
