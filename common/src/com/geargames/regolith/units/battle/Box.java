@@ -51,25 +51,35 @@ public class Box extends CellElement {
         this.frameId = frameId;
     }
 
+    @Override
     public int getFrameId() {
         return frameId;
     }
 
+    @Override
     public boolean isAbleToLookThrough() {
         return true;
     }
 
+    @Override
     public boolean isAbleToWalkThrough() {
         return false;
     }
 
+    @Override
     public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
         return true;
     }
 
+    @Override
     public boolean isHalfLong() {
         return true;
     }
+    @Override
+    public boolean isBarrier() {
+        return false;
+    }
+
     @Override
     public short getElementType() {
         return CellElementTypes.BOX;

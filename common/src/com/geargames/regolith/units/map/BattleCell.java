@@ -11,6 +11,17 @@ import java.io.Serializable;
  * Date: 22.03.12
  */
 public abstract class BattleCell implements Serializable {
+    /**
+     * Какие элементы могут располагаться в ячейке:
+     *   static   very bottom  подложка
+     *   static   bottom       подсветка зоны, подсветка препятствий
+     *   static   middle       препятствия
+     *   dynamic  middle       выброшенные предметы
+     *   dynamic  top          бойцы
+     *   static   top          значки (высота препятствия и др.)
+     *   static   very top     туман войны
+     */
+
     private CellElement[] elements;
     private byte size;
     private byte order;

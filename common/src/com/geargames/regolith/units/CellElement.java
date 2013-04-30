@@ -36,6 +36,11 @@ public abstract class CellElement extends Entity {
     public abstract boolean isHalfLong();
 
     /**
+     * Вернет true, если элемент является барьером.
+     */
+    public abstract boolean isBarrier();
+
+    /**
      * Получить тип элемента.
      * @return - одно из значений CellElementTypes
      */

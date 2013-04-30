@@ -3,7 +3,7 @@ package com.geargames.regolith.awt.components.battle.warriorList;
 import com.geargames.awt.components.PRadioButton;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
-import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.BattleUnit;
 
 /**
  * User: abarakov
@@ -11,7 +11,7 @@ import com.geargames.regolith.units.battle.Warrior;
  * Кнопка, при нажатии на которую, ход передается соответствующему бойцу.
  */
 public class PWarriorButton extends PRadioButton {
-    private Warrior warrior;
+    private BattleUnit battleUnit;
 
     public PWarriorButton(PObject prototype) {
         super(prototype);
@@ -19,11 +19,11 @@ public class PWarriorButton extends PRadioButton {
 
     @Override
     public void onClick() {
-        PRegolithPanelManager.getInstance().getBattleWarriorListPanel().onWarriorButtonClick(warrior);
+        PRegolithPanelManager.getInstance().getBattleWarriorListPanel().onWarriorButtonClick(battleUnit);
     }
 
-    public void setWarrior(Warrior warrior) {
-        this.warrior = warrior;
+    public void setUnit(BattleUnit battleUnit) {
+        this.battleUnit = battleUnit;
     }
 
 }

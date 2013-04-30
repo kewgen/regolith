@@ -61,6 +61,11 @@ public abstract class Barrier extends CellElement {
     }
 
     @Override
+    public boolean isBarrier() {
+        return true;
+    }
+
+    @Override
     public short getElementType() {
         return CellElementTypes.BARRIER;
     }

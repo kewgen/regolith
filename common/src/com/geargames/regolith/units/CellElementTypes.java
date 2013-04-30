@@ -4,7 +4,7 @@ package com.geargames.regolith.units;
  * User: m.v.kutuzov
  * Date: 06.04.13
  */
-public class CellElementTypes {
+public abstract class CellElementTypes {
 
     public static final short NULL = -1;
 
