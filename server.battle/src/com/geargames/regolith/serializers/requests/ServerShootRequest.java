@@ -4,13 +4,12 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.FightHelper;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.answers.ServerShootAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.service.state.ClientAtBattle;
-import com.geargames.regolith.service.state.ClientCheckSumAwaiting;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
 

@@ -20,11 +20,14 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
     /**
      * Если ячейку видно , то проверяем: нет ли там преграды для взгляда?
      * если есть возвращаем true иначе - false.
-     * Затем помечаем ячейку видимой.
-     * Если ячейку не видно - помечаем не видимой и возвращаем true
+     * Затем помечаем ячейку видимой бойцом warrior если она не была им видима ранее и она стала видимой.
+     * Если ячейку стало не видно - помечаем не видимой и возвращаем true.
+     * <p/>
      *
      * @param warrior
      * @param hidden
+     * @param x       координата по первому измерению массива
+     * @param y       координата по второму измерению массива
      * @return
      */
     public boolean maintain(BattleCell[][] cells, Ally warrior, boolean hidden, int x, int y) {

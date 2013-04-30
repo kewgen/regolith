@@ -2,9 +2,7 @@ package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
-import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
-import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
+import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.map.BattleMap;
@@ -14,11 +12,16 @@ import com.geargames.regolith.units.map.ExitZone;
 import java.io.*;
 import java.util.*;
 
+import com.geargames.regolith.map.observer.Observer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * User: mkutuzov
  * Date: 07.03.12
  */
 public class BattleHelper {
+    private static Logger logger = LoggerFactory.getLogger(BattleHelper.class);
 
     public static void putAllianceOnMap(BattleAlliance alliance, ExitZone exit) {
         BattleGroupCollection groups = alliance.getAllies();
@@ -143,6 +146,27 @@ public class BattleHelper {
     }
 
     /**
+     * Боевой союз осмотрелся в поисках жертвы.
+     * @param alliance
+     * @param observer
+     * @return
+     */
+    public static Set<Ally> allianceObservedBattle(BattleAlliance alliance, Observer observer) {
+        ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
+        Set<Ally> enemies = new HashSet<Ally>();
+        logger.debug("groups amount: {} ", groups.getBattleGroups().size());
+        for (BattleGroup group : groups.getBattleGroups()) {
+            ServerWarriorCollection warriors = (ServerWarriorCollection) group.getWarriors();
+            for (Warrior warrior : warriors.getWarriors()) {
+                logger.debug("a warrior named {} is observing a territory ", warrior.getName());
+                enemies.addAll(((ServerAllyCollection) observer.observe(warrior)).getAllies());
+            }
+        }
+        return enemies;
+    }
+
+
+    /**
      * Проверка на то что битва заполнена бойцами.
      *
      * @param battle
@@ -233,11 +257,11 @@ public class BattleHelper {
         return null;
     }
 
-    public static Warrior getWarriorInAccountById(Account account, int warriorId) throws RegolithException{
-        ServerWarriorCollection warriors = (ServerWarriorCollection)account.getWarriors();
+    public static Warrior getWarriorInAccountById(Account account, int warriorId) throws RegolithException {
+        ServerWarriorCollection warriors = (ServerWarriorCollection) account.getWarriors();
 
-        for(Warrior warrior : warriors.getWarriors()){
-            if(warrior.getId() == warriorId){
+        for (Warrior warrior : warriors.getWarriors()) {
+            if (warrior.getId() == warriorId) {
                 return warrior;
             }
         }

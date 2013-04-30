@@ -250,11 +250,6 @@ public class ClientBattleHelper {
         return battleUnits;
     }
 
-    public static void position(BattleUnit battleUnit, BattleScreen screen) {
-
-    }
-
-
     /**
      * Создать игровую карту размера size*size.
      *
@@ -300,19 +295,31 @@ public class ClientBattleHelper {
         return allies;
     }
 
-    public static BattleGroup findBattleGroupById(Battle battle, int battleGroupId) throws RegolithException {
+    public static BattleGroup findBattleGroupById(Battle battle, int id) throws Exception {
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
             BattleGroupCollection groups = alliances[i].getAllies();
             for (int j = 0; j < groups.size(); j++) {
                 BattleGroup battleGroup = groups.get(j);
-                if (battleGroup.getId() == battleGroupId) {
+                if (battleGroup.getId() == id) {
                     return battleGroup;
                 }
             }
         }
-        throw new RegolithException();
+        throw new Exception();
     }
+
+    public static BattleGroup findBattleGroupInAllianceById(BattleAlliance alliance, int id) throws  Exception {
+        BattleGroupCollection groups = alliance.getAllies();
+        for (int j = 0; j < groups.size(); j++) {
+            BattleGroup battleGroup = groups.get(j);
+            if (battleGroup.getId() == id) {
+                return battleGroup;
+            }
+        }
+        throw new Exception();
+    }
+
 
     public static BattleAlliance findBattleAlliance(Battle battle, Account account) throws Exception {
         BattleGroup group = tryFindBattleGroupByAccountId(battle, account.getId());
@@ -368,20 +375,29 @@ public class ClientBattleHelper {
 
         int allianceAmount = battle.getBattleType().getAllianceAmount();
         int allianceSize = battle.getBattleType().getAllianceSize();
-        int groupSize = battle.getBattleType().getGroupSize();
 
         for (int i = 0; i < allianceAmount; i++) {
             BattleGroupCollection groups = alliances[i].getAllies();
             for (int j = 0; j < allianceSize; j++) {
-                WarriorCollection warriors = groups.get(j).getWarriors();
-                for (int k = 0; k < groupSize; k++) {
-                    if (warriorId == warriors.get(k).getId()) {
-                        return warriors.get(k);
-                    }
+                Warrior warrior = findWarriorInBattleGroup(groups.get(j), warriorId);
+                if(warrior != null){
+                    return warrior;
                 }
             }
         }
         throw new RegolithException();
+    }
+
+    public static Warrior findWarriorInBattleGroup(BattleGroup group, int id){
+        WarriorCollection warriors = group.getWarriors();
+        int size = warriors.size();
+        for(int i =0; i < size; i++){
+            Warrior warrior = warriors.get(i);
+            if(warrior.getId() == id){
+                return warrior;
+            }
+        }
+        return null;
     }
 
     public static BattleUnit findBattleUnitByWarrior(ArrayList battleUnits, Warrior warrior) {
@@ -441,6 +457,39 @@ public class ClientBattleHelper {
         for (int i = 0; i < size; i++) {
             Warrior warrior = ((BattleUnit) battleUnits.get(i)).getUnit().getWarrior();
             warrior.setActionScore(WarriorHelper.getMaxActionScores(warrior, baseConfiguration));
+        }
+    }
+
+
+
+
+
+    /**
+     * Пометить ячейки из множества cells лежащие на прямой линии между 2-х точек как кратчайщий путь для warrior.
+     *
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @param cells
+     * @param warrior
+     */
+    public static void makeEnemyFakePath(int x1, int y1, int x2, int y2, BattleCell[][] cells, Warrior warrior){
+        if(x1 <= x2){
+            markLineAsShortestPathByWarrior(x1, y1, x2, y2, cells, warrior);
+        }else{
+            markLineAsShortestPathByWarrior(x2, y2, x1, y1, cells, warrior);
+        }
+    }
+
+
+    private static void markLineAsShortestPathByWarrior(int x1, int y1, int x2, int y2, BattleCell[][] cells, Warrior warrior) {
+        double k = (double) (y2 - y1) / (double) (x2 - x1);
+        double b = y1 - k * x1;
+        int length = x2 - x1;
+        for (int i = 1; i < length - 1; i++) {
+            int x = x1 + i;
+            BattleMapHelper.setShortestPathCell(cells[x][(int)(k*x + b)], warrior);
         }
     }
 }

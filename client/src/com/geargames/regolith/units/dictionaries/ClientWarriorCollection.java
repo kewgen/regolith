@@ -11,8 +11,19 @@ import java.util.Vector;
 public class ClientWarriorCollection extends WarriorCollection {
     private Vector warriors;
 
+    public ClientWarriorCollection() {
+    }
+
     public ClientWarriorCollection(Vector vector){
         warriors = vector;
+    }
+
+    public Vector getWarriors() {
+        return warriors;
+    }
+
+    public void setWarriors(Vector warriors) {
+        this.warriors = warriors;
     }
 
     public Warrior get(int index) {

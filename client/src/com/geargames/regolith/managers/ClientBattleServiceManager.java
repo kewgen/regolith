@@ -49,8 +49,8 @@ public class ClientBattleServiceManager {
         clientMoveMyWarriorAnswer.setBattle(warrior.getBattleGroup().getAlliance().getBattle());
         configuration.getNetwork().sendSynchronousMessage(
                 new ClientMoveRequest(configuration, warrior, x, y),
-                clientMoveMyWarriorAnswer, 100);
-        return clientListenToBattleAnswer;
+                clientMoveMyWarriorAnswer, 100000);
+        return clientMoveMyWarriorAnswer;
     }
 
 

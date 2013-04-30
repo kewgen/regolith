@@ -76,6 +76,8 @@ public interface Packets {
 
     short MOVE_ALLY = 52;
 
+    short INITIALLY_OBSERVED_ENEMIES = 53;
+
 
 
     short TAKE_MEDIKIT_FROM_GROUND_PUT_INTO_BAG = 60;

@@ -37,6 +37,7 @@ public abstract class MessageToClient implements Runnable {
                 } catch (IOException e) {
                     handleBrokenConnection(recipient);
                     logger.error("Could not write to a client channel ", e);
+                    byteBuffer.clear();
                 }
             }
             byteBuffer.reset();

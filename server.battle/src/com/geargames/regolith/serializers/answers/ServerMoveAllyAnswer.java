@@ -6,16 +6,16 @@ import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.Ally;
+import com.geargames.regolith.units.battle.BattleAlliance;
+import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
 
 /**
- * Created with IntelliJ IDEA.
  * User: gear
  * Date: 25.04.13
  * Time: 22:13
- * To change this template use File | Settings | File Templates.
- */
+  */
 public class ServerMoveAllyAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
     private Warrior warrior;
@@ -41,22 +41,26 @@ public class ServerMoveAllyAnswer extends SerializedMessage {
      * id война
      * x и y на карте куда он пойдёт(конец пути)
      * массив врагов которых он "засветил"("засвет" противника может произойти только в конце пути)
+     *
      * @param buffer
      */
     @Override
     public void serialize(MicroByteBuffer buffer) {
+        SerializeHelper.serializeEntityReference(warrior.getBattleGroup(),buffer);
         SerializeHelper.serializeEntityReference(warrior, buffer);
         SimpleSerializer.serialize(warrior.getX(), buffer);
         SimpleSerializer.serialize(warrior.getY(), buffer);
-        if(enemies != null){
-        SimpleSerializer.serialize(enemies.size(), buffer);
-        for (Ally human : enemies.getAllies()) {
-            SerializeHelper.serializeEntityReference(human, buffer);
-            SimpleSerializer.serialize(human.getX(), buffer);
-            SimpleSerializer.serialize(human.getY(), buffer);
-        }
-        }else{
-            SimpleSerializer.serialize(0,buffer);
+        if (enemies != null) {
+            SimpleSerializer.serialize(enemies.size(), buffer);
+            for (Ally human : enemies.getAllies()) {
+                SimpleSerializer.serialize(human.getBattleGroup().getAlliance().getNumber(), buffer);
+                SerializeHelper.serializeEntityReference(human.getBattleGroup(), buffer);
+                SerializeHelper.serializeEntityReference(human, buffer);
+                SimpleSerializer.serialize(human.getX(), buffer);
+                SimpleSerializer.serialize(human.getY(), buffer);
+            }
+        } else {
+            SimpleSerializer.serialize(0, buffer);
         }
     }
 

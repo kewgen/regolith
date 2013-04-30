@@ -8,7 +8,12 @@ import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.BattleAlliance;
+import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
+
+import java.util.Vector;
 
 /**
  * User: mvkutuzov
@@ -19,11 +24,15 @@ import com.geargames.regolith.units.battle.Warrior;
 public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
     private short x;
     private short y;
-    private ArrayList enemiesOnTheHorizon;
+    private ClientWarriorCollection enemies;
+
     private boolean success;
 
     private Battle battle;
-    private ArrayList enemies;
+
+    public ClientWarriorCollection getEnemies() {
+        return enemies;
+    }
 
     public short getX() {
         return x;
@@ -33,14 +42,9 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
         return y;
     }
 
-    public ArrayList getEnemiesOnTheHorizon() {
-        return enemiesOnTheHorizon;
-    }
-
     public boolean isSuccess() {
         return success;
     }
-
 
     public Battle getBattle() {
         return battle;
@@ -48,14 +52,6 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
 
     public void setBattle(Battle battle) {
         this.battle = battle;
-    }
-
-    public ArrayList getEnemies() {
-        return enemies;
-    }
-
-    public void setEnemies(ArrayList enemies) {
-        this.enemies = enemies;
     }
 
     @Override
@@ -66,13 +62,16 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
             x = SimpleDeserializer.deserializeShort(buffer);
             y = SimpleDeserializer.deserializeShort(buffer);
             int size = SimpleDeserializer.deserializeInt(buffer);
-            enemiesOnTheHorizon = new ArrayList(size);
-            for (int i = 0; i < size; i++) {
-                int warriorId = SimpleDeserializer.deserializeInt(buffer);
-                BattleUnit unit = ClientBattleHelper.findBattleUnitByWarriorId(enemies, warriorId);
+            enemies = new ClientWarriorCollection();
+            enemies.setWarriors(new Vector(size));
+            for (int j = 0; j < size; j++) {
+                BattleAlliance enemyAlliance = battle.getAlliances()[buffer.get()];
+                BattleGroup enemyGroup = ClientBattleHelper.findBattleGroupInAllianceById(enemyAlliance, SimpleDeserializer.deserializeInt(buffer));
+                Warrior enemy = ClientBattleHelper.findWarriorInBattleGroup(enemyGroup, SimpleDeserializer.deserializeInt(buffer));
                 int xx = SimpleDeserializer.deserializeShort(buffer);
                 int yy = SimpleDeserializer.deserializeShort(buffer);
-                WarriorHelper.putWarriorIntoMap(unit.getUnit().getWarrior(), battle.getMap(), xx, yy);
+                WarriorHelper.putWarriorIntoMap(enemy, battle.getMap(), xx, yy);
+                enemies.add(enemy);
             }
         }
     }

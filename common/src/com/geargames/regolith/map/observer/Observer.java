@@ -12,6 +12,7 @@ public abstract class Observer {
     /**
      * Обозреть окрестности бойца warrior в пределах его зоны видимости.
      * @param warrior
+     * @return коллекция врагов бойца warrior которых он увидел
      */
     public abstract AllyCollection observe(Ally warrior);
 }

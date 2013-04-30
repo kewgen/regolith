@@ -1,13 +1,14 @@
-package com.geargames.regolith.units.battle;
+package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.*;
-import com.geargames.regolith.helpers.ArmorHelper;
-import com.geargames.regolith.helpers.BattleMapHelper;
-import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.helpers.WeaponHelper;
 import com.geargames.regolith.map.observer.ShootBarriersFinder;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.battle.BattleAlliance;
+import com.geargames.regolith.units.battle.BattleGroup;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
+import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.map.Pair;
@@ -373,7 +374,7 @@ public class FightHelper {
         BattleCell[][] cells = map.getCells();
         ShootProbability probability = new ShootProbability();
         probability.inLegs = true;
-        if (BattleMapHelper.isAimed(cells[x1][y1], hunter)) {
+        if (BattleMapHelper.isVisible(cells[x1][y1], hunter)) {
             CellElement element = cells[barriersCoordinates.getX()][barriersCoordinates.getY()].getElement();
             if (element.isHalfLong()) {
                 double distance = getDistance(hunter, victim);
@@ -430,5 +431,23 @@ public class FightHelper {
     private static class ShootProbability {
         public double probability;
         public boolean inLegs;
+    }
+
+    /**
+     * Обновить ОД бойцов боевого союза alliance.
+     *
+     * @param alliance
+     * @param baseConfiguration
+     */
+    public static void resetAllianceScores(BattleAlliance alliance, BaseConfiguration baseConfiguration){
+        ServerBattleGroupCollection groups = (ServerBattleGroupCollection)alliance.getAllies();
+        for(BattleGroup group : groups.getBattleGroups()){
+            ServerWarriorCollection warriors = (ServerWarriorCollection)group.getWarriors();
+            for(Warrior warrior : warriors.getWarriors()){
+                warrior.setActionScore(WarriorHelper.getMaxActionScores(warrior, baseConfiguration));
+            }
+        }
+
+
     }
 }

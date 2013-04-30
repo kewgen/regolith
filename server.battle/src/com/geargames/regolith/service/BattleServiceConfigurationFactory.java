@@ -2,8 +2,13 @@ package com.geargames.regolith.service;
 
 import com.geargames.regolith.RegolithRuntimeException;
 import com.geargames.regolith.XmlTransmitter;
+import com.geargames.regolith.map.observer.StrictPerimeterObserver;
+import com.geargames.regolith.map.router.RecursiveWaveRouter;
+import com.geargames.regolith.units.battle.Ally;
+import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
 
 import java.io.InputStream;
+import java.util.LinkedList;
 
 public class BattleServiceConfigurationFactory {
     private static BattleServiceConfiguration configuration;
@@ -24,6 +29,10 @@ public class BattleServiceConfigurationFactory {
                     configuration.setReader(new BattleServiceReader());
                     configuration.setWriter(new ClientWriter(configuration.getMessageOutputDataProcessorsAmount()));
                     configuration.setBattleSchedulerService(new BattleSchedulerService());
+                    ServerAllyCollection collection = new ServerAllyCollection();
+                    collection.setAllies(new LinkedList<Ally>());
+                    configuration.setObserver(new StrictPerimeterObserver(collection));
+                    configuration.setRouter(new RecursiveWaveRouter());
                 }
             }
         }

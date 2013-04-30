@@ -1,5 +1,6 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.common.logging.Debug;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.AllyCollection;
@@ -25,9 +26,11 @@ public class StrictPerimeterObserver extends Observer {
     }
 
     public AllyCollection observe(Ally warrior) {
+        System.out.println("a warrior named " + warrior.getName() + " is observing a territory");
+
         visibilityMaintainer.getAllies().clear();
-        BattleGroup grp = warrior.getBattleGroup();
-        BattleAlliance alliance = grp.getAlliance();
+        BattleGroup group = warrior.getBattleGroup();
+        BattleAlliance alliance = group.getAlliance();
         Battle battle = alliance.getBattle();
         BattleMap battleMap = battle.getMap();
         int radius = WarriorHelper.getObservingRadius(warrior);

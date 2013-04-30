@@ -1,8 +1,10 @@
 package com.geargames.regolith.helpers;
 
+import com.geargames.common.logging.Debug;
 import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.map.Pair;
+import com.geargames.regolith.map.router.Router;
 import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
@@ -285,7 +287,7 @@ public class BattleMapHelper {
      * @param warrior
      * @return
      */
-    public static boolean isAimed(BattleCell cell, Warrior warrior) {
+    public static boolean isVisible(BattleCell cell, Ally warrior) {
         BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
         return (cell.getVisibility(alliance) & warrior.getNumber()) != 0;
     }
@@ -333,6 +335,7 @@ public class BattleMapHelper {
         int y = warrior.getY();
         int radius = WarriorHelper.getObservingRadius(warrior);
         SecurityOperationManager manager = warrior.getBattleGroup().getAccount().getSecurity();
+        System.out.println("i am clearing a view of warrior " + warrior.getName());
         for (int i = x - radius; i <= 2 * radius + 1; i++) {
             if (i >= 0 && i < length) {
                 for (int j = y - radius; j <= 2 * radius + 1; j++) {

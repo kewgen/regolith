@@ -1,6 +1,8 @@
 package com.geargames.regolith.service;
 
 import com.geargames.regolith.RegolithConfiguration;
+import com.geargames.regolith.map.observer.Observer;
+import com.geargames.regolith.map.router.Router;
 
 import javax.xml.bind.annotation.*;
 
@@ -8,6 +10,10 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "serverConfiguration")
 public class BattleServiceConfiguration {
+    @XmlTransient
+    private Observer observer;
+    @XmlTransient
+    private Router router;
     @XmlTransient
     private BattleSchedulerService battleSchedulerService;
     @XmlTransient
@@ -27,6 +33,21 @@ public class BattleServiceConfiguration {
     @XmlElement
     private int messageOutputDataProcessorsAmount;
 
+    public Observer getObserver() {
+        return observer;
+    }
+
+    public void setObserver(Observer observer) {
+        this.observer = observer;
+    }
+
+    public Router getRouter() {
+        return router;
+    }
+
+    public void setRouter(Router router) {
+        this.router = router;
+    }
 
     public int getMessageOutputDataProcessorsAmount() {
         return messageOutputDataProcessorsAmount;

@@ -1,5 +1,6 @@
 package com.geargames.regolith.helpers;
 
+import com.geargames.common.logging.Debug;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
@@ -87,7 +88,7 @@ public class WarriorHelper {
         BattleMapHelper.resetShortestCell(cells[warrior.getX()][warrior.getY()], alliance, warrior);
         putWarriorIntoMap(warrior, battleMap, warrior.getX() + stepX, warrior.getY() + stepY);
         warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getMove()));
-
+        System.out.println("a warrior " + warrior.getName() + "  observe on step (" + warrior.getX() + ":" + warrior.getY());
         return battleConfiguration.getObserver().observe(warrior);
     }
 

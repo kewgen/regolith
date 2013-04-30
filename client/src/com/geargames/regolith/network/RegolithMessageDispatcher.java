@@ -9,6 +9,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
+import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.serializers.answers.*;
 
 /**
@@ -52,21 +53,29 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
                 break;
             case Packets.BATTLE_SERVICE_LOGIN:
                 message = new ClientBattleLoginAnswer();
-                ((ClientBattleLoginAnswer)message).setBattle(configuration.getBattle());
+                ((ClientBattleLoginAnswer) message).setBattle(configuration.getBattle());
                 break;
             case Packets.BATTLE_SERVICE_NEW_CLIENT_LOGIN:
-                 message = new ClientNewBattleLogin();
-                ((ClientNewBattleLogin)message).setBattle(configuration.getBattle());
+                message = new ClientNewBattleLogin();
+                ((ClientNewBattleLogin) message).setBattle(configuration.getBattle());
                 break;
             case Packets.CHANGE_ACTIVE_ALLIANCE:
                 message = new ClientChangeActiveAllianceAnswer();
-                ((ClientChangeActiveAllianceAnswer)message).setBattle(configuration.getBattle());
+                ((ClientChangeActiveAllianceAnswer) message).setBattle(configuration.getBattle());
                 break;
-            case Packets.MOVE_WARRIOR:
-                ClientMoveWarriorAnswer move = new ClientMoveWarriorAnswer();
-                move.setBattle(configuration.getBattle());
-                move.setEnemies(PRegolithPanelManager.getInstance().getBattleScreen().getEnemies());
-                message = move;
+            case Packets.MOVE_ENEMY:
+                ClientMoveEnemyAnswer moveEnemy = new ClientMoveEnemyAnswer();
+                moveEnemy.setBattle(configuration.getBattle());
+                message = moveEnemy;
+                break;
+            case Packets.MOVE_ALLY:
+                ClientMoveAllyAnswer moveAlly = new ClientMoveAllyAnswer();
+                try {
+                    moveAlly.setAlliance(ClientBattleHelper.findBattleAlliance(configuration.getBattle(), configuration.getAccount()));
+                } catch (Exception e) {
+                    Debug.error("Could not find an appropriate alliance for client's account");
+                }
+                message = moveAlly;
                 break;
             case Packets.INITIALLY_OBSERVED_ENEMIES:
                 ClientInitiallyObservedEnemies init = new ClientInitiallyObservedEnemies();

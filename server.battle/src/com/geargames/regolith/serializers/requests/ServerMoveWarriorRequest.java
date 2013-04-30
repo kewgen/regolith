@@ -10,8 +10,8 @@ import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.answers.ServerMoveAllyAnswer;
+import com.geargames.regolith.serializers.answers.ServerMoveEnemyAnswer;
 import com.geargames.regolith.serializers.answers.ServerMoveWarriorAnswer;
-import com.geargames.regolith.serializers.answers.ServerMoveWarriorEnemyAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.service.Client;
@@ -49,11 +49,8 @@ public class ServerMoveWarriorRequest extends ServerRequest {
             Warrior warrior = BattleServiceRequestUtils.getWarriorFromGroup(warriorGroup, warriorId);
             if (warrior != null) {
 
-
                 int x = SimpleDeserializer.deserializeShort(from);
                 int y = SimpleDeserializer.deserializeShort(from);
-                BattleMapHelper.clearRoutes(warrior, warrior.getX(), warrior.getY());
-                BattleMapHelper.clearViewAround(warrior);
                 final Map<BattleAlliance, List<Pair>> alliancesTraces = new HashMap<BattleAlliance, List<Pair>>();
 
                 final BattleAlliance warriorAlliance = warrior.getBattleGroup().getAlliance();
@@ -72,27 +69,33 @@ public class ServerMoveWarriorRequest extends ServerRequest {
                         int nx = warrior.getX() + x;
                         int ny = warrior.getY() + y;
                         for (BattleAlliance alliance : battle.getAlliances()) {
-                            if (alliance != warriorAlliance) {
+                            List<Pair> pairs = alliancesTraces.get(alliance);
+                            if (pairs != null) {
                                 Pair pair;
                                 if (BattleMapHelper.isVisible(cells[nx][ny], alliance)) {
                                     pair = new Pair();
                                     pair.setX(nx);
                                     pair.setY(ny);
+                                    pairs.add(pair);
                                 } else {
-                                    Pair last = ((LinkedList<Pair>) alliancesTraces.get(alliance)).getLast();
-                                    if (last == null || last instanceof TerminalPair) {
-                                        pair = null;
-                                    } else {
-                                        pair = new TerminalPair();
-                                        pair.setX(nx);
-                                        pair.setY(ny);
+                                    if (pairs.size() > 0) {
+                                        Pair last = ((LinkedList<Pair>) alliancesTraces.get(alliance)).getLast();
+                                        if (last == null || last instanceof TerminalPair) {
+                                            pair = null;
+                                        } else {
+                                            pair = new TerminalPair();
+                                            pair.setX(nx);
+                                            pair.setY(ny);
+                                        }
+                                        pairs.add(pair);
                                     }
                                 }
-                                alliancesTraces.get(alliance).add(pair);
                             }
                         }
                     }
                 };
+                BattleMapHelper.clearRoutes(warrior, warrior.getX(), warrior.getY());
+                regolithConfiguration.getBattleConfiguration().getRouter().route(warrior);
                 ServerAllyCollection enemies = (ServerAllyCollection) WarriorHelper.move(warrior, x, y, listener, regolithConfiguration.getBattleConfiguration());
                 answers = new ArrayList<MessageToClient>(battle.getBattleType().getAllianceAmount());
 
@@ -100,12 +103,15 @@ public class ServerMoveWarriorRequest extends ServerRequest {
                 for (BattleAlliance alliance : battle.getAlliances()) {
                     Collection<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getAlliances().get(i++));
                     if (alliance != warriorAlliance) {
-                        answers.add(new BattleMessageToClient(recipients, new ServerMoveWarriorEnemyAnswer(to, warrior, alliancesTraces.get(alliance)).serialize()));
+                        List<Pair> pairs = alliancesTraces.get(alliance);
+                        if (pairs != null && pairs.size() > 0) {
+                            answers.add(new BattleMessageToClient(recipients, new ServerMoveEnemyAnswer(to, warrior, pairs).serialize()));
+                        }
                     } else {
                         List<SocketChannel> recipient = BattleServiceRequestUtils.singleRecipientByClient(client);
-                        recipients.remove(recipient);
-                        answers.add(new BattleMessageToClient(recipients, new ServerMoveAllyAnswer(to, warrior, enemies).serialize()));
+                        recipients.removeAll(recipient);
                         answers.add(new BattleMessageToClient(recipient, ServerMoveWarriorAnswer.answerSuccess(to, warrior, enemies).serialize()));
+                        answers.add(new BattleMessageToClient(recipients, new ServerMoveAllyAnswer(to, warrior, enemies).serialize()));
                     }
                 }
             } else {
