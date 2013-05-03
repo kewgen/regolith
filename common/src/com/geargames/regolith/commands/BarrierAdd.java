@@ -2,7 +2,7 @@ package com.geargames.regolith.commands;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationCommand;
-import com.geargames.regolith.units.battle.Barrier;
+import com.geargames.regolith.units.map.Barrier;
 
 /**
  * User: mkutuzov

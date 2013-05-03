@@ -71,7 +71,7 @@ public class AccountDeserializer {
     }
 
     public static void deserialize(Warrior warrior, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
-        BattleDeserializer.deserializeAlly(warrior, buffer, baseConfiguration);
+        BattleDeserializer.deserializeHuman(warrior, buffer, baseConfiguration);
         warrior.setStrength(SimpleDeserializer.deserializeShort(buffer));
         warrior.setSpeed(buffer.get());
         warrior.setMarksmanship(buffer.get());
@@ -91,7 +91,7 @@ public class AccountDeserializer {
         deserialize(warrior.getAmmunitionBag(), buffer, baseConfiguration);
     }
 
-    public static Account deserializeAnother(MicroByteBuffer buffer){
+    public static Account deserializeAnother(MicroByteBuffer buffer) {
         Account account = new Account();
         account.setId(SimpleDeserializer.deserializeInt(buffer));
         account.setName(SimpleDeserializer.deserializeString(buffer));
@@ -112,15 +112,17 @@ public class AccountDeserializer {
         byte length = buffer.get();
         ClientWarriorCollection warriors = new ClientWarriorCollection(new Vector());
         for (int i = 0; i < length; i++) {
-            warriors.add(new Warrior());
-            deserialize(warriors.get(i), buffer, baseConfiguration);
+            Warrior warrior = new Warrior();
+            warriors.add(warrior);
+            warrior.setMembershipType(Human.WARRIOR); //todo: WARRIOR ?
+            deserialize(warrior, buffer, baseConfiguration);
         }
         account.setWarriors(warriors);
         account.setBase(deserializeBase(buffer, baseConfiguration));
         return account;
     }
 
-    public static void deserializeStoreHouse(StoreHouse storeHouse, MicroByteBuffer buffer, BaseConfiguration baseConfiguration){
+    public static void deserializeStoreHouse(StoreHouse storeHouse, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
         storeHouse.setLevel(buffer.get());
         deserialize(storeHouse.getBag(), buffer, baseConfiguration);
         deserialize(storeHouse.getAmmunitionBag(), buffer, baseConfiguration);

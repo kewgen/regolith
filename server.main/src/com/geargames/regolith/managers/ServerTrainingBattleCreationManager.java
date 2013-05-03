@@ -1,7 +1,7 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.helpers.BattleHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
@@ -9,6 +9,7 @@ import com.geargames.regolith.service.BattleManagerContext;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
@@ -62,14 +63,15 @@ public class ServerTrainingBattleCreationManager {
             throw new RegolithException("Warriors amount is not valid.");
         }
         try {
-            BattleCell[][] cells = BattleHelper.deserializeBattleCells(battle.getMap().getContent());
+            BattleCell[][] cells = ServerBattleHelper.deserializeBattleCells(battle.getMap().getContent());
             battle.getMap().setCells(cells);
         } catch (IOException e) {
             throw new RegolithException(e);
         } catch (ClassNotFoundException e) {
             throw new RegolithException(e);
         }
-        BattleHelper.spreadAlliancesOnTheMap(battle);
+        ServerHumanElementCollection units = ServerBattleHelper.getBattleUnits(battle); //todo: ????? где-то сохранить units (в ServerBattle)
+        ServerBattleHelper.spreadAlliancesOnTheMap(battle, units);
 
         for (BattleAlliance alliance : battle.getAlliances()) {
             ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();

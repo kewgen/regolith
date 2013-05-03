@@ -9,7 +9,7 @@ import java.util.Vector;
  * Date: 22.08.12
  * Time: 15:32
  */
-public class ClientAllyCollection extends  AllyCollection {
+public class ClientAllyCollection extends AllyCollection {
     private Vector allies;
 
     public Vector getAllies() {
@@ -21,7 +21,7 @@ public class ClientAllyCollection extends  AllyCollection {
     }
 
     public Ally get(int index) {
-        return (Ally)allies.elementAt(index);
+        return (Ally) allies.elementAt(index);
     }
 
     public void add(Ally ally) {
@@ -48,4 +48,5 @@ public class ClientAllyCollection extends  AllyCollection {
     public void clear() {
         allies.clear();
     }
+
 }

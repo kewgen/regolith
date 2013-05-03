@@ -2,6 +2,7 @@ package com.geargames.regolith.managers;
 
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.answers.ClientMoveMyWarriorAnswer;
 import com.geargames.regolith.serializers.requests.ClientBattleServiceLoginRequest;
@@ -11,6 +12,7 @@ import com.geargames.regolith.serializers.requests.ClientShootRequest;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * Users: mikhail v. kutuzov, abarakov
@@ -28,6 +30,7 @@ public class ClientBattleServiceManager {
         checkSumRequest = new ClientCheckSumRequest();
         checkSumRequest.setConfiguration(configuration);
         clientMoveMyWarriorAnswer = new ClientMoveMyWarriorAnswer();
+        clientMoveMyWarriorAnswer.setEnemies(PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits());
     }
 
     public ClientDeSerializedMessage login(Battle battle, BattleAlliance alliance) throws Exception {
@@ -38,17 +41,18 @@ public class ClientBattleServiceManager {
     }
 
     /**
-     * Пытаемся двинуть своего бойца warrior в точку x:y.
-     * @param warrior
+     * Пытаемся двинуть своего бойца unit в точку (x;y).
+     *
+     * @param unit
      * @param x
      * @param y
      * @return
      * @throws Exception
      */
-    public ClientDeSerializedMessage move(Warrior warrior, short x, short y) throws Exception {
-        clientMoveMyWarriorAnswer.setWarrior(warrior);
+    public ClientDeSerializedMessage move(HumanElement unit, short x, short y) throws Exception {
+        clientMoveMyWarriorAnswer.setHumanElement(unit);
         configuration.getNetwork().sendSynchronousMessage(
-                new ClientMoveRequest(configuration, warrior, x, y),
+                new ClientMoveRequest(configuration, unit, x, y),
                 clientMoveMyWarriorAnswer, 100);
         return clientListenToBattleAnswer;
     }

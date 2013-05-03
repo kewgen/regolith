@@ -3,11 +3,10 @@ package com.geargames.regolith.serializers;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.*;
@@ -19,8 +18,8 @@ import com.geargames.regolith.units.tackle.Weapon;
  */
 public class BattleMapSerializer {
 
-    private static void serialize(Warrior warrior, MicroByteBuffer buffer) {
-        SerializeHelper.serializeEntityReference(warrior, buffer);
+    private static void serialize(Human human, MicroByteBuffer buffer) {
+        SerializeHelper.serializeEntityReference(human, buffer);
     }
 
     private static void serialize(Barrier barrier, MicroByteBuffer buffer) {
@@ -74,18 +73,18 @@ public class BattleMapSerializer {
     public static void serialize(BattleCell[][] cells, short x, short y, Account account, MicroByteBuffer buffer) {
         CellElement element = cells[x][y].getElement();
         if (element != null) {
-            if (element instanceof Warrior) {
-                Warrior warrior = (Warrior) element;
-                if (warrior.getBattleGroup().getAccount().getId() == account.getId()) {
+            if (element instanceof HumanElement) {
+                HumanElement unit = (HumanElement) element;
+                if (unit.getHuman().getBattleGroup().getAccount().getId() == account.getId()) {
                     SimpleSerializer.serialize(x, buffer);
                     SimpleSerializer.serialize(y, buffer);
                     SimpleSerializer.serialize(SerializeHelper.findTypeId("Warrior"), buffer);
-                    serialize(warrior, buffer);
-                } else if (WarriorHelper.isAlly(warrior, account)) {
+                    serialize(unit.getHuman(), buffer);
+                } else if (WarriorHelper.isAlly(unit.getHuman(), account)) {
                     SimpleSerializer.serialize(x, buffer);
                     SimpleSerializer.serialize(y, buffer);
                     SimpleSerializer.serialize(SerializeHelper.findTypeId("Ally"), buffer);
-                    serialize(warrior, buffer);
+                    serialize(unit.getHuman(), buffer);
                 }
             } else if (element instanceof Barrier) {
                 SimpleSerializer.serialize(x, buffer);

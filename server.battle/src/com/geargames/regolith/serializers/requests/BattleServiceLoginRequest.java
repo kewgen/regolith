@@ -2,7 +2,7 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.SecurityOperationManager;
-import com.geargames.regolith.helpers.BattleHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
@@ -20,7 +20,6 @@ import com.geargames.regolith.units.battle.ServerBattle;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -60,7 +59,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
                 if (account.getName().equals(name) && account.getPassword().equals(password)) {
                     client.setAccount(account);
                     Battle battle = serverBattle.getBattle();
-                    BattleAlliance alliance = BattleHelper.findAllianceById(battle, allianceId);
+                    BattleAlliance alliance = ServerBattleHelper.findAllianceById(battle, allianceId);
                     serverBattle.getAlliances().get(alliance.getNumber()).add((BattleClient) client);
                     Collection<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getClients());
                     serverBattle.getClients().add((BattleClient) client);
@@ -79,7 +78,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
                     messages.add(new BattleMessageToClient(recipients, message.serialize()));
 
                     if (serverBattle.getClients().size() == serverBattle.getGroups().size()) {
-                        BattleHelper.prepareBattle(serverBattle.getBattle());
+                        ServerBattleHelper.prepareBattle(serverBattle.getBattle());
                         configuration.getBattleSchedulerService().add(messages);
                         configuration.getBattleSchedulerService().add(serverBattle);
                         return new ArrayList<MessageToClient>();

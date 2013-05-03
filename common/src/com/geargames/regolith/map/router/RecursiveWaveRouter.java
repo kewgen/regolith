@@ -1,14 +1,16 @@
 package com.geargames.regolith.map.router;
 
+import com.geargames.common.logging.Debug;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.HumanElement;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 24.02.12
  */
 public class RecursiveWaveRouter extends Router {
@@ -21,17 +23,21 @@ public class RecursiveWaveRouter extends Router {
     private static final int BOTTOM = 64;
     private static final int RIGHT_BOTTOM = 128;
 
-    public void route(Warrior warrior, BattleConfiguration battleConfiguration) {
+    @Override
+    public void route(HumanElement unit, BattleConfiguration battleConfiguration) {
+        Warrior warrior = (Warrior) unit.getHuman();
         BattleMap battleMap = warrior.getBattleGroup().getAlliance().getBattle().getMap();
-        int actionScore = WarriorHelper.getRoutableRadius(warrior, battleConfiguration);
+        int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration);
+        if (radius >= BattleMapHelper.UN_ROUTED) {
+            Debug.critical("Routable radius exceeds " + BattleMapHelper.UN_ROUTED + " cells");
+        }
         BattleCell[][] cells = battleMap.getCells();
-        int x0 = warrior.getX();
-        int y0 = warrior.getY();
+        int x0 = unit.getCellX();
+        int y0 = unit.getCellY();
 
-        BattleMapHelper.setZeroOrder(warrior);
-        tryNeighbours(cells, x0, y0, actionScore, 0);
+        BattleMapHelper.setZeroOrder(unit);
+        tryNeighbours(cells, x0, y0, radius, 0);
     }
-
 
     private void tryNeighbours(BattleCell[][] cells, int x, int y, int radius, int direction) {
         if (radius <= 0) {
@@ -89,4 +95,5 @@ public class RecursiveWaveRouter extends Router {
             }
         }
     }
+
 }

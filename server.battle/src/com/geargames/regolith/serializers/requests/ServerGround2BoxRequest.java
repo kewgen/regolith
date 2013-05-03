@@ -10,13 +10,15 @@ import com.geargames.regolith.serializers.answers.ServerGround2BoxAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.battle.Box;
+import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.HumanElement;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,9 +58,12 @@ public abstract class ServerGround2BoxRequest extends ServerRequest {
         BattleCell[][] cells = map.getCells();
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(2);
 
-        if (BattleMapHelper.ableToPeek(warrior, cells, groundX, groundY)) {
+        ServerHumanElementCollection units = serverBattle.getHumanElements();
+        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
+
+        if (BattleMapHelper.ableToPeek(unit, cells, groundX, groundY)) {
             CellElement boxElement = cells[boxX][boxY].getElement();
-            if (BattleMapHelper.isNear(warrior, boxX, boxY) && boxElement != null && boxElement instanceof Box) {
+            if (BattleMapHelper.isNear(unit, boxX, boxY) && boxElement != null && boxElement instanceof Box) {
                 moveGround2Box(cells[groundX][groundY], (Box) boxElement);
 
                 Set<Client> clients = new HashSet<Client>();
@@ -66,13 +71,13 @@ public abstract class ServerGround2BoxRequest extends ServerRequest {
                 clients.remove(client);
 
                 messages.add(new BattleMessageToClient(
-                   BattleServiceRequestUtils.singleRecipientByClient(client),
-                   ServerConfirmationAnswer.answerSuccess(to, type).serialize()
+                        BattleServiceRequestUtils.singleRecipientByClient(client),
+                        ServerConfirmationAnswer.answerSuccess(to, type).serialize()
                 ));
 
                 messages.add(new BattleMessageToClient(
-                    BattleServiceRequestUtils.getRecipients(clients),
-                    new ServerGround2BoxAnswer(to,groundX,groundY,boxX,boxY,type).serialize()
+                        BattleServiceRequestUtils.getRecipients(clients),
+                        new ServerGround2BoxAnswer(to, groundX, groundY, boxX, boxY, type).serialize()
                 ));
             } else {
                 messages.add(new BattleMessageToClient(

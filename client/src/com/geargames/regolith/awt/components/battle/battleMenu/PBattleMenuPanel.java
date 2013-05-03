@@ -5,8 +5,8 @@ import com.geargames.common.packer.PObject;
 import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
-import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.battle.BattleAlliance;
+import com.geargames.regolith.units.map.ClientHumanElement;
 
 /**
  * User: abarakov
@@ -57,7 +57,7 @@ public class PBattleMenuPanel extends PRootContentPanel {
      */
     public void onActiveAllianceChanged(BattleAlliance alliance) {
         skipMoveButton.setVisible(PRegolithPanelManager.getInstance().getBattleScreen().isMyTurn());
-//        ArrayList group = PRegolithPanelManager.getInstance().getBattleScreen().getGroup();
+//        ArrayList group = PRegolithPanelManager.getInstance().getBattleScreen().getGroupUnits();
 //        boolean exitAllowed = group.size() > 0;
 //        for (int i = 0; i < group.size(); i++) {
 //            BattleUnit battleUnit = (BattleUnit) group.get(i);
@@ -72,7 +72,7 @@ public class PBattleMenuPanel extends PRootContentPanel {
     /**
      * Обработчик события изменения активного бойца.
      */
-    public void onActiveUnitChanged(BattleUnit activeUnit) {
+    public void onActiveUnitChanged(ClientHumanElement activeUnit) {
 
     }
 

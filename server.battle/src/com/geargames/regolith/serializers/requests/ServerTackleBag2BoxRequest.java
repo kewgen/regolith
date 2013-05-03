@@ -13,7 +13,10 @@ import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.*;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.BattleCell;
+import com.geargames.regolith.units.map.Box;
+import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
@@ -48,8 +51,11 @@ public class ServerTackleBag2BoxRequest extends ServerRequest {
         BattleCell[][] cells = serverBattle.getBattle().getMap().getCells();
         BattleCell cell = cells[x][y];
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>();
-        if(BattleMapHelper.isNear(warrior, x, y) && cell.getElement() != null && cell.getElement() instanceof Box){
-            Box box = (Box)cell.getElement();
+
+        ServerHumanElementCollection units = serverBattle.getHumanElements();
+        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
+        if (BattleMapHelper.isNear(unit, x, y) && cell.getElement() != null && cell.getElement() instanceof Box) {
+            Box box = (Box) cell.getElement();
             StateTackle tackle = WarriorHelper.putOutOfBag(warrior, number);
             box.getTackles().add(tackle);
 
@@ -58,10 +64,10 @@ public class ServerTackleBag2BoxRequest extends ServerRequest {
             clients.remove(client);
 
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(clients),
-                   new ServerTackleBag2BoxAnswer(to, warrior, tackle, x, y).serialize()));
+                    new ServerTackleBag2BoxAnswer(to, warrior, tackle, x, y).serialize()));
 
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.singleRecipientByClient(client),
-                   ServerConfirmationAnswer.answerSuccess(to, Packets.TAKE_TACKLE_FROM_BAG_PUT_INTO_BOX).serialize()));
+                    ServerConfirmationAnswer.answerSuccess(to, Packets.TAKE_TACKLE_FROM_BAG_PUT_INTO_BOX).serialize()));
 
         } else {
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.singleRecipientByClient(client),

@@ -3,13 +3,15 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.BattleMapHelper;
-import com.geargames.regolith.units.CellElement;
-import com.geargames.regolith.units.battle.Box;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
+import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerMedikitCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.tackle.Medikit;
 
 /**
@@ -41,7 +43,9 @@ public class ServerMedikitBox2GroundRequest extends ServerBox2GroundRequest {
         BattleMap map = warrior.getBattleGroup().getAlliance().getBattle().getMap();
         BattleCell[][] cells = map.getCells();
 
-        if (BattleMapHelper.ableToPut(warrior, cells, x, y)) {
+        ServerHumanElementCollection units = getServerBattle().getHumanElements();
+        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
+        if (BattleMapHelper.ableToPut(unit, cells, x, y)) {
             box.getMedikits().remove(i);
             BattleMapHelper.putIn(medikit, map, x, y);
         } else {

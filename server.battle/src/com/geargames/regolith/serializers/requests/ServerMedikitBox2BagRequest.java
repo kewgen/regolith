@@ -4,7 +4,7 @@ import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
-import com.geargames.regolith.units.battle.Box;
+import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerMedikitCollection;
@@ -38,7 +38,7 @@ public class ServerMedikitBox2BagRequest extends ServerBox2WarriorRequest {
             throw new RegolithException("There is no tackle [" + elementId + "] in the box");
         }
 
-        if( WarriorHelper.putInToBag(warrior, medikit, 1, BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration().getBaseConfiguration()) == 1 ){
+        if (WarriorHelper.putInToBag(warrior, medikit, 1, BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration().getBaseConfiguration()) == 1) {
             box.getMedikits().remove(i);
             return true;
         } else {

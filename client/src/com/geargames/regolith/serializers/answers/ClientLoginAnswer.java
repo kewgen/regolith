@@ -6,6 +6,7 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.Human;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
@@ -36,18 +37,19 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         baseConfiguration = null;
-        account  = null;
-        error    = null;
+        account = null;
+        error = null;
         warriors = null;
         boolean success = SimpleDeserializer.deserializeBoolean(buffer);
         if (success) {
             baseConfiguration = ConfigurationDeserializer.deserializeBaseConfiguration(buffer);
             account = AccountDeserializer.deserialize(buffer, baseConfiguration);
-            if (account.getWarriors() == null || account.getWarriors().size() == 0) {
+            if (account.getWarriors() == null || account.getWarriors().size() == 0) { //todo: этот if будет всегда выдавать false
                 int length = SimpleDeserializer.deserializeInt(buffer);
                 warriors = new Warrior[length];
                 for (int i = 0; i < length; i++) {
                     Warrior warrior = new Warrior();
+                    warrior.setMembershipType(Human.WARRIOR);
                     AccountDeserializer.deserialize(warrior, buffer, baseConfiguration);
                     warriors[i] = warrior;
                 }

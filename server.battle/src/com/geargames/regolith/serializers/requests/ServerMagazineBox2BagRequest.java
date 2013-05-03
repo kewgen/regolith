@@ -6,6 +6,7 @@ import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerMagazineCollection;
+import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.tackle.Magazine;
 
 /**

@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping default-lazy="false">
     <class name="com.geargames.regolith.BaseConfiguration" table="base_configuration">
         <id name="revision" type="short" column="revision">
             <generator class="assigned"/>
         </id>
-        <property name="pocketsAmount" />
-        <property name="maxWorkShopLevel" />
+        <property name="pocketsAmount"/>
+        <property name="maxWorkShopLevel"/>
         <property name="maxWorkShopProbability"/>
         <property name="minWorkShopProbability"/>
         <property name="vitalityStep"/>
@@ -35,32 +36,38 @@
                 <many-to-many column="skill_id" class="com.geargames.regolith.units.Skill" unique="true"/>
             </list>
         </component>
-        <component name="ammunitionCategories" class="com.geargames.regolith.units.dictionaries.ServerAmmunitionCategoryCollection">
+        <component name="ammunitionCategories"
+                   class="com.geargames.regolith.units.dictionaries.ServerAmmunitionCategoryCollection">
             <list name="categories" cascade="save-update" table="base_configuration_ammunition_category">
                 <key column="base_configuration_id"/>
                 <index column="number"/>
-                <many-to-many column="category_id" class="com.geargames.regolith.units.tackle.AmmunitionCategory" unique="true"/>
+                <many-to-many column="category_id" class="com.geargames.regolith.units.tackle.AmmunitionCategory"
+                              unique="true"/>
             </list>
         </component>
         <component name="armorTypes" class="com.geargames.regolith.units.dictionaries.ServerArmorTypeCollection">
             <list name="armorTypes" cascade="save-update" table="base_configuration_armor_type">
                 <key column="base_configuration_id"/>
                 <index column="number"/>
-                <many-to-many column="armor_type_id" class="com.geargames.regolith.units.tackle.ArmorType" unique="true"/>
+                <many-to-many column="armor_type_id" class="com.geargames.regolith.units.tackle.ArmorType"
+                              unique="true"/>
             </list>
         </component>
         <component name="projectiles" class="com.geargames.regolith.units.dictionaries.ServerProjectileCollection">
             <list name="projectiles" cascade="save-update" table="base_configuration_projectile">
                 <key column="base_configuration_id"/>
                 <index column="number"/>
-                <many-to-many column="projectile_id" class="com.geargames.regolith.units.tackle.Projectile" unique="true"/>
+                <many-to-many column="projectile_id" class="com.geargames.regolith.units.tackle.Projectile"
+                              unique="true"/>
             </list>
         </component>
-        <component name="weaponCategories" class="com.geargames.regolith.units.dictionaries.ServerWeaponCategoryCollection">
+        <component name="weaponCategories"
+                   class="com.geargames.regolith.units.dictionaries.ServerWeaponCategoryCollection">
             <list name="categories" cascade="save-update" table="base_configuration_weapon_category">
                 <key column="base_configuration_id"/>
                 <index column="number"/>
-                <many-to-many column="weapon_category_id" class="com.geargames.regolith.units.tackle.WeaponCategory" unique="true"/>
+                <many-to-many column="weapon_category_id" class="com.geargames.regolith.units.tackle.WeaponCategory"
+                              unique="true"/>
             </list>
         </component>
         <component name="medikits" class="com.geargames.regolith.units.dictionaries.ServerMedikitCollection">
@@ -74,14 +81,15 @@
             <list name="barriers" cascade="save-update" table="base_configuration_barrier">
                 <key column="base_configuration_id"/>
                 <index column="number"/>
-                <many-to-many column="barrier_id" class="com.geargames.regolith.units.battle.ServerBarrier" unique="true"/>
+                <many-to-many column="barrier_id" class="com.geargames.regolith.units.map.ServerBarrier" unique="true"/>
             </list>
         </component>
         <component name="battleTypes" class="com.geargames.regolith.units.dictionaries.ServerBattleTypeCollection">
             <list name="battleTypes" cascade="save-update" table="base_configuration_battle_type">
                 <key column="base_configuration_id"/>
                 <index column="number"/>
-                <many-to-many column="battle_type_id" class="com.geargames.regolith.units.battle.BattleType" unique="true"/>
+                <many-to-many column="battle_type_id" class="com.geargames.regolith.units.battle.BattleType"
+                              unique="true"/>
             </list>
         </component>
         <property name="maxDistance" column="max_distance"/>

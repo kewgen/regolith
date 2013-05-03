@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.*;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.tackle.*;
 
 /**

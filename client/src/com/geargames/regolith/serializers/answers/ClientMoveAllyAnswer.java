@@ -3,17 +3,10 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
-import com.geargames.common.util.ArrayList;
-import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.helpers.ClientBattleHelper;
-import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.BattleScreen;
-import com.geargames.regolith.units.BattleUnit;
-import com.geargames.regolith.units.Unit;
-import com.geargames.regolith.units.battle.Battle;
-import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.finder.ProjectionFinder;
-import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
+import com.geargames.regolith.units.dictionaries.ClientHumanElementCollection;
+import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * User: mvkutuzov
@@ -23,7 +16,7 @@ import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
  * в вызове setAllies.
  */
 public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
-    private BattleUnit ally;
+    private HumanElement ally;
     private int x;
     private int y;
 
@@ -31,14 +24,16 @@ public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
 
     /**
      * Что за союзник сделал ход.
+     *
      * @return
      */
-    public BattleUnit getAlly() {
+    public HumanElement getAlly() {
         return ally;
     }
 
     /**
      * Куда он перешёл по x.
+     *
      * @return
      */
     public int getX() {
@@ -47,6 +42,7 @@ public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
 
     /**
      * Куда он перешёл по y.
+     *
      * @return
      */
     public int getY() {
@@ -60,19 +56,23 @@ public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
         x = SimpleDeserializer.deserializeShort(buffer);
         y = SimpleDeserializer.deserializeShort(buffer);
         ally = null;
-        ArrayList allies = battleScreen.getAllies();
-        ArrayList enemies = battleScreen.getEnemies();
+        ClientHumanElementCollection allies = battleScreen.getAllyUnits();
+        ClientHumanElementCollection enemies = battleScreen.getEnemyUnits();
         for (int i = 0; i < allies.size(); i++) {
-            BattleUnit tmp = (BattleUnit) allies.get(i);
-            if (tmp.getUnit().getWarrior().getId() == warriorId) {
+            HumanElement tmp = allies.get(i);
+            if (tmp.getHuman().getId() == warriorId) {
                 ally = tmp;
-                int size = SimpleDeserializer.deserializeInt(buffer);
-                for(int j = 0; j < size; j++){
-                    BattleUnit enemy = ClientBattleHelper.findBattleUnitByWarriorId(enemies, SimpleDeserializer.deserializeInt(buffer));
-                    battleScreen.putEnemyInPosition(enemy, SimpleDeserializer.deserializeShort(buffer), SimpleDeserializer.deserializeShort(buffer));
-                }
                 break;
             }
         }
+        int size = SimpleDeserializer.deserializeInt(buffer);
+        for (int j = 0; j < size; j++) {
+            int humanId = SimpleDeserializer.deserializeInt(buffer);
+            HumanElement enemy = BattleMapHelper.getHumanElementByHumanId(enemies, humanId);
+            short cellX = SimpleDeserializer.deserializeShort(buffer);
+            short cellY = SimpleDeserializer.deserializeShort(buffer);
+            battleScreen.putEnemyInPosition(enemy, cellX, cellY);
+        }
     }
+
 }
