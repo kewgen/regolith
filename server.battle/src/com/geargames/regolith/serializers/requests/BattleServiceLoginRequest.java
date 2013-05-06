@@ -8,14 +8,13 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.answers.BattleServiceLoginAnswer;
-import com.geargames.regolith.serializers.answers.BattleServiceNewClientLogin;
+import com.geargames.regolith.serializers.answers.ServerBattleNewClientLogin;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.service.state.ClientActivationAwaiting;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.battle.Battle;
-import com.geargames.regolith.units.battle.BattleAlliance;
-import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.battle.ServerBattle;
+import com.geargames.regolith.units.battle.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ import java.util.List;
  * Time: 16:28
  */
 public class BattleServiceLoginRequest extends ServerRequest {
+    private static Logger logger = LoggerFactory.getLogger(BattleServiceLoginRequest.class);
 
     @Override
     public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer to, Client client) throws RegolithException {
@@ -63,7 +63,6 @@ public class BattleServiceLoginRequest extends ServerRequest {
                     serverBattle.getAlliances().get(alliance.getNumber()).add((BattleClient) client);
                     Collection<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getClients());
                     serverBattle.getClients().add((BattleClient) client);
-                    BattleGroup battleGroup = null;
                     serverBattle.getReadyGroups().add(group);
 
                     List<SocketChannel> recipient = new ArrayList<SocketChannel>(1);
@@ -74,11 +73,13 @@ public class BattleServiceLoginRequest extends ServerRequest {
                     SecurityOperationManager securityOperationManager = new SecurityOperationManager();
                     account.setSecurity(securityOperationManager);
                     securityOperationManager.setAccount(client.getAccount());
-                    message = new BattleServiceNewClientLogin(to, battle, battleGroup);
+                    message = new ServerBattleNewClientLogin(to, battle, group);
+                    recipient.remove(recipient);
                     messages.add(new BattleMessageToClient(recipients, message.serialize()));
 
                     if (serverBattle.getClients().size() == serverBattle.getGroups().size()) {
                         ServerBattleHelper.prepareBattle(serverBattle.getBattle());
+                        logger.debug("the last client has sent his login request {} ...try to start...  ", client.getAccount().getName());
                         configuration.getBattleSchedulerService().add(messages);
                         configuration.getBattleSchedulerService().add(serverBattle);
                         return new ArrayList<MessageToClient>();

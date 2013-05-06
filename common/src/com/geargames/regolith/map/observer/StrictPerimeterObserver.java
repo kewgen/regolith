@@ -27,9 +27,11 @@ public class StrictPerimeterObserver extends Observer {
 
     @Override
     public HumanElementCollection observe(HumanElement unit) {
+        System.out.println("a warrior named " + warrior.getName() + " is observing a territory");
+
         visibilityMaintainer.getAllies().clear();
-        BattleGroup grp = unit.getHuman().getBattleGroup();
-        BattleAlliance alliance = grp.getAlliance();
+        BattleGroup group = unit.getHuman().getBattleGroup();
+        BattleAlliance alliance = group.getAlliance();
         Battle battle = alliance.getBattle();
         BattleMap battleMap = battle.getMap();
         int radius = WarriorHelper.getObservingRadius(unit);

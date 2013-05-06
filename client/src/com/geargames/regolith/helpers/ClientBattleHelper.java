@@ -5,6 +5,7 @@ import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.map.router.Router;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.battle.*;
@@ -22,34 +23,36 @@ import java.util.Vector;
  */
 public class ClientBattleHelper {
 
-    public static void observe(HumanElement unit, BattleConfiguration battleConfiguration) {
-        battleConfiguration.getObserver().observe(unit);
-    }
-
-    public static void route(BattleCell[][] cells, HumanElement unit, BattleConfiguration battleConfiguration) {
-        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY(), battleConfiguration);
+    /**
+     * Проставить стоимости в ОД достижимости окружающих точек карты, для бойца unit.
+     * <p/>
+     * Предворяется зачисткой старого кратчайшего пути и пометкой окружающих ячеек, как UN_ROUTED.
+     *
+     * @param unit
+     * @param router
+     */
+    public static void route(BattleCell[][] cells, HumanElement unit, Router router) {
+        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY());
         BattleMapHelper.prepare(cells);
-        battleConfiguration.getRouter().route(unit, battleConfiguration);
+        router.route(unit);
     }
 
-    public static void trace(BattleCell[][] cells, HumanElement unit, int x, int y, BattleConfiguration battleConfiguration) {
-        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY(), battleConfiguration);
+    /**
+     * На карте, с проставленными из начальной точки (где стоит unit) стоимостями достижимости, выбрать кратчайший путь
+     * из точки (x;y) в точку, где стоит unit и отметить каждую ячейку этого пути, как часть кратчайшего пути.
+     *
+     * @param cells
+     * @param unit
+     * @param x
+     * @param y
+     */
+    public static void trace(BattleCell[][] cells, HumanElement unit, int x, int y) {
+        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY());
         BattleMapHelper.makeShortestRoute(cells, x, y, unit);
     }
 
     /**
-     * Запросить сервер: переместить активного бойца клиентского приложения из того места где он находится в точку (x;y)
-     * по кратчайшему пути.
-     *
-     * @param x
-     * @param y
-     */
-    public static void move(BattleScreen screen, int x, int y) {
-
-    }
-
-    /**
-     * Настроить координаты бойца соответсвующего unit в пикселах на экране screen.
+     * Настроить координаты бойца соответствующего unit в пикселах на экране screen.
      *
      * @param screen
      * @param unit
@@ -233,10 +236,6 @@ public class ClientBattleHelper {
         return units;
     }
 
-//    public static void position(BattleUnit battleUnit, BattleScreen screen) {
-//
-//    }
-
     /**
      * Создать игровую карту размера size*size.
      *
@@ -284,19 +283,31 @@ public class ClientBattleHelper {
     }
     */
 
-    public static BattleGroup findBattleGroupById(Battle battle, int battleGroupId) throws RegolithException {
+    public static BattleGroup findBattleGroupById(Battle battle, int id) throws Exception {
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
             BattleGroupCollection groups = alliances[i].getAllies();
             for (int j = 0; j < groups.size(); j++) {
                 BattleGroup battleGroup = groups.get(j);
-                if (battleGroup.getId() == battleGroupId) {
+                if (battleGroup.getId() == id) {
                     return battleGroup;
                 }
             }
         }
-        throw new RegolithException();
+        throw new Exception();
     }
+
+    public static BattleGroup findBattleGroupInAllianceById(BattleAlliance alliance, int id) throws  Exception {
+        BattleGroupCollection groups = alliance.getAllies();
+        for (int j = 0; j < groups.size(); j++) {
+            BattleGroup battleGroup = groups.get(j);
+            if (battleGroup.getId() == id) {
+                return battleGroup;
+            }
+        }
+        throw new Exception();
+    }
+
 
     public static BattleAlliance findBattleAlliance(Battle battle, Account account) throws Exception {
         BattleGroup group = tryFindBattleGroupByAccountId(battle, account.getId());
@@ -352,20 +363,29 @@ public class ClientBattleHelper {
 
         int allianceAmount = battle.getBattleType().getAllianceAmount();
         int allianceSize = battle.getBattleType().getAllianceSize();
-        int groupSize = battle.getBattleType().getGroupSize();
 
         for (int i = 0; i < allianceAmount; i++) {
             BattleGroupCollection groups = alliances[i].getAllies();
             for (int j = 0; j < allianceSize; j++) {
-                WarriorCollection warriors = groups.get(j).getWarriors();
-                for (int k = 0; k < groupSize; k++) {
-                    if (warriorId == warriors.get(k).getId()) {
-                        return warriors.get(k);
-                    }
+                Warrior warrior = findWarriorInBattleGroup(groups.get(j), warriorId);
+                if(warrior != null){
+                    return warrior;
                 }
             }
         }
         throw new RegolithException("Warrior was not found (id = " + warriorId + ")");
+    }
+
+    public static Warrior findWarriorInBattleGroup(BattleGroup group, int id){
+        WarriorCollection warriors = group.getWarriors();
+        int size = warriors.size();
+        for(int i =0; i < size; i++){
+            Warrior warrior = warriors.get(i);
+            if(warrior.getId() == id){
+                return warrior;
+            }
+        }
+        return null;
     }
 
     /**
@@ -405,6 +425,39 @@ public class ClientBattleHelper {
         for (int i = 0; i < size; i++) {
             Warrior warrior = (Warrior) units.get(i).getHuman();
             warrior.setActionScore(WarriorHelper.getMaxActionScores(warrior, baseConfiguration));
+        }
+    }
+
+
+
+
+
+    /**
+     * Пометить ячейки из множества cells лежащие на прямой линии между 2-х точек как кратчайщий путь для warrior.
+     *
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @param cells
+     * @param warrior
+     */
+    public static void makeEnemyFakePath(int x1, int y1, int x2, int y2, BattleCell[][] cells, Warrior warrior){
+        if(x1 <= x2){
+            markLineAsShortestPathByWarrior(x1, y1, x2, y2, cells, warrior);
+        }else{
+            markLineAsShortestPathByWarrior(x2, y2, x1, y1, cells, warrior);
+        }
+    }
+
+
+    private static void markLineAsShortestPathByWarrior(int x1, int y1, int x2, int y2, BattleCell[][] cells, Warrior warrior) {
+        double k = (double) (y2 - y1) / (double) (x2 - x1);
+        double b = y1 - k * x1;
+        int length = x2 - x1;
+        for (int i = 1; i < length - 1; i++) {
+            int x = x1 + i;
+            BattleMapHelper.setShortestPathCell(cells[x][(int)(k*x + b)], warrior);
         }
     }
 

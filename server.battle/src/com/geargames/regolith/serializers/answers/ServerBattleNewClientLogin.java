@@ -12,12 +12,12 @@ import com.geargames.regolith.units.battle.BattleGroup;
  * Date: 15.08.12
  * Time: 20:39
  */
-public class BattleServiceNewClientLogin extends SerializedMessage {
+public class ServerBattleNewClientLogin extends SerializedMessage {
     private MicroByteBuffer buffer;
     private Battle battle;
     private BattleGroup battleGroup;
 
-    public BattleServiceNewClientLogin(MicroByteBuffer buffer, Battle battle, BattleGroup battleGroup) {
+    public ServerBattleNewClientLogin(MicroByteBuffer buffer, Battle battle, BattleGroup battleGroup) {
         this.buffer = buffer;
         this.battle = battle;
         this.battleGroup = battleGroup;

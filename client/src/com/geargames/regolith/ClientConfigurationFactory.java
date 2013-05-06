@@ -41,7 +41,7 @@ public class ClientConfigurationFactory {
         configuration.setPort(1238);
         configuration.setServer("localhost");
 
-        configuration.setMessageDispatcher(new RegolithMessageDispatcher(configuration.getNetwork(), Packets.MESSAGES_AMOUNT));
+        configuration.setMessageDispatcher(new RegolithMessageDispatcher(configuration.getNetwork(), Packets.MESSAGES_AMOUNT, configuration));
         configuration.setBattleCreationManager(new ClientBattleCreationManager(configuration));
         configuration.setCommonManager(new ClientCommonManager(configuration));
         configuration.setBattleMarketManager(new ClientBattleMarketManager(configuration));

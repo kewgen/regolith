@@ -10,8 +10,8 @@ import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.answers.ServerMoveAllyAnswer;
+import com.geargames.regolith.serializers.answers.ServerMoveEnemyAnswer;
 import com.geargames.regolith.serializers.answers.ServerMoveWarriorAnswer;
-import com.geargames.regolith.serializers.answers.ServerMoveWarriorEnemyAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.service.Client;
@@ -53,15 +53,12 @@ public class ServerMoveWarriorRequest extends ServerRequest {
                 ServerHumanElementCollection units = serverBattle.getHumanElements();
                 HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
 
-                final Battle battle = serverBattle.getBattle();
-                final BattleCell[][] cells = battle.getMap().getCells();
-
                 int x = SimpleDeserializer.deserializeShort(from);
                 int y = SimpleDeserializer.deserializeShort(from);
-                BattleMapHelper.clearRoutes(cells, unit, unit.getCellX(), unit.getCellY(), regolithConfiguration.getBattleConfiguration());
-                BattleMapHelper.clearViewAround(cells, unit);
                 final Map<BattleAlliance, List<Pair>> alliancesTraces = new HashMap<BattleAlliance, List<Pair>>();
                 final BattleAlliance warriorAlliance = warrior.getBattleGroup().getAlliance();
+                final Battle battle = serverBattle.getBattle();
+                final BattleCell[][] cells = battle.getMap().getCells();
 
                 for (BattleAlliance alliance : alliancesTraces.keySet()) {
                     if (alliance != warriorAlliance) {
@@ -75,27 +72,33 @@ public class ServerMoveWarriorRequest extends ServerRequest {
                         int nx = unit.getCellX() + x;
                         int ny = unit.getCellY() + y;
                         for (BattleAlliance alliance : battle.getAlliances()) {
-                            if (alliance != warriorAlliance) {
+                            List<Pair> pairs = alliancesTraces.get(alliance);
+                            if (pairs != null) {
                                 Pair pair;
                                 if (BattleMapHelper.isVisible(cells[nx][ny], alliance)) {
                                     pair = new Pair();
                                     pair.setX(nx);
                                     pair.setY(ny);
+                                    pairs.add(pair);
                                 } else {
-                                    Pair last = ((LinkedList<Pair>) alliancesTraces.get(alliance)).getLast();
-                                    if (last == null || last instanceof TerminalPair) {
-                                        pair = null;
-                                    } else {
-                                        pair = new TerminalPair();
-                                        pair.setX(nx);
-                                        pair.setY(ny);
+                                    if (pairs.size() > 0) {
+                                        Pair last = ((LinkedList<Pair>) alliancesTraces.get(alliance)).getLast();
+                                        if (last == null || last instanceof TerminalPair) {
+                                            pair = null;
+                                        } else {
+                                            pair = new TerminalPair();
+                                            pair.setX(nx);
+                                            pair.setY(ny);
+                                        }
+                                        pairs.add(pair);
                                     }
                                 }
-                                alliancesTraces.get(alliance).add(pair);
                             }
                         }
                     }
                 };
+                BattleMapHelper.clearRoutes(cells, unit, unit.getCellX(), unit.getCellY());
+                regolithConfiguration.getBattleConfiguration().getRouter().route(unit);
                 ServerHumanElementCollection enemies = (ServerHumanElementCollection) WarriorHelper.move(cells, unit, x, y, listener, regolithConfiguration.getBattleConfiguration());
                 answers = new ArrayList<MessageToClient>(battle.getBattleType().getAllianceAmount());
 
@@ -103,12 +106,15 @@ public class ServerMoveWarriorRequest extends ServerRequest {
                 for (BattleAlliance alliance : battle.getAlliances()) {
                     Collection<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getAlliances().get(i++));
                     if (alliance != warriorAlliance) {
-                        answers.add(new BattleMessageToClient(recipients, new ServerMoveWarriorEnemyAnswer(to, unit, alliancesTraces.get(alliance)).serialize()));
+                        List<Pair> pairs = alliancesTraces.get(alliance);
+                        if (pairs != null && pairs.size() > 0) {
+                            answers.add(new BattleMessageToClient(recipients, new ServerMoveEnemyAnswer(to, unit, pairs).serialize()));
+                        }
                     } else {
                         List<SocketChannel> recipient = BattleServiceRequestUtils.singleRecipientByClient(client);
-                        recipients.remove(recipient);
-                        answers.add(new BattleMessageToClient(recipients, new ServerMoveAllyAnswer(to, unit, enemies).serialize()));
+                        recipients.removeAll(recipient);
                         answers.add(new BattleMessageToClient(recipient, ServerMoveWarriorAnswer.answerSuccess(to, unit, enemies).serialize()));
+                        answers.add(new BattleMessageToClient(recipients, new ServerMoveAllyAnswer(to, unit, enemies).serialize()));
                     }
                 }
             } else {

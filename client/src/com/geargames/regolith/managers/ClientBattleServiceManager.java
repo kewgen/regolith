@@ -4,7 +4,7 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
-import com.geargames.regolith.serializers.answers.ClientMoveMyWarriorAnswer;
+import com.geargames.regolith.serializers.answers.ClientMoveWarriorAnswer;
 import com.geargames.regolith.serializers.requests.ClientBattleServiceLoginRequest;
 import com.geargames.regolith.serializers.requests.ClientCheckSumRequest;
 import com.geargames.regolith.serializers.requests.ClientMoveRequest;
@@ -21,7 +21,7 @@ import com.geargames.regolith.units.map.HumanElement;
 public class ClientBattleServiceManager {
     private ClientConfiguration configuration;
     private ClientListenToBattleAnswer clientListenToBattleAnswer;
-    private ClientMoveMyWarriorAnswer clientMoveMyWarriorAnswer;
+    private ClientMoveWarriorAnswer clientMoveMyWarriorAnswer;
     private ClientCheckSumRequest checkSumRequest;
 
     public ClientBattleServiceManager(ClientConfiguration configuration) {
@@ -29,7 +29,7 @@ public class ClientBattleServiceManager {
         clientListenToBattleAnswer = new ClientListenToBattleAnswer();
         checkSumRequest = new ClientCheckSumRequest();
         checkSumRequest.setConfiguration(configuration);
-        clientMoveMyWarriorAnswer = new ClientMoveMyWarriorAnswer();
+        clientMoveMyWarriorAnswer = new ClientMoveWarriorAnswer();
         clientMoveMyWarriorAnswer.setEnemies(PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits());
     }
 
@@ -50,11 +50,11 @@ public class ClientBattleServiceManager {
      * @throws Exception
      */
     public ClientDeSerializedMessage move(HumanElement unit, short x, short y) throws Exception {
-        clientMoveMyWarriorAnswer.setHumanElement(unit);
+        clientMoveMyWarriorAnswer.setBattle(unit.getHuman().getBattleGroup().getAlliance().getBattle());
         configuration.getNetwork().sendSynchronousMessage(
                 new ClientMoveRequest(configuration, unit, x, y),
-                clientMoveMyWarriorAnswer, 100);
-        return clientListenToBattleAnswer;
+                clientMoveMyWarriorAnswer, 100000);
+        return clientMoveMyWarriorAnswer;
     }
 
 

@@ -4,23 +4,33 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.ClientBattleHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.BattleAlliance;
+import com.geargames.regolith.units.battle.BattleGroup;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.dictionaries.ClientHumanElementCollection;
 import com.geargames.regolith.units.map.HumanElement;
+
+import java.util.Vector;
 
 /**
  * User: mvkutuzov
  * Date: 23.04.13
  * Time: 15:54
- * Асинхронное сообщение о ходе одного из союзников. Для работы необходимо передать список дружественных BattleUnit
- * в вызове setAllies.
+ * Асинхронное сообщение о ходе одного из союзников.
+ *
  */
 public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
-    private HumanElement ally;
-    private int x;
-    private int y;
+    private BattleAlliance alliance;
 
-    private BattleScreen battleScreen;
+    private ClientWarriorCollection enemies;
+    private HumanElement ally;
+    private short x;
+    private short y;
 
     /**
      * Что за союзник сделал ход.
@@ -36,7 +46,7 @@ public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
      *
      * @return
      */
-    public int getX() {
+    public short getX() {
         return x;
     }
 
@@ -45,34 +55,48 @@ public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
      *
      * @return
      */
-    public int getY() {
+    public short getY() {
         return y;
     }
 
+    public ClientWarriorCollection getEnemies() {
+        return enemies;
+    }
+
+    /**
+     * Вернуть боевой союз, именно его боец сделает ход.
+     *
+     * @return
+     */
+    public BattleAlliance getAlliance() {
+        return alliance;
+    }
+
+    public void setAlliance(BattleAlliance alliance) {
+        this.alliance = alliance;
+    }
 
     @Override
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        Battle battle = alliance.getBattle();
+        int groupId = SimpleDeserializer.deserializeInt(buffer); //todo: ????? не нужно?
         int warriorId = SimpleDeserializer.deserializeInt(buffer);
         x = SimpleDeserializer.deserializeShort(buffer);
         y = SimpleDeserializer.deserializeShort(buffer);
-        ally = null;
-        ClientHumanElementCollection allies = battleScreen.getAllyUnits();
-        ClientHumanElementCollection enemies = battleScreen.getEnemyUnits();
-        for (int i = 0; i < allies.size(); i++) {
-            HumanElement tmp = allies.get(i);
-            if (tmp.getHuman().getId() == warriorId) {
-                ally = tmp;
-                break;
-            }
-        }
+
+        BattleGroup group = ClientBattleHelper.findBattleGroupInAllianceById(alliance, groupId);
+        ally = ClientBattleHelper.findWarriorInBattleGroup(group, warriorId);
         int size = SimpleDeserializer.deserializeInt(buffer);
+        enemies = new ClientWarriorCollection();
+        enemies.setWarriors(new Vector(size));
         for (int j = 0; j < size; j++) {
-            int humanId = SimpleDeserializer.deserializeInt(buffer);
-            HumanElement enemy = BattleMapHelper.getHumanElementByHumanId(enemies, humanId);
-            short cellX = SimpleDeserializer.deserializeShort(buffer);
-            short cellY = SimpleDeserializer.deserializeShort(buffer);
-            battleScreen.putEnemyInPosition(enemy, cellX, cellY);
+            BattleAlliance enemyAlliance = battle.getAlliances()[buffer.get()];
+            BattleGroup enemyGroup = ClientBattleHelper.findBattleGroupInAllianceById(enemyAlliance, SimpleDeserializer.deserializeInt(buffer));
+            Warrior enemy = ClientBattleHelper.findWarriorInBattleGroup(enemyGroup, SimpleDeserializer.deserializeInt(buffer));
+            int xx = SimpleDeserializer.deserializeInt(buffer);
+            int yy = SimpleDeserializer.deserializeInt(buffer);
+            WarriorHelper.putWarriorIntoMap(enemy, battle.getMap(), xx, yy);
+            enemies.add(enemy);
         }
     }
-
 }

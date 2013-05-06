@@ -1,5 +1,7 @@
 package com.geargames.regolith.service;
 
+import com.geargames.regolith.BattleConfiguration;
+import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.service.remote.BattleServiceRegister;
 import com.geargames.regolith.service.remote.MainServiceFunctions;
 import com.geargames.regolith.service.remote.BattleServiceDescriptor;
@@ -24,7 +26,12 @@ public class BattleServiceManager {
         battleServiceDescriptor.setName(battleServiceName);
 
         MainServiceFunctions main = (MainServiceFunctions) Naming.lookup("rmi://" + mainHost + "/" + MAIN_NAME);
-        configuration.setRegolithConfiguration(main.register(battleServiceDescriptor));
+        RegolithConfiguration regolithConfiguration = main.register(battleServiceDescriptor);
+        BattleConfiguration battleConfiguration = regolithConfiguration.getBattleConfiguration();
+        battleConfiguration.setObserver(configuration.getObserver());
+        battleConfiguration.setRouter(configuration.getRouter());
+        configuration.setRegolithConfiguration(regolithConfiguration);
+
         configuration.getBattleSchedulerService().start();
         return service;
     }

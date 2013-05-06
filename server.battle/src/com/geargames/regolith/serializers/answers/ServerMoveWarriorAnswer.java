@@ -46,8 +46,10 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
     }
 
     /**
-     * id война
-     * x и y на карте куда он пойдёт(конец пути)
+     * id союза
+     * id группы
+     * id воина
+     * x и y на карте куда он пойдёт (конец пути)
      * массив врагов которых он "засветил" ("засвет" противника может произойти только в конце пути)
      *
      * @param buffer
@@ -62,7 +64,9 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
             if (enemies != null) {
                 SimpleSerializer.serialize(enemies.size(), buffer);
                 for (HumanElement human : enemies.getElements()) {
-                    SerializeHelper.serializeEntityReference(human, buffer);
+                    SimpleSerializer.serialize(human.getHuman().getBattleGroup().getAlliance().getNumber(), buffer);
+                    SerializeHelper.serializeEntityReference(human.getHuman().getBattleGroup(), buffer);
+                    SerializeHelper.serializeEntityReference(human.getHuman(), buffer);
                     SimpleSerializer.serialize(human.getCellX(), buffer);
                     SimpleSerializer.serialize(human.getCellY(), buffer);
                 }

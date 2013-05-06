@@ -11,6 +11,7 @@ import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.map.observer.StrictPerimeterObserver;
 import com.geargames.regolith.map.router.RecursiveWaveRouter;
 import com.geargames.regolith.serializers.answers.ClientBattleLoginAnswer;
+import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.dictionaries.ClientHumanElementCollection;
 
 import java.util.Vector;
@@ -69,6 +70,14 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
             battleConfiguration.setRouter(new RecursiveWaveRouter());
 
             //todo забрать из сообщения группы которые уже залогинились и сообщить о них
+            BattleGroup[] loggedIn = battleLogin.getBattleGroups();
+            String string = null ;
+            for(int i = 0; i < loggedIn.length; i++){
+                if(loggedIn[i] != null){
+                    string += loggedIn[i].getAccount().getName();
+                }
+            }
+            NotificationBox.info(string, this);
             panelManager.hideAll();
             panelManager.getBattleScreen().setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
             panelManager.show(panelManager.getHeadlineWindow());

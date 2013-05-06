@@ -10,9 +10,10 @@ import com.geargames.regolith.units.map.HumanElement;
 public abstract class Observer {
 
     /**
-     * Осмотреть окрестности бойца warrior в пределах его зоны видимости.
+     * Осмотреть окрестности бойца unit в пределах его зоны видимости.
      *
      * @param unit
+     * @return коллекция врагов бойца unit, которых он увидел.
      */
     public abstract HumanElementCollection observe(HumanElement unit);
 
