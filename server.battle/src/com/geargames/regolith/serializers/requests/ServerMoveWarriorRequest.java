@@ -97,8 +97,8 @@ public class ServerMoveWarriorRequest extends ServerRequest {
                         }
                     }
                 };
-                BattleMapHelper.clearRoutes(cells, unit, unit.getCellX(), unit.getCellY());
-                regolithConfiguration.getBattleConfiguration().getRouter().route(unit);
+                BattleMapHelper.clearRoutes(cells, unit, unit.getCellX(), unit.getCellY(), regolithConfiguration.getBattleConfiguration());
+                regolithConfiguration.getBattleConfiguration().getRouter().route(unit, regolithConfiguration.getBattleConfiguration());
                 ServerHumanElementCollection enemies = (ServerHumanElementCollection) WarriorHelper.move(cells, unit, x, y, listener, regolithConfiguration.getBattleConfiguration());
                 answers = new ArrayList<MessageToClient>(battle.getBattleType().getAllianceAmount());
 

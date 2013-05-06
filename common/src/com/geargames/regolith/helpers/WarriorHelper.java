@@ -56,7 +56,7 @@ public class WarriorHelper {
      * @param cellX
      * @param cellY
      */
-    public static void putWarriorIntoMap(BattleCell[][] cells, HumanElement unit, int cellX, int cellY) {
+    public static void putWarriorIntoMap(BattleCell[][] cells, HumanElement unit, int cellX, int cellY) { //todo: cellX, cellY -> short
         BattleCell previousCell = cells[unit.getCellX()][unit.getCellY()];
         previousCell.removeElement(unit);
 
@@ -81,7 +81,7 @@ public class WarriorHelper {
         BattleMapHelper.resetShortestCell(cells[unit.getCellX()][unit.getCellY()], warrior);
         putWarriorIntoMap(cells, unit, unit.getCellX() + stepX, unit.getCellY() + stepY);
         warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getMove()));
-        System.out.println("A warrior '" + unit.getName() + "' observe on step (" + unit.getCellX() + ":" + unit.getCellY() + ")");
+        System.out.println("A warrior '" + unit.getHuman().getName() + "' observe on step (" + unit.getCellX() + ":" + unit.getCellY() + ")");
         return battleConfiguration.getObserver().observe(unit);
     }
 

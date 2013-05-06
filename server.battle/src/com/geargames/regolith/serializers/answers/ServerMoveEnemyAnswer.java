@@ -6,13 +6,12 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
-import com.geargames.regolith.units.Human;
 import com.geargames.regolith.units.map.HumanElement;
 
 import java.util.List;
 
 /**
- * User: mkutuzov
+ * Users: mvkutuzov, abarakov
  * Date: 23.07.12
  */
 public class ServerMoveEnemyAnswer extends SerializedMessage {
@@ -39,13 +38,12 @@ public class ServerMoveEnemyAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         short invisible = 0;
-        Human human = unit.getHuman();
-        SerializeHelper.serializeEntityReference(human.getBattleGroup().getAlliance(), buffer);
-        SerializeHelper.serializeEntityReference(human.getBattleGroup(), buffer);
-        SerializeHelper.serializeEntityReference(human, buffer);
+//        SerializeHelper.serializeEntityReference(unit.getHuman().getBattleGroup().getAlliance(), buffer);
+//        SerializeHelper.serializeEntityReference(unit.getHuman().getBattleGroup(), buffer);
+        SerializeHelper.serializeEntityReference(unit.getHuman(), buffer);
         buffer.mark();
-        buffer.setPosition(buffer.getPosition() + 4);
-        int i = 0;
+        buffer.setPosition(buffer.getPosition() + 1);
+        byte size = 0;
         for (Pair pair : pairs) {
             if (pair != null) {
                 if (invisible != 0) {
@@ -55,14 +53,14 @@ public class ServerMoveEnemyAnswer extends SerializedMessage {
                 }
                 SimpleSerializer.serialize(pair.getX(), buffer);
                 SimpleSerializer.serialize(pair.getY(), buffer);
-                i++;
+                size++;
             } else {
                 invisible++;
             }
         }
         int position = buffer.getPosition();
         buffer.reset();
-        SimpleSerializer.serialize(i, buffer);
+        SimpleSerializer.serialize(size, buffer);
         buffer.setPosition(position);
     }
 

@@ -1,13 +1,11 @@
 package com.geargames.regolith.helpers;
 
-import com.geargames.common.logging.Debug;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.map.Pair;
-import com.geargames.regolith.map.router.Router;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.Human;
 import com.geargames.regolith.units.dictionaries.HumanElementCollection;
 import com.geargames.regolith.units.map.*;
@@ -314,7 +312,7 @@ public class BattleMapHelper {
         int y = unit.getCellY();
         int radius = WarriorHelper.getObservingRadius(unit);
         SecurityOperationManager manager = unit.getHuman().getBattleGroup().getAccount().getSecurity();
-        System.out.println("i am clearing a view of warrior " + warrior.getName());
+        System.out.println("I am clearing a view of warrior " + unit.getHuman().getName());
         for (int i = x - radius; i <= 2 * radius + 1; i++) {
             if (i >= 0 && i < length) {
                 for (int j = y - radius; j <= 2 * radius + 1; j++) {

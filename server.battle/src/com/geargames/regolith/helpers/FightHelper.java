@@ -419,11 +419,11 @@ public class FightHelper {
      * @param alliance
      * @param baseConfiguration
      */
-    public static void resetAllianceScores(BattleAlliance alliance, BaseConfiguration baseConfiguration){
-        ServerBattleGroupCollection groups = (ServerBattleGroupCollection)alliance.getAllies();
-        for(BattleGroup group : groups.getBattleGroups()){
-            ServerWarriorCollection warriors = (ServerWarriorCollection)group.getWarriors();
-            for(Warrior warrior : warriors.getWarriors()){
+    public static void resetAllianceScores(BattleAlliance alliance, BaseConfiguration baseConfiguration) {
+        ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
+        for (BattleGroup group : groups.getBattleGroups()) {
+            ServerWarriorCollection warriors = (ServerWarriorCollection) group.getWarriors();
+            for (Warrior warrior : warriors.getWarriors()) {
                 warrior.setActionScore(WarriorHelper.getMaxActionScores(warrior, baseConfiguration));
             }
         }

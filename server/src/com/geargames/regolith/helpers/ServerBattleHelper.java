@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * Date: 07.03.12
  */
 public class ServerBattleHelper {
-    private static Logger logger = LoggerFactory.getLogger(BattleHelper.class);
+    private static Logger logger = LoggerFactory.getLogger(ServerBattleHelper.class);
 
     public static void putAllianceOnMap(BattleCell[][] cells, ServerHumanElementCollection units, BattleAlliance alliance, ExitZone exit) throws RegolithException {
         BattleGroupCollection groups = alliance.getAllies();
@@ -147,19 +147,22 @@ public class ServerBattleHelper {
 
     /**
      * Боевой союз осмотрелся в поисках жертвы.
+     *
      * @param alliance
      * @param observer
+     * @param units
      * @return
      */
-    public static Set<Ally> allianceObservedBattle(BattleAlliance alliance, Observer observer) {
+    public static Set<HumanElement> allianceObservedBattle(BattleAlliance alliance, Observer observer, ServerHumanElementCollection units) throws RegolithException {
         ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
-        Set<Ally> enemies = new HashSet<Ally>();
+        Set<HumanElement> enemies = new HashSet<HumanElement>();
         logger.debug("groups amount: {} ", groups.getBattleGroups().size());
         for (BattleGroup group : groups.getBattleGroups()) {
             ServerWarriorCollection warriors = (ServerWarriorCollection) group.getWarriors();
             for (Warrior warrior : warriors.getWarriors()) {
                 logger.debug("a warrior named {} is observing a territory ", warrior.getName());
-                enemies.addAll(((ServerAllyCollection) observer.observe(warrior)).getAllies());
+                HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
+                enemies.addAll(((ServerHumanElementCollection) observer.observe(unit)).getElements());
             }
         }
         return enemies;

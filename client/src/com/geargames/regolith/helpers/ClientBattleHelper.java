@@ -31,10 +31,10 @@ public class ClientBattleHelper {
      * @param unit
      * @param router
      */
-    public static void route(BattleCell[][] cells, HumanElement unit, Router router) {
-        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY());
+    public static void route(BattleCell[][] cells, HumanElement unit, Router router, BattleConfiguration battleConfiguration) {
+        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY(), battleConfiguration);
         BattleMapHelper.prepare(cells);
-        router.route(unit);
+        router.route(unit, battleConfiguration);
     }
 
     /**
@@ -46,8 +46,8 @@ public class ClientBattleHelper {
      * @param x
      * @param y
      */
-    public static void trace(BattleCell[][] cells, HumanElement unit, int x, int y) {
-        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY());
+    public static void trace(BattleCell[][] cells, HumanElement unit, int x, int y, BattleConfiguration battleConfiguration) {
+        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY(), battleConfiguration);
         BattleMapHelper.makeShortestRoute(cells, x, y, unit);
     }
 
@@ -297,7 +297,7 @@ public class ClientBattleHelper {
         throw new Exception();
     }
 
-    public static BattleGroup findBattleGroupInAllianceById(BattleAlliance alliance, int id) throws  Exception {
+    public static BattleGroup findBattleGroupInAllianceById(BattleAlliance alliance, int id) throws Exception {
         BattleGroupCollection groups = alliance.getAllies();
         for (int j = 0; j < groups.size(); j++) {
             BattleGroup battleGroup = groups.get(j);
@@ -368,7 +368,7 @@ public class ClientBattleHelper {
             BattleGroupCollection groups = alliances[i].getAllies();
             for (int j = 0; j < allianceSize; j++) {
                 Warrior warrior = findWarriorInBattleGroup(groups.get(j), warriorId);
-                if(warrior != null){
+                if (warrior != null) {
                     return warrior;
                 }
             }
@@ -376,12 +376,12 @@ public class ClientBattleHelper {
         throw new RegolithException("Warrior was not found (id = " + warriorId + ")");
     }
 
-    public static Warrior findWarriorInBattleGroup(BattleGroup group, int id){
+    public static Warrior findWarriorInBattleGroup(BattleGroup group, int id) {
         WarriorCollection warriors = group.getWarriors();
         int size = warriors.size();
-        for(int i =0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             Warrior warrior = warriors.get(i);
-            if(warrior.getId() == id){
+            if (warrior.getId() == id) {
                 return warrior;
             }
         }
@@ -429,9 +429,6 @@ public class ClientBattleHelper {
     }
 
 
-
-
-
     /**
      * Пометить ячейки из множества cells лежащие на прямой линии между 2-х точек как кратчайщий путь для warrior.
      *
@@ -440,24 +437,24 @@ public class ClientBattleHelper {
      * @param x2
      * @param y2
      * @param cells
-     * @param warrior
+     * @param unit
      */
-    public static void makeEnemyFakePath(int x1, int y1, int x2, int y2, BattleCell[][] cells, Warrior warrior){
-        if(x1 <= x2){
-            markLineAsShortestPathByWarrior(x1, y1, x2, y2, cells, warrior);
-        }else{
-            markLineAsShortestPathByWarrior(x2, y2, x1, y1, cells, warrior);
+    public static void makeEnemyFakePath(int x1, int y1, int x2, int y2, BattleCell[][] cells, ClientHumanElement unit) {
+        if (x1 <= x2) {
+            markLineAsShortestPathByWarrior(x1, y1, x2, y2, cells, unit);
+        } else {
+            markLineAsShortestPathByWarrior(x2, y2, x1, y1, cells, unit);
         }
     }
 
 
-    private static void markLineAsShortestPathByWarrior(int x1, int y1, int x2, int y2, BattleCell[][] cells, Warrior warrior) {
+    private static void markLineAsShortestPathByWarrior(int x1, int y1, int x2, int y2, BattleCell[][] cells, ClientHumanElement unit) {
         double k = (double) (y2 - y1) / (double) (x2 - x1);
         double b = y1 - k * x1;
         int length = x2 - x1;
         for (int i = 1; i < length - 1; i++) {
             int x = x1 + i;
-            BattleMapHelper.setShortestPathCell(cells[x][(int)(k*x + b)], warrior);
+            BattleMapHelper.setShortestPathCell(cells[x][(int) (k * x + b)], unit);
         }
     }
 

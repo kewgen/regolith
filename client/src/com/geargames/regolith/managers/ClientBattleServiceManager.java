@@ -2,7 +2,6 @@ package com.geargames.regolith.managers;
 
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.answers.ClientMoveWarriorAnswer;
 import com.geargames.regolith.serializers.requests.ClientBattleServiceLoginRequest;
@@ -30,7 +29,6 @@ public class ClientBattleServiceManager {
         checkSumRequest = new ClientCheckSumRequest();
         checkSumRequest.setConfiguration(configuration);
         clientMoveMyWarriorAnswer = new ClientMoveWarriorAnswer();
-        clientMoveMyWarriorAnswer.setEnemies(PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits());
     }
 
     public ClientDeSerializedMessage login(Battle battle, BattleAlliance alliance) throws Exception {

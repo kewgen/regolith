@@ -440,15 +440,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 break;
             case Packets.INITIALLY_OBSERVED_ENEMIES:
                 ClientInitiallyObservedEnemies init = (ClientInitiallyObservedEnemies) message;
-                WarriorCollection observed = init.getEnemies();
+                ClientHumanElementCollection observed = init.getEnemies();
                 for (int i = 0; i < observed.size(); i++) {
-                    Warrior warrior = observed.get(i);
-                    BattleUnit enemy = ClientBattleHelper.findBattleUnitByWarrior(enemies, warrior);
-                    ClientBattleHelper.initMapXY(this, enemy);
+                    HumanElement enemyUnit = observed.get(i);
+                    ClientBattleHelper.initMapXY(this, enemyUnit);
                 }
                 break;
             case Packets.CHANGE_ACTIVE_ALLIANCE:
-                BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
+//                BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
 //                //to do: Вызов следующих трех методов под вопросом
                 //todo: Все динамические элементы (юниты, двери) должны обновляться паралельно
                 //todo: Это вообще не требуется. Новый ход не начнется, пока все пользователи не подтвердят свое завершение хода. Но и сервер не должен давать возможность выполнять ходы за пределами 30-секундного хода
@@ -470,11 +469,11 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 onChangeActiveAlliance(activeAlliance);
                 break;
             case Packets.MOVE_ALLY:
-                ClientMoveAllyAnswer moveAlly = (ClientMoveAllyAnswer)message;
-                moveAlly(moveAlly.getAlly(), moveAlly.getX(),moveAlly.getY(), moveAlly.getEnemies());
+                ClientMoveAllyAnswer moveAlly = (ClientMoveAllyAnswer) message;
+                moveAlly(moveAlly.getAlly(), moveAlly.getX(), moveAlly.getY(), moveAlly.getEnemies());
                 break;
             case Packets.MOVE_ENEMY:
-                ClientMoveEnemyAnswer moveEnemy = (ClientMoveEnemyAnswer)message;
+                ClientMoveEnemyAnswer moveEnemy = (ClientMoveEnemyAnswer) message;
                 moveEnemy(moveEnemy.getEnemy());
                 break;
         }
@@ -489,20 +488,18 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     public void moveUser(int x, int y) {
         try {
-            Warrior warrior = user.getUnit().getWarrior();
-            ClientMoveWarriorAnswer move = (ClientMoveWarriorAnswer) configuration.getBattleServiceManager().move(warrior, (short) x, (short) y);
+            ClientMoveWarriorAnswer move = (ClientMoveWarriorAnswer) configuration.getBattleServiceManager().move(activeUnit, (short) x, (short) y);
             if (move.isSuccess()) {
                 short xx = move.getX();
                 short yy = move.getY();
                 if (xx != x || yy != y) {
-                    ClientBattleHelper.trace(warrior, xx, yy);
+                    ClientBattleHelper.trace(battle.getMap().getCells(), activeUnit, xx, yy, configuration.getBattleConfiguration());
                 }
-                getStep(user).init();
-                WarriorCollection warriorCollection = move.getEnemies();
+                activeUnit.getLogic().doRun();
+                ClientHumanElementCollection warriorCollection = move.getEnemies();
                 for (int i = 0; i < warriorCollection.size(); i++) {
-                    Warrior enemy = warriorCollection.get(i);
-                    BattleUnit enemyUnit = ClientBattleHelper.findBattleUnitByWarrior(enemies, enemy);
-                    ClientBattleHelper.initMapXY(this, enemyUnit);
+                    ClientHumanElement unit = (ClientHumanElement) warriorCollection.get(i);
+                    ClientBattleHelper.initMapXY(this, unit);
                 }
             } else {
                 NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
@@ -514,20 +511,19 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     /**
-     * Разрешить двинуть бойца warrior принадлежащего союзнику в точку (x;y)
+     * Разрешить двинуть бойца unit принадлежащего союзнику в точку (x;y)
      *
-     * @param warrior
+     * @param unit
      * @param x
      * @param y
-     * @param warriorCollection противники которых наш товарищ засветил
+     * @param enemyCollection противники которых наш товарищ засветил
      */
-    public void moveAlly(Warrior warrior, int x, int y, WarriorCollection warriorCollection) {
-        ClientBattleHelper.route(warrior, configuration.getBattleConfiguration().getRouter());
-        ClientBattleHelper.trace(warrior, x, y);
-        getStep(ClientBattleHelper.findBattleUnitByWarrior(allies, warrior)).init();
-        for (int i = 0; i < warriorCollection.size(); i++) {
-            Warrior enemy = warriorCollection.get(i);
-            BattleUnit enemyUnit = ClientBattleHelper.findBattleUnitByWarrior(enemies, enemy);
+    public void moveAlly(ClientHumanElement unit, int x, int y, ClientHumanElementCollection enemyCollection) {
+        ClientBattleHelper.route(battle.getMap().getCells(), unit, configuration.getBattleConfiguration().getRouter(), configuration.getBattleConfiguration());
+        ClientBattleHelper.trace(battle.getMap().getCells(), unit, x, y, configuration.getBattleConfiguration());
+        unit.getLogic().doRun();
+        for (int i = 0; i < enemyCollection.size(); i++) {
+            ClientHumanElement enemyUnit = (ClientHumanElement) enemyCollection.get(i);
             ClientBattleHelper.initMapXY(this, enemyUnit);
         }
     }
@@ -535,10 +531,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     /**
      * Двинуть противника по его пути.
      *
-     * @param enemy
+     * @param enemyUnit
      */
-    public void moveEnemy(Warrior enemy) {
-        getStep(ClientBattleHelper.findBattleUnitByWarrior(enemies, enemy)).init();
+    public void moveEnemy(ClientHumanElement enemyUnit) {
+        enemyUnit.getLogic().doRun();
     }
 
     /**
@@ -905,7 +901,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     //todo: Избавиться от этого метода
     public void doMapReachabilityUpdate() {
         Debug.debug("Route for unit " + activeUnit.getHuman().getName());
-        ClientBattleHelper.route(battle.getMap().getCells(), activeUnit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration().getRouter());
+        ClientBattleHelper.route(battle.getMap().getCells(), activeUnit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration().getRouter(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
     }
 
     /**

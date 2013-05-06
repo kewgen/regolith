@@ -27,8 +27,8 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
      *
      * @param unit
      * @param hidden
-     * @param x       координата по первому измерению массива
-     * @param y       координата по второму измерению массива
+     * @param x      координата по первому измерению массива
+     * @param y      координата по второму измерению массива
      * @return
      */
     @Override

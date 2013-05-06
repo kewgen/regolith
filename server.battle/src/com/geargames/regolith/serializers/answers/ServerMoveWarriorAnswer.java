@@ -9,7 +9,7 @@ import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 
 /**
- * User: mikhail v. kutuzov
+ * Users: mikhail v. kutuzov, abarakov
  * Date: 23.08.12
  * Time: 13:56
  */
@@ -62,10 +62,8 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
             SimpleSerializer.serialize(unit.getCellX(), buffer);
             SimpleSerializer.serialize(unit.getCellY(), buffer);
             if (enemies != null) {
-                SimpleSerializer.serialize(enemies.size(), buffer);
+                SimpleSerializer.serialize((byte) enemies.size(), buffer);
                 for (HumanElement human : enemies.getElements()) {
-                    SimpleSerializer.serialize(human.getHuman().getBattleGroup().getAlliance().getNumber(), buffer);
-                    SerializeHelper.serializeEntityReference(human.getHuman().getBattleGroup(), buffer);
                     SerializeHelper.serializeEntityReference(human.getHuman(), buffer);
                     SimpleSerializer.serialize(human.getCellX(), buffer);
                     SimpleSerializer.serialize(human.getCellY(), buffer);
