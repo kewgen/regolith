@@ -1,6 +1,5 @@
 package com.geargames.regolith.units.map;
 
-import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.BattleAlliance;
 
 import java.io.Serializable;
@@ -13,13 +12,13 @@ import java.io.Serializable;
 public abstract class BattleCell implements Serializable {
     /**
      * Какие элементы могут располагаться в ячейке:
-     *   static   very bottom  подложка
-     *   static   bottom       подсветка зоны, подсветка препятствий
-     *   static   middle       препятствия
-     *   dynamic  middle       выброшенные предметы
-     *   dynamic  top          бойцы
-     *   static   top          значки (высота препятствия и др.)
-     *   static   very top     туман войны
+     * static   very bottom  подложка
+     * static   bottom       подсветка зоны, подсветка препятствий
+     * static   middle       препятствия
+     * dynamic  middle       выброшенные предметы
+     * dynamic  top          бойцы
+     * static   top          значки (высота препятствия и др.)
+     * static   very top     туман войны
      */
 
     private CellElement[] elements;

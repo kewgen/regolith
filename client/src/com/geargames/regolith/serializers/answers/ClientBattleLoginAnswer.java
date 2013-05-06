@@ -48,9 +48,9 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
         if (battle.getId() == battleId) {
             success = SimpleDeserializer.deserializeBoolean(buffer);
             if (success) {
-                battleGroups = new BattleGroup[battle.getBattleType().getAllianceSize()*battle.getBattleType().getAllianceAmount()];
-                int size = SimpleDeserializer.deserializeInt(buffer);
-                for (int i = 0; i < size; i++) {
+                battleGroups = new BattleGroup[battle.getBattleType().getAllianceSize() * battle.getBattleType().getAllianceAmount()];
+                int length = SimpleDeserializer.deserializeInt(buffer);
+                for (int i = 0; i < length; i++) {
                     int battleGroupId = SimpleDeserializer.deserializeInt(buffer);
                     BattleGroup group = null;
                     for (BattleAlliance alliance : battle.getAlliances()) {
@@ -69,9 +69,6 @@ public class ClientBattleLoginAnswer extends ClientDeSerializedMessage {
                 }
                 ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
                 configuration.setBattleConfiguration(ConfigurationDeserializer.deserializeBattleConfiguration(buffer));
-                BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
-                battleConfiguration.setObserver(new StrictPerimeterObserver(ClientBattleHelper.getAllies(battle, configuration.getAccount())));
-                battleConfiguration.setRouter(new RecursiveWaveRouter());
             } else {
                 Debug.warning("An alien battle has confirmed our login");
             }

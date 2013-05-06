@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.CellElementTypes;
+import com.geargames.regolith.units.map.CellElementTypes;
 import com.geargames.regolith.units.dictionaries.WeaponTypeCollection;
 
 /**

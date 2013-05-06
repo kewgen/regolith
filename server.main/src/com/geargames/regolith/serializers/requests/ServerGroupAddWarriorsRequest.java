@@ -1,7 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.*;
-import com.geargames.regolith.helpers.BattleHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.ServerDataBaseHelper;
 import com.geargames.regolith.managers.ServerTrainingBattleCreationManager;
 import com.geargames.common.serialization.MicroByteBuffer;
@@ -40,9 +40,9 @@ public class ServerGroupAddWarriorsRequest extends ServerRequest {
         SerializedMessage message;
 
         if (battleManagerContext.getCreatedBattles().get(battle.getAuthor()) != null) {
-            BattleAlliance alliance = BattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(from));
+            BattleAlliance alliance = ServerBattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(from));
             if (alliance != null) {
-                BattleGroup group = BattleHelper.findBattleGroupById(alliance, SimpleDeserializer.deserializeInt(from));
+                BattleGroup group = ServerBattleHelper.findBattleGroupById(alliance, SimpleDeserializer.deserializeInt(from));
                 if (group != null) {
                     byte length = from.get();
                     int[] warriorIds = new int[length];

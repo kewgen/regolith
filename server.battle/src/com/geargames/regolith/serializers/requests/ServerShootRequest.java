@@ -11,7 +11,9 @@ import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.*;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.BattleCell;
+import com.geargames.regolith.units.map.HumanElement;
 
 import java.nio.channels.SocketChannel;
 import java.util.LinkedList;
@@ -42,7 +44,11 @@ public class ServerShootRequest extends ServerRequest {
         BattleGroup victimGroup = BattleServiceRequestUtils.getBattleGroupFromServerBattle(serverBattle, victimAllianceNumber, victimGroupId);
         Warrior victim = BattleServiceRequestUtils.getWarriorFromGroup(victimGroup, victimId);
 
-        FightHelper.shoot(hunter, victim, SimpleDeserializer.deserializeBoolean(from));
+        ServerHumanElementCollection units = serverBattle.getHumanElements();
+        HumanElement hunterElement = BattleMapHelper.getHumanElementByHuman(units, hunter);
+        HumanElement victimElement = BattleMapHelper.getHumanElementByHuman(units, victim);
+        boolean accurately = SimpleDeserializer.deserializeBoolean(from);
+        FightHelper.shoot(hunterElement, victimElement, accurately);
 
         List<MessageToClient> messages = new LinkedList<MessageToClient>();
         Battle battle = serverBattle.getBattle();
@@ -54,11 +60,11 @@ public class ServerShootRequest extends ServerRequest {
             Warrior aHunter = null;
             Warrior aVictim = null;
 
-            if (BattleMapHelper.isVisible(cells[hunter.getX()][hunter.getY()], alliance)) {
+            if (BattleMapHelper.isVisible(cells[hunterElement.getCellX()][hunterElement.getCellY()], alliance)) {
                 aHunter = hunter;
             }
 
-            if (BattleMapHelper.isVisible(cells[victim.getX()][victim.getY()], alliance)) {
+            if (BattleMapHelper.isVisible(cells[victimElement.getCellX()][victimElement.getCellY()], alliance)) {
                 aVictim = victim;
             }
 

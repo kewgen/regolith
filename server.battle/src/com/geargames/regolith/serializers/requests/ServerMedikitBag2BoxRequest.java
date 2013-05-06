@@ -4,8 +4,8 @@ import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.AmmunitionBagHelper;
 import com.geargames.regolith.units.AmmunitionBag;
-import com.geargames.regolith.units.CellElement;
-import com.geargames.regolith.units.battle.Box;
+import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.MedikitCollection;
@@ -25,7 +25,7 @@ public class ServerMedikitBag2BoxRequest extends ServerBag2BoxRequest {
     @Override
     protected CellElement moveBag2Box(short bagNumber, Box box, Warrior warrior) throws RegolithException {
         AmmunitionBag bag = warrior.getAmmunitionBag();
-        if(bag.getSize() >= bagNumber){
+        if (bag.getSize() >= bagNumber) {
             throw new RegolithException();
         }
         Ammunition ammunition = bag.getPackets().get(bagNumber).getAmmunition();

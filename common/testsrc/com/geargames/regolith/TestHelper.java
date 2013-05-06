@@ -3,8 +3,8 @@ package com.geargames.regolith;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.battle.BattleAlliance;
-import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.ExitZone;
+import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * User: mkutuzov
@@ -13,20 +13,20 @@ import com.geargames.regolith.units.map.ExitZone;
 public class TestHelper {
 
 
-    public static void printViewMap(BattleMap battleMap, BattleAlliance alliance){
-        for(int i = 0; i < battleMap.getCells().length; i++){
+    public static void printViewMap(BattleMap battleMap, BattleAlliance alliance) {
+        for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
-            for(int j = 0; j < battleMap.getCells()[i].length; j++){
-                if(battleMap.getCells()[j][i].getElement() != null){
-                    if(battleMap.getCells()[j][i].getElement() instanceof Warrior){
+            for (int j = 0; j < battleMap.getCells()[i].length; j++) {
+                if (battleMap.getCells()[j][i].getElement() != null) {
+                    if (battleMap.getCells()[j][i].getElement() instanceof HumanElement) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
                     }
                 } else {
-                    if( BattleMapHelper.isVisible(battleMap.getCells()[j][i], alliance)){
+                    if (BattleMapHelper.isVisible(battleMap.getCells()[j][i], alliance)) {
                         System.out.print('x');
-                    }else{
+                    } else {
                         System.out.print(' ');
                     }
                 }
@@ -35,23 +35,23 @@ public class TestHelper {
         }
     }
 
-    public static void printRouteMap(BattleMap  battleMap, Warrior warrior){
-        for(int i = 0; i < battleMap.getCells().length; i++){
+    public static void printRouteMap(BattleMap battleMap, HumanElement unit) {
+        for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
-            for(int j = 0; j < battleMap.getCells()[i].length; j++){
-                if(battleMap.getCells()[j][i].getElement() != null){
-                    if(battleMap.getCells()[j][i].getElement() instanceof Warrior){
+            for (int j = 0; j < battleMap.getCells()[i].length; j++) {
+                if (battleMap.getCells()[j][i].getElement() != null) {
+                    if (battleMap.getCells()[j][i].getElement() instanceof HumanElement) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
                     }
                 } else {
-                    if(BattleMapHelper.isShortestPathCell(battleMap.getCells()[j][i], warrior)){
+                    if (BattleMapHelper.isShortestPathCell(battleMap.getCells()[j][i], unit)) {
                         System.out.print('x');
-                    }else{
-                        if( BattleMapHelper.isReachable(battleMap.getCells()[j][i])) {
+                    } else {
+                        if (BattleMapHelper.isReachable(battleMap.getCells()[j][i])) {
                             System.out.print(battleMap.getCells()[j][i].getOrder());
-                        }else{
+                        } else {
                             System.out.print('*');
                         }
                     }
@@ -61,27 +61,27 @@ public class TestHelper {
         }
     }
 
-    public static void printExitZones(BattleMap battleMap){
+    public static void printExitZones(BattleMap battleMap) {
         ExitZone[] exits = battleMap.getExits();
-        for(int i = 0; i < battleMap.getCells().length; i++){
+        for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
-            for(int j = 0; j < battleMap.getCells()[i].length; j++){
-                if(battleMap.getCells()[j][i].getElement() != null){
-                    if(battleMap.getCells()[j][i].getElement() instanceof Warrior){
+            for (int j = 0; j < battleMap.getCells()[i].length; j++) {
+                if (battleMap.getCells()[j][i].getElement() != null) {
+                    if (battleMap.getCells()[j][i].getElement() instanceof HumanElement) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
                     }
                 } else {
                     boolean found = false;
-                    for(ExitZone exit : exits){
-                        if(Math.abs(j - exit.getX())<=exit.getxRadius() && Math.abs(i - exit.getY())<=exit.getyRadius()){
+                    for (ExitZone exit : exits) {
+                        if (Math.abs(j - exit.getX()) <= exit.getxRadius() && Math.abs(i - exit.getY()) <= exit.getyRadius()) {
                             System.out.print('*');
                             found = true;
                             break;
                         }
                     }
-                    if(!found){
+                    if (!found) {
                         System.out.print('.');
                     }
                 }
@@ -89,7 +89,6 @@ public class TestHelper {
             System.out.println('|');
         }
     }
-
 
 
 }

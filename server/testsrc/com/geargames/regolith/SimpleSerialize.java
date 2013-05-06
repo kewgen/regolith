@@ -1,6 +1,6 @@
 package com.geargames.regolith;
 
-import com.geargames.regolith.helpers.BattleHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.units.map.BattleCell;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -14,9 +14,9 @@ import java.io.IOException;
 public class SimpleSerialize {
     @Test
     public void test() throws IOException, ClassNotFoundException {
-        BattleCell[][] cells = BattleHelper.createBattleMap(10).getCells();
-        byte[] bytes = BattleHelper.serializeBattleCells(cells);
-        BattleCell[][] dcells = BattleHelper.deserializeBattleCells(bytes);
+        BattleCell[][] cells = ServerBattleHelper.createBattleMap(10).getCells();
+        byte[] bytes = ServerBattleHelper.serializeBattleCells(cells);
+        BattleCell[][] dcells = ServerBattleHelper.deserializeBattleCells(bytes);
         Assert.assertEquals(dcells.length, 10);
     }
 }

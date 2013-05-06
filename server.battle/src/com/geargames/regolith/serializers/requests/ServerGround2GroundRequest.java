@@ -13,8 +13,10 @@ import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.HumanElement;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,13 +51,15 @@ public class ServerGround2GroundRequest extends ServerRequest {
         BattleGroup group = BattleServiceRequestUtils.getBattleGroupFromServerBattle(serverBattle, allianceNumber, groupId);
         Warrior warrior = BattleServiceRequestUtils.getWarriorFromGroup(group, warriorId);
 
-        BattleMap map = warrior.getBattleGroup().getAlliance().getBattle().getMap();
+        BattleMap map = serverBattle.getBattle().getMap();
         BattleCell[][] cells = map.getCells();
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
 
-        if (BattleMapHelper.ableToPeek(warrior, cells, fromX, fromY)) {
-            if (BattleMapHelper.ableToPut(warrior, cells, toX, toY)) {
+        ServerHumanElementCollection units = serverBattle.getHumanElements();
+        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
+        if (BattleMapHelper.ableToPeek(unit, cells, fromX, fromY)) {
+            if (BattleMapHelper.ableToPut(unit, cells, toX, toY)) {
                 BattleMapHelper.putIn(BattleMapHelper.putOut(map, fromX, fromY), map, toX, toY);
 
                 Set<Client> clients = new HashSet<Client>();
@@ -69,7 +73,7 @@ public class ServerGround2GroundRequest extends ServerRequest {
 
                 messages.add(new BattleMessageToClient(
                         BattleServiceRequestUtils.getRecipients(clients)
-                        ,new ServerGround2GroundAnswer(to, fromX, fromY, toX, toY, type).serialize()
+                        , new ServerGround2GroundAnswer(to, fromX, fromY, toX, toY, type).serialize()
                 ));
             } else {
                 messages.add(new BattleMessageToClient(

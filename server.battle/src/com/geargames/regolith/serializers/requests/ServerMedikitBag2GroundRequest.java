@@ -2,7 +2,7 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.helpers.AmmunitionBagHelper;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.Ammunition;

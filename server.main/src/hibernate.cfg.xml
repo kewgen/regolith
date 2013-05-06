@@ -52,12 +52,12 @@
 
         <mapping resource="com/geargames/regolith/units/map/battle_map.hbm.xml"/>
         <mapping resource="com/geargames/regolith/units/map/exit_zone.hbm.xml"/>
+        <mapping resource="com/geargames/regolith/units/map/server_barrier.hbm.xml"/>
 
         <mapping resource="com/geargames/regolith/units/battle/battle.hbm.xml"/>
         <mapping resource="com/geargames/regolith/units/battle/battle_alliance.hbm.xml"/>
         <mapping resource="com/geargames/regolith/units/battle/battle_group.hbm.xml"/>
         <mapping resource="com/geargames/regolith/units/battle/battle_type.hbm.xml"/>
-        <mapping resource="com/geargames/regolith/units/battle/server_barrier.hbm.xml"/>
         <mapping resource="com/geargames/regolith/units/battle/warrior.hbm.xml"/>
 
         <mapping resource="com/geargames/regolith/units/base/base.hbm.xml"/>

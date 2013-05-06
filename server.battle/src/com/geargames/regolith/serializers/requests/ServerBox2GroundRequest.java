@@ -10,12 +10,14 @@ import com.geargames.regolith.serializers.answers.ServerBox2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.battle.Box;
+import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
+import com.geargames.regolith.units.map.HumanElement;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,6 +36,10 @@ public abstract class ServerBox2GroundRequest extends ServerRequest {
     public ServerBox2GroundRequest(ServerBattle serverBattle, short type) {
         this.serverBattle = serverBattle;
         this.type = type;
+    }
+
+    protected ServerBattle getServerBattle() {
+        return serverBattle;
     }
 
     protected abstract CellElement putOut(int elementId, Box box, Warrior warrior, short x, short y) throws RegolithException;
@@ -55,11 +61,14 @@ public abstract class ServerBox2GroundRequest extends ServerRequest {
 
         List<MessageToClient> messages = new ArrayList<MessageToClient>(2);
 
-        if (BattleMapHelper.ableToPut(warrior, cells, xGround, yGround) && BattleMapHelper.isNear(warrior, xBox, yBox)
+        ServerHumanElementCollection units = serverBattle.getHumanElements();
+        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
+
+        if (BattleMapHelper.ableToPut(unit, cells, xGround, yGround) && BattleMapHelper.isNear(unit, xBox, yBox)
                 && cells[xBox][yBox].getElement() != null && cells[xBox][yBox].getElement() instanceof Box) {
-            Box box = (Box)cells[xBox][yBox].getElement();
+            Box box = (Box) cells[xBox][yBox].getElement();
             CellElement element = putOut(elementId, box, warrior, xGround, yGround);
-            if (element != null){
+            if (element != null) {
                 Set<Client> clients = new HashSet<Client>();
                 clients.addAll(serverBattle.getClients());
                 clients.remove(client);

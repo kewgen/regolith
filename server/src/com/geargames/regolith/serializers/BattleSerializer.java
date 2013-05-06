@@ -41,6 +41,7 @@ public class BattleSerializer {
             SimpleSerializer.serialize(SimpleSerializer.NO, buffer);
         }
         TackleSerializer.serializeWeapon(human.getWeapon(), buffer);
+        SimpleSerializer.serialize(human.getNumber(), buffer);
     }
 
     public static void serializeEnemies(BattleAlliance battleAlliance, MicroByteBuffer buffer) {
@@ -53,13 +54,6 @@ public class BattleSerializer {
                 serializeHuman(human, buffer);
             }
         }
-    }
-
-    public static void serializeAlly(Ally ally, MicroByteBuffer buffer) {
-        serializeHuman(ally, buffer);
-        SimpleSerializer.serialize(ally.getX(), buffer);
-        SimpleSerializer.serialize(ally.getY(), buffer);
-        SimpleSerializer.serialize(ally.getNumber(), buffer);
     }
 
     private static void serialize(ExitZone exitZone, MicroByteBuffer buffer) {
@@ -77,16 +71,18 @@ public class BattleSerializer {
         for (BattleGroup battleGroup : ((ServerBattleGroupCollection) battleAlliance.getAllies()).getBattleGroups()) {
             SerializeHelper.serializeEntityReference(battleGroup, buffer);
             if (!WarriorHelper.isMine(battleGroup, account)) {
+                // Сериализация союзных бойцов
                 SimpleSerializer.serialize(SimpleSerializer.NO, buffer);
                 for (Ally ally : ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors()) {
-                    serializeAlly(ally, buffer);
+                    serializeHuman(ally, buffer);
                 }
             } else {
+                // Сериализация своих бойцов
                 SimpleSerializer.serialize(SimpleSerializer.YES, buffer);
                 for (Warrior mine : ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors()) {
                     SerializeHelper.serializeEntityReference(mine, buffer);
                     SimpleSerializer.serialize(mine.getNumber(), buffer);
-                    SimpleSerializer.serialize(mine.getDirection().getNumber(), buffer);
+//                    SimpleSerializer.serialize(mine.getDirection().getNumber(), buffer);
                 }
             }
         }
@@ -97,7 +93,7 @@ public class BattleSerializer {
         SimpleSerializer.serialize(battle.getName(), buffer);
         SerializeHelper.serializeEntityReference(battle.getBattleType(), buffer);
         if (battle.getAlliances() != null) {
-            SimpleSerializer.serialize((byte)battle.getAlliances().length, buffer);
+            SimpleSerializer.serialize((byte) battle.getAlliances().length, buffer);
             for (BattleAlliance alliance : battle.getAlliances()) {
                 if (WarriorHelper.isAlly(alliance, account)) {
                     SimpleSerializer.serialize(SimpleSerializer.ALLY, buffer);
@@ -108,7 +104,7 @@ public class BattleSerializer {
                 }
             }
         } else {
-            SimpleSerializer.serialize((byte)0, buffer);
+            SimpleSerializer.serialize((byte) 0, buffer);
         }
         BattleMapSerializer.serialize(battle.getMap(), account, buffer);
 

@@ -15,8 +15,10 @@ import com.geargames.regolith.units.BodyParticles;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
@@ -52,7 +54,10 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
         BattleCell[][] cells = map.getCells();
         StateTackle stateTackle = null;
 
-        if (BattleMapHelper.isNear(warrior, x, y) && cells[x][y].getElement() == null) {
+        ServerHumanElementCollection units = serverBattle.getHumanElements();
+        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
+
+        if (BattleMapHelper.isNear(unit, x, y) && cells[x][y].getElement() == null) {
             if (BodyParticles.HEAD == bodyParticle) {
                 stateTackle = warrior.getHeadArmor();
             } else if (BodyParticles.TORSO == bodyParticle) {
@@ -66,7 +71,6 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
         }
 
         if (stateTackle != null) {
-
             Set<Client> clients = new HashSet<Client>();
             clients.addAll(serverBattle.getClients());
             clients.remove(client);
@@ -75,12 +79,11 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
                     ServerConfirmationAnswer.answerSuccess(to, Packets.TAKE_TACKLE_FROM_BODY_PUT_ON_GROUND).serialize()));
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(clients),
                     new ServerTackleBody2GroundAnswer(to, warrior, stateTackle, x, y).serialize()));
-
         } else {
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.singleRecipientByClient(client),
                     ServerConfirmationAnswer.answerFailure(to, Packets.TAKE_TACKLE_FROM_BODY_PUT_ON_GROUND).serialize()));
         }
-
         return messages;
     }
+
 }

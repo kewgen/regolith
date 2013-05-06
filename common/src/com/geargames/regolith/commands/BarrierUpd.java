@@ -2,7 +2,7 @@ package com.geargames.regolith.commands;
 
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.BaseConfigurationCommand;
-import com.geargames.regolith.units.battle.Barrier;
+import com.geargames.regolith.units.map.Barrier;
 import com.geargames.regolith.units.dictionaries.BarrierCollection;
 import com.geargames.regolith.units.dictionaries.WeaponCategoryCollection;
 import com.geargames.regolith.units.tackle.WeaponCategory;
@@ -31,7 +31,7 @@ public class BarrierUpd extends BaseConfigurationCommand {
                 local.setHalfLong(barrier.isHalfLong());
                 WeaponCategoryCollection weaponCategoryDictionary = configuration.getWeaponCategories();
                 int size = weaponCategoryDictionary.size();
-                for(int j = 0; j < size; j++){
+                for (int j = 0; j < size; j++) {
                     WeaponCategory category = weaponCategoryDictionary.get(j);
                     local.setAbleToShootThrough(category, barrier.isAbleToShootThrough(category));
                 }

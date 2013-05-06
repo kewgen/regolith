@@ -8,8 +8,6 @@ import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.map.router.Router;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
-import com.geargames.regolith.units.BattleUnit;
-import com.geargames.regolith.units.Unit;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.*;
@@ -26,102 +24,98 @@ import java.util.Vector;
 public class ClientBattleHelper {
 
     /**
-     * Проставить стоимости в ОД достижимости окружающих точек карты, для бойца warrior.
+     * Проставить стоимости в ОД достижимости окружающих точек карты, для бойца unit.
      * <p/>
-     * Предворяется зачисткой старого кратчайшего пути и пометкой окружающих ячеек как UN_ROUTED.
+     * Предворяется зачисткой старого кратчайшего пути и пометкой окружающих ячеек, как UN_ROUTED.
      *
-     * @param warrior
+     * @param unit
      * @param router
      */
-    public static void route(Warrior warrior, Router router) {
-        BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
-        BattleMapHelper.prepare(warrior.getBattleGroup().getAlliance().getBattle().getMap());
-        router.route(warrior);
+    public static void route(BattleCell[][] cells, HumanElement unit, Router router, BattleConfiguration battleConfiguration) {
+        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY(), battleConfiguration);
+        BattleMapHelper.prepare(cells);
+        router.route(unit, battleConfiguration);
     }
 
     /**
-     * На карте, с проставленными из начальной точки(где стоит warrior) стоимостями достижимости, выбрать кратчайший путь
-     * из точки x:y в точку где стоит warrior и отметить каждую ячейку этого пути как часть кратчайшего пути.
+     * На карте, с проставленными из начальной точки (где стоит unit) стоимостями достижимости, выбрать кратчайший путь
+     * из точки (x;y) в точку, где стоит unit и отметить каждую ячейку этого пути, как часть кратчайшего пути.
      *
-     * @param warrior
+     * @param cells
+     * @param unit
      * @param x
      * @param y
      */
-    public static void trace(Warrior warrior, int x, int y) {
-        BattleMapHelper.resetShortestPath(warrior, warrior.getX(), warrior.getY());
-        BattleMapHelper.makeShortestRoute(x, y, warrior);
+    public static void trace(BattleCell[][] cells, HumanElement unit, int x, int y, BattleConfiguration battleConfiguration) {
+        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY(), battleConfiguration);
+        BattleMapHelper.makeShortestRoute(cells, x, y, unit);
     }
 
     /**
-     * Настроить координаты бойца соответсвующего unit в пикселах на экране screen.
+     * Настроить координаты бойца соответствующего unit в пикселах на экране screen.
      *
      * @param screen
      * @param unit
      */
-    public static void initMapXY(BattleScreen screen, BattleUnit unit) {
-        Pair pair = ClientConfigurationFactory.getConfiguration().getCoordinateFinder().find(unit.getUnit().getWarrior().getY(), unit.getUnit().getWarrior().getX(), screen);
-        unit.setMapX(pair.getX());
-        unit.setMapY(pair.getY());
+    public static void initMapXY(BattleScreen screen, HumanElement unit) {
+        Pair pair = ClientConfigurationFactory.getConfiguration().getCoordinateFinder().find(unit.getCellY(), unit.getCellX(), screen);
+        unit.setMapX((short) pair.getX());
+        unit.setMapY((short) pair.getY());
     }
 
-
-    /**
-     * Ускоренно перемещаем бойца противника(warrior) в расчётную точку.
-     *
-     * @param warrior
-     * @param map
-     */
-    public static void moveEnemy(Warrior warrior, BattleMap map) {
-        BattleCell[][] cells = map.getCells();
-        Direction direction;
-        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
-        do {
-            direction = WarriorHelper.getStepDirection(warrior, cells);
-            BattleMapHelper.resetShortestCell(cells[warrior.getX()][warrior.getY()], alliance, warrior);
-            WarriorHelper.putWarriorIntoMap(warrior, map, warrior.getX() + direction.getX(), warrior.getY() + direction.getY());
-        }
-        while (direction != Direction.NONE);
-    }
-
-    /**
-     * Быстро переместить созные войска battleUnits в место назначения на экране screen.
-     *
-     * @param battleUnits
-     * @param battle
-     * @param battleConfiguration
-     * @param screen
-     */
-    public static void immediateMoveAllies(ArrayList battleUnits, Battle battle, BattleConfiguration battleConfiguration, BattleScreen screen) {
-        int size = battleUnits.size();
-        for (int i = 0; i < size; i++) {
-            BattleUnit battleUnit = ((BattleUnit) battleUnits.get(i));
-            Warrior warrior = battleUnit.getUnit().getWarrior();
-            if (warrior.isMoving()) {
-                WarriorHelper.move(warrior, battle.getMap().getCells(), NullStepListener.instance, battleConfiguration);
-                ClientBattleHelper.initMapXY(screen, battleUnit);
-            }
-        }
-    }
-
-
-    /**
-     * Быстро переместить врага на его место назначения на экране screen.
-     *
-     * @param enemies
-     * @param battle
-     * @param screen
-     */
-    public static void immediateMoveEnemies(ArrayList enemies, Battle battle, BattleScreen screen) {
-        int size = enemies.size();
-        for (int i = 0; i < size; i++) {
-            BattleUnit battleUnit = (BattleUnit) enemies.get(i);
-            Warrior warrior = battleUnit.getUnit().getWarrior();
-            if (warrior.isMoving()) {
-                ClientBattleHelper.moveEnemy(warrior, battle.getMap());
-                ClientBattleHelper.initMapXY(screen, battleUnit);
-            }
-        }
-    }
+//    /**
+//     * Ускоренно перемещаем бойца противника unit в расчётную точку.
+//     *
+//     * @param cells
+//     * @param unit
+//     */
+//    public static void immediateMoveEnemy(BattleCell[][] cells, HumanElement unit) {
+//        Direction direction;
+//        do {
+//            direction = WarriorHelper.getStepDirection(cells, unit);
+//            BattleMapHelper.resetShortestCell(cells[unit.getCellX()][unit.getCellY()], unit.getHuman());
+//            WarriorHelper.putWarriorIntoMap(cells, unit, unit.getCellX() + direction.getX(), unit.getCellY() + direction.getY());
+//        } while (direction != Direction.NONE);
+//    }
+//
+//    /**
+//     * Быстро переместить созные войска battleUnits в место назначения на экране screen.
+//     *
+//     * @param units
+//     * @param battle
+//     * @param battleConfiguration
+//     * @param screen
+//     */
+//    public static void immediateMoveAllies(ClientHumanElementCollection units, Battle battle,
+//                                           BattleConfiguration battleConfiguration, BattleScreen screen) {
+//        int size = units.size();
+//        for (int i = 0; i < size; i++) {
+//            HumanElement unit = units.get(i);
+//            if (unit.isMoving()) {
+//                WarriorHelper.move(battle.getMap().getCells(), unit, NullStepListener.instance, battleConfiguration);
+//                ClientBattleHelper.initMapXY(screen, unit);
+//            }
+//        }
+//    }
+//
+//
+//    /**
+//     * Быстро переместить вражеских бойцов на их место назначения на экране screen.
+//     *
+//     * @param units
+//     * @param battle
+//     * @param screen
+//     */
+//    public static void immediateMoveEnemies(ClientHumanElementCollection units, Battle battle, BattleScreen screen) {
+//        int size = units.size();
+//        for (int i = 0; i < size; i++) {
+//            HumanElement unit = units.get(i);
+//            if (unit.isMoving()) {
+//                ClientBattleHelper.immediateMoveEnemy(battle.getMap().getCells(), unit);
+//                ClientBattleHelper.initMapXY(screen, unit);
+//            }
+//        }
+//    }
 
 
     /**
@@ -131,7 +125,7 @@ public class ClientBattleHelper {
      * @param account
      * @return
      */
-    public static ArrayList getBattleUnits(Battle battle, Account account) {
+    public static ClientHumanElementCollection getBattleUnits(Battle battle, Account account) {
         BattleAlliance[] alliances = battle.getAlliances();
         int id = account.getId();
         for (int i = 0; i < alliances.length; i++) {
@@ -140,19 +134,16 @@ public class ClientBattleHelper {
                 BattleGroup group = groups.get(j);
                 if (group.getAccount().getId() == id) {
                     int groupSize = battle.getBattleType().getGroupSize();
-                    ArrayList battleUnits = new ArrayList(groupSize);
+                    ClientHumanElementCollection units = new ClientHumanElementCollection();
+                    units.setElements(new Vector(groupSize));
                     WarriorCollection warriors = group.getWarriors();
                     for (int k = 0; k < groupSize; k++) {
-                        BattleUnit battleUnit = new BattleUnit();
-                        Unit unit = new Unit();
-                        Warrior warrior = warriors.get(k);
-                        warrior.setDirection(Direction.UP_DOWN);
-                        unit.setWarrior(warrior);
-                        unit.init();
-                        battleUnit.setUnit(unit);
-                        battleUnits.add(battleUnit);
+                        HumanElement unit = new ClientHumanElement();
+                        unit.setHuman(warriors.get(k));
+                        unit.setDirection(Direction.UP_DOWN);
+                        units.add(unit);
                     }
-                    return battleUnits;
+                    return units;
                 }
             }
         }
@@ -160,16 +151,14 @@ public class ClientBattleHelper {
     }
 
     /**
-     * Вернуть солдатиков для  отрисовки на BattleScreen для всех союзников account по битве battle.
+     * Вернуть солдатиков для отрисовки на BattleScreen для всех союзников account по битве battle.
      *
      * @param battle
      * @param account
      * @return
      */
-    public static ArrayList getAllyBattleUnits(Battle battle, Account account) {
+    public static ClientHumanElementCollection getAllyBattleUnits(Battle battle, Account account) {
         BattleAlliance[] alliances = battle.getAlliances();
-        int groupSize = battle.getBattleType().getGroupSize();
-        ArrayList battleUnits = new ArrayList(groupSize * (battle.getBattleType().getAllianceSize() - 1));
         int id = account.getId();
         for (int i = 0; i < alliances.length; i++) {
             BattleGroupCollection groups = alliances[i].getAllies();
@@ -181,43 +170,44 @@ public class ClientBattleHelper {
                 }
             }
             if (found) {
+                int groupSize = battle.getBattleType().getGroupSize();
+                ClientHumanElementCollection units = new ClientHumanElementCollection();
+                units.setElements(new Vector(groupSize * (battle.getBattleType().getAllianceSize() - 1)));
                 for (int j = 0; j < groups.size(); j++) {
                     BattleGroup group = groups.get(j);
                     if (group.getAccount().getId() != id) {
                         WarriorCollection warriors = group.getWarriors();
                         for (int k = 0; k < groupSize; k++) {
-                            BattleUnit battleUnit = new BattleUnit();
-                            Unit unit = new Unit();
-                            Warrior warrior = warriors.get(k);
-                            warrior.setDirection(Direction.UP_DOWN);
-                            unit.setWarrior(warrior);
-                            unit.init();
-                            battleUnit.setUnit(unit);
-                            battleUnits.add(battleUnit);
+                            HumanElement unit = new ClientHumanElement();
+                            unit.setHuman(warriors.get(k));
+                            unit.setDirection(Direction.UP_DOWN);
+                            units.add(unit);
                         }
                     }
                 }
-                return battleUnits;
+                return units;
             }
-
         }
-        return battleUnits;
+        ClientHumanElementCollection units = new ClientHumanElementCollection();
+        units.setElements(new Vector(0));
+        return units;
     }
 
     /**
-     * Вернуть солдатиков для отрисовки на BattleScreen -  противников по битве battle для account.
+     * Вернуть солдатиков для отрисовки на BattleScreen - противников по битве battle для account.
      *
      * @param battle
      * @param account
      * @return
      */
-    public static ArrayList getEnemyBattleUnits(Battle battle, Account account) {
+    public static ClientHumanElementCollection getEnemyBattleUnits(Battle battle, Account account) {
         BattleAlliance[] alliances = battle.getAlliances();
         int id = account.getId();
         boolean found = false;
 
         int groupSize = battle.getBattleType().getGroupSize();
-        ArrayList battleUnits = new ArrayList(groupSize * (battle.getBattleType().getAllianceSize()) * (battle.getBattleType().getAllianceAmount() - 1));
+        ClientHumanElementCollection units = new ClientHumanElementCollection();
+        units.setElements(new Vector(groupSize * (battle.getBattleType().getAllianceSize()) * (battle.getBattleType().getAllianceAmount() - 1)));
 
         for (int i = 0; i < alliances.length; i++) {
             BattleGroupCollection groups = alliances[i].getAllies();
@@ -236,18 +226,14 @@ public class ClientBattleHelper {
                 BattleGroup group = groups.get(j);
                 WarriorCollection warriors = group.getWarriors();
                 for (int k = 0; k < groupSize; k++) {
-                    BattleUnit battleUnit = new BattleUnit();
-                    Unit unit = new Unit();
-                    Warrior warrior = warriors.get(k);
-                    warrior.setDirection(Direction.UP_DOWN);
-                    unit.setWarrior(warrior);
-                    unit.init();
-                    battleUnit.setUnit(unit);
-                    battleUnits.add(battleUnit);
+                    HumanElement unit = new ClientHumanElement();
+                    unit.setHuman(warriors.get(k));
+                    unit.setDirection(Direction.UP_DOWN);
+                    units.add(unit);
                 }
             }
         }
-        return battleUnits;
+        return units;
     }
 
     /**
@@ -280,11 +266,12 @@ public class ClientBattleHelper {
         throw new RegolithException();
     }
 
-    public static AllyCollection getAllies(Battle battle, Account account) throws Exception {
+    /*
+    public static HumanElementCollection getAllies(Battle battle, Account account) throws Exception {
         BattleAlliance alliance = findBattleAlliance(battle, account);
         BattleGroupCollection groups = alliance.getAllies();
-        ClientAllyCollection allies = new ClientAllyCollection();
-        allies.setAllies(new Vector());
+        ClientHumanElementCollection allies = new ClientHumanElementCollection();
+        allies.setElements(new Vector());
         for (int i = 0; i < groups.size(); i++) {
             BattleGroup group = groups.get(i);
             WarriorCollection warriors = group.getWarriors();
@@ -294,6 +281,7 @@ public class ClientBattleHelper {
         }
         return allies;
     }
+    */
 
     public static BattleGroup findBattleGroupById(Battle battle, int id) throws Exception {
         BattleAlliance[] alliances = battle.getAlliances();
@@ -309,7 +297,7 @@ public class ClientBattleHelper {
         throw new Exception();
     }
 
-    public static BattleGroup findBattleGroupInAllianceById(BattleAlliance alliance, int id) throws  Exception {
+    public static BattleGroup findBattleGroupInAllianceById(BattleAlliance alliance, int id) throws Exception {
         BattleGroupCollection groups = alliance.getAllies();
         for (int j = 0; j < groups.size(); j++) {
             BattleGroup battleGroup = groups.get(j);
@@ -380,44 +368,24 @@ public class ClientBattleHelper {
             BattleGroupCollection groups = alliances[i].getAllies();
             for (int j = 0; j < allianceSize; j++) {
                 Warrior warrior = findWarriorInBattleGroup(groups.get(j), warriorId);
-                if(warrior != null){
+                if (warrior != null) {
                     return warrior;
                 }
             }
         }
-        throw new RegolithException();
+        throw new RegolithException("Warrior was not found (id = " + warriorId + ")");
     }
 
-    public static Warrior findWarriorInBattleGroup(BattleGroup group, int id){
+    public static Warrior findWarriorInBattleGroup(BattleGroup group, int id) {
         WarriorCollection warriors = group.getWarriors();
         int size = warriors.size();
-        for(int i =0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             Warrior warrior = warriors.get(i);
-            if(warrior.getId() == id){
+            if (warrior.getId() == id) {
                 return warrior;
             }
         }
         return null;
-    }
-
-    public static BattleUnit findBattleUnitByWarrior(ArrayList battleUnits, Warrior warrior) {
-        for (int i = 0; i < battleUnits.size(); i++) {
-            BattleUnit battleUnit = ((BattleUnit) battleUnits.get(i));
-            if (warrior == battleUnit.getUnit().getWarrior()) {
-                return battleUnit;
-            }
-        }
-        return null;
-    }
-
-    public static BattleUnit findBattleUnitByWarriorId(ArrayList units, int id) throws Exception {
-        for (int i = 0; i < units.size(); i++) {
-            BattleUnit unit = (BattleUnit) units.get(i);
-            if (unit.getUnit().getWarrior().getId() == id) {
-                return unit;
-            }
-        }
-        throw new Exception("Battle unit for a warrior id " + id + " was not found.");
     }
 
     /**
@@ -449,19 +417,16 @@ public class ClientBattleHelper {
     /**
      * Заполнить очки действия на начало хода.
      *
-     * @param battleUnits
+     * @param units
      * @param baseConfiguration
      */
-    public static void resetActionScores(ArrayList battleUnits, BaseConfiguration baseConfiguration) {
-        int size = battleUnits.size();
+    public static void resetActionScores(ClientHumanElementCollection units, BaseConfiguration baseConfiguration) {
+        int size = units.size();
         for (int i = 0; i < size; i++) {
-            Warrior warrior = ((BattleUnit) battleUnits.get(i)).getUnit().getWarrior();
+            Warrior warrior = (Warrior) units.get(i).getHuman();
             warrior.setActionScore(WarriorHelper.getMaxActionScores(warrior, baseConfiguration));
         }
     }
-
-
-
 
 
     /**
@@ -472,24 +437,25 @@ public class ClientBattleHelper {
      * @param x2
      * @param y2
      * @param cells
-     * @param warrior
+     * @param unit
      */
-    public static void makeEnemyFakePath(int x1, int y1, int x2, int y2, BattleCell[][] cells, Warrior warrior){
-        if(x1 <= x2){
-            markLineAsShortestPathByWarrior(x1, y1, x2, y2, cells, warrior);
-        }else{
-            markLineAsShortestPathByWarrior(x2, y2, x1, y1, cells, warrior);
+    public static void makeEnemyFakePath(int x1, int y1, int x2, int y2, BattleCell[][] cells, ClientHumanElement unit) {
+        if (x1 <= x2) {
+            markLineAsShortestPathByWarrior(x1, y1, x2, y2, cells, unit);
+        } else {
+            markLineAsShortestPathByWarrior(x2, y2, x1, y1, cells, unit);
         }
     }
 
 
-    private static void markLineAsShortestPathByWarrior(int x1, int y1, int x2, int y2, BattleCell[][] cells, Warrior warrior) {
+    private static void markLineAsShortestPathByWarrior(int x1, int y1, int x2, int y2, BattleCell[][] cells, ClientHumanElement unit) {
         double k = (double) (y2 - y1) / (double) (x2 - x1);
         double b = y1 - k * x1;
         int length = x2 - x1;
         for (int i = 1; i < length - 1; i++) {
             int x = x1 + i;
-            BattleMapHelper.setShortestPathCell(cells[x][(int)(k*x + b)], warrior);
+            BattleMapHelper.setShortestPathCell(cells[x][(int) (k * x + b)], unit);
         }
     }
+
 }

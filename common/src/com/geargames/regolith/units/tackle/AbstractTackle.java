@@ -1,7 +1,7 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.CellElement;
-import com.geargames.regolith.units.CellElementLayers;
+import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.CellElementLayers;
 
 /**
  * User: mkutuzov
@@ -11,19 +11,22 @@ public abstract class AbstractTackle extends CellElement {
 
     /**
      * Вернуть тип аммуниции.
+     *
      * @return
      */
     public abstract int getType();
 
     /**
      * Вернуть наименование клади.
+     *
      * @return
      */
     public abstract String getName();
 
     /**
      * Вернуть вес клади.
-      * @return
+     *
+     * @return
      */
     public abstract short getWeight();
 

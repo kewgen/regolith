@@ -8,7 +8,7 @@ import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.SubordinationDamage;
 import com.geargames.regolith.units.battle.BattleType;
-import com.geargames.regolith.units.battle.Barrier;
+import com.geargames.regolith.units.map.Barrier;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.tackle.*;
 
@@ -47,7 +47,7 @@ public class ConfigurationSerializer {
         SerializeHelper.serializeEntityReference(category, buffer);
         SimpleSerializer.serialize(category.getName(), buffer);
         SimpleSerializer.serialize((short) category.getWeaponTypes().size(), buffer);
-        for (WeaponType weaponType : ((ServerWeaponTypeCollection)category.getWeaponTypes()).getWeaponTypes()) {
+        for (WeaponType weaponType : ((ServerWeaponTypeCollection) category.getWeaponTypes()).getWeaponTypes()) {
             TackleSerializer.serializeWeaponType(weaponType, buffer);
         }
     }
@@ -69,7 +69,7 @@ public class ConfigurationSerializer {
         SimpleSerializer.serialize(ammunitionCategory.getQuality(), buffer);
     }
 
-    private static void serialize(BattleType battleType, MicroByteBuffer buffer){
+    private static void serialize(BattleType battleType, MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(battleType, buffer);
         SimpleSerializer.serialize(battleType.getName(), buffer);
         SimpleSerializer.serialize(battleType.getScores(), buffer);
@@ -82,24 +82,24 @@ public class ConfigurationSerializer {
     public static void serialize(BaseConfiguration configuration, MicroByteBuffer buffer) {
         SimpleSerializer.serialize(configuration.getRevision(), buffer);
 
-        ServerBattleTypeCollection battleTypes = (ServerBattleTypeCollection)configuration.getBattleTypes();
+        ServerBattleTypeCollection battleTypes = (ServerBattleTypeCollection) configuration.getBattleTypes();
 
         SimpleSerializer.serialize((byte) battleTypes.size(), buffer);
-        for(BattleType battleType : battleTypes.getBattleTypes()){
+        for (BattleType battleType : battleTypes.getBattleTypes()) {
             serialize(battleType, buffer);
         }
 
-        ServerRankCollection ranks = (ServerRankCollection)configuration.getRanks();
+        ServerRankCollection ranks = (ServerRankCollection) configuration.getRanks();
         SimpleSerializer.serialize((byte) ranks.size(), buffer);
         for (Rank rank : ranks.getRanks()) {
             serialize(rank, buffer);
         }
-        ServerSkillCollection skills = (ServerSkillCollection)configuration.getSkills();
+        ServerSkillCollection skills = (ServerSkillCollection) configuration.getSkills();
         SimpleSerializer.serialize((byte) skills.size(), buffer);
         for (Skill skill : skills.getSkills()) {
             serialize(skill, buffer);
         }
-        ServerAmmunitionCategoryCollection ammunitionCategories = (ServerAmmunitionCategoryCollection)configuration.getAmmunitionCategories();
+        ServerAmmunitionCategoryCollection ammunitionCategories = (ServerAmmunitionCategoryCollection) configuration.getAmmunitionCategories();
         SimpleSerializer.serialize((byte) ammunitionCategories.size(), buffer);
         for (AmmunitionCategory ammunitionCategory : ammunitionCategories.getCategories()) {
             serialize(ammunitionCategory, buffer);
@@ -120,27 +120,27 @@ public class ConfigurationSerializer {
         SimpleSerializer.serialize(configuration.getBaseMarksmanship(), buffer);
         SimpleSerializer.serialize(configuration.getInitWarriorsAmount(), buffer);
 
-        ServerArmorTypeCollection armorTypes = (ServerArmorTypeCollection)configuration.getArmorTypes();
+        ServerArmorTypeCollection armorTypes = (ServerArmorTypeCollection) configuration.getArmorTypes();
         SimpleSerializer.serialize((short) armorTypes.size(), buffer);
         for (ArmorType armorType : armorTypes.getArmorTypes()) {
             TackleSerializer.serializeArmorType(armorType, buffer);
         }
-        ServerProjectileCollection projectiles = (ServerProjectileCollection)configuration.getProjectiles();
+        ServerProjectileCollection projectiles = (ServerProjectileCollection) configuration.getProjectiles();
         SimpleSerializer.serialize((short) projectiles.size(), buffer);
         for (Projectile projectile : projectiles.getProjectiles()) {
             TackleSerializer.serializeProjectile(projectile, buffer);
         }
-        ServerWeaponCategoryCollection weaponCategories = (ServerWeaponCategoryCollection)configuration.getWeaponCategories();
+        ServerWeaponCategoryCollection weaponCategories = (ServerWeaponCategoryCollection) configuration.getWeaponCategories();
         SimpleSerializer.serialize((byte) weaponCategories.size(), buffer);
         for (WeaponCategory category : weaponCategories.getCategories()) {
             serialize(category, buffer);
         }
-        ServerMedikitCollection medikits = (ServerMedikitCollection)configuration.getMedikits();
+        ServerMedikitCollection medikits = (ServerMedikitCollection) configuration.getMedikits();
         SimpleSerializer.serialize((byte) medikits.size(), buffer);
         for (Medikit medikit : medikits.getMedikits()) {
             TackleSerializer.serializeMedikit(medikit, buffer);
         }
-        ServerBarrierCollection barriers = (ServerBarrierCollection)configuration.getBarriers();
+        ServerBarrierCollection barriers = (ServerBarrierCollection) configuration.getBarriers();
         SimpleSerializer.serialize(barriers.size(), buffer);
         for (Barrier barrier : barriers.getBarriers()) {
             serialize(barrier, buffer, weaponCategories);

@@ -10,7 +10,6 @@ import com.geargames.common.packer.PSprite;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
-import com.geargames.common.util.ArrayList;
 import com.geargames.common.util.Mathematics;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.*;
@@ -27,6 +26,7 @@ import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
+import com.geargames.regolith.units.dictionaries.ClientHumanElementCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.*;
 
@@ -44,15 +44,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public static int VERTICAL_RADIUS = VERTICAL_DIAGONAL / 2;
     public static double TANGENT = (VERTICAL_RADIUS + 0.0) / (HORIZONTAL_RADIUS + 0.0);
 
-    private ArrayList enemies;
-    private ArrayList allies;
-    private ArrayList group;
+    private ClientHumanElementCollection enemyUnits; // вражеские BattleUnit
+    private ClientHumanElementCollection allyUnits;  // союзные BattleUnit
+    private ClientHumanElementCollection groupUnits; // BattleUnit текущего клиента
 
-    private ArrayList steps;
     private Battle battle;
     private BattleGroup battleGroup;
 
-    private BattleUnit user;
+    private ClientHumanElement activeUnit;
     private MapCorrector corrector;
     private Finder cellFinder;       // Определяет номер клетки из коорддинат на карте
     private Finder coordinateFinder; // Переводит номер клетки в координаты центра клетки на карте
@@ -91,7 +90,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private PObject iconHeightOfBarriersObject;
 
     public BattleScreen() {
-        steps = new ArrayList();
         timerId = TimerManager.NULL_TIMER;
         configuration = ClientConfigurationFactory.getConfiguration();
         listenedTypes = new short[]{Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE, Packets.INITIALLY_OBSERVED_ENEMIES};
@@ -118,9 +116,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * @param x
      * @param y
      * @param cell
-     * @param path
      */
-    private void drawCell(Graphics graphics, int x, int y, BattleCell cell, boolean path) {
+    private void drawCell(Graphics graphics, int x, int y, BattleCell cell) {
         if (isMyTurn()) {
             boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
             if (isReachableCell) {
@@ -130,37 +127,63 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                     unreachableCellSprite.draw(graphics, x, y);
                 }
             }
-            if (path) {
+            if (BattleMapHelper.isShortestPathCell(cell, activeUnit)) {
                 shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
             }
             if (isReachableCell) {
                 graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
             }
         }
+        final byte BARRIER_NONE = 0;
+        final byte BARRIER_HALF_HEIGHT = 1;
+        final byte BARRIER_FULL_HEIGHT = 2;
+        byte barrierType = BARRIER_NONE;
         CellElement[] elements = cell.getElements();
         for (int i = 0; i < cell.getSize(); i++) {
             CellElement element = elements[i];
-            if (element.getElementType() == CellElementTypes.HUMAN) {
-                BattleUnit unit = ClientBattleHelper.findBattleUnitByWarrior(group, (Warrior) element);
-                drawUnit(graphics, unit);
-            } else {
-                PObject obj = Environment.getRender().getObject(element.getFrameId());
-                if (obj != null) {
-                    obj.draw(graphics, x, y);
+            ((DrawableElement) element).draw(graphics, x, y);
+//            if (element.getElementType() == CellElementTypes.HUMAN) {
+//                BattleUnit unit = ClientBattleHelper.findBattleUnitByWarrior(groupUnits, (Warrior) element);
+//                drawUnit(graphics, unit);
+//            } else {
+//                PObject obj = Environment.getRender().getObject(element.getFrameId());
+//                if (obj != null) {
+//                    obj.draw(graphics, x, y);
+//                }
+            if (element.isBarrier()) {
+                if (!element.isHalfLong()) {
+                    barrierType = BARRIER_FULL_HEIGHT;
+                } else if (barrierType == BARRIER_NONE) {
+                    barrierType = BARRIER_HALF_HEIGHT;
+                }
+            }
+//            }
+        }
+        if (isMyTurn()) {
+            switch (barrierType) {
+                case BARRIER_FULL_HEIGHT: {
+                    Index index = iconHeightOfBarriersObject.getIndexBySlot(0);
+                    index.draw(graphics, x, y);
+                    break;
+                }
+                case BARRIER_HALF_HEIGHT: {
+                    Index index = iconHeightOfBarriersObject.getIndexBySlot(1);
+                    index.draw(graphics, x, y);
+                    break;
                 }
             }
         }
     }
 
     private class Dir {
-        public static final byte NONE      = 0;    // без направления
-        public static final byte NORTH     = 1;    // север
+        public static final byte NONE = 0;    // без направления
+        public static final byte NORTH = 1;    // север
         public static final byte NORTHEAST = 2;    // северо-восток
-        public static final byte EAST      = 4;    // восток
+        public static final byte EAST = 4;    // восток
         public static final byte SOUTHEAST = 8;    // юго-восток
-        public static final byte SOUTH     = 16;   // юг
+        public static final byte SOUTH = 16;   // юг
         public static final byte SOUTHWEST = 32;   // юго-запад
-        public static final byte WEST      = 64;   // запад
+        public static final byte WEST = 64;   // запад
         public static final byte NORTHWEST = -128; // северо-запад
     }
     /**       128
@@ -175,8 +198,9 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      *
      * @param graphics
      */
+    /*
     private void drawUnit(Graphics graphics, BattleUnit unit) {
-        if (isMyTurn() && user == unit) {
+        if (isMyTurn() && activeUnit == unit) {
             byte barrierBits = Dir.NONE;
             Warrior warrior = unit.getUnit().getWarrior();
             BattleCell[][] battleCells = battle.getMap().getCells();
@@ -236,21 +260,16 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         }
         unit.getUnit().draw(graphics, unit.getMapX() - mapX, unit.getMapY() - mapY);
     }
-
+    */
     private void drawBattleMap(Graphics graphics) {
         BattleCell[][] cells = battle.getMap().getCells();
         int length = cells.length;
-        Warrior warrior = user.getUnit().getWarrior();
         for (int yCell = 0; yCell < length; yCell++) {
             int y = yCell * VERTICAL_RADIUS;
             int x = (length - 1 + yCell) * HORIZONTAL_RADIUS;
             for (int xCell = 0; xCell < length; xCell++) {
                 if (isOnTheScreen(x, y)) {
-                    if (BattleMapHelper.isShortestPathCell(cells[yCell][xCell], warrior)) {
-                        drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell], true);
-                    } else {
-                        drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell], false);
-                    }
+                    drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell]);
                 }
                 x -= HORIZONTAL_RADIUS;
                 y += VERTICAL_RADIUS;
@@ -319,17 +338,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void onTimer(int timerId) {
-        for (int i = 0; i < steps.size(); i++) {
-            ((Step) steps.get(i)).onTick();
+        for (int i = 0; i < groupUnits.size(); i++) {
+            ((ClientHumanElement) groupUnits.get(i)).onTick();
         }
-        for (int i = 0; i < group.size(); i++) {
-            ((BattleUnit) group.get(i)).getUnit().next();
+        for (int i = 0; i < allyUnits.size(); i++) {
+            ((ClientHumanElement) allyUnits.get(i)).onTick();
         }
-        for (int i = 0; i < allies.size(); i++) {
-            ((BattleUnit) allies.get(i)).getUnit().next();
-        }
-        for (int i = 0; i < enemies.size(); i++) {
-            ((BattleUnit) enemies.get(i)).getUnit().next();
+        for (int i = 0; i < enemyUnits.size(); i++) {
+            ((ClientHumanElement) enemyUnits.get(i)).onTick();
         }
     }
 
@@ -360,37 +376,44 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 if (isMyTurn()) {
                     if (isOnTheMap(x, y)) {
                         if (Mathematics.abs(touchedXX - x) <= SPOT && Mathematics.abs(touchedYY - y) <= SPOT) {
-                            Pair cell = cellFinder.find(x + mapX, y + mapY, this);
-                            BattleCell battleCell = battle.getMap().getCells()[cell.getX()][cell.getY()];
-                            CellElement element = battleCell.getElement();
-                            Warrior warrior = user.getUnit().getWarrior();
-                            if (element != null && element.getElementType() == CellElementTypes.HUMAN && ((Warrior) element).getBattleGroup() == battleGroup) {
-                                setActiveUnit(ClientBattleHelper.findBattleUnitByWarrior(group, (Warrior) element));
-                            } else if (BattleMapHelper.isReachable(battleCell) && !warrior.isMoving()) {
-                                Debug.debug("trace for a user " + warrior.getNumber());
-                                ClientBattleHelper.trace(user.getUnit().getWarrior(), cell.getX(), cell.getY());
-                            } else {
-                                Debug.debug("point " + cell.getX() + ":" + cell.getY() + " is not reachable");
+                            Pair cellCoordinate = cellFinder.find(x + mapX, y + mapY, this);
+                            BattleCell battleCell = battle.getMap().getCells()[cellCoordinate.getX()][cellCoordinate.getY()];
+                            CellElement[] elements = battleCell.getElements();
+                            for (int i = 0; i < battleCell.getSize(); i++) {
+                                CellElement element = elements[i];
+                                if (element.getElementType() == CellElementTypes.HUMAN) {
+                                    ClientHumanElement humanElement = (ClientHumanElement) element;
+                                    Debug.debug("Is warrior " + humanElement.getHuman().getName());
+                                    if (humanElement.getHuman().getBattleGroup() == battleGroup) {
+                                        setActiveUnit(humanElement);
+                                        break;
+                                    }
+                                } else if (BattleMapHelper.isReachable(battleCell) && activeUnit.getLogic().isIdle()) {
+                                    Debug.debug("Trace for a user " + activeUnit.getHuman().getNumber());
+                                    ClientBattleHelper.trace(battle.getMap().getCells(), activeUnit, cellCoordinate.getX(), cellCoordinate.getY(),
+                                            ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+                                } else {
+                                    Debug.debug("Cell " + cellCoordinate.getX() + ":" + cellCoordinate.getY() + " is not reachable");
+                                }
                             }
-                            Debug.debug("is warrior " + warrior.getName() + " moving? = " + warrior.isMoving());
                         }
                     }
                 }
                 break;
             case Event.EVENT_TOUCH_DOUBLE_CLICK:
                 if (isMyTurn()) {
-                    Debug.debug("my turn & i want to move " + x + ":" + y);
+                    Debug.debug("My turn & i want to move " + x + ":" + y);
                     if (isOnTheMap(x, y)) {
-                        Pair cell = cellFinder.find(x + mapX, y + mapY, this);
-                        Debug.debug("a cell to go " + cell.getX() + ":" + cell.getY() + " action scores " + user.getUnit().getWarrior().getActionScore());
-                        if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cell.getX()][cell.getY()], user.getUnit().getWarrior())) {
-                            Debug.debug("move an user " + user.getUnit().getWarrior().getNumber());
-                            moveUser(cell.getX(), cell.getY());
+                        Pair cellCoordinate = cellFinder.find(x + mapX, y + mapY, this);
+                        Debug.debug("A cell to go " + cellCoordinate.getX() + ":" + cellCoordinate.getY() + " action scores " + ((Warrior) activeUnit.getHuman()).getActionScore());
+                        if (BattleMapHelper.isShortestPathCell(battle.getMap().getCells()[cellCoordinate.getX()][cellCoordinate.getY()], activeUnit)) {
+                            Debug.debug("Move an user " + activeUnit.getHuman().getNumber());
+                            moveUser(cellCoordinate.getX(), cellCoordinate.getY());
                         } else {
                             Debug.debug("Not a shortest path");
                         }
                     } else {
-                        Debug.debug("out of the map touch");
+                        Debug.debug("Out of the map touch");
                     }
                 }
                 break;
@@ -417,67 +440,66 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 break;
             case Packets.INITIALLY_OBSERVED_ENEMIES:
                 ClientInitiallyObservedEnemies init = (ClientInitiallyObservedEnemies) message;
-                WarriorCollection observed = init.getEnemies();
+                ClientHumanElementCollection observed = init.getEnemies();
                 for (int i = 0; i < observed.size(); i++) {
-                    Warrior warrior = observed.get(i);
-                    BattleUnit enemy = ClientBattleHelper.findBattleUnitByWarrior(enemies, warrior);
-                    ClientBattleHelper.initMapXY(this, enemy);
+                    HumanElement enemyUnit = observed.get(i);
+                    ClientBattleHelper.initMapXY(this, enemyUnit);
                 }
                 break;
             case Packets.CHANGE_ACTIVE_ALLIANCE:
-                BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
-                ClientBattleHelper.immediateMoveAllies(group, battle, battleConfiguration, this);
-                ClientBattleHelper.immediateMoveAllies(allies, battle, battleConfiguration, this);
-                ClientBattleHelper.immediateMoveEnemies(enemies, battle, this);
+//                BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
+//                //to do: Вызов следующих трех методов под вопросом
+                //todo: Все динамические элементы (юниты, двери) должны обновляться паралельно
+                //todo: Это вообще не требуется. Новый ход не начнется, пока все пользователи не подтвердят свое завершение хода. Но и сервер не должен давать возможность выполнять ходы за пределами 30-секундного хода
+                quicklyCompleteAllCommandsForUnits(groupUnits);
+                quicklyCompleteAllCommandsForUnits(allyUnits);
+                quicklyCompleteAllCommandsForUnits(enemyUnits);
+//                ClientBattleHelper.immediateMoveAllies(groupUnits, battle, battleConfiguration, this);
+//                ClientBattleHelper.immediateMoveAllies(allyUnits, battle, battleConfiguration, this);
+//                ClientBattleHelper.immediateMoveEnemies(enemyUnits, battle, this);
 
                 ClientChangeActiveAllianceAnswer change = (ClientChangeActiveAllianceAnswer) message;
                 if (isMyTurn()) {
-                    Debug.debug("my turn has been finished");
-                    configuration.getBattleServiceManager().checkSum();
+                    onMyTurnFinished();
                 }
                 activeAlliance = change.getAlliance();
                 if (isMyTurn()) {
-                    Debug.debug("my turn has begun");
-                    ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
+                    onMyTurnStarted();
                 }
-                onChangeActiveAlliance(change.getAlliance());
+                onChangeActiveAlliance(activeAlliance);
                 break;
             case Packets.MOVE_ALLY:
-                ClientMoveAllyAnswer moveAlly = (ClientMoveAllyAnswer)message;
-                moveAlly(moveAlly.getAlly(), moveAlly.getX(),moveAlly.getY(), moveAlly.getEnemies());
+                ClientMoveAllyAnswer moveAlly = (ClientMoveAllyAnswer) message;
+                moveAlly(moveAlly.getAlly(), moveAlly.getX(), moveAlly.getY(), moveAlly.getEnemies());
                 break;
             case Packets.MOVE_ENEMY:
-                ClientMoveEnemyAnswer moveEnemy = (ClientMoveEnemyAnswer)message;
+                ClientMoveEnemyAnswer moveEnemy = (ClientMoveEnemyAnswer) message;
                 moveEnemy(moveEnemy.getEnemy());
                 break;
         }
     }
 
-    private Step getStep(BattleUnit unit) {
-        for (int i = 0; i < steps.size(); i++) {
-            if (((Step) steps.get(i)).getBattleUnit() == unit) {
-                return (Step) steps.get(i);
-            }
+    private void quicklyCompleteAllCommandsForUnits(ClientHumanElementCollection collection) {
+        for (int i = 0; i < collection.size(); i++) {
+            ClientHumanElement unit = (ClientHumanElement) collection.get(i);
+            unit.getLogic().quicklyCompleteAllCommands();
         }
-        return null;
     }
 
     public void moveUser(int x, int y) {
         try {
-            Warrior warrior = user.getUnit().getWarrior();
-            ClientMoveWarriorAnswer move = (ClientMoveWarriorAnswer) configuration.getBattleServiceManager().move(warrior, (short) x, (short) y);
+            ClientMoveWarriorAnswer move = (ClientMoveWarriorAnswer) configuration.getBattleServiceManager().move(activeUnit, (short) x, (short) y);
             if (move.isSuccess()) {
                 short xx = move.getX();
                 short yy = move.getY();
                 if (xx != x || yy != y) {
-                    ClientBattleHelper.trace(warrior, xx, yy);
+                    ClientBattleHelper.trace(battle.getMap().getCells(), activeUnit, xx, yy, configuration.getBattleConfiguration());
                 }
-                getStep(user).init();
-                WarriorCollection warriorCollection = move.getEnemies();
+                activeUnit.getLogic().doRun();
+                ClientHumanElementCollection warriorCollection = move.getEnemies();
                 for (int i = 0; i < warriorCollection.size(); i++) {
-                    Warrior enemy = warriorCollection.get(i);
-                    BattleUnit enemyUnit = ClientBattleHelper.findBattleUnitByWarrior(enemies, enemy);
-                    ClientBattleHelper.initMapXY(this, enemyUnit);
+                    ClientHumanElement unit = (ClientHumanElement) warriorCollection.get(i);
+                    ClientBattleHelper.initMapXY(this, unit);
                 }
             } else {
                 NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
@@ -489,20 +511,19 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     /**
-     * Разрешить двинуть бойца warrior принадлежащего союзнику в точку (x;y)
+     * Разрешить двинуть бойца unit принадлежащего союзнику в точку (x;y)
      *
-     * @param warrior
+     * @param unit
      * @param x
      * @param y
-     * @param warriorCollection противники которых наш товарищ засветил
+     * @param enemyCollection противники которых наш товарищ засветил
      */
-    public void moveAlly(Warrior warrior, int x, int y, WarriorCollection warriorCollection) {
-        ClientBattleHelper.route(warrior, configuration.getBattleConfiguration().getRouter());
-        ClientBattleHelper.trace(warrior, x, y);
-        getStep(ClientBattleHelper.findBattleUnitByWarrior(allies, warrior)).init();
-        for (int i = 0; i < warriorCollection.size(); i++) {
-            Warrior enemy = warriorCollection.get(i);
-            BattleUnit enemyUnit = ClientBattleHelper.findBattleUnitByWarrior(enemies, enemy);
+    public void moveAlly(ClientHumanElement unit, int x, int y, ClientHumanElementCollection enemyCollection) {
+        ClientBattleHelper.route(battle.getMap().getCells(), unit, configuration.getBattleConfiguration().getRouter(), configuration.getBattleConfiguration());
+        ClientBattleHelper.trace(battle.getMap().getCells(), unit, x, y, configuration.getBattleConfiguration());
+        unit.getLogic().doRun();
+        for (int i = 0; i < enemyCollection.size(); i++) {
+            ClientHumanElement enemyUnit = (ClientHumanElement) enemyCollection.get(i);
             ClientBattleHelper.initMapXY(this, enemyUnit);
         }
     }
@@ -510,10 +531,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     /**
      * Двинуть противника по его пути.
      *
-     * @param enemy
+     * @param enemyUnit
      */
-    public void moveEnemy(Warrior enemy) {
-        getStep(ClientBattleHelper.findBattleUnitByWarrior(enemies, enemy)).init();
+    public void moveEnemy(ClientHumanElement enemyUnit) {
+        enemyUnit.getLogic().doRun();
     }
 
     /**
@@ -667,7 +688,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         return battleGroup.getAlliance() == activeAlliance;
     }
 
-
     /**
      * Вернуть активный боевой союз.
      *
@@ -686,12 +706,32 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      *
      * @return
      */
-    public BattleUnit getUser() {
-        return user;
+    public ClientHumanElement getActiveUnit() {
+        return activeUnit;
     }
 
-    public ArrayList getGroup() {
-        return group;
+    public ClientHumanElementCollection getGroupUnits() {
+        return groupUnits;
+    }
+
+    public ClientHumanElementCollection getAllyUnits() {
+        return allyUnits;
+    }
+
+    public ClientHumanElementCollection getEnemyUnits() {
+        return enemyUnits;
+    }
+
+    public void setGroupUnits(ClientHumanElementCollection list) {
+        groupUnits = list;
+    }
+
+    public void setAllyUnits(ClientHumanElementCollection list) {
+        allyUnits = list;
+    }
+
+    public void setEnemyUnits(ClientHumanElementCollection list) {
+        enemyUnits = list;
     }
 
     @Override
@@ -702,9 +742,9 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             account.setSecurity(new SecurityOperationManager());
             account.getSecurity().setAccount(account);
 
-            group = ClientBattleHelper.getBattleUnits(battle, account);
-            allies = ClientBattleHelper.getAllyBattleUnits(battle, account);
-            enemies = ClientBattleHelper.getEnemyBattleUnits(battle, account);
+//            groupUnits = ClientBattleHelper.getBattleUnits(battle, account);
+//            allyUnits = ClientBattleHelper.getAllyBattleUnits(battle, account);
+//            enemyUnits = ClientBattleHelper.getEnemyBattleUnits(battle, account);
 
             battleGroup = ClientBattleHelper.tryFindBattleGroupByAccountId(battle, account.getId());
 
@@ -727,11 +767,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             centerLeft.setY(centerRight.getY());
 
             b1 = (int) (topCenter.getY() - (topCenter.getX()) * TANGENT) - VERTICAL_RADIUS;
-
             b2 = (int) (centerRight.getY() + centerRight.getX() * TANGENT) + VERTICAL_RADIUS;
-
             b3 = (int) (bottomCenter.getY() - bottomCenter.getX() * TANGENT) + VERTICAL_RADIUS;
-
             b4 = (int) (centerLeft.getY() + centerLeft.getX() * TANGENT) - VERTICAL_RADIUS;
             center = new Pair();
             showGrid = true;
@@ -740,51 +777,90 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             BattleAlliance alliance = battleGroup.getAlliance();
             ExitZone exit = alliance.getExit();
             setCellCenter(exit.getX(), exit.getY());
-            BattleGroupCollection clients = alliance.getAllies();
-            user = null;
-            BattleUnit newActiveUnit = null;
-            steps.clear();
-            for (int j = 0; j < clients.size(); j++) {
-                if (battleGroup == clients.get(j)) {
-                    WarriorCollection warriors = battleGroup.getWarriors();
-                    for (int i = 0; i < warriors.size(); i++) {
-                        BattleUnit unit = ClientBattleHelper.findBattleUnitByWarrior(group, warriors.get(i));
-                        initBattleUnit(unit, battleConfiguration);
-                        if (newActiveUnit == null) {
-                            newActiveUnit = unit;
-                        }
-                    }
-                    ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
-                } else {
-                    WarriorCollection warriors = clients.get(j).getWarriors();
-                    for (int i = 0; i < warriors.size(); i++) {
-                        BattleUnit unit = ClientBattleHelper.findBattleUnitByWarrior(allies, warriors.get(i));
-                        initBattleUnit(unit, battleConfiguration);
-                    }
-                }
-            }
-            ClientBattleHelper.route(newActiveUnit.getUnit().getWarrior(), battleConfiguration.getRouter());
-            setActiveUnit(newActiveUnit);
+            activeUnit = null;
+            initUnitFromCollection(groupUnits, battleConfiguration);
+            initUnitFromCollection(allyUnits, battleConfiguration);
+
+//            BattleGroupCollection clients = alliance.getAllies();
+//            for (int j = 0; j < clients.size(); j++) {
+//                if (battleGroup == clients.get(j)) {
+//                    WarriorCollection warriors = battleGroup.getWarriors();
+//                    for (int i = 0; i < warriors.size(); i++) {
+//                        ClientHumanElement unit = BattleMapHelper.getHumanElementByHuman(groupUnits, warriors.get(i));
+//                        initBattleUnit(unit, battleConfiguration);
+//                        if (newActiveUnit == null) {
+//                            newActiveUnit = unit;
+//                        }
+//                    }
+//                    ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
+//                    ClientBattleHelper.route(activeUnit, battleConfiguration.getRouter());
+//                } else {
+//                    WarriorCollection warriors = clients.get(j).getWarriors();
+//                    for (int i = 0; i < warriors.size(); i++) {
+//                        ClientHumanElement unit = BattleMapHelper.getHumanElementByHuman(allyUnits, warriors.get(i));
+//                        initBattleUnit(unit, battleConfiguration);
+//                    }
+//                }
+//            }
+            setActiveUnit(getFirstLiveUnit()); //todo: нужно ли?
             timerId = TimerManager.setPeriodicTimer(100, this);
 
             ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
         }
     }
 
-    private void initBattleUnit(BattleUnit unit, BattleConfiguration battleConfiguration) {
-        ClientBattleHelper.initMapXY(this, unit);
-        Step step = new AllyStep();
-        step.setScreen(this);
-        step.setBattleUnit(unit);
-        Debug.debug(unit.getUnit().getWarrior() + " observing on initiation.");
-        battleConfiguration.getObserver().observe(unit.getUnit().getWarrior());
-        steps.add(step);
-    }
-
     @Override
     public void onHide() {
         TimerManager.killTimer(timerId);
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().unregister(this);
+    }
+
+    private void initUnitFromCollection(ClientHumanElementCollection collection, BattleConfiguration battleConfiguration) {
+        for (int i = 0; i < collection.size(); i++) {
+            ClientHumanElement unit = (ClientHumanElement) collection.get(i);
+            ClientBattleHelper.initMapXY(this, unit);
+            battleConfiguration.getObserver().observe(unit);
+        }
+    }
+
+    public void putEnemyInPosition(HumanElement unit, int x, int y) {
+        Pair coordinates = coordinateFinder.find(x, y, this); //todo: Здесь x и y не перепутаны местами?
+        WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), unit, x, y);
+        unit.setMapX((short) coordinates.getX());
+        unit.setMapY((short) coordinates.getY());
+    }
+
+    public ClientHumanElement getFirstLiveUnit() {
+        return (ClientHumanElement) groupUnits.get(0);
+    }
+
+    /**
+     * Обработчик события сообщающего о начале хода.
+     */
+    public void onMyTurnStarted() {
+        Debug.debug("My turn has begun");
+        ClientBattleHelper.resetActionScores(groupUnits, configuration.getBaseConfiguration());
+        setActiveUnit(getFirstLiveUnit());
+
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.show(panelManager.getBattleWarriorListWindow());
+        panelManager.show(panelManager.getBattleWeaponMenuWindow());
+        panelManager.show(panelManager.getBattleWarriorMenuWindow());
+        panelManager.show(panelManager.getBattleShotMenuWindow());
+    }
+
+    /**
+     * Обработчик события сообщающего о завершении хода.
+     */
+    public void onMyTurnFinished() {
+        Debug.debug("My turn has been finished");
+        configuration.getBattleServiceManager().checkSum();
+
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.hide(panelManager.getBattleWarriorListWindow());
+        panelManager.hide(panelManager.getBattleWeaponMenuWindow());
+        panelManager.hide(panelManager.getBattleWarriorMenuWindow());
+        panelManager.hide(panelManager.getBattleShotMenuWindow());
     }
 
     /**
@@ -794,17 +870,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.getHeadlinePanel().setActiveAlliance(alliance);
         panelManager.getBattleMenuPanel().onActiveAllianceChanged(alliance);
-        if (isMyTurn()) {
-            panelManager.show(panelManager.getBattleWarriorListWindow());
-            panelManager.show(panelManager.getBattleWeaponMenuWindow());
-            panelManager.show(panelManager.getBattleWarriorMenuWindow());
-            panelManager.show(panelManager.getBattleShotMenuWindow());
-        } else {
-            panelManager.hide(panelManager.getBattleWarriorListWindow());
-            panelManager.hide(panelManager.getBattleWeaponMenuWindow());
-            panelManager.hide(panelManager.getBattleWarriorMenuWindow());
-            panelManager.hide(panelManager.getBattleShotMenuWindow());
-        }
     }
 
     /**
@@ -812,30 +877,48 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      *
      * @param unit
      */
-    public void setActiveUnit(BattleUnit unit) {
-        if (this.user != unit) {
-            this.user = unit;
-            onChangeActiveUnit();
-        }
+    public void setActiveUnit(ClientHumanElement unit) {
+//        if (this.activeUnit != unit) {
+        this.activeUnit = unit;
+        onChangeActiveUnit();
+//        }
     }
 
     /**
-     * Обработчик события об изменении активного бойца.
+     * Обработчик события сообщающего об изменении активного бойца.
      */
     private void onChangeActiveUnit() {
-        Debug.debug("The current user number = " + user.getUnit().getWarrior().getNumber());
+        Debug.debug("The current user number = " + activeUnit.getHuman().getNumber());
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        panelManager.getBattleWarriorListPanel().onActiveUnitChanged(user);
-        panelManager.getBattleMenuPanel().onActiveUnitChanged(user);
-        panelManager.getBattleWeaponMenuPanel().onActiveUnitChanged(user);
-        panelManager.getBattleWarriorMenuPanel().onActiveUnitChanged(user);
-        panelManager.getBattleShotMenuPanel().onActiveUnitChanged(user);
+        panelManager.getBattleWarriorListPanel().onActiveUnitChanged(activeUnit);
+        panelManager.getBattleMenuPanel().onActiveUnitChanged(activeUnit);
+        panelManager.getBattleWeaponMenuPanel().onActiveUnitChanged(activeUnit);
+        panelManager.getBattleWarriorMenuPanel().onActiveUnitChanged(activeUnit);
+        panelManager.getBattleShotMenuPanel().onActiveUnitChanged(activeUnit);
         doMapReachabilityUpdate();
     }
 
+    //todo: Избавиться от этого метода
     public void doMapReachabilityUpdate() {
-        Debug.debug("route for warrior " + user.getUnit().getWarrior().getName());
-        ClientBattleHelper.route(user.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration().getRouter());
+        Debug.debug("Route for unit " + activeUnit.getHuman().getName());
+        ClientBattleHelper.route(battle.getMap().getCells(), activeUnit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration().getRouter(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+    }
+
+    /**
+     * Обработчик события сообщающего об окончании выполнения активным бойцом всех своих операций, боец сейчас находится
+     * в состоянии ожидания команд.
+     */
+    public void onOperationOfUnitIsCompleted(ClientHumanElement unit) {
+        // здесь должен быть код, который должен определить что находится вокруг бойца и, в зависимости от его окружения,
+        // может быть отображена соответствующая кнопка. Например, если рядом с бойцом находится дверь, то должна
+        // появиться кнопка открытия/закрытия двери.
+
+        // Что может находится рядом с бойцом                  кнопка с каким действием появится
+        // * дверь                                             - открыть/закрыть дверь
+        // * кучка реголита                                    - собрать реголит
+        // * вражеский боец + выбрано оружие "Нож"             - удар ножом
+        // * зона выхода с карты                               - покинуть поле боя
+        // * предмет (аптечка, ящик с амуницией, боеприпасами) - подобрать предмет
     }
 
     /**
@@ -847,18 +930,11 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     /**
      * Центрировать область просмотра на бойце battleUnit.
+     *
      * @param unit
      */
-    public void displayWarrior(BattleUnit unit) {
+    public void displayWarrior(ClientHumanElement unit) {
 
-    }
-
-    public ArrayList getAllies() {
-        return allies;
-    }
-
-    public ArrayList getEnemies() {
-        return enemies;
     }
 
 }

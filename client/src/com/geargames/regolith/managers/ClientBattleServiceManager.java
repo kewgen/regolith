@@ -11,6 +11,7 @@ import com.geargames.regolith.serializers.requests.ClientShootRequest;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * Users: mikhail v. kutuzov, abarakov
@@ -38,17 +39,18 @@ public class ClientBattleServiceManager {
     }
 
     /**
-     * Пытаемся двинуть своего бойца warrior в точку x:y.
-     * @param warrior
+     * Пытаемся двинуть своего бойца unit в точку (x;y).
+     *
+     * @param unit
      * @param x
      * @param y
      * @return
      * @throws Exception
      */
-    public ClientDeSerializedMessage move(Warrior warrior, short x, short y) throws Exception {
-        clientMoveMyWarriorAnswer.setBattle(warrior.getBattleGroup().getAlliance().getBattle());
+    public ClientDeSerializedMessage move(HumanElement unit, short x, short y) throws Exception {
+        clientMoveMyWarriorAnswer.setBattle(unit.getHuman().getBattleGroup().getAlliance().getBattle());
         configuration.getNetwork().sendSynchronousMessage(
-                new ClientMoveRequest(configuration, warrior, x, y),
+                new ClientMoveRequest(configuration, unit, x, y),
                 clientMoveMyWarriorAnswer, 100000);
         return clientMoveMyWarriorAnswer;
     }

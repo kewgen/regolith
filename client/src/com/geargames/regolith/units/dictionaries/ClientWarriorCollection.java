@@ -14,7 +14,7 @@ public class ClientWarriorCollection extends WarriorCollection {
     public ClientWarriorCollection() {
     }
 
-    public ClientWarriorCollection(Vector vector){
+    public ClientWarriorCollection(Vector vector) {
         warriors = vector;
     }
 
@@ -27,7 +27,7 @@ public class ClientWarriorCollection extends WarriorCollection {
     }
 
     public Warrior get(int index) {
-        return (Warrior)warriors.elementAt(index);
+        return (Warrior) warriors.elementAt(index);
     }
 
     public void add(Warrior warrior) {
@@ -50,10 +50,10 @@ public class ClientWarriorCollection extends WarriorCollection {
         return warriors.size();
     }
 
-    public boolean contains(Warrior warrior){
+    public boolean contains(Warrior warrior) {
         int size = size();
-        for(int i =0; i < size; i++){
-            if(warrior == get(i)){
+        for (int i = 0; i < size; i++) {
+            if (warrior == get(i)) {
                 return true;
             }
         }

@@ -7,12 +7,11 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
-import com.geargames.common.util.NullRegion;
-import com.geargames.common.util.Region;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
-import com.geargames.regolith.units.BattleUnit;
 import com.geargames.regolith.units.battle.BattleAlliance;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.ClientHumanElement;
 
 /**
  * Панель "Заголовок" висит посередине верхней стороны экрана.
@@ -21,7 +20,7 @@ public class PHeadlinePanel extends PRootContentPanel implements TimerListener {
     private PLabel label;
     private int timerId;
     private BattleAlliance alliance;
-    private long expirationTime; // время в миллисекундах, когда хд завершится
+    private long expirationTime; // время в миллисекундах, когда ход завершится
 
     public PHeadlinePanel(PObject prototype) {
         super(prototype);
@@ -64,15 +63,15 @@ public class PHeadlinePanel extends PRootContentPanel implements TimerListener {
 
     public void changeLabel() {
         long remainingTime = (expirationTime - Environment.currentTimeMillis()) / 1000;
-        if (remainingTime < 0 ) {
+        if (remainingTime < 0) {
             remainingTime = 0;
         }
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        BattleUnit battleUnit = panelManager.getBattleScreen().getUser();
+        ClientHumanElement activeUnit = panelManager.getBattleScreen().getActiveUnit();
         label.setText(
                 (panelManager.getBattleScreen().isMyTurn() ? "Наш ход" : "Ход альянса #" + alliance.getNumber() + " (id=" + alliance.getId() + ")") +
-                ", время=" + remainingTime +
-                ", ОД=" + battleUnit.getUnit().getWarrior().getActionScore());
+                        ", время=" + remainingTime +
+                        ", ОД=" + ((Warrior) activeUnit.getHuman()).getActionScore());
     }
 
     public void onTimer(int timerId) {

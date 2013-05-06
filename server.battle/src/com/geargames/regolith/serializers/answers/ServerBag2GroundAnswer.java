@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.*;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.Magazine;
 import com.geargames.regolith.units.tackle.Medikit;
@@ -43,13 +43,13 @@ public class ServerBag2GroundAnswer extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         if (element instanceof Medikit) {
-            TackleSerializer.serializeMedikit((Medikit)element, buffer);
+            TackleSerializer.serializeMedikit((Medikit) element, buffer);
         } else if (element instanceof Magazine) {
-            BattleMapSerializer.serialize((Magazine)element, buffer);
+            BattleMapSerializer.serialize((Magazine) element, buffer);
         } else if (element instanceof Weapon) {
-            TackleSerializer.serializeWeapon((Weapon)element, buffer);
+            TackleSerializer.serializeWeapon((Weapon) element, buffer);
         } else if (element instanceof Armor) {
-            TackleSerializer.serializeArmor((Armor)element, buffer);
+            TackleSerializer.serializeArmor((Armor) element, buffer);
         }
         SimpleSerializer.serialize(x, buffer);
         SimpleSerializer.serialize(y, buffer);

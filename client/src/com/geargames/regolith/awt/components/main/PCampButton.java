@@ -12,12 +12,8 @@ import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.SubordinationDamage;
 import com.geargames.regolith.units.Underload;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.dictionaries.BattleTypeCollection;
-import com.geargames.regolith.units.dictionaries.ClientAllyCollection;
-import com.geargames.regolith.units.dictionaries.ClientBattleGroupCollection;
-import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.ExitZone;
+import com.geargames.regolith.units.dictionaries.*;
+import com.geargames.regolith.units.map.*;
 
 import java.util.Vector;
 
@@ -52,14 +48,14 @@ public class PCampButton extends PTouchButton {
             enemyAccount.setId(-1);
 
             battle.setAlliances(new BattleAlliance[2]);
-            for(int i = 0; i < battle.getAlliances().length; i++){
+            for (int i = 0; i < battle.getAlliances().length; i++) {
                 BattleAlliance alliance = new BattleAlliance();
                 ClientBattleGroupCollection battleGroups = new ClientBattleGroupCollection();
                 alliance.setAllies(battleGroups);
                 BattleGroup group = new BattleGroup();
-                if(i == 0){
+                if (i == 0) {
                     group.setAccount(account);
-                }else{
+                } else {
                     group.setAccount(enemyAccount);
                 }
                 battleGroups.add(group);
@@ -76,8 +72,8 @@ public class PCampButton extends PTouchButton {
             tmp[0] = type;
             battleMap.setPossibleBattleTypes(tmp);
 
-            Barrier barBarrier0    = baseConfiguration.getBarriers().get(0);
-            Barrier barBarrier1    = baseConfiguration.getBarriers().get(1);
+            Barrier barBarrier0 = baseConfiguration.getBarriers().get(0);
+            Barrier barBarrier1 = baseConfiguration.getBarriers().get(1);
             Barrier fenceBarrier0l = baseConfiguration.getBarriers().get(2);
             Barrier fenceBarrier0r = baseConfiguration.getBarriers().get(3);
             Barrier fenceBarrier1l = baseConfiguration.getBarriers().get(4);
@@ -123,39 +119,43 @@ public class PCampButton extends PTouchButton {
             battleMap.getCells()[6][9].addElement(fenceBarrier0l);
             battleMap.getCells()[8][7].addElement(barBarrier1);
 
-            Warrior mine = account.getWarriors().get(0);
-            mine.setDirection(Direction.LEFT_RIGHT);
-            Warrior another = account.getWarriors().get(1);
-            another.setDirection(Direction.LEFT_RIGHT);
+            HumanElement unitMine = new ClientHumanElement();
+            Warrior mineWarrior = account.getWarriors().get(0);
+            unitMine.setHuman(mineWarrior);
+            unitMine.setDirection(Direction.LEFT_RIGHT);
+            HumanElement anotherMine = new ClientHumanElement();
+            Warrior anotherWarrior = account.getWarriors().get(1);
+            anotherMine.setHuman(anotherWarrior);
+            anotherMine.setDirection(Direction.LEFT_RIGHT);
 
             ExitZone[] exits = new ExitZone[2];
             battleMap.setExits(exits);
             ExitZone exit = new ExitZone();
-            exit.setX((short)1);
-            exit.setY((short)1);
-            exit.setxRadius((byte)1);
-            exit.setyRadius((byte)1);
-            WarriorHelper.putWarriorIntoMap(mine, battleMap, 0, 0);
-            mine.setNumber((short)1);
-            mine.setActionScore((short)100);
-            mine.setSpeed((byte)100);
+            exit.setX((short) 1);
+            exit.setY((short) 1);
+            exit.setxRadius((byte) 1);
+            exit.setyRadius((byte) 1);
+            WarriorHelper.putWarriorIntoMap(battleMap.getCells(), unitMine, 0, 0);
+            mineWarrior.setNumber((short) 1);
+            mineWarrior.setActionScore((short) 100);
+            mineWarrior.setSpeed((byte) 100);
             battle.getAlliances()[0].setExit(exit);
             exits[0] = exit;
 
             exit = new ExitZone();
-            exit.setX((short)18);
-            exit.setY((short)18);
-            exit.setxRadius((byte)1);
-            exit.setyRadius((byte)1);
+            exit.setX((short) 18);
+            exit.setY((short) 18);
+            exit.setxRadius((byte) 1);
+            exit.setyRadius((byte) 1);
             battle.getAlliances()[1].setExit(exit);
-            WarriorHelper.putWarriorIntoMap(another, battleMap, 18, 18);
-            another.setNumber((short)2);
-            another.setActionScore((short)100);
-            another.setSpeed((byte)100);
+            WarriorHelper.putWarriorIntoMap(battleMap.getCells(), anotherMine, 18, 18);
+            anotherWarrior.setNumber((short) 2);
+            anotherWarrior.setActionScore((short) 100);
+            anotherWarrior.setSpeed((byte) 100);
             exits[1] = exit;
 
-            WarriorHelper.addWarriorToGroup(battle.getAlliances()[0].getAllies().get(0), mine);
-            WarriorHelper.addWarriorToGroup(battle.getAlliances()[1].getAllies().get(0), another);
+            WarriorHelper.addWarriorToGroup(battle.getAlliances()[0].getAllies().get(0), mineWarrior);
+            WarriorHelper.addWarriorToGroup(battle.getAlliances()[1].getAllies().get(0), anotherWarrior);
 
 
             BattleConfiguration battleConfiguration = new BattleConfiguration();
@@ -212,9 +212,9 @@ public class PCampButton extends PTouchButton {
 
             battleConfiguration.setSubordinationDamage(subordinationDamages);
 
-            ClientAllyCollection allies = new ClientAllyCollection();
-            allies.setAllies(new Vector());
-            allies.add(mine);
+            ClientHumanElementCollection allies = new ClientHumanElementCollection();
+            allies.setElements(new Vector());
+            allies.add(unitMine);
             battleConfiguration.setObserver(new StrictPerimeterObserver(allies));
             battleConfiguration.setRouter(new RecursiveWaveRouter());
             ClientConfigurationFactory.getConfiguration().setBattleConfiguration(battleConfiguration);
@@ -228,6 +228,7 @@ public class PCampButton extends PTouchButton {
             manager.show(manager.getBattleWeaponMenuWindow());
             manager.show(manager.getBattleWarriorMenuWindow());
             manager.show(manager.getBattleShotMenuWindow());
+            manager.getBattleScreen().onMyTurnStarted();
         }
     }
 

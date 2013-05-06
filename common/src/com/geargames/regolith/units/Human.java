@@ -1,64 +1,59 @@
 package com.geargames.regolith.units;
 
-import com.geargames.regolith.units.battle.Direction;
+import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.Weapon;
-import com.geargames.regolith.units.tackle.WeaponCategory;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 30.03.12
+ * Базовый класс для всех бойцов.
  */
-public class Human extends CellElement {
+public class Human extends Entity {
+    public static final byte ENEMY = 1;
+    public static final byte ALLY = 2;
+    public static final byte WARRIOR = 3; //todo: переименовать
+
+    private BattleGroup battleGroup;
+    private short number; //todo: перенести number в battleGroup
+
     private int frameId;
     private String name;
+    private byte membershipType;
+
     private Rank rank;
     private int health;
-
     private Armor headArmor;
     private Armor torsoArmor;
     private Armor legsArmor;
     private Weapon weapon;
 
-    private boolean shooting;
-    private boolean sitting;
-    private boolean moving;
-    private Direction direction;
-
-    /**
-     * Направление в котором боец повёрнут.
-     * @return
-     */
-    public Direction getDirection() {
-        return direction;
+    public byte getMembershipType() {
+        if (membershipType < ENEMY || membershipType > WARRIOR) {
+            throw new RuntimeException("Invalid value of MembershipType (membershipType = " + membershipType + ")");
+        }
+        return membershipType;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+    //todo: ????? Не везде проставляется принадлежность бойца
+    public void setMembershipType(byte value) {
+        membershipType = value;
     }
 
-    public boolean isMoving() {
-        return moving;
+    public BattleGroup getBattleGroup() {
+        return battleGroup;
     }
 
-    public void setMoving(boolean moving) {
-        this.moving = moving;
+    public void setBattleGroup(BattleGroup battleGroup) {
+        this.battleGroup = battleGroup;
     }
 
-    public boolean isShooting() {
-        return shooting;
+    public short getNumber() {
+        return number;
     }
 
-    public void setShooting(boolean shooting) {
-        this.shooting = shooting;
-    }
-
-    public boolean isSitting() {
-        return sitting;
-    }
-
-    public void setSitting(boolean sitting) {
-        this.sitting = sitting;
+    public void setNumber(short number) {
+        this.number = number;
     }
 
     public int getFrameId() {
@@ -123,41 +118,6 @@ public class Human extends CellElement {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean isHalfLong() {
-        return isSitting();
-    }
-
-    @Override
-    public boolean isAbleToLookThrough() {
-        return isSitting();
-    }
-
-    @Override
-    public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
-        return isSitting();
-    }
-
-    @Override
-    public boolean isAbleToWalkThrough() {
-        return false;
-    }
-
-    @Override
-    public boolean isBarrier() {
-        return false;
-    }
-
-    @Override
-    public short getElementType() {
-        return CellElementTypes.HUMAN;
-    }
-
-    @Override
-    public byte getLayer() {
-        return CellElementLayers.HUMAN;
     }
 
 }

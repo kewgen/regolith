@@ -1,6 +1,7 @@
 package com.geargames.regolith.units.battle;
 
 import com.geargames.regolith.service.BattleClient;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
@@ -10,7 +11,7 @@ import java.util.concurrent.ScheduledFuture;
  * Date: 20.07.12
  */
 public class ServerBattle {
-    public static  final int NONE = -1;
+    public static final int NONE = -1;
     private int active;
     private Battle battle;
     private Collection<BattleGroup> groups;
@@ -18,6 +19,7 @@ public class ServerBattle {
     private List<Set<BattleClient>> alliances;
     private Set<BattleClient> clients;
     private ScheduledFuture future;
+    private ServerHumanElementCollection humanElements;
 
     public ServerBattle(Battle battle) {
         this.battle = battle;
@@ -75,4 +77,14 @@ public class ServerBattle {
     public void setActive(int active) {
         this.active = active;
     }
+
+    public ServerHumanElementCollection getHumanElements() {
+        return humanElements;
+    }
+
+    //todo: ????? каким-либо образом присвоить полю значение
+    public void setHumanElements(ServerHumanElementCollection humanElements) {
+        this.humanElements = humanElements;
+    }
+
 }

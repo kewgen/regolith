@@ -1,8 +1,8 @@
 package com.geargames.regolith.service;
 
 import com.geargames.regolith.RegolithConfiguration;
-import com.geargames.regolith.helpers.BattleHelper;
 import com.geargames.regolith.helpers.FightHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.managers.CommonBattleManager;
 import com.geargames.regolith.map.observer.Observer;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
@@ -17,6 +17,7 @@ import com.geargames.regolith.service.state.ClientCheckSumAwaiting;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
+import com.geargames.regolith.units.map.HumanElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +80,7 @@ public class BattleSchedulerService {
                     @Override
                     public void run() {
                         if (Thread.currentThread().isInterrupted()) {
-                            logger.debug("Could not run a battle cycle(the service has been interrupted)" + serverBattle.getBattle().getName());
+                            logger.debug("Could not run a battle cycle (the service has been interrupted)" + serverBattle.getBattle().getName());
                             return;
                         }
                         BattleServiceConfiguration configuration = BattleServiceConfigurationFactory.getConfiguration();
@@ -99,7 +100,9 @@ public class BattleSchedulerService {
                             logger.debug("alliances' amount: {}.", alliances.length);
                             for (BattleAlliance alliance : alliances) {
                                 logger.debug("an alliance number {} is observing.", alliance.getNumber());
-                                Set<Ally> enemies = BattleHelper.allianceObserveBattle(alliance, observer);
+
+                                Set<HumanElement> enemies = ServerBattleHelper.allianceObservedBattle(alliance, observer, serverBattle.getHumanElements());
+
                                 if (enemies.size() > 0) {
                                     List<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getAlliances().get(alliance.getNumber()));
                                     writer.addMessageToClient(new BattleMessageToClient(recipients, new ServerInitiallyObservedEnemies(MICRO_BYTE_BUFFER.get(), enemies).serialize()));

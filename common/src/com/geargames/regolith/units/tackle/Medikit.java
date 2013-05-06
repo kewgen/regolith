@@ -1,12 +1,12 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.CellElementTypes;
+import com.geargames.regolith.units.map.CellElementTypes;
 import com.geargames.regolith.units.Skill;
 
 /**
  * User: mkutuzov
  * Date: 08.02.12
-  */
+ */
 public class Medikit extends Ammunition {
     private short value;
     private byte actionScores;

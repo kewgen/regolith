@@ -5,19 +5,18 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
-import com.geargames.regolith.units.battle.Ally;
-import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
+import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 
 /**
- * User: mikhail v. kutuzov
+ * Users: mikhail v. kutuzov, abarakov
  * Date: 23.08.12
  * Time: 13:56
  */
 public class ServerMoveWarriorAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
-    private Warrior warrior;
-    private ServerAllyCollection enemies;
+    private HumanElement unit;
+    private ServerHumanElementCollection enemies;
     private boolean success;
 
     public static ServerMoveWarriorAnswer answerFailure(MicroByteBuffer buffer) {
@@ -25,13 +24,13 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
     }
 
 
-    public static ServerMoveWarriorAnswer answerSuccess(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies) {
-        return new ServerMoveWarriorAnswer(buffer, warrior, enemies, true);
+    public static ServerMoveWarriorAnswer answerSuccess(MicroByteBuffer buffer, HumanElement unit, ServerHumanElementCollection enemies) {
+        return new ServerMoveWarriorAnswer(buffer, unit, enemies, true);
     }
 
-    private ServerMoveWarriorAnswer(MicroByteBuffer buffer, Warrior warrior, ServerAllyCollection enemies, boolean success) {
+    private ServerMoveWarriorAnswer(MicroByteBuffer buffer, HumanElement unit, ServerHumanElementCollection enemies, boolean success) {
         this.buffer = buffer;
-        this.warrior = warrior;
+        this.unit = unit;
         this.enemies = enemies;
         this.success = success;
     }
@@ -49,9 +48,9 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
     /**
      * id союза
      * id группы
-     * id война
-     * x и y на карте куда он пойдёт(конец пути)
-     * массив врагов которых он "засветил"("засвет" противника может произойти только в конце пути)
+     * id воина
+     * x и y на карте куда он пойдёт (конец пути)
+     * массив врагов которых он "засветил" ("засвет" противника может произойти только в конце пути)
      *
      * @param buffer
      */
@@ -59,21 +58,20 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
         if (success) {
-            SerializeHelper.serializeEntityReference(warrior, buffer);
-            SimpleSerializer.serialize(warrior.getX(), buffer);
-            SimpleSerializer.serialize(warrior.getY(), buffer);
+            SerializeHelper.serializeEntityReference(unit.getHuman(), buffer);
+            SimpleSerializer.serialize(unit.getCellX(), buffer);
+            SimpleSerializer.serialize(unit.getCellY(), buffer);
             if (enemies != null) {
-                SimpleSerializer.serialize(enemies.size(), buffer);
-                for (Ally human : enemies.getAllies()) {
-                    SimpleSerializer.serialize(human.getBattleGroup().getAlliance().getNumber(), buffer);
-                    SerializeHelper.serializeEntityReference(human.getBattleGroup(), buffer);
-                    SerializeHelper.serializeEntityReference(human, buffer);
-                    SimpleSerializer.serialize(human.getX(), buffer);
-                    SimpleSerializer.serialize(human.getY(), buffer);
+                SimpleSerializer.serialize((byte) enemies.size(), buffer);
+                for (HumanElement human : enemies.getElements()) {
+                    SerializeHelper.serializeEntityReference(human.getHuman(), buffer);
+                    SimpleSerializer.serialize(human.getCellX(), buffer);
+                    SimpleSerializer.serialize(human.getCellY(), buffer);
                 }
             } else {
                 SimpleSerializer.serialize(0, buffer);
             }
         }
     }
+
 }

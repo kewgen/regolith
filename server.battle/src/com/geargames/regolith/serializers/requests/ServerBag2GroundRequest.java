@@ -10,12 +10,14 @@ import com.geargames.regolith.serializers.answers.ServerBag2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.HumanElement;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,10 +57,13 @@ public abstract class ServerBag2GroundRequest extends ServerRequest {
         BattleCell cell = cells[x][y];
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
 
-        if (BattleMapHelper.ableToPut(warrior, cells, x, y)) {
+        ServerHumanElementCollection units = serverBattle.getHumanElements();
+        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
+
+        if (BattleMapHelper.ableToPut(unit, cells, x, y)) {
             CellElement element = putOut(number, warrior);
             if (element != null) {
-                BattleMapHelper.putIn(element,map,x,y);
+                BattleMapHelper.putIn(element, map, x, y);
 
                 Set<Client> others = new HashSet<Client>();
                 others.addAll(serverBattle.getClients());
@@ -70,13 +75,13 @@ public abstract class ServerBag2GroundRequest extends ServerRequest {
                 ));
 
                 messages.add(new BattleMessageToClient(
-                    BattleServiceRequestUtils.getRecipients(others),
-                    (new ServerBag2GroundAnswer(to, type, element, x, y)).serialize()
+                        BattleServiceRequestUtils.getRecipients(others),
+                        (new ServerBag2GroundAnswer(to, type, element, x, y)).serialize()
                 ));
 
             } else {
                 messages.add(new BattleMessageToClient(
-                    BattleServiceRequestUtils.singleRecipientByClient(client),
+                        BattleServiceRequestUtils.singleRecipientByClient(client),
                         ServerConfirmationAnswer.answerFailure(to, type).serialize()
                 ));
             }

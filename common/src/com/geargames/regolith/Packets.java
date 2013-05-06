@@ -50,7 +50,6 @@ public interface Packets {
     short JOIN_BASE_WARRIORS_TO_ACCOUNT = 22;
 
 
-
     short GO_TO_WARRIOR_MARKET = 30;
 
     short GO_TO_TACKLE_MARKET = 31;
@@ -79,7 +78,6 @@ public interface Packets {
     short MOVE_ALLY = 52;
 
     short INITIALLY_OBSERVED_ENEMIES = 53;
-
 
 
     short TAKE_MEDIKIT_FROM_GROUND_PUT_INTO_BAG = 60;
@@ -122,7 +120,6 @@ public interface Packets {
     short PUT_PROJECTILE_INTO_WEAPON = 78;
 
     short USE_MEDIKIT = 79;
-
 
 
     short TAKE_TACKLE_FROM_GROUND_PUT_INTO_BAG = 82;
@@ -174,7 +171,6 @@ public interface Packets {
     short BATTLE_SERVICE_LOGOUT = 202;
 
     short BATTLE_SERVICE_NEW_CLIENT_LOGIN = 203;
-
 
 
     short MESSAGE_TYPE_NULL = 300;

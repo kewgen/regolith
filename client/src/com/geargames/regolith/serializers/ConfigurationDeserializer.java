@@ -8,7 +8,7 @@ import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.SubordinationDamage;
 import com.geargames.regolith.units.battle.BattleType;
-import com.geargames.regolith.units.battle.ClientBarrier;
+import com.geargames.regolith.units.map.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.tackle.*;
 
@@ -103,7 +103,7 @@ public class ConfigurationDeserializer {
         return ammunitionCategories;
     }
 
-    private static BattleType deserializeBattleType(MicroByteBuffer buffer){
+    private static BattleType deserializeBattleType(MicroByteBuffer buffer) {
         BattleType battleType = new BattleType();
         battleType.setId(SimpleDeserializer.deserializeInt(buffer));
         battleType.setName(SimpleDeserializer.deserializeString(buffer));
@@ -115,12 +115,12 @@ public class ConfigurationDeserializer {
         return battleType;
     }
 
-    private static BattleTypeCollection deserializeBattleTypes(MicroByteBuffer buffer){
+    private static BattleTypeCollection deserializeBattleTypes(MicroByteBuffer buffer) {
         ClientBattleTypeCollection battleTypes = new ClientBattleTypeCollection();
         battleTypes.setBattleTypes(new Vector());
 
         int size = buffer.get();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             battleTypes.add(deserializeBattleType(buffer));
         }
         return battleTypes;
