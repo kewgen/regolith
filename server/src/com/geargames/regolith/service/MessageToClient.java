@@ -29,6 +29,7 @@ public abstract class MessageToClient implements Runnable {
         byteBuffer.clear();
         byteBuffer.put(message);
         byteBuffer.flip();
+        int i = 0;
         for (SocketChannel recipient : recipients) {
             byteBuffer.mark();
             while (byteBuffer.hasRemaining()) {
@@ -37,14 +38,26 @@ public abstract class MessageToClient implements Runnable {
                 } catch (IOException e) {
                     handleBrokenConnection(recipient);
                     logger.error("Could not write to a client channel ", e);
-                    byteBuffer.clear();
+                    break;
                 }
             }
+            if (!worthToSend()) {
+                break;
+            }
             byteBuffer.reset();
+            if (logger.isDebugEnabled()) {
+                byteBuffer.mark();
+                logger.debug("a sent message length {}", byteBuffer.getShort());
+                logger.debug("a type {}", byteBuffer.getShort());
+                logger.debug("a recipient number {}", i++);
+                byteBuffer.reset();
+            }
         }
     }
 
     protected abstract ByteBuffer getWriteBuffer();
 
     protected abstract void handleBrokenConnection(SocketChannel recipient);
+
+    protected abstract boolean worthToSend();
 }

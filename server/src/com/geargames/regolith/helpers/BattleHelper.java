@@ -151,7 +151,7 @@ public class BattleHelper {
      * @param observer
      * @return
      */
-    public static Set<Ally> allianceObservedBattle(BattleAlliance alliance, Observer observer) {
+    public static Set<Ally> allianceObserveBattle(BattleAlliance alliance, Observer observer) {
         ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
         Set<Ally> enemies = new HashSet<Ally>();
         logger.debug("groups amount: {} ", groups.getBattleGroups().size());

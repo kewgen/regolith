@@ -755,7 +755,6 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                         }
                     }
                     ClientBattleHelper.resetActionScores(group, configuration.getBaseConfiguration());
-                    ClientBattleHelper.route(user.getUnit().getWarrior(), battleConfiguration.getRouter());
                 } else {
                     WarriorCollection warriors = clients.get(j).getWarriors();
                     for (int i = 0; i < warriors.size(); i++) {
@@ -764,6 +763,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                     }
                 }
             }
+            ClientBattleHelper.route(newActiveUnit.getUnit().getWarrior(), battleConfiguration.getRouter());
             setActiveUnit(newActiveUnit);
             timerId = TimerManager.setPeriodicTimer(100, this);
 
