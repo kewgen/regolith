@@ -10,10 +10,10 @@ import com.geargames.regolith.units.battle.BattleGroup;
  * User: mkutuzov, abarakov
  * Date: 27.06.12
  */
-public class BattleGroupDisbandRequest extends ClientSerializedMessage {
+public class ClientBattleGroupDisbandRequest extends ClientSerializedMessage {
     private BattleGroup group;
 
-    public BattleGroupDisbandRequest(ClientConfiguration configuration, BattleGroup group) {
+    public ClientBattleGroupDisbandRequest(ClientConfiguration configuration, BattleGroup group) {
         super(configuration);
         this.group = group;
     }

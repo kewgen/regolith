@@ -1,7 +1,6 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.answers.*;
 import com.geargames.regolith.serializers.requests.*;
 import com.geargames.regolith.units.Account;
@@ -43,7 +42,7 @@ public class ClientBattleCreationManager {
         //todo: Передавать не alliance + account, а только battleGroup
 //        evictAccountFromAllianceAnswer.setBattle(alliance.getBattle());
         configuration.getNetwork().sendSynchronousMessage(
-                new EvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer, 100);
+                new ClientEvictAccountRequest(configuration, account, alliance), evictAccountFromAllianceAnswer, 100);
         return evictAccountFromAllianceAnswer;
     }
 
@@ -51,7 +50,7 @@ public class ClientBattleCreationManager {
      * Послать сообщение-запрос о начале битвы.
      */
     public ClientStartBattleAnswer startBattle() throws Exception{
-        configuration.getNetwork().sendSynchronousMessage(new StartBattleRequest(configuration), startBattleAnswer, 100);
+        configuration.getNetwork().sendSynchronousMessage(new ClientStartBattleRequest(configuration), startBattleAnswer, 100);
         return startBattleAnswer;
     }
 
@@ -80,7 +79,7 @@ public class ClientBattleCreationManager {
      */
     public ClientCompleteGroupAnswer completeGroup(BattleGroup group, Warrior[] warriors) throws Exception{
 //        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
-		configuration.getNetwork().sendSynchronousMessage(new BattleGroupCompleteRequest(configuration, warriors, group), completeGroupAnswer, 100);
+		configuration.getNetwork().sendSynchronousMessage(new ClientBattleGroupCompleteRequest(configuration, warriors, group), completeGroupAnswer, 100);
         return completeGroupAnswer;
     }
 
@@ -91,13 +90,13 @@ public class ClientBattleCreationManager {
      */
     public ClientCompleteGroupAnswer disbandGroup(BattleGroup group) throws Exception {
 //        completeGroupAnswer.setBattle(group.getAlliance().getBattle());
-        configuration.getNetwork().sendSynchronousMessage(new BattleGroupDisbandRequest(configuration, group), completeGroupAnswer, 100);
+        configuration.getNetwork().sendSynchronousMessage(new ClientBattleGroupDisbandRequest(configuration, group), completeGroupAnswer, 100);
         return completeGroupAnswer;
     }
 
     public ClientConfirmationAnswer doNotListenToBattle(Battle battle) throws Exception {
         configuration.getNetwork().sendSynchronousMessage(
-                new DoNotListenToBattleRequest(configuration, battle), confirmationAnswer, 100);
+                new ClientDoNotListenToBattleRequest(configuration, battle), confirmationAnswer, 100);
         return confirmationAnswer;
     }
 

@@ -11,11 +11,11 @@ import com.geargames.regolith.units.map.BattleMap;
  * User: mkutuzov, abarakov
  * Date: 20.06.12
  */
-public class CreateBattleRequest extends ClientSerializedMessage {
+public class ClientCreateBattleRequest extends ClientSerializedMessage {
     private BattleMap battleMap;
     private BattleType battleType;
 
-    public CreateBattleRequest(ClientConfiguration configuration, BattleMap battleMap, BattleType battleType) {
+    public ClientCreateBattleRequest(ClientConfiguration configuration, BattleMap battleMap, BattleType battleType) {
         super(configuration);
         this.battleMap = battleMap;
         this.battleType = battleType;

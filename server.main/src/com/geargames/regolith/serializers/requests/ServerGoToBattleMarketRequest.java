@@ -13,7 +13,7 @@ import com.geargames.regolith.service.states.ClientAtBattleMarket;
  * Date: 09.01.13
  * Time: 20:03
  */
-public class GoToBattleMarketRequest extends MainOneToClientRequest {
+public class ServerGoToBattleMarketRequest extends MainOneToClientRequest {
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         client.setState(new ClientAtBattleMarket());

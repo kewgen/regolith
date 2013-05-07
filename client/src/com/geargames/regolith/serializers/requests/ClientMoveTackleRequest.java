@@ -11,12 +11,12 @@ import com.geargames.regolith.units.tackle.StateTackle;
  * User: mikhail v. kutuzov
  * Запрос на перемещение вещи надетой на бойца.
  */
-public class ClientMoveTackle extends ClientSerializedMessage {
+public class ClientMoveTackleRequest extends ClientSerializedMessage {
     private Warrior warrior;
     private StateTackle tackle;
     private short type;
 
-    public ClientMoveTackle(ClientConfiguration configuration) {
+    public ClientMoveTackleRequest(ClientConfiguration configuration) {
         super(configuration);
     }
 

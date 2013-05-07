@@ -7,6 +7,7 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.ErrorCodes;
 import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.application.PFontCollection;
 import com.geargames.regolith.awt.components.PRootContentPanel;
@@ -131,7 +132,9 @@ public class PSelectMapPanel extends PRootContentPanel {
                 Debug.debug("Browsing a random map...");
                 ClientBattleMapAnswer battleMapAnswer = battleMarketManager.browseRandomBattleMap(battleType);
                 if (!battleMapAnswer.isSuccess()) {
-                    Debug.error("BrowseRandomBattleMap: Request rejected (battle type id = " + battleType.getId() + ")");
+                    Debug.error("BrowseRandomBattleMap: Request rejected with error \"" +
+                            ErrorCodes.getLocalizedError(battleMapAnswer.getErrorCode()) +
+                            "\" (battle type id = " + battleType.getId() + ")");
                     NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_GET_BATTLE_MAP_EXCEPTION, this);
                     return;
                 }
@@ -141,11 +144,18 @@ public class PSelectMapPanel extends PRootContentPanel {
             } else {
                 Debug.debug("Browsing maps...");
                 ClientBattleMapListAnswer battleMapListAnswer = battleMarketManager.browseBattleMaps(battleType);
+                if (!battleMapListAnswer.isSuccess()) {
+                    Debug.error("BrowseBattleMaps: Request rejected with error \"" +
+                            ErrorCodes.getLocalizedError(battleMapListAnswer.getErrorCode()) +
+                            "\" (battle type id = " + battleType.getId() + ")");
+                    NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_GET_BATTLE_MAP_LIST_EXCEPTION, this);
+                    return;
+                }
                 BattleMap[] battleMaps = battleMapListAnswer.getBattleMaps();
                 Debug.debug("Received a list of maps (count = " + battleMaps.length + ")");
                 if (battleMaps.length == 0) {
                     Debug.critical("There are no maps to use");
-                    NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_GET_BATTLE_MAP_EXCEPTION, this);
+                    NotificationBox.error(LocalizedStrings.BATTLE_CREATE_MSG_GET_BATTLE_MAP_LIST_EXCEPTION, this);
                     return;
                 }
                 selectedMap = null;

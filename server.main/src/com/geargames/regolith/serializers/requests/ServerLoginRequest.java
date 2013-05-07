@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
-import com.geargames.regolith.serializers.answers.FirstServerLoginAnswer;
+import com.geargames.regolith.ErrorCodes;
+import com.geargames.regolith.serializers.answers.ServerFirstLoginAnswer;
 import com.geargames.regolith.serializers.answers.ServerLoginAnswer;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
@@ -30,7 +31,7 @@ public class ServerLoginRequest extends MainOneToClientRequest {
             Account activeAccount = serverConfiguration.getServerContext().getActiveAccountById(account.getId());
             if (activeAccount != null) {
                 // Клиент с таким же логином уже подключился
-                return ServerLoginAnswer.answerFailure(writeBuffer);
+                return ServerLoginAnswer.answerFailure(writeBuffer, ErrorCodes.LOGON_USER_IS_ALREADY_LOGGED);
             } else {
                 serverConfiguration.getServerContext().addChannel(account, client.getChannel());
                 client.setAccount(account);
@@ -39,12 +40,12 @@ public class ServerLoginRequest extends MainOneToClientRequest {
                     return ServerLoginAnswer.answerSuccess(serverConfiguration, account, writeBuffer);
                 } else {
                     client.setState(new ClientAtBaseWarriorsMarket());
-                    return new FirstServerLoginAnswer(serverConfiguration, account, writeBuffer);
+                    return new ServerFirstLoginAnswer(serverConfiguration, account, writeBuffer);
                 }
             }
         } else {
             // Недопустимая пара логин/пароль.
-            return ServerLoginAnswer.answerFailure(writeBuffer);
+            return ServerLoginAnswer.answerFailure(writeBuffer, ErrorCodes.LOGON_INVALID_USERNAME_OR_PASSWORD);
         }
     }
 

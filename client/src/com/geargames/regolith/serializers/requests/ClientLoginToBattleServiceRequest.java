@@ -16,7 +16,7 @@ import com.geargames.regolith.units.battle.BattleAlliance;
  * Date: 14.08.12
  * Time: 15:35
  */
-public class LoginToBattleServiceRequest extends ClientSerializedMessage {
+public class ClientLoginToBattleServiceRequest extends ClientSerializedMessage {
     private Battle battle;
     private BattleAlliance alliance;
 

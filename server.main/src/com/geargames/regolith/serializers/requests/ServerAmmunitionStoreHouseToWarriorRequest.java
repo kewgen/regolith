@@ -20,7 +20,7 @@ import com.geargames.regolith.units.tackle.TackleTransitionHelper;
  * Date: 09.01.13
  * Time: 10:20
  */
-public class ServerAmmunitionStoreHouse2WarriorRequest extends MainOneToClientRequest {
+public class ServerAmmunitionStoreHouseToWarriorRequest extends MainOneToClientRequest {
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         Warrior warrior = ServerDataBaseHelper.getWarriorById(SimpleDeserializer.deserializeInt(from));

@@ -12,11 +12,11 @@ import com.geargames.regolith.units.battle.Warrior;
  * User: mkutuzov, abarakov
  * Date: 22.06.12
  */
-public class BattleGroupCompleteRequest extends ClientSerializedMessage {
+public class ClientBattleGroupCompleteRequest extends ClientSerializedMessage {
     private BattleGroup group;
     private Warrior[] warriors;
 
-    public BattleGroupCompleteRequest(ClientConfiguration configuration, Warrior[] warriors, BattleGroup group) {
+    public ClientBattleGroupCompleteRequest(ClientConfiguration configuration, Warrior[] warriors, BattleGroup group) {
         super(configuration);
         this.group = group;
         this.warriors = warriors;

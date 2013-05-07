@@ -8,9 +8,9 @@ import com.geargames.common.serialization.MicroByteBuffer;
  * Users: mkutuzov, abarakov
  * Date: 20.06.12
  */
-public class LogoutRequest extends ClientSerializedMessage {
+public class ClientLogoutRequest extends ClientSerializedMessage {
 
-    public LogoutRequest(ClientConfiguration configuration) {
+    public ClientLogoutRequest(ClientConfiguration configuration) {
         super(configuration);
     }
 

@@ -8,13 +8,13 @@ import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 
-public class ClientServerGround2WarriorRequest extends ClientSerializedMessage {
+public class ClientServerGroundToWarriorRequest extends ClientSerializedMessage {
     private short type;
     private Warrior warrior;
     private short x;
     private short y;
 
-    public ClientServerGround2WarriorRequest(ClientConfiguration configuration, short type, Warrior warrior, short x, short y) {
+    public ClientServerGroundToWarriorRequest(ClientConfiguration configuration, short type, Warrior warrior, short x, short y) {
         super(configuration);
         this.type = type;
         this.warrior = warrior;

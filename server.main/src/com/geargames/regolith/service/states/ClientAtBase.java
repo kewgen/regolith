@@ -28,19 +28,19 @@ public class ClientAtBase extends MainState {
         this.context = serverConfiguration.getServerContext();
         this.writer = serverConfiguration.getWriter();
         processors = new HashMap<Short, ServerRequest>();
-        processors.put(Packets.GO_TO_BATTLE_MARKET, new GoToBattleMarketRequest());
-        processors.put(Packets.GO_TO_TACKLE_MARKET, new GoToTackleMarketRequest());
-        processors.put(Packets.GO_TO_WARRIOR_MARKET, new GoToWarriorMarketRequest());
-        processors.put(Packets.TAKE_AMMUNITION_FROM_BAG_PUT_INTO_STORE_HOUSE, new ServerAmmunitionBag2StoreHouseRequest());
-        processors.put(Packets.TAKE_AMMUNITION_FROM_BAG_PUT_ON_WARRIOR, new ServerAmmunitionBag2WarriorRequest());
-        processors.put(Packets.TAKE_TACKLE_FROM_BAG_PUT_ON_BODY, new ServerTackleBag2WarriorRequest());
-        processors.put(Packets.TAKE_TACKLE_FROM_BAG_PUT_INTO_STORE_HOUSE, new ServerTackleBag2StoreHouseRequest());
-        processors.put(Packets.TAKE_AMMUNITION_FROM_STORE_HOUSE_PUT_INTO_BAG, new ServerAmmunitionStoreHouse2BagRequest());
-        processors.put(Packets.TAKE_AMMUNITION_FROM_STORE_HOUSE_PUT_ONTO_WARRIOR, new ServerAmmunitionStoreHouse2WarriorRequest());
-        processors.put(Packets.TAKE_TACKLE_FROM_STORE_HOUSE_PUT_INTO_BAG, new ServerTackleStoreHouse2BagRequest());
-        processors.put(Packets.TAKE_TACKLE_FROM_STORE_HOUSE_PUT_ON_WARRIOR, new ServerTackleStoreHouse2WarriorRequest());
-        processors.put(Packets.TAKE_TACKLE_FROM_BODY_PUT_INTO_BAG, new ServerTakleWarrior2BagRequest());
-        processors.put(Packets.TAKE_TACKLE_FROM_BODY_PUT_INTO_STORE_HOUSE, new ServerTackleWarrior2StoreHouseRequest());
+        processors.put(Packets.GO_TO_BATTLE_MARKET, new ServerGoToBattleMarketRequest());
+        processors.put(Packets.GO_TO_TACKLE_MARKET, new ServerGoToTackleMarketRequest());
+        processors.put(Packets.GO_TO_WARRIOR_MARKET, new ServerGoToWarriorMarketRequest());
+        processors.put(Packets.TAKE_AMMUNITION_FROM_BAG_PUT_INTO_STORE_HOUSE, new ServerAmmunitionBagToStoreHouseRequest());
+        processors.put(Packets.TAKE_AMMUNITION_FROM_BAG_PUT_ON_WARRIOR, new ServerAmmunitionBagToWarriorRequest());
+        processors.put(Packets.TAKE_TACKLE_FROM_BAG_PUT_ON_BODY, new ServerTackleBagToWarriorRequest());
+        processors.put(Packets.TAKE_TACKLE_FROM_BAG_PUT_INTO_STORE_HOUSE, new ServerTackleBagToStoreHouseRequest());
+        processors.put(Packets.TAKE_AMMUNITION_FROM_STORE_HOUSE_PUT_INTO_BAG, new ServerAmmunitionStoreHouseToBagRequest());
+        processors.put(Packets.TAKE_AMMUNITION_FROM_STORE_HOUSE_PUT_ONTO_WARRIOR, new ServerAmmunitionStoreHouseToWarriorRequest());
+        processors.put(Packets.TAKE_TACKLE_FROM_STORE_HOUSE_PUT_INTO_BAG, new ServerTackleStoreHouseToBagRequest());
+        processors.put(Packets.TAKE_TACKLE_FROM_STORE_HOUSE_PUT_ON_WARRIOR, new ServerTackleStoreHouseToWarriorRequest());
+        processors.put(Packets.TAKE_TACKLE_FROM_BODY_PUT_INTO_BAG, new ServerTakleWarriorToBagRequest());
+        processors.put(Packets.TAKE_TACKLE_FROM_BODY_PUT_INTO_STORE_HOUSE, new ServerTackleWarriorToStoreHouseRequest());
         batchRequest = new BatchRequest(processors);
     }
 

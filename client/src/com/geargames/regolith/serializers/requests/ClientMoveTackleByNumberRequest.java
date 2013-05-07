@@ -12,7 +12,7 @@ import com.geargames.regolith.units.tackle.AbstractTackle;
  * Запрос на перемещение вещи либо из сумки бойца(карман n) на склад или на бойца либо со склада пользователя(ячейка n)
  * на бойца или в его сумку.
  */
-public class ClientMoveTackleByNumber extends ClientSerializedMessage {
+public class ClientMoveTackleByNumberRequest extends ClientSerializedMessage {
     private Warrior warrior;
     private short number;
     private short amount;
@@ -20,7 +20,7 @@ public class ClientMoveTackleByNumber extends ClientSerializedMessage {
     private short type;
     private AbstractTackle tackle;
 
-    public ClientMoveTackleByNumber(ClientConfiguration configuration) {
+    public ClientMoveTackleByNumberRequest(ClientConfiguration configuration) {
         super(configuration);
     }
 

@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.serializers.*;
-import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;
+import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumberRequest;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.Weapon;
 import junit.framework.Assert;
@@ -29,7 +29,7 @@ public class ClientSerializationTest {
         Warrior warrior = new Warrior();
         warrior.setId(1);
 
-        ClientMoveTackleByNumber move = new ClientMoveTackleByNumber(configuration);
+        ClientMoveTackleByNumberRequest move = new ClientMoveTackleByNumberRequest(configuration);
         move.setNumber((short) 0);
         move.setWarrior(warrior);
         move.setAmount((short) 1);

@@ -8,7 +8,7 @@ import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PExchangeButton;
 import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
-import com.geargames.regolith.serializers.requests.ClientMoveTackle;
+import com.geargames.regolith.serializers.requests.ClientMoveTackleRequest;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.tackle.StateTackle;
 import com.geargames.regolith.units.tackle.TackleTransitionHelper;
@@ -35,7 +35,7 @@ public class PTWarrior2BagButton extends PExchangeButton {
         warriorPanel.getBagTacklesElement().initiateMotionListener();
 
         ClientConfirmationAnswer answer = new ClientConfirmationAnswer();
-        ClientMoveTackle move = new ClientMoveTackle(ClientConfigurationFactory.getConfiguration());
+        ClientMoveTackleRequest move = new ClientMoveTackleRequest(ClientConfigurationFactory.getConfiguration());
         move.setTackle(tackle);
         move.setWarrior(warrior);
         move.setType(Packets.TAKE_TACKLE_FROM_BODY_PUT_INTO_BAG);

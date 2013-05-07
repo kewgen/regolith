@@ -8,19 +8,18 @@ import com.geargames.regolith.units.battle.Battle;
 
 /**
  * User: mkutuzov
- * Послушать состояние формирующейся битвы.
- * Date: 21.06.12
+ * Date: 26.06.12
  */
-public class ListenToBattleRequest extends ClientSerializedMessage {
+public class ClientDoNotListenToBattleRequest extends ClientSerializedMessage {
     private Battle battle;
 
-    public ListenToBattleRequest(ClientConfiguration configuration, Battle battle) {
+    public ClientDoNotListenToBattleRequest(ClientConfiguration configuration, Battle battle) {
         super(configuration);
         this.battle = battle;
     }
 
     public short getType() {
-        return Packets.LISTEN_TO_CREATED_BATTLE;
+        return Packets.DO_NOT_LISTEN_TO_CREATED_BATTLE;
     }
 
     public void serialize(MicroByteBuffer buffer) {

@@ -45,7 +45,7 @@ public class ServerLogoutAtBattleCreationRequest extends ServerRequest {
 
                 battleManagerContext.getBattleListeners().get(createdBattle).remove(client.getAccount());
                 //todo: при выполнении запроса в список реципиентов попадает сам клиент, его следует от туда исключить
-                messages = new ServerCancelBattleRequest(client.getAccount()).request(from, to, client);
+                messages = new ServerCancelBattleRequest().request(from, to, client);
             } else {
                 Battle listenedBattle = battleManagerContext.getBattlesByAccount().get(client.getAccount());
                 if (listenedBattle != null) {

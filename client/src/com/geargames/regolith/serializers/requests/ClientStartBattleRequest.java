@@ -9,9 +9,9 @@ import com.geargames.regolith.serializers.SerializeHelper;
 /**
  *  Запрос на начало битвы.
  */
-public class StartBattleRequest extends ClientSerializedMessage {
+public class ClientStartBattleRequest extends ClientSerializedMessage {
 
-    public StartBattleRequest(ClientConfiguration configuration) {
+    public ClientStartBattleRequest(ClientConfiguration configuration) {
         super(configuration);
     }
 

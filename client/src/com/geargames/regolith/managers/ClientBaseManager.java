@@ -3,7 +3,7 @@ package com.geargames.regolith.managers;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
-import com.geargames.regolith.serializers.requests.ChangeBaseLocation;
+import com.geargames.regolith.serializers.requests.ClientChangeBaseLocationRequest;
 
 /**
  * Users: mikhail v. kutuzov, abarakov
@@ -20,19 +20,19 @@ public class ClientBaseManager {
 
     public ClientConfirmationAnswer goWarriorMarket() throws Exception {
         configuration.getNetwork().sendSynchronousMessage(
-                new ChangeBaseLocation(configuration, Packets.GO_TO_WARRIOR_MARKET), confirmation, 100);
+                new ClientChangeBaseLocationRequest(configuration, Packets.GO_TO_WARRIOR_MARKET), confirmation, 100);
         return confirmation;
     }
 
     public ClientConfirmationAnswer goTackleMarket() throws Exception {
        configuration.getNetwork().sendSynchronousMessage(
-                new ChangeBaseLocation(configuration, Packets.GO_TO_TACKLE_MARKET), confirmation, 100);
+                new ClientChangeBaseLocationRequest(configuration, Packets.GO_TO_TACKLE_MARKET), confirmation, 100);
        return confirmation;
     }
 
     public ClientConfirmationAnswer goBattleMarket() throws Exception{
         configuration.getNetwork().sendSynchronousMessage(
-                new ChangeBaseLocation(configuration, Packets.GO_TO_BATTLE_MARKET), confirmation, 100);
+                new ClientChangeBaseLocationRequest(configuration, Packets.GO_TO_BATTLE_MARKET), confirmation, 100);
         return confirmation;
     }
 

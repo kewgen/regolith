@@ -17,7 +17,7 @@ import com.geargames.regolith.units.tackle.TackleTransitionHelper;
  * User: mikhail v. kutuzov
  * Переместить расходник со склада пользователя в сумку бойца.
  */
-public class ServerAmmunitionStoreHouse2BagRequest extends MainOneToClientRequest {
+public class ServerAmmunitionStoreHouseToBagRequest extends MainOneToClientRequest {
 
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {

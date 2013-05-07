@@ -80,11 +80,10 @@ public class ServerTrainingBattleCreationManager {
         return battle;
     }
 
-    public void cancelBattle(Account author) {
+    public void cancelBattle(Battle battle) {
         BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
-        Battle battle = battleManagerContext.getCreatedBattles().remove(author);
         battleManagerContext.getBattlesById().remove(battle.getId());
-        battleManagerContext.getBattlesByAccount().remove(author);
+        battleManagerContext.getBattlesByAccount().remove(battle.getAuthor());
         battleManagerContext.getBattleListeners().remove(battle);
         battleManagerContext.getCompleteGroups().remove(battle);
     }

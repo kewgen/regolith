@@ -11,11 +11,11 @@ import com.geargames.regolith.units.battle.BattleAlliance;
  * User: mkutuzov
  * Date: 20.06.12
  */
-public class EvictAccountRequest extends ClientSerializedMessage {
+public class ClientEvictAccountRequest extends ClientSerializedMessage {
     private Account account;
     private BattleAlliance alliance;
 
-    public EvictAccountRequest(ClientConfiguration configuration, Account account, BattleAlliance alliance) {
+    public ClientEvictAccountRequest(ClientConfiguration configuration, Account account, BattleAlliance alliance) {
         super(configuration);
         this.account = account;
         this.alliance = alliance;

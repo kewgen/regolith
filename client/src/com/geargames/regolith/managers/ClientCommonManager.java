@@ -3,10 +3,10 @@ package com.geargames.regolith.managers;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
-import com.geargames.regolith.serializers.requests.CheckForNameRequest;
-import com.geargames.regolith.serializers.requests.CreateAccountRequest;
-import com.geargames.regolith.serializers.requests.LoginRequest;
-import com.geargames.regolith.serializers.requests.LogoutRequest;
+import com.geargames.regolith.serializers.requests.ClientCheckForNameRequest;
+import com.geargames.regolith.serializers.requests.ClientCreateAccountRequest;
+import com.geargames.regolith.serializers.requests.ClientLoginRequest;
+import com.geargames.regolith.serializers.requests.ClientLogoutRequest;
 import com.geargames.regolith.units.Login;
 
 /**
@@ -30,7 +30,7 @@ public class ClientCommonManager {
      * @return
      */
     public ClientLoginAnswer login(Login login) throws Exception {
-        configuration.getNetwork().sendSynchronousMessage(new LoginRequest(configuration, login), loginAnswer, 100);
+        configuration.getNetwork().sendSynchronousMessage(new ClientLoginRequest(configuration, login), loginAnswer, 100);
         return loginAnswer;
     }
 
@@ -38,7 +38,7 @@ public class ClientCommonManager {
      * Послать сообщение-запрос о выходе пользователем из своего аккаунта, т.е. разлогинить аккаунт.
      */
     public void logout() {
-        configuration.getNetwork().sendMessage(new LogoutRequest(configuration));
+        configuration.getNetwork().sendMessage(new ClientLogoutRequest(configuration));
     }
 
     /**
@@ -46,7 +46,7 @@ public class ClientCommonManager {
      * использовать при создании нового аккаунта.
      */
     public ClientConfirmationAnswer checkForName(String login) throws Exception {
-        configuration.getNetwork().sendSynchronousMessage(new CheckForNameRequest(configuration, login), confirmationAnswer, 100);
+        configuration.getNetwork().sendSynchronousMessage(new ClientCheckForNameRequest(configuration, login), confirmationAnswer, 100);
         return confirmationAnswer;
     }
 
@@ -54,7 +54,7 @@ public class ClientCommonManager {
      * Послать сообщение-запрос о создании нового аккаунта.
      */
     public ClientConfirmationAnswer create(Login account) throws Exception {
-        configuration.getNetwork().sendSynchronousMessage(new CreateAccountRequest(configuration, account), confirmationAnswer, 100);
+        configuration.getNetwork().sendSynchronousMessage(new ClientCreateAccountRequest(configuration, account), confirmationAnswer, 100);
         return confirmationAnswer;
     }
 

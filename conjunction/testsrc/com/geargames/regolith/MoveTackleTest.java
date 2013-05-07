@@ -7,7 +7,7 @@ import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ClientJoinBaseWarriorsAnswer;
 import com.geargames.regolith.serializers.answers.ClientLoginAnswer;
-import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;
+import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumberRequest;
 import com.geargames.regolith.service.MainServiceManager;
 import com.geargames.regolith.service.SimpleService;
 import com.geargames.regolith.units.Account;
@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Vector;
-import java.util.concurrent.BrokenBarrierException;
 
 /**
  * Users: mikhail v. kutuzov, abarakov
@@ -90,7 +89,7 @@ public class MoveTackleTest {
         StateTackle tackle = TackleTransitionHelper.moveStateTackleBag2StoreHouse(warrior, 0, account.getBase().getStoreHouse());
 
         confirm = new ClientConfirmationAnswer();
-        ClientMoveTackleByNumber move = new ClientMoveTackleByNumber(clientConfiguration);
+        ClientMoveTackleByNumberRequest move = new ClientMoveTackleByNumberRequest(clientConfiguration);
         move.setNumber((short) 0);
         move.setWarrior(warrior);
         move.setAmount((short) 1);

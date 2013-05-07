@@ -21,7 +21,7 @@ import junit.framework.Assert;
 import java.util.Vector;
 
 /**
- * User: mikhail v. kutuzov, abarakov
+ * Users: mikhail v. kutuzov, abarakov
  * Date: 16.02.13
  *
  * Модуль только для разработки!
@@ -53,7 +53,7 @@ public class ClientTestHelper {
         System.out.println("Going to login");
 
         ClientLoginAnswer loginAnswer = commonManager.login(login);
-        Assert.assertNull("Cannot login to account: " + loginAnswer.getError(), loginAnswer.getError());
+        Assert.assertTrue("Cannot login to account: " + ErrorCodes.getLocalizedError(loginAnswer.getErrorCode()), loginAnswer.isSuccess());
 
         return loginAnswer;
     }

@@ -42,7 +42,7 @@ public class ClientAtBattleMarket extends MainState {
                 request = new ServerGoToBaseRequest();
                 break;
             case Packets.BROWSE_BATTLE_MAPS:
-                request = new ServerBrowseBattleMapsRequest(battleMarketManager);
+                request = new ServerBrowseBattleMapsRequest();
                 break;
             case Packets.BROWSE_RANDOM_BATTLE_MAP:
                 request = new ServerBrowseRandomBattleMapRequest();

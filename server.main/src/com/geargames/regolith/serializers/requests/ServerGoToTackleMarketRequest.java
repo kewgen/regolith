@@ -6,15 +6,15 @@ import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.service.Client;
-import com.geargames.regolith.service.states.ClientAtWarriorMarket;
+import com.geargames.regolith.service.states.ClientAtTackleMarket;
 
 /**
- * Перейти на рынок закупки бойцов.
+ *
  */
-public class GoToWarriorMarketRequest extends MainOneToClientRequest {
+public class ServerGoToTackleMarketRequest extends MainOneToClientRequest {
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
-        client.setState(new ClientAtWarriorMarket());
-        return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.GO_TO_WARRIOR_MARKET);
+        client.setState(new ClientAtTackleMarket());
+        return ServerConfirmationAnswer.answerSuccess(writeBuffer, Packets.GO_TO_TACKLE_MARKET);
     }
 }

@@ -4,34 +4,35 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
+import com.geargames.regolith.ErrorCodes;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.Account;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 29.06.12
  */
 public class ServerLoginAnswer extends SerializedMessage {
     private Account account;
     private MicroByteBuffer buffer;
-    private boolean success;
+    private short errorCode;
     private BaseConfiguration baseConfiguration;
 
     public static ServerLoginAnswer answerSuccess(MainServerConfiguration serverConfiguration, Account account, MicroByteBuffer buffer) {
-        return new ServerLoginAnswer(serverConfiguration, account, buffer, true);
+        return new ServerLoginAnswer(serverConfiguration, account, buffer, ErrorCodes.SUCCESS);
     }
 
-    public static ServerLoginAnswer answerFailure(MicroByteBuffer buffer) {
-        return new ServerLoginAnswer(null, null, buffer, false);
+    public static ServerLoginAnswer answerFailure(MicroByteBuffer buffer, short errorCode) {
+        return new ServerLoginAnswer(null, null, buffer, errorCode);
     }
 
-    private ServerLoginAnswer(MainServerConfiguration serverConfiguration, Account account, MicroByteBuffer buffer, boolean success) {
+    private ServerLoginAnswer(MainServerConfiguration serverConfiguration, Account account, MicroByteBuffer buffer, short errorCode) {
         this.account = account;
         this.buffer = buffer;
-        this.success = success;
-        if(serverConfiguration != null){
+        this.errorCode = errorCode;
+        if (serverConfiguration != null) {
             this.baseConfiguration = serverConfiguration.getRegolithConfiguration().getBaseConfiguration();
         }
     }
@@ -48,10 +49,11 @@ public class ServerLoginAnswer extends SerializedMessage {
 
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serialize(success, buffer);
-        if (success) {
+        SimpleSerializer.serialize(errorCode, buffer);
+        if (errorCode == ErrorCodes.SUCCESS) {
             ConfigurationSerializer.serialize(baseConfiguration, buffer);
             AccountSerializer.serialize(account, buffer);
         }
     }
+
 }

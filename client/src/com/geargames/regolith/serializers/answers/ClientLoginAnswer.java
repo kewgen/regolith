@@ -4,18 +4,19 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
+import com.geargames.regolith.ErrorCodes;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Warrior;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 06.07.12
  */
 public class ClientLoginAnswer extends ClientDeSerializedMessage {
     private BaseConfiguration baseConfiguration;
+    private short errorCode;
     private Account account;
-    private String error;
     private Warrior[] warriors;
 
     public Warrior[] getWarriors() {
@@ -30,17 +31,20 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
         return account;
     }
 
-    public String getError() {
-        return error;
+    public short getErrorCode() {
+        return errorCode;
+    }
+
+    public boolean isSuccess() {
+        return errorCode == ErrorCodes.SUCCESS;
     }
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         baseConfiguration = null;
-        account  = null;
-        error    = null;
+        account = null;
         warriors = null;
-        boolean success = SimpleDeserializer.deserializeBoolean(buffer);
-        if (success) {
+        errorCode = SimpleDeserializer.deserializeShort(buffer);
+        if (errorCode == ErrorCodes.SUCCESS) {
             baseConfiguration = ConfigurationDeserializer.deserializeBaseConfiguration(buffer);
             account = AccountDeserializer.deserialize(buffer, baseConfiguration);
             if (account.getWarriors() == null || account.getWarriors().size() == 0) {
@@ -52,8 +56,6 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
                     warriors[i] = warrior;
                 }
             }
-        } else {
-            error = SimpleDeserializer.deserializeString(buffer);
         }
     }
 

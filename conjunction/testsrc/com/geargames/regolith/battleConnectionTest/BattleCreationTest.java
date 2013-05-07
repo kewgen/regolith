@@ -93,8 +93,9 @@ public class BattleCreationTest {
                 ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
 
         System.out.println("Browsing maps...");
-        ClientBattleMapAnswer battleMap = battleMarketManager.browseRandomBattleMap(battleType);
-        BattleMap map = battleMap.getBattleMap();
+        ClientBattleMapAnswer battleMapAnswer = battleMarketManager.browseRandomBattleMap(battleType);
+        Assert.assertTrue("There are no maps: " + ErrorCodes.getLocalizedError(battleMapAnswer.getErrorCode()), battleMapAnswer.isSuccess());
+        BattleMap map = battleMapAnswer.getBattleMap();
         Assert.assertNotNull("There are no maps", map);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -288,8 +289,8 @@ public class BattleCreationTest {
 //        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
-        battleMap = battleMarketManager.browseRandomBattleMap(battleType);
-        map = battleMap.getBattleMap();
+        battleMapAnswer = battleMarketManager.browseRandomBattleMap(battleType);
+        map = battleMapAnswer.getBattleMap();
         Assert.assertNotNull("There are no maps", map);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();
@@ -347,8 +348,8 @@ public class BattleCreationTest {
 //        Assert.assertTrue("The client could not go to the battle market", confirm.isConfirm());
 
         System.out.println("Browsing maps...");
-        battleMap = battleMarketManager.browseRandomBattleMap(battleType);
-        map = battleMap.getBattleMap();
+        battleMapAnswer = battleMarketManager.browseRandomBattleMap(battleType);
+        map = battleMapAnswer.getBattleMap();
         Assert.assertNotNull("There are no maps", map);
         Manager.pause(300);
         ClientTestHelper.checkAsyncMessages();

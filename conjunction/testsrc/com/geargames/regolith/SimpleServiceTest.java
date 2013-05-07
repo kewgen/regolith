@@ -48,7 +48,7 @@ public class SimpleServiceTest {
 
 
         ClientLoginAnswer loginAnswer = managerInterface.login(login);
-        Assert.assertNull(loginAnswer.getError());
+        Assert.assertTrue("Cannot login to account: " + ErrorCodes.getLocalizedError(loginAnswer.getErrorCode()), loginAnswer.isSuccess());
 
         clientConfiguration.setBaseConfiguration(loginAnswer.getBaseConfiguration());
         clientConfiguration.setBaseWarriors(loginAnswer.getWarriors());

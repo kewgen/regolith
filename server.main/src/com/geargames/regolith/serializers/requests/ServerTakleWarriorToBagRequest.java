@@ -18,7 +18,7 @@ import com.geargames.regolith.units.tackle.TackleTransitionHelper;
  * Time: 14:50
  * Обработка запроса: снять кладь с бойца и положить в сумку.
  */
-public class ServerTakleWarrior2BagRequest extends MainOneToClientRequest {
+public class ServerTakleWarriorToBagRequest extends MainOneToClientRequest {
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         Warrior warrior = ServerDataBaseHelper.getWarriorById(SimpleDeserializer.deserializeInt(from));

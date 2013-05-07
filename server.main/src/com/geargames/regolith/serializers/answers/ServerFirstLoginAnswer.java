@@ -4,6 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.BaseConfiguration;
+import com.geargames.regolith.ErrorCodes;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.service.MainServerContext;
 import com.geargames.regolith.service.MainServerConfiguration;
@@ -15,14 +16,16 @@ import com.geargames.regolith.units.battle.Warrior;
 
 import java.util.Set;
 
-
-public class FirstServerLoginAnswer extends SerializedMessage {
+/**
+ * Users: mkutuzov, abarakov
+ */
+public class ServerFirstLoginAnswer extends SerializedMessage {
     private Account account;
     private MicroByteBuffer buffer;
     private BaseConfiguration baseConfiguration;
     private ServerContext context;
 
-    public FirstServerLoginAnswer(MainServerConfiguration serverConfiguration, Account account, MicroByteBuffer buffer) {
+    public ServerFirstLoginAnswer(MainServerConfiguration serverConfiguration, Account account, MicroByteBuffer buffer) {
         this.account = account;
         this.buffer = buffer;
         this.baseConfiguration = serverConfiguration.getRegolithConfiguration().getBaseConfiguration();
@@ -41,7 +44,7 @@ public class FirstServerLoginAnswer extends SerializedMessage {
 
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serialize(true, buffer);
+        SimpleSerializer.serialize(ErrorCodes.SUCCESS, buffer);
 
         ConfigurationSerializer.serialize(baseConfiguration, buffer);
         AccountSerializer.serialize(account, buffer);
@@ -60,5 +63,6 @@ public class FirstServerLoginAnswer extends SerializedMessage {
             AccountSerializer.serialize(warrior, buffer);
         }
     }
+
 }
 

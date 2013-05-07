@@ -14,9 +14,8 @@ import com.geargames.regolith.units.tackle.TackleTransitionHelper;
 
 /**
  * User: mikhail v. kutuzov
- * Переместить расходник из сумки в оружие.
  */
-public class ServerAmmunitionBag2WarriorRequest extends MainOneToClientRequest {
+public class ServerAmmunitionBagToStoreHouseRequest extends MainOneToClientRequest {
 
     @Override
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
@@ -25,7 +24,6 @@ public class ServerAmmunitionBag2WarriorRequest extends MainOneToClientRequest {
             short number = SimpleDeserializer.deserializeShort(from);
             int amount = SimpleDeserializer.deserializeShort(from);
             int realAmount = SimpleDeserializer.deserializeShort(from);
-
             AmmunitionPacketCollection packets = warrior.getAmmunitionBag().getPackets();
             if (packets.size() > number && packets.get(number).getAmmunition().getId() == SimpleDeserializer.deserializeInt(from)) {
                 amount = TackleTransitionHelper.moveAmmunitionBag2StoreHouse(warrior, number, amount, client.getAccount().getBase().getStoreHouse());
@@ -41,4 +39,5 @@ public class ServerAmmunitionBag2WarriorRequest extends MainOneToClientRequest {
             throw new RegolithException();
         }
     }
+
 }

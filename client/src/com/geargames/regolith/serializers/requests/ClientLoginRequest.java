@@ -9,10 +9,10 @@ import com.geargames.regolith.units.Login;
 /**
  * Запрос на соединения с игрой.
  */
-public class LoginRequest extends ClientSerializedMessage {
+public class ClientLoginRequest extends ClientSerializedMessage {
     private Login login;
 
-    public LoginRequest(ClientConfiguration configuration, Login login) {
+    public ClientLoginRequest(ClientConfiguration configuration, Login login) {
         super(configuration);
         this.login = login;
     }

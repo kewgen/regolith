@@ -1,27 +1,25 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.Packets;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 
 /**
- * User: mkutuzov
- * Date: 20.06.12
+ *
  */
-public class CheckForNameRequest extends ClientSerializedMessage {
-    private String name;
+public class ClientChangeBaseLocationRequest extends ClientSerializedMessage{
+    private Short type;
 
-    public CheckForNameRequest(ClientConfiguration configuration, String name) {
+    public ClientChangeBaseLocationRequest(ClientConfiguration configuration, Short type) {
         super(configuration);
-        this.name = name;
+        this.type = type;
     }
 
     public short getType() {
-        return Packets.CHECK_FOR_NAME;
+        return type;
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serialize(name, buffer);
+        SimpleSerializer.serialize(type, buffer);
     }
 }

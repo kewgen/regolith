@@ -2,15 +2,15 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.common.serialization.MicroByteBuffer;
-import com.geargames.common.serialization.SimpleSerializer;
 
 /**
- *
+ * User: mkutuzov
+ * Date: 22.06.12
  */
-public class ChangeBaseLocation extends ClientSerializedMessage{
-    private Short type;
+public class ClientSimpleRequest extends ClientSerializedMessage {
+    private short type;
 
-    public ChangeBaseLocation(ClientConfiguration configuration, Short type) {
+    public ClientSimpleRequest(ClientConfiguration configuration, short type) {
         super(configuration);
         this.type = type;
     }
@@ -20,6 +20,6 @@ public class ChangeBaseLocation extends ClientSerializedMessage{
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        SimpleSerializer.serialize(type, buffer);
     }
+
 }
