@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.geargames.regolith.units.battle.Warrior" table="warrior">
         <id name="id" type="int" column="id">
@@ -10,15 +11,15 @@
         <property name="frameId" column="frame_id" type="int"/>
         <property name="name" type="string" column="name"/>
         <many-to-one lazy="false" name="rank" column="rank_id" class="com.geargames.regolith.units.Rank"/>
-        <property name="health"  column="health" type="int"/>
-        <many-to-one lazy="false" name="headArmor" column="head_armor_id" class="com.geargames.regolith.units.tackle.Armor" unique="true"/>
-        <many-to-one lazy="false" name="torsoArmor" column="torso_armor_id" class="com.geargames.regolith.units.tackle.Armor" unique="true"/>
-        <many-to-one lazy="false" name="legsArmor" column="legs_armor_id" class="com.geargames.regolith.units.tackle.Armor" unique="true"/>
-        <many-to-one lazy="false" name="weapon" column="weapon_id" class="com.geargames.regolith.units.tackle.Weapon" unique="true"/>
-
-        <property name="x" column="x" type="short"/>
-        <property name="y" column="y" type="short"/>
-        <property name="number" column="number" type="short"/>
+        <property name="health" column="health" type="int"/>
+        <many-to-one lazy="false" name="headArmor" column="head_armor_id"
+                     class="com.geargames.regolith.units.tackle.Armor" unique="true"/>
+        <many-to-one lazy="false" name="torsoArmor" column="torso_armor_id"
+                     class="com.geargames.regolith.units.tackle.Armor" unique="true"/>
+        <many-to-one lazy="false" name="legsArmor" column="legs_armor_id"
+                     class="com.geargames.regolith.units.tackle.Armor" unique="true"/>
+        <many-to-one lazy="false" name="weapon" column="weapon_id" class="com.geargames.regolith.units.tackle.Weapon"
+                     unique="true"/>
 
         <property name="strength" column="strength"/>
         <property name="speed" column="speed"/>
@@ -29,13 +30,14 @@
 
         <primitive-array name="skillScores" table="skill_scores">
             <key column="warrior_id"/>
-            <index column="number" />
+            <index column="number"/>
             <element column="score" type="short"/>
         </primitive-array>
 
         <property name="experience" column="experience" type="int"/>
-        <many-to-one lazy="false"  name="bag" class="com.geargames.regolith.units.Bag" unique="true"/>
-        <many-to-one lazy="false" name="ammunitionBag" class="com.geargames.regolith.units.AmmunitionBag" unique="true"/>
+        <many-to-one lazy="false" name="bag" class="com.geargames.regolith.units.Bag" unique="true"/>
+        <many-to-one lazy="false" name="ammunitionBag" class="com.geargames.regolith.units.AmmunitionBag"
+                     unique="true"/>
     </class>
 </hibernate-mapping>
 

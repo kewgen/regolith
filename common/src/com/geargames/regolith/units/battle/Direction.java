@@ -17,22 +17,22 @@ public class Direction implements Serializable {
     public static Direction UP_DOWN_RIGHT = new Direction(1, 1, 1);
     public static Direction NONE = new Direction(0, 0, 8);
 
-    private Direction(int x, int y, int number){
+    private int x;
+    private int y;
+    private int number; //todo: number -> id?
+
+    private Direction(int x, int y, int number) {
         this.x = x;
         this.y = y;
         this.number = number;
     }
 
-    private int number;
-    private int x;
-    private int y;
-
     public int getNumber() {
         return number;
     }
 
-    public static Direction getByNumber(int number){
-        switch (number){
+    public static Direction getByNumber(int number) {
+        switch (number) {
             case 0:
                 return LEFT_RIGHT;
             case 1:

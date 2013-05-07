@@ -1,15 +1,12 @@
 package com.geargames.regolith.awt.components.battle.warriorMenu;
 
-import com.geargames.common.Graphics;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.BattleUnit;
-import com.geargames.regolith.units.Unit;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 
 /**
  * User: abarakov
@@ -56,19 +53,32 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     }
 
     /**
+     * Обработчик события изменения активного бойца.
+     */
+    public void onActiveUnitChanged(ClientWarriorElement activeUnit) {
+        if (activeUnit.isSitting()) {
+            standUpButton.setVisible(true);
+            sitDownButton.setVisible(false);
+        } else {
+            standUpButton.setVisible(false);
+            sitDownButton.setVisible(true);
+        }
+    }
+
+    /**
      * Обработчик нажатия на кнопку "Посадить бойца".
      */
     public void onSitDownButtonClick() {
 //        NotificationBox.info("Посадить бойца", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        BattleUnit battleUnit = panelManager.getBattleScreen().getUser();
+        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
         //todo: Сажать бойца можно только в случае, если сейчас наш ход и он сейчас не выполняет других команд
-        if (panelManager.getBattleScreen().isMyTurn() &&
-                WarriorHelper.maySit(battleUnit.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {
-            battleUnit.getUnit().stop(); //todo: Нужно ли?
-            battleUnit.getUnit().sitDown();
-            WarriorHelper.sit(battleUnit.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
-            //todo: Менять кнопки можно только в случае, если боец действительно присел
+        if (unit.getLogic().isIdle() &&
+                WarriorHelper.maySit(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {
+            unit.getLogic().doSitDown();
+            WarriorHelper.sit(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+            panelManager.getBattleScreen().doMapReachabilityUpdate(); //todo: пусть это делается в WarriorHelper.sit()
+            //todo: Менять видимость кнопок можно только в случае, если боец действительно присел
             standUpButton.setVisible(true);
             sitDownButton.setVisible(false);
         }
@@ -80,14 +90,14 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     public void onStandUpButtonClick() {
 //        NotificationBox.info("Поднять бойца", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        BattleUnit battleUnit = panelManager.getBattleScreen().getUser();
+        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
         //todo: Поднимать бойца можно только в случае, если сейчас наш ход и он сейчас не выполняет других команд
-        if (panelManager.getBattleScreen().isMyTurn() &&
-                WarriorHelper.mayStand(battleUnit.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {
-            battleUnit.getUnit().stop(); //todo: Нужно ли?
-            battleUnit.getUnit().standUp();
-            WarriorHelper.stand(battleUnit.getUnit().getWarrior(), ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
-            //todo: Менять кнопки можно только в случае, если боец действительно поднялся
+        if (unit.getLogic().isIdle() &&
+                WarriorHelper.mayStand(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {
+            unit.getLogic().doStandUp();
+            WarriorHelper.stand(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+            panelManager.getBattleScreen().doMapReachabilityUpdate(); //todo: пусть это делается в WarriorHelper.stand()
+            //todo: Менять видимость кнопок можно только в случае, если боец действительно поднялся
             standUpButton.setVisible(false);
             sitDownButton.setVisible(true);
         }

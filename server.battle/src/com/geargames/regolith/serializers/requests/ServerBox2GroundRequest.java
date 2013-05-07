@@ -10,11 +10,11 @@ import com.geargames.regolith.serializers.answers.ServerBox2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.CellElement;
-import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.battle.Box;
-import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.battle.BattleGroup;
+import com.geargames.regolith.units.map.Box;
+import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.map.BattleCell;
 
 import java.util.ArrayList;
@@ -57,9 +57,9 @@ public abstract class ServerBox2GroundRequest extends ServerRequest {
 
         if (BattleMapHelper.ableToPut(warrior, cells, xGround, yGround) && BattleMapHelper.isNear(warrior, xBox, yBox)
                 && cells[xBox][yBox].getElement() != null && cells[xBox][yBox].getElement() instanceof Box) {
-            Box box = (Box)cells[xBox][yBox].getElement();
+            Box box = (Box) cells[xBox][yBox].getElement();
             CellElement element = putOut(elementId, box, warrior, xGround, yGround);
-            if (element != null){
+            if (element != null) {
                 Set<Client> clients = new HashSet<Client>();
                 clients.addAll(serverBattle.getClients());
                 clients.remove(client);

@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.dictionaries;
 
-import com.geargames.regolith.units.battle.Barrier;
+import com.geargames.regolith.units.map.Barrier;
 
 import java.util.Vector;
 

@@ -1,7 +1,7 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.helpers.BattleHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
@@ -62,14 +62,14 @@ public class ServerTrainingBattleCreationManager {
             throw new RegolithException("Warriors amount is not valid.");
         }
         try {
-            BattleCell[][] cells = BattleHelper.deserializeBattleCells(battle.getMap().getContent());
+            BattleCell[][] cells = ServerBattleHelper.deserializeBattleCells(battle.getMap().getContent());
             battle.getMap().setCells(cells);
         } catch (IOException e) {
             throw new RegolithException(e);
         } catch (ClassNotFoundException e) {
             throw new RegolithException(e);
         }
-        BattleHelper.spreadAlliancesOnTheMap(battle);
+        ServerBattleHelper.spreadAlliancesOnTheMap(battle);
 
         for (BattleAlliance alliance : battle.getAlliances()) {
             ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();

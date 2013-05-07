@@ -49,7 +49,7 @@ public class ServerGround2GroundRequest extends ServerRequest {
         BattleGroup group = BattleServiceRequestUtils.getBattleGroupFromServerBattle(serverBattle, allianceNumber, groupId);
         Warrior warrior = BattleServiceRequestUtils.getWarriorFromGroup(group, warriorId);
 
-        BattleMap map = warrior.getBattleGroup().getAlliance().getBattle().getMap();
+        BattleMap map = serverBattle.getBattle().getMap();
         BattleCell[][] cells = map.getCells();
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
@@ -69,7 +69,7 @@ public class ServerGround2GroundRequest extends ServerRequest {
 
                 messages.add(new BattleMessageToClient(
                         BattleServiceRequestUtils.getRecipients(clients)
-                        ,new ServerGround2GroundAnswer(to, fromX, fromY, toX, toY, type).serialize()
+                        , new ServerGround2GroundAnswer(to, fromX, fromY, toX, toY, type).serialize()
                 ));
             } else {
                 messages.add(new BattleMessageToClient(

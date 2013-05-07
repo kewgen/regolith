@@ -7,6 +7,8 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.finder.ProjectionFinder;
+import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
 
 /**
  * Users: mikhail v. kutuzov, abarakov
@@ -35,17 +37,26 @@ public class ClientConfiguration {
     private Warrior[] baseWarriors;
     private MessageDispatcher messageDispatcher;
     private boolean ready;
-    private short[] stepLengths;
+    private ReverseProjectionFinder coordinateFinder;
+    private ProjectionFinder cellFinder;
+
+    public ReverseProjectionFinder getCoordinateFinder() {
+        return coordinateFinder;
+    }
+
+    public void setCoordinateFinder(ReverseProjectionFinder coordinateFinder) {
+        this.coordinateFinder = coordinateFinder;
+    }
+
+    public ProjectionFinder getCellFinder() {
+        return cellFinder;
+    }
+
+    public void setCellFinder(ProjectionFinder cellFinder) {
+        this.cellFinder = cellFinder;
+    }
 
     public ClientConfiguration() {
-    }
-
-    public short[] getStepLengths() {
-        return stepLengths;
-    }
-
-    public void setStepLengths(short[] stepLengths) {
-        this.stepLengths = stepLengths;
     }
 
     public MessageDispatcher getMessageDispatcher() {

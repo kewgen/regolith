@@ -3,7 +3,10 @@ package com.geargames.regolith.awt.components.battle.battleMenu;
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.NotificationBox;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
+import com.geargames.regolith.units.battle.BattleAlliance;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 
 /**
  * User: abarakov
@@ -12,6 +15,8 @@ import com.geargames.regolith.awt.components.PRootContentPanel;
  * ход или открыть чат.
  */
 public class PBattleMenuPanel extends PRootContentPanel {
+    private POpenChatButton openChatButton;
+    private PSkipMoveButton skipMoveButton;
     private PLeaveBattleButton leaveBattleButton;
 
     public PBattleMenuPanel(PObject prototype) {
@@ -22,11 +27,11 @@ public class PBattleMenuPanel extends PRootContentPanel {
     protected void createSlotElementByIndex(IndexObject index, PObject prototype) {
         switch (index.getSlot()) {
             case 0:
-                PSkipMoveButton skipMoveButton = new PSkipMoveButton((PObject) index.getPrototype());
+                skipMoveButton = new PSkipMoveButton((PObject) index.getPrototype());
                 addActiveChild(skipMoveButton, index);
                 break;
             case 1:
-                POpenChatButton openChatButton = new POpenChatButton((PObject) index.getPrototype());
+                openChatButton = new POpenChatButton((PObject) index.getPrototype());
                 addActiveChild(openChatButton, index);
                 break;
             case 2:
@@ -39,7 +44,7 @@ public class PBattleMenuPanel extends PRootContentPanel {
 
     @Override
     public void onShow() {
-        panelUpdate();
+        onActiveAllianceChanged(PRegolithPanelManager.getInstance().getBattleScreen().getActiveAlliance());
     }
 
     @Override
@@ -48,10 +53,11 @@ public class PBattleMenuPanel extends PRootContentPanel {
     }
 
     /**
-     * Обновить доступность кнопок.
+     * Обработчик события об изменении активного военного союза, того чей, в данный момент, ход.
      */
-    public void panelUpdate() {
-//        ArrayList group = PRegolithPanelManager.getInstance().getBattleScreen().getGroup();
+    public void onActiveAllianceChanged(BattleAlliance alliance) {
+        skipMoveButton.setVisible(PRegolithPanelManager.getInstance().getBattleScreen().isMyTurn());
+//        ArrayList group = PRegolithPanelManager.getInstance().getBattleScreen().getGroupUnits();
 //        boolean exitAllowed = group.size() > 0;
 //        for (int i = 0; i < group.size(); i++) {
 //            BattleUnit battleUnit = (BattleUnit) group.get(i);
@@ -61,6 +67,13 @@ public class PBattleMenuPanel extends PRootContentPanel {
 //            }
 //        }
 //        leaveBattleButton.setVisible(exitAllowed);
+    }
+
+    /**
+     * Обработчик события изменения активного бойца.
+     */
+    public void onActiveUnitChanged(ClientWarriorElement activeUnit) {
+
     }
 
     /**

@@ -3,10 +3,11 @@ package com.geargames.regolith;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.battle.ClientBarrier;
+import com.geargames.regolith.units.map.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,17 +18,19 @@ import java.util.Vector;
  * Date: 03.03.12
  */
 public class MotionTest {
-    private Warrior warrior;
+    private TestClientWarriorElement warrior;
     private BattleMap battleMap;
 
     @Before
-    public void before(){
+    public void before() {
         ClientTestConfigurationFactory.getDefaultConfiguration();
         Barrier barrier = new ClientBarrier();
         barrier.setAbleToLookThrough(false);
-        warrior = new Warrior();
+        warrior = new TestClientWarriorElement();
         warrior.setName("Вася");
-        warrior.setActionScore((short)5);
+        warrior.setActionScore((short) 5);
+        warrior.setMembershipType(Human.WARRIOR);
+        warrior.setDirection(Direction.DOWN_UP);
 
         BattleGroup battleGroup = new BattleGroup();
 
@@ -49,20 +52,20 @@ public class MotionTest {
 
     @Test
     public void move() {
-        WarriorHelper.putWarriorIntoMap(warrior, battleMap, 2, 2);
+        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), warrior, 2, 2);
         TestHelper.printRouteMap(battleMap, warrior);
-        BattleMapHelper.prepare(battleMap);
+        BattleMapHelper.prepare(battleMap.getCells());
         TestHelper.printRouteMap(battleMap, warrior);
         BattleConfiguration battleConfiguration = ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
-        battleConfiguration.getRouter().route(warrior);
+        battleConfiguration.getRouter().route(warrior, battleConfiguration);
         TestHelper.printRouteMap(battleMap, warrior);
-        MoveOneStepListener listener = new MoveOneStepListener(){
+        MoveOneStepListener listener = new MoveOneStepListener() {
             @Override
             public void onStep(Warrior warrior, int x, int y) {
 
             }
         };
-        WarriorHelper.move(warrior, 5, 4, listener, ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration());
+        WarriorHelper.move(battleMap.getCells(), warrior, 5, 4, listener, ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration());
         TestHelper.printRouteMap(battleMap, warrior);
     }
 

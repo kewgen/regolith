@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.CellElementTypes;
+import com.geargames.regolith.units.map.CellElementTypes;
 
 /**
  * Позиция из каталога бони. Представляет базовые характеристи - тип брони.

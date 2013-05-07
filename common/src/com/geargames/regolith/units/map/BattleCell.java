@@ -1,6 +1,5 @@
 package com.geargames.regolith.units.map;
 
-import com.geargames.regolith.units.CellElement;
 import com.geargames.regolith.units.battle.BattleAlliance;
 
 import java.io.Serializable;
@@ -11,8 +10,19 @@ import java.io.Serializable;
  * Date: 22.03.12
  */
 public abstract class BattleCell implements Serializable {
+    /**
+     * Какие элементы могут располагаться в ячейке:
+     * static   very bottom  подложка
+     * static   bottom       подсветка зоны, подсветка препятствий
+     * static   middle       препятствия
+     * dynamic  middle       выброшенные предметы
+     * dynamic  top          бойцы
+     * static   top          значки (высота препятствия и др.)
+     * static   very top     туман войны
+     */
+
     private CellElement[] elements;
-    private int size;
+    private byte size;
     private byte order;
 
     public BattleCell() {
@@ -29,7 +39,7 @@ public abstract class BattleCell implements Serializable {
         return elements;
     }
 
-    public int getSize() {
+    public byte getSize() {
         return size;
     }
 
@@ -54,6 +64,7 @@ public abstract class BattleCell implements Serializable {
             if (size == capacity) {
                 CellElement[] oldElements = elements;
                 elements = new CellElement[capacity + 2];
+                //todo: Реализовать одновременное копирование массива и вставку нового элемента
                 for (int i = 0; i < capacity; i++) {
                     elements[i] = oldElements[i];
                 }
@@ -90,15 +101,11 @@ public abstract class BattleCell implements Serializable {
 
     /**
      * Вернуть битовую маску достижимости ячейки карты.
-     * 0-6 биты содержат наименьшее количество клеток (до 64 клеток), которое надо будет преодолеть бойцу, чтобы добраться до этой точки.
+     * 0-6 биты содержат наименьшее количество клеток (до 64 клеток), которое надо будет преодолеть бойцу, чтобы
+     * добраться до этой точки.
      *
      * @return
      */
-    //todo: 64 клетки на длинну пути это слишком мало. Ситуация может быть такой:
-    // Боец находится на краю карты, перемещается к другому краю карты и щелкает по одной из клеток, при этом ему должна
-    // быть выдана информация о количестве клеток, которые он должен преодолеть, чтобы пройти весь путь. Ко всему этому,
-    // карта может быть построена в виде спирали, где длинная и узкая дорожка, по которой должен двигаться боец, в этом
-    // случае, даже при маленькой карте, длинна пути может быть очень большой.
     public byte getOrder() {
         return order;
     }
@@ -118,7 +125,7 @@ public abstract class BattleCell implements Serializable {
 
     /**
      * Вернуть битовую маску оптимального пути бойцов военного союза battleAlliance.
-     * Если клетка принадлежит оптимальному пути
+     * Если клетка принадлежит оптимальному пути.
      *
      * @param battleAlliance
      * @return

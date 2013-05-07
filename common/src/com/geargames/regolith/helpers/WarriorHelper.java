@@ -6,15 +6,12 @@ import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.*;
+import com.geargames.regolith.units.map.MoveOneStepListener;
 import com.geargames.regolith.units.tackle.*;
 
-import java.util.Date;
-import java.util.Hashtable;
-
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 04.03.12
  */
 public class WarriorHelper {
@@ -28,7 +25,7 @@ public class WarriorHelper {
      * @param warrior
      * @return
      */
-    public static int getObservingRadius(Ally warrior) {
+    public static int getObservingRadius(Warrior warrior) {
         return 5;
     }
 
@@ -38,37 +35,31 @@ public class WarriorHelper {
      * @param warrior
      * @return
      */
-    public static int getRoutableRadius(Warrior warrior) {
-        return warrior.getActionScore();
+    public static int getRoutableRadius(Warrior warrior, BattleConfiguration battleConfiguration) {
+        return warrior.getActionScore() / battleConfiguration.getActionFees().getMove();
     }
 
-    public static int getReachableRadius(Warrior warrior) {
-        return warrior.getActionScore();
+    public static int getReachableRadius(Warrior warrior, BattleConfiguration battleConfiguration) {
+        return warrior.getActionScore() / battleConfiguration.getActionFees().getMove();
     }
 
     /**
-     * Переместить бойца warrior в клетку x;y на карте.
-     * ANNOTATION этот код работает с экземплярами Warrior не используя их идентификаторов
+     * Переместить бойца warrior в клетку (cellX;cellY) на карте.
+     * ANNOTATION этот код работает с экземплярами warrior не используя их идентификаторов //todo: что это значит?
      *
      * @param warrior
-     * @param x
-     * @param y
+     * @param cellX
+     * @param cellY
      */
-    public static boolean putWarriorIntoMap(Warrior warrior, BattleMap battleMap, int x, int y) {
-        BattleCell previous = battleMap.getCells()[warrior.getX()][warrior.getY()];
-        if (previous.getElement() == warrior) {
-            previous.removeElement(warrior);
-        }
-        BattleCell next = battleMap.getCells()[x][y];
-        warrior.setX((short) x);
-        warrior.setY((short) y);
+    public static void putWarriorIntoMap(BattleCell[][] cells, Warrior warrior, int cellX, int cellY) { //todo-asap: cellX, cellY -> short
+        BattleCell previousCell = cells[warrior.getCellX()][warrior.getCellY()];
+        previousCell.removeElement(warrior);
 
-        if (next.getElement() == null) {
-            next.addElement(warrior);
-            return true;
-        } else {
-            return false;
-        }
+        BattleCell nextCell = cells[cellX][cellY];
+        warrior.setCellX((short) cellX);
+        warrior.setCellY((short) cellY);
+
+        nextCell.addElement(warrior);
     }
 
     /**
@@ -77,31 +68,28 @@ public class WarriorHelper {
      * @param warrior
      * @param stepX
      * @param stepY
-     * @return закончим ли ходить
+     * @return обнаруженных бойцов противника
      */
-    public static AllyCollection step(Warrior warrior, int stepX, int stepY, BattleConfiguration battleConfiguration) {
-        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
-        BattleMap battleMap = alliance.getBattle().getMap();
-        BattleCell[][] cells = battleMap.getCells();
-        BattleMapHelper.clearViewAround(warrior);
-        BattleMapHelper.resetShortestCell(cells[warrior.getX()][warrior.getY()], alliance, warrior);
-        putWarriorIntoMap(warrior, battleMap, warrior.getX() + stepX, warrior.getY() + stepY);
+    public static WarriorCollection step(BattleCell[][] cells, Warrior warrior, int stepX, int stepY, BattleConfiguration battleConfiguration) {
+        BattleMapHelper.clearViewAround(cells, warrior);
+        BattleMapHelper.resetShortestCell(cells[warrior.getCellX()][warrior.getCellY()], warrior);
+        putWarriorIntoMap(cells, warrior, warrior.getCellX() + stepX, warrior.getCellY() + stepY);
         warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getMove()));
-
+        System.out.println("A warrior '" + warrior.getName() + "' observe on step (" + warrior.getCellX() + ":" + warrior.getCellY() + ")");
         return battleConfiguration.getObserver().observe(warrior);
     }
 
     /**
      * Возвращаем направление.
      *
-     * @param warrior
      * @param cells
+     * @param warrior
      * @return
      */
-    public static Direction getStepDirection(Warrior warrior, BattleCell[][] cells) {
+    public static Direction getStepDirection(BattleCell[][] cells, Warrior warrior) {
         int length = cells.length;
-        int xx = warrior.getX();
-        int yy = warrior.getY();
+        int xx = warrior.getCellX();
+        int yy = warrior.getCellY();
         Direction direction;
         if (xx + 1 < length && BattleMapHelper.isShortestPathCell(cells[xx + 1][yy], warrior)) {
             direction = Direction.LEFT_RIGHT;
@@ -126,37 +114,49 @@ public class WarriorHelper {
     }
 
     /**
-     * Переместить бойца warrior из того места где он находится в точку x;y по кратчайшему пути.
+     * Переместить бойца warrior из того места где он находится в точку (x;y) по кратчайшему пути.
      *
+     * @param cells
      * @param warrior
      * @param x
      * @param y
+     * @return обнаруженных бойцов противника
      */
-    public static AllyCollection move(Warrior warrior, int x, int y, MoveOneStepListener listener, BattleConfiguration battleConfiguration) {
-        int steps = getReachableRadius(warrior);
-        BattleMap battleMap = warrior.getBattleGroup().getAlliance().getBattle().getMap();
-        BattleCell[][] cells = battleMap.getCells();
-        BattleMapHelper.makeShortestRoute(x, y, warrior);
-        warrior.setMoving(true);
-        AllyCollection result = null;
-        for (int i = 0; i < steps && warrior.isMoving(); i++) {
-            Direction direction = getStepDirection(warrior, cells);
-            if (direction != Direction.NONE) {
-                listener.onStep(warrior, direction.getX(), direction.getY());
-                AllyCollection tmp = step(warrior, direction.getX(), direction.getY(), battleConfiguration);
-                if (tmp.size() != 0) {
-                    result = tmp;
-                    warrior.setMoving(false);
-                }
-            } else {
-                warrior.setMoving(false);
-            }
-        }
-        return result;
+    public static WarriorCollection move(BattleCell[][] cells, Warrior warrior, int x, int y,
+                                         MoveOneStepListener listener, BattleConfiguration battleConfiguration) {
+        BattleMapHelper.makeShortestRoute(cells, x, y, warrior);
+        return move(cells, warrior, listener, battleConfiguration);
     }
 
     /**
-     * Перезарядить(забить магазин до предела) оружие бойца warrior патронами projectile до отказа.
+     * Переместить бойца warrior по отмеченному на карте кратчайшему пути.
+     *
+     * @param cells
+     * @param warrior
+     * @param listener
+     * @param battleConfiguration
+     * @return обнаруженных бойцов противника
+     */
+    public static WarriorCollection move(BattleCell[][] cells, Warrior warrior, MoveOneStepListener listener,
+                                         BattleConfiguration battleConfiguration) {
+        int steps = getReachableRadius(warrior, battleConfiguration);
+        for (int i = 0; i < steps; i++) {
+            Direction direction = getStepDirection(cells, warrior);
+            if (direction != Direction.NONE) {
+                listener.onStep(warrior, direction.getX(), direction.getY());
+                WarriorCollection detectedUnits = step(cells, warrior, direction.getX(), direction.getY(), battleConfiguration);
+                if (detectedUnits.size() != 0) {
+                    return detectedUnits;
+                }
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Перезарядить (забить магазин до предела) оружие бойца warrior патронами projectile до отказа.
      * В случае отсутствия патронов projectile в сумке бойца вернуть false и отменить перезарядку.
      * Боец пробует прежде всего сложить патроны из магазина в сумку и если там нет места, перезарядка отменяется
      * и возвращается false.
@@ -176,7 +176,7 @@ public class WarriorHelper {
         if (!AmmunitionBagHelper.contains(bag, projectile)) {
             return false;
         }
-        int need = 0;
+        int need;
         if (weapon.getProjectile().getId() == projectile.getId()) {
             need = weapon.getWeaponType().getCapacity() - weapon.getLoad();
             weapon.setLoad((short) (weapon.getLoad() + AmmunitionBagHelper.putOut(bag, projectile, need)));
@@ -288,26 +288,26 @@ public class WarriorHelper {
     /**
      * Вернуть возраст бойца.
      *
-     * @param baseWarrior
+     * @param warrior
      * @return
      */
-    public static long getAge(Warrior baseWarrior) {
-        return (System.currentTimeMillis() - baseWarrior.getBirthDate().getTime()) / WEEK;
+    public static long getAge(Warrior warrior) {
+        return (System.currentTimeMillis() - warrior.getBirthDate().getTime()) / WEEK;
     }
 
     /**
      * Вернуть звание бойца, согласно уровню его очков опыта.
      *
-     * @param baseWarrior
+     * @param warrior
      * @param baseConfiguration
      * @return
      */
-    public static Rank getRank(Warrior baseWarrior, BaseConfiguration baseConfiguration) {
+    public static Rank getRank(Warrior warrior, BaseConfiguration baseConfiguration) {
         RankCollection baseRanks = baseConfiguration.getRanks();
         Rank result = null;
         for (int i = 0; i < baseRanks.size(); i++) {
             Rank rank = baseRanks.get(i);
-            if (rank.getExperience() > baseWarrior.getExperience()) {
+            if (rank.getExperience() > warrior.getExperience()) {
                 break;
             }
             result = rank;
@@ -449,7 +449,7 @@ public class WarriorHelper {
     }
 
     /**
-     * Меткость бойца warrior(в процентах).
+     * Меткость бойца warrior (в процентах).
      *
      * @param warrior
      * @param configuration
@@ -457,22 +457,6 @@ public class WarriorHelper {
      */
     public static byte getMarksmanshipPercent(Warrior warrior, BaseConfiguration configuration) {
         return (byte) (configuration.getBaseMarksmanship() + warrior.getMarksmanship() * configuration.getMarksmanshipStep());
-    }
-
-    public static Warrior createWarrior(BaseConfiguration configuration, Bag bag, AmmunitionBag ammunitionBag, String name, int frameId) {
-        Warrior warrior = new Warrior();
-        warrior.setName(name);
-
-        warrior.setFrameId(frameId);
-        warrior.setBirthDate(new Date());
-        int length = configuration.getWeaponCategories().size();
-        warrior.setSkillScores(new short[length]);
-        warrior.setBag(bag);
-        warrior.setSkills(new Skill[length]);
-        warrior.setAmmunitionBag(ammunitionBag);
-        warrior.setDirection(Direction.NONE);
-        warrior.setVictimsDamages(new Hashtable());
-        return warrior;
     }
 
     public static void addWarriorToGroup(BattleGroup group, Warrior warrior) {
@@ -747,7 +731,7 @@ public class WarriorHelper {
 
 
     /**
-     * Посчитать сумарную загрузку бойца.
+     * Посчитать суммарную загрузку бойца.
      *
      * @param warrior
      * @return
@@ -758,7 +742,6 @@ public class WarriorHelper {
 
     /**
      * Сложить патроны из окружающей среды в оружие.
-     * <p/>
      * <p/>
      * Действие вызывает проверку на загрузку бойца
      *
@@ -786,18 +769,38 @@ public class WarriorHelper {
     /**
      * Проверить, мертвый ли боец. Вернет true, если боец мертвый.
      *
-     * @param human
+     * @param warrior
      * @return
      */
-    public static boolean isDead(Human human) {
-        return human.getHealth() <= 0;
+    public static boolean isDead(Warrior warrior) {
+        return warrior.getHealth() <= 0;
+    }
+
+    /**
+     * Хватит ли очков на прицельную стрельбу?
+     *
+     * @param warrior
+     * @return
+     */
+    public static boolean isAbleToShootAccurately(Warrior warrior) {
+        return warrior.getActionScore() - warrior.getWeapon().getWeaponType().getAccurateAction() >= 0;
+    }
+
+    /**
+     * Хватит очков действия на быструю стрельбу?
+     *
+     * @param warrior
+     * @return
+     */
+    public static boolean isAbleToShootQuickly(Warrior warrior) {
+        return warrior.getActionScore() - warrior.getWeapon().getWeaponType().getQuickAction() >= 0;
     }
 
     /**
      * Вернет true, если боец может сесть.
      */
     public static boolean maySit(Warrior warrior, BattleConfiguration battleConfiguration) {
-        return !warrior.isSitting() && !warrior.isMoving() && !warrior.isShooting() &&
+        return !warrior.isSitting() && //warrior.getLogic().isIdle() &&
                 warrior.getActionScore() >= battleConfiguration.getActionFees().getSitOrStand();
     }
 
@@ -805,7 +808,7 @@ public class WarriorHelper {
      * Вернет true, если боец может встать.
      */
     public static boolean mayStand(Warrior warrior, BattleConfiguration battleConfiguration) {
-        return warrior.isSitting() && !warrior.isMoving() && !warrior.isShooting() &&
+        return warrior.isSitting() && //warrior.getLogic().isIdle() &&
                 warrior.getActionScore() >= battleConfiguration.getActionFees().getSitOrStand();
     }
 
@@ -813,23 +816,21 @@ public class WarriorHelper {
      * Вернет true, если боец может "наспех" выстрелить.
      */
     public static boolean mayHastilyShot(Warrior warrior) {
-        return !warrior.isMoving() && !warrior.isShooting() &&
-                warrior.getActionScore() >= warrior.getWeapon().getWeaponType().getQuickAction(); //todo: getQuickAction - правильно?
+        return /*warrior.getLogic().isIdle() && */isAbleToShootQuickly(warrior);
     }
 
     /**
      * Вернет true, если боец может прицельно выстрелить.
      */
     public static boolean mayAccurateShot(Warrior warrior) {
-        return !warrior.isMoving() && !warrior.isShooting() &&
-                warrior.getActionScore() >= warrior.getWeapon().getWeaponType().getAccurateAction(); //todo: getAccurateAction - правильно?
+        return /*warrior.getLogic().isIdle() && */isAbleToShootAccurately(warrior);
     }
 
     /**
      * Приказать бойцу встать.
      */
     public static void stand(Warrior warrior, BattleConfiguration battleConfiguration) {
-        warrior.setSitting(false);
+//        warrior.getLogic().stand();
         warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getSitOrStand()));
     }
 
@@ -837,7 +838,7 @@ public class WarriorHelper {
      * Приказать бойцу сесть.
      */
     public static void sit(Warrior warrior, BattleConfiguration battleConfiguration) {
-        warrior.setSitting(true);
+//        warrior.getLogic().sit();
         warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getSitOrStand()));
     }
 
@@ -845,16 +846,16 @@ public class WarriorHelper {
      * Приказать бойцу сделать выстрел "наспех".
      */
     public static void doHastilyShot(Warrior warrior) {
-//        warrior.setShooting(true);
-        warrior.setActionScore((short) (warrior.getActionScore() - warrior.getWeapon().getWeaponType().getQuickAction())); //todo: getQuickAction - правильно?
+//        warrior.getLogic().hastilyShot();
+        warrior.setActionScore((short) (warrior.getActionScore() - warrior.getWeapon().getWeaponType().getQuickAction()));
     }
 
     /**
      * Приказать бойцу сделать прицельный выстрел.
      */
     public static void doAccurateShot(Warrior warrior) {
-//        warrior.setShooting(true);
-        warrior.setActionScore((short) (warrior.getActionScore() - warrior.getWeapon().getWeaponType().getAccurateAction())); //todo: getAccurateAction - правильно?
+//        warrior.getLogic().accurateShot();
+        warrior.setActionScore((short) (warrior.getActionScore() - warrior.getWeapon().getWeaponType().getAccurateAction()));
     }
 
 }

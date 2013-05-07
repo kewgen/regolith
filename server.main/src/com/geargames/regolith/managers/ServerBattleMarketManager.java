@@ -1,7 +1,7 @@
 package com.geargames.regolith.managers;
 
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.helpers.BattleHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.BattleTypeHelper;
 import com.geargames.regolith.service.MainServerConfiguration;
 import com.geargames.regolith.service.MainServerConfigurationFactory;
@@ -30,7 +30,7 @@ public class ServerBattleMarketManager {
 
     public Battle createBattle(BattleMap battleMap, int battleTypeId, Account author) throws RegolithException {
         BattleType battleType = BattleTypeHelper.findBattleTypeById(battleTypeId, battleMap.getPossibleBattleTypes());
-        Battle battle = BattleHelper.createBattle(battleMap.getName() + "_" + author.getName(), battleMap, battleType);
+        Battle battle = ServerBattleHelper.createBattle(battleMap.getName() + "_" + author.getName(), battleMap, battleType);
         battle.setAuthor(author);
         Session session = configuration.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();

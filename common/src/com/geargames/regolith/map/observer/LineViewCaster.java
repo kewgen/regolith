@@ -1,8 +1,8 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.battle.Ally;
 
 /**
  * User: mkutuzov
@@ -11,7 +11,7 @@ import com.geargames.regolith.units.battle.Ally;
 public class LineViewCaster extends ViewCaster {
     public static LineViewCaster instance = new LineViewCaster();
 
-    private boolean markXPlusVisible(BattleCell[][] cells, Ally warrior, boolean hidden, double x, int y, BattleCellMaintainer cellMaintainer) {
+    private boolean markXPlusVisible(BattleCell[][] cells, Warrior warrior, boolean hidden, double x, int y, BattleCellMaintainer cellMaintainer) {
         int xx = (int) x;
         xx = xx + 0.5 < x ? xx + 1 : xx;
         if (xx >= 0 && xx < cells.length) {
@@ -20,7 +20,7 @@ public class LineViewCaster extends ViewCaster {
         return hidden;
     }
 
-    private boolean markXMinusVisible(BattleCell[][] cells, Ally warrior, boolean hidden, double x, int y, BattleCellMaintainer cellMaintainer) {
+    private boolean markXMinusVisible(BattleCell[][] cells, Warrior warrior, boolean hidden, double x, int y, BattleCellMaintainer cellMaintainer) {
         int xx = (int) x;
         xx = xx - 0.5 < x ? xx : xx - 1;
         if (xx >= 0 && xx < cells.length) {
@@ -29,7 +29,7 @@ public class LineViewCaster extends ViewCaster {
         return hidden;
     }
 
-    public void castViewUp(int x0, int y0, int x1, int y1, BattleMap battleMap, Ally warrior, BattleCellMaintainer cellMaintainer) {
+    public void castViewUp(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer cellMaintainer) {
         double k = 0;
         if (x1 != x0) {
             k = (double) (y1 - y0) / (double) (x1 - x0);
@@ -65,7 +65,7 @@ public class LineViewCaster extends ViewCaster {
     }
 
 
-    public void castViewDown(int x0, int y0, int x1, int y1, BattleMap battleMap, Ally warrior, BattleCellMaintainer cellMaintainer) {
+    public void castViewDown(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer cellMaintainer) {
         double k = 0;
         if (x1 != x0) {
             k = (double) (y1 - y0) / (double) (x1 - x0);
@@ -101,7 +101,7 @@ public class LineViewCaster extends ViewCaster {
     }
 
 
-    private boolean markYPlusVisible(BattleCell[][] cells, Ally warrior, boolean hidden, int x, double y, BattleCellMaintainer cellMaintainer) {
+    private boolean markYPlusVisible(BattleCell[][] cells, Warrior warrior, boolean hidden, int x, double y, BattleCellMaintainer cellMaintainer) {
         int yy = (int) y;
         yy = yy + 0.5 < y ? yy + 1 : yy;
         if (yy >= 0 && yy < cells.length) {
@@ -110,7 +110,7 @@ public class LineViewCaster extends ViewCaster {
         return hidden;
     }
 
-    private boolean markYMinusVisible(BattleCell[][] cells, Ally warrior, boolean hidden, int x, double y, BattleCellMaintainer cellMaintainer) {
+    private boolean markYMinusVisible(BattleCell[][] cells, Warrior warrior, boolean hidden, int x, double y, BattleCellMaintainer cellMaintainer) {
         int yy = (int) y;
         yy = yy - 0.5 < y ? yy : yy - 1;
         if (yy >= 0 && yy < cells.length) {
@@ -119,7 +119,7 @@ public class LineViewCaster extends ViewCaster {
         return hidden;
     }
 
-    public void castViewRight(int x0, int y0, int x1, int y1, BattleMap battleMap, Ally warrior, BattleCellMaintainer cellMaintainer) {
+    public void castViewRight(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer cellMaintainer) {
         double k = (double) (y1 - y0) / (double) (x1 - x0);
         double b = (double) y0 - k * x0;
         BattleCell[][] cells = battleMap.getCells();
@@ -150,7 +150,7 @@ public class LineViewCaster extends ViewCaster {
         }
     }
 
-    public void castViewLeft(int x0, int y0, int x1, int y1, BattleMap battleMap, Ally warrior, BattleCellMaintainer cellMaintainer) {
+    public void castViewLeft(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer cellMaintainer) {
         double k = (double) (y1 - y0) / (double) (x1 - x0);
         double b = (double) y0 - k * x0;
         BattleCell[][] cells = battleMap.getCells();

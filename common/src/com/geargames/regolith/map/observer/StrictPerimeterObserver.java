@@ -2,7 +2,7 @@ package com.geargames.regolith.map.observer;
 
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.dictionaries.AllyCollection;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
 
 /**
@@ -19,20 +19,23 @@ public class StrictPerimeterObserver extends Observer {
     private LineViewCaster lineViewCaster;
     private VisibilityMaintainer visibilityMaintainer;
 
-    public StrictPerimeterObserver(AllyCollection allies) {
+    public StrictPerimeterObserver(WarriorCollection allies) {
         lineViewCaster = new LineViewCaster();
         visibilityMaintainer = new VisibilityMaintainer(allies);
     }
 
-    public AllyCollection observe(Ally warrior) {
+    @Override
+    public WarriorCollection observe(Warrior warrior) {
+        System.out.println("A warrior named " + warrior.getName() + " is observing a territory");
+
         visibilityMaintainer.getAllies().clear();
-        BattleGroup grp = warrior.getBattleGroup();
-        BattleAlliance alliance = grp.getAlliance();
+        BattleGroup group = warrior.getBattleGroup();
+        BattleAlliance alliance = group.getAlliance();
         Battle battle = alliance.getBattle();
         BattleMap battleMap = battle.getMap();
         int radius = WarriorHelper.getObservingRadius(warrior);
-        int x = warrior.getX();
-        int y = warrior.getY();
+        int x = warrior.getCellX();
+        int y = warrior.getCellY();
 
         int rightBottomX = x + radius;
         int rightBottomY = y + radius;
@@ -56,4 +59,5 @@ public class StrictPerimeterObserver extends Observer {
         }
         return visibilityMaintainer.getAllies();
     }
+
 }

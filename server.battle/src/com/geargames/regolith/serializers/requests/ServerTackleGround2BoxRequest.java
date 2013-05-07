@@ -12,9 +12,9 @@ import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.battle.Box;
-import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.Box;
+import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.tackle.StateTackle;
 

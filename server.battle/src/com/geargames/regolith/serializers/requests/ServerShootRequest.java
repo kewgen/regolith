@@ -4,13 +4,12 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.FightHelper;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.answers.ServerShootAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.service.state.ClientAtBattle;
-import com.geargames.regolith.service.state.ClientCheckSumAwaiting;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
 
@@ -43,7 +42,8 @@ public class ServerShootRequest extends ServerRequest {
         BattleGroup victimGroup = BattleServiceRequestUtils.getBattleGroupFromServerBattle(serverBattle, victimAllianceNumber, victimGroupId);
         Warrior victim = BattleServiceRequestUtils.getWarriorFromGroup(victimGroup, victimId);
 
-        FightHelper.shoot(hunter, victim, SimpleDeserializer.deserializeBoolean(from));
+        boolean accurately = SimpleDeserializer.deserializeBoolean(from);
+        FightHelper.shoot(hunter, victim, accurately);
 
         List<MessageToClient> messages = new LinkedList<MessageToClient>();
         Battle battle = serverBattle.getBattle();
@@ -55,11 +55,11 @@ public class ServerShootRequest extends ServerRequest {
             Warrior aHunter = null;
             Warrior aVictim = null;
 
-            if (BattleMapHelper.isVisible(cells[hunter.getX()][hunter.getY()], alliance)) {
+            if (BattleMapHelper.isVisible(cells[hunter.getCellX()][hunter.getCellY()], alliance)) {
                 aHunter = hunter;
             }
 
-            if (BattleMapHelper.isVisible(cells[victim.getX()][victim.getY()], alliance)) {
+            if (BattleMapHelper.isVisible(cells[victim.getCellX()][victim.getCellY()], alliance)) {
                 aVictim = victim;
             }
 

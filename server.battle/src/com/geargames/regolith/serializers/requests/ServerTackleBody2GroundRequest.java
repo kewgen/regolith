@@ -66,7 +66,6 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
         }
 
         if (stateTackle != null) {
-
             Set<Client> clients = new HashSet<Client>();
             clients.addAll(serverBattle.getClients());
             clients.remove(client);
@@ -75,12 +74,11 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
                     ServerConfirmationAnswer.answerSuccess(to, Packets.TAKE_TACKLE_FROM_BODY_PUT_ON_GROUND).serialize()));
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(clients),
                     new ServerTackleBody2GroundAnswer(to, warrior, stateTackle, x, y).serialize()));
-
         } else {
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.singleRecipientByClient(client),
                     ServerConfirmationAnswer.answerFailure(to, Packets.TAKE_TACKLE_FROM_BODY_PUT_ON_GROUND).serialize()));
         }
-
         return messages;
     }
+
 }

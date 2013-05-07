@@ -9,9 +9,7 @@ import com.geargames.regolith.units.*;
 import com.geargames.regolith.units.base.*;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.ExitZone;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.tackle.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -376,27 +374,27 @@ public class SerializerTest {
         battleType.setId(0);
         battleType.setName("1:1");
         battleType.setScores((byte) 5);
-        battleType.setAllianceAmount((short)2);
-        battleType.setAllianceSize((short)1);
-        battleType.setGroupSize((short)1);
+        battleType.setAllianceAmount((short) 2);
+        battleType.setAllianceSize((short) 1);
+        battleType.setGroupSize((short) 1);
         battleTypes.add(battleType);
 
         battleType = new TrainingBattle();
         battleType.setId(1);
         battleType.setName("1:1:1");
         battleType.setScores((byte) 10);
-        battleType.setAllianceAmount((short)3);
-        battleType.setAllianceSize((short)1);
-        battleType.setGroupSize((short)1);
+        battleType.setAllianceAmount((short) 3);
+        battleType.setAllianceSize((short) 1);
+        battleType.setGroupSize((short) 1);
         battleTypes.add(battleType);
 
         battleType = new TrainingBattle();
         battleType.setId(2);
         battleType.setName("1+1:1+1");
         battleType.setScores((byte) 15);
-        battleType.setAllianceAmount((short)2);
-        battleType.setAllianceSize((short)2);
-        battleType.setGroupSize((short)1);
+        battleType.setAllianceAmount((short) 2);
+        battleType.setAllianceSize((short) 2);
+        battleType.setGroupSize((short) 1);
         battleTypes.add(battleType);
 
         baseConfiguration.setBattleTypes(battleTypes);
@@ -484,7 +482,7 @@ public class SerializerTest {
 
         AmmunitionBag ammunitionBag = ServerHelper.createAmmunitionBag(baseConfiguration);
 
-        Warrior warrior = WarriorHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "воин", 2);
+        Warrior warrior = ServerHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "воин", 2);
         WarriorHelper.addWarriorToGroup(group, warrior);
         warriors.add(warrior);
         warrior.setId(0);
@@ -568,7 +566,7 @@ public class SerializerTest {
     }
 
     @Test
-    public void battle() {
+    public void battle() throws RegolithException {
         Battle battle = new Battle();
         battle.setId(0);
         battle.setBattleType(BaseConfigurationHelper.findBattleTypeById(0, baseConfiguration));
@@ -590,7 +588,7 @@ public class SerializerTest {
         bag.setTackles(tackleCollection);
         bag.setId(1);
         AmmunitionBag ammunitionBag = ServerHelper.createAmmunitionBag(baseConfiguration);
-        Warrior warrior = WarriorHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "воин", 2);
+        Warrior warrior = ServerHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "воин", 2);
         warriors.add(warrior);
         warrior.setId(1);
         warrior.setBag(bag);
@@ -675,7 +673,7 @@ public class SerializerTest {
         alliance.setAllies(battleGroups);
         battle.setAlliances(alliances);
 
-        BattleMap battleMap = BattleHelper.createBattleMap(40);
+        BattleMap battleMap = ServerBattleHelper.createBattleMap(40);
         battleMap.setId(0);
 
         ExitZone exitZone = new ExitZone();
@@ -699,7 +697,7 @@ public class SerializerTest {
         battleMap.setPossibleBattleTypes(types);
 
         battle.setMap(battleMap);
-        BattleHelper.spreadAlliancesOnTheMap(battle);
+        ServerBattleHelper.spreadAlliancesOnTheMap(battle);
 
         BattleCell[][] cells = battleMap.getCells();
 
@@ -738,7 +736,7 @@ public class SerializerTest {
     }
 
     @Test
-    public void poorBattle() {
+    public void poorBattle() throws RegolithException {
         Battle battle = new Battle();
         battle.setId(0);
         battle.setName("пустая битва");

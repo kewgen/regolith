@@ -37,20 +37,20 @@ public class ClientAllyMoveAnswer extends ClientDeSerializedMessage {
 
     @Override
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        warrior = ClientBattleHelper.findWarrior(ClientConfigurationFactory.getConfiguration().getAccount(), SimpleDeserializer.deserializeInt(buffer));
-        x = SimpleDeserializer.deserializeShort(buffer);
-        y = SimpleDeserializer.deserializeShort(buffer);
-        int size = SimpleDeserializer.deserializeInt(buffer);
-        enemies = null;
-        if (size > 0) {
-            enemies = new Warrior[size];
-            for (int i = 0; i < size; i++) {
-                Warrior enemy = ClientBattleHelper.findWarrior(battle, SimpleDeserializer.deserializeInt(buffer));
-                enemies[i] = enemy;
-                enemy.setX(SimpleDeserializer.deserializeShort(buffer));
-                enemy.setY(SimpleDeserializer.deserializeShort(buffer));
-            }
-        }
+//        warrior = ClientBattleHelper.findWarrior(ClientConfigurationFactory.getConfiguration().getAccount(), SimpleDeserializer.deserializeInt(buffer));
+//        x = SimpleDeserializer.deserializeShort(buffer);
+//        y = SimpleDeserializer.deserializeShort(buffer);
+//        int size = SimpleDeserializer.deserializeInt(buffer);
+//        enemies = null;
+//        if (size > 0) {
+//            enemies = new Warrior[size];
+//            for (int i = 0; i < size; i++) {
+//                Warrior enemy = ClientBattleHelper.findWarrior(battle, SimpleDeserializer.deserializeInt(buffer));
+//                enemies[i] = enemy;
+//                enemy.setX(SimpleDeserializer.deserializeShort(buffer));
+//                enemy.setY(SimpleDeserializer.deserializeShort(buffer));
+//            }
+//        }
     }
 
 }

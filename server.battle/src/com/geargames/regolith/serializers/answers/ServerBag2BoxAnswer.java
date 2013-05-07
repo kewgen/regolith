@@ -4,7 +4,8 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.*;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.CellElementTypes;
 import com.geargames.regolith.units.tackle.*;
 
 /**
@@ -39,18 +40,23 @@ public class ServerBag2BoxAnswer extends SerializedMessage {
 
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        if (element instanceof Medikit) {
-            SerializeHelper.findTypeId(Medikit.class.getSimpleName());
-            TackleSerializer.serializeMedikit((Medikit) element, buffer);
-        } else if (element instanceof Magazine) {
-            SerializeHelper.findTypeId(Magazine.class.getSimpleName());
-            BattleMapSerializer.serialize((Magazine) element, buffer);
-        } else if (element instanceof Weapon) {
-            SerializeHelper.findTypeId(Weapon.class.getSimpleName());
-            TackleSerializer.serializeWeapon((Weapon) element, buffer);
-        } else if (element instanceof Armor) {
-            SerializeHelper.findTypeId(Armor.class.getSimpleName());
-            TackleSerializer.serializeArmor((Armor) element, buffer);
+        switch (element.getElementType()) {
+            case CellElementTypes.MEDIKIT:
+                SimpleSerializer.serialize(SerializeHelper.MEDIKIT, buffer);
+                TackleSerializer.serializeMedikit((Medikit) element, buffer);
+                break;
+            case CellElementTypes.MAGAZINE:
+                SimpleSerializer.serialize(SerializeHelper.MAGAZINE, buffer);
+                BattleMapSerializer.serialize((Magazine) element, buffer);
+                break;
+            case CellElementTypes.WEAPON:
+                SimpleSerializer.serialize(SerializeHelper.WEAPON, buffer);
+                TackleSerializer.serializeWeapon((Weapon) element, buffer);
+                break;
+            case CellElementTypes.ARMOR:
+                SimpleSerializer.serialize(SerializeHelper.ARMOR, buffer);
+                TackleSerializer.serializeArmor((Armor) element, buffer);
+                break;
         }
         SimpleSerializer.serialize(x, buffer);
         SimpleSerializer.serialize(y, buffer);

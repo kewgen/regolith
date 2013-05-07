@@ -4,16 +4,12 @@ import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
-import com.geargames.regolith.units.BattleUnit;
-import com.geargames.regolith.units.Unit;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.battle.ClientBarrier;
+import com.geargames.regolith.units.map.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
-import com.geargames.regolith.units.map.finder.ProjectionFinder;
-import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.map.verifier.CubeBorderCorrector;
-import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.ExitZone;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,13 +21,13 @@ import java.util.Vector;
  * Date: 20.03.12
  */
 public class SynchronizationTest {
-    private Warrior warrior;
+    private TestClientWarriorElement warrior;
     private BattleMap battleMap;
     private Battle battle;
 
     @Before
     public void before() {
-        Account account  = new Account();
+        Account account = new Account();
         account.setWarriors(new ClientWarriorCollection(new Vector()));
         account.setSecurity(new SecurityOperationManager());
         account.getSecurity().setAccount(account);
@@ -39,10 +35,12 @@ public class SynchronizationTest {
         ClientTestConfigurationFactory.getDefaultConfiguration();
         Barrier barrier = new ClientBarrier();
         barrier.setAbleToLookThrough(false);
-        warrior = new Warrior();
+        warrior = new TestClientWarriorElement();
         account.getWarriors().add(warrior);
         warrior.setName("Вася");
-        warrior.setActionScore((short)10);
+        warrior.setActionScore((short) 10);
+        warrior.setMembershipType(Human.WARRIOR);
+        warrior.setDirection(Direction.DOWN_UP);
 
         BattleGroup battleGroup = new BattleGroup();
         battleGroup.setWarriors(new ClientWarriorCollection(new Vector()));
@@ -65,10 +63,10 @@ public class SynchronizationTest {
     @Test
     public void clientServerMotion() {
         ExitZone exit = new ExitZone();
-        exit.setY((short)1);
-        exit.setY((short)1);
-        exit.setxRadius((byte)1);
-        exit.setyRadius((byte)1);
+        exit.setY((short) 1);
+        exit.setY((short) 1);
+        exit.setxRadius((byte) 1);
+        exit.setyRadius((byte) 1);
         battle.getAlliances()[0].setExit(exit);
 
         SecurityOperationManager manager = warrior.getBattleGroup().getAccount().getSecurity();
@@ -76,11 +74,12 @@ public class SynchronizationTest {
         manager.setX(0);
         manager.setY(0);
 
-        WarriorHelper.putWarriorIntoMap(warrior, battleMap, 0, 0);
-        BattleMapHelper.clearRoutes(warrior, 0, 0);
-        BattleMapHelper.clearViewAround(warrior);
-        BattleMapHelper.prepare(battle.getMap());
         BattleConfiguration battleConfiguration = ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
+
+        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), warrior, 0, 0);
+        BattleMapHelper.clearRoutes(battleMap.getCells(), warrior, 0, 0, battleConfiguration);
+        BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
+        BattleMapHelper.prepare(battleMap.getCells());
         battleConfiguration.getObserver().observe(warrior);
         MoveOneStepListener listener = new MoveOneStepListener() {
             @Override
@@ -88,38 +87,27 @@ public class SynchronizationTest {
 
             }
         };
-        WarriorHelper.move(warrior,10, 10, listener, battleConfiguration);
+        WarriorHelper.move(battleMap.getCells(), warrior, 10, 10, listener, battleConfiguration);
         int valO = manager.getObserve();
 
-        BattleMapHelper.clearRoutes(warrior, 0, 0);
-        BattleMapHelper.clearViewAround(warrior);
+        BattleMapHelper.clearRoutes(battleMap.getCells(), warrior, 0, 0, battleConfiguration);
+        BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
         manager.setObserve(0);
         manager.setX(0);
         manager.setY(0);
 
-        WarriorHelper.putWarriorIntoMap(warrior, battleMap, 0, 0);
-        BattleMapHelper.clearRoutes(warrior, 0, 0);
-        BattleMapHelper.clearViewAround(warrior);
+        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), warrior, 0, 0);
+        BattleMapHelper.clearRoutes(battleMap.getCells(), warrior, 0, 0, battleConfiguration);
+        BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
 
-        BattleUnit[] group = new BattleUnit[1];
-        BattleUnit battleUnit = new BattleUnit();
-        group[0] = battleUnit;
-        Unit unit = new Unit();
-        unit.setWarrior(warrior);
-        unit.init();
-        battleUnit.setUnit(unit);
         BattleScreen screen = new BattleScreen();
-        screen.setCoordinateFinder(new ReverseProjectionFinder());
-        screen.setCellFinder(new ProjectionFinder());
         screen.setCorrector(new CubeBorderCorrector());
-        screen.setMyTurn(true);
+        screen.setActiveAlliance(warrior.getBattleGroup().getAlliance());
         screen.setBattle(battle);
         screen.onShow();
 
-        screen.moveUser(10,10);
-        while (warrior.isMoving()) {
-            screen.onTimer(0);
-        }
+        screen.moveUser(10, 10);
+        warrior.getLogic().quicklyCompleteAllCommands();
 
         Assert.assertEquals(valO, manager.getObserve());
     }

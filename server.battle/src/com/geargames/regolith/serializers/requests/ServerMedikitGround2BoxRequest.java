@@ -11,13 +11,10 @@ import com.geargames.regolith.serializers.answers.ServerMedikitGround2BoxAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.CellElement;
-import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.battle.Box;
-import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.*;
+import com.geargames.regolith.units.battle.BattleGroup;
+import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.tackle.Medikit;
 
 import java.util.ArrayList;
@@ -64,7 +61,7 @@ public class ServerMedikitGround2BoxRequest extends ServerRequest {
                     Medikit medikit = (Medikit) element;
 
                     CellElement elementBox = BattleMapHelper.putOut(map, fromX, fromY);
-                    if( elementBox instanceof Box){
+                    if (elementBox instanceof Box) {
                         Box box = (Box) elementBox;
                         box.getMedikits().insert(medikit, position);
 
@@ -82,7 +79,7 @@ public class ServerMedikitGround2BoxRequest extends ServerRequest {
                     } else {
                         messages.add(new BattleMessageToClient(
                                 BattleServiceRequestUtils.singleRecipientByClient(client)
-                                ,ServerConfirmationAnswer.answerFailure(to, Packets.TAKE_MEDIKIT_FROM_GROUND_PUT_INTO_BOX).serialize()));
+                                , ServerConfirmationAnswer.answerFailure(to, Packets.TAKE_MEDIKIT_FROM_GROUND_PUT_INTO_BOX).serialize()));
                     }
                 } else {
                     messages.add(new BattleMessageToClient(
@@ -92,7 +89,7 @@ public class ServerMedikitGround2BoxRequest extends ServerRequest {
             } else {
                 messages.add(new BattleMessageToClient(
                         BattleServiceRequestUtils.singleRecipientByClient(client)
-                        ,ServerConfirmationAnswer.answerFailure(to, Packets.TAKE_MEDIKIT_FROM_GROUND_PUT_INTO_BOX).serialize()));
+                        , ServerConfirmationAnswer.answerFailure(to, Packets.TAKE_MEDIKIT_FROM_GROUND_PUT_INTO_BOX).serialize()));
             }
         }
 

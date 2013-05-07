@@ -10,13 +10,13 @@ import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 
 public class ClientMoveRequest extends ClientSerializedMessage {
-    private Warrior warrior;
+    private Warrior unit;
     private short x;
     private short y;
 
-    public ClientMoveRequest(ClientConfiguration configuration, Warrior warrior, short x, short y) {
+    public ClientMoveRequest(ClientConfiguration configuration, Warrior unit, short x, short y) {
         super(configuration);
-        this.warrior = warrior;
+        this.unit = unit;
         this.x = x;
         this.y = y;
     }
@@ -26,12 +26,13 @@ public class ClientMoveRequest extends ClientSerializedMessage {
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        BattleGroup battleGroup = warrior.getBattleGroup();
+        BattleGroup battleGroup = unit.getBattleGroup();
         BattleAlliance alliance = battleGroup.getAlliance();
         SimpleSerializer.serialize(alliance.getNumber(), buffer);
         SerializeHelper.serializeEntityReference(battleGroup, buffer);
-        SerializeHelper.serializeEntityReference(warrior, buffer);
+        SerializeHelper.serializeEntityReference(unit, buffer);
         SimpleSerializer.serialize(x, buffer);
         SimpleSerializer.serialize(y, buffer);
     }
+
 }

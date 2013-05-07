@@ -3,7 +3,7 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.common.logging.Debug;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.helpers.BattleHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.service.*;
 import com.geargames.regolith.service.states.ClientNotLoggedIn;
 import com.geargames.regolith.units.Account;
@@ -50,7 +50,7 @@ public class ServerLogoutAtBattleCreationRequest extends ServerRequest {
                 Battle listenedBattle = battleManagerContext.getBattlesByAccount().get(client.getAccount());
                 if (listenedBattle != null) {
                     // Клиент подписан на одну из битв
-                    BattleGroup battleGroup = BattleHelper.findBattleGroupByAccountId(listenedBattle, client.getAccount().getId());
+                    BattleGroup battleGroup = ServerBattleHelper.findBattleGroupByAccountId(listenedBattle, client.getAccount().getId());
                     if (battleGroup != null) {
                         // Клиент является участником битвы и занимает одну из боевых групп
 //                        messages = new ServerEvictAccountFromAllianceRequest().request(from, to, client);

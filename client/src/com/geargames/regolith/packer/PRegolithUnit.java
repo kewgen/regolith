@@ -3,7 +3,7 @@ package com.geargames.regolith.packer;
 import com.geargames.common.Graphics;
 import com.geargames.common.Image;
 import com.geargames.common.packer.PUnit;
-import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.battle.Warrior;
 
 /**
  * User: mkutuzov
@@ -19,13 +19,10 @@ public class PRegolithUnit extends PUnit {
     }
 
     public void draw(Graphics graphics, int x, int y, Object unit) {
-        Human human = (Human) unit;
-        int headId = human.getHeadArmor().getArmorType().getFrameId();
-        int bodyId = human.getTorsoArmor().getArmorType().getFrameId();
-        int legsId = human.getLegsArmor().getArmorType().getFrameId();
-
-
-
+        Warrior warrior = (Warrior) unit;
+        int headId = warrior.getHeadArmor().getArmorType().getFrameId();
+        int bodyId = warrior.getTorsoArmor().getArmorType().getFrameId();
+        int legsId = warrior.getLegsArmor().getArmorType().getFrameId();
     }
 
 }

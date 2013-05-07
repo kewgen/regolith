@@ -6,7 +6,7 @@ import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.BattleUnit;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 
 /**
  * User: abarakov
@@ -44,10 +44,18 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
     }
 
     /**
-     * Показать панельку для управления типом выстрела по вражескому бойцу battleUnit.
-     * @param battleUnit
+     * Показать панельку для управления типом выстрела по вражескому бойцу victimUnit.
+     *
+     * @param victimUnit
      */
-    public void showPanel(BattleUnit battleUnit) {
+    public void showPanel(ClientWarriorElement victimUnit) {
+
+    }
+
+    /**
+     * Обработчик события изменения активного бойца.
+     */
+    public void onActiveUnitChanged(ClientWarriorElement activeUnit) {
 
     }
 
@@ -57,12 +65,12 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
     public void onHastilyShotButtonClick() {
         NotificationBox.info("Выстрел наспех", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        BattleUnit battleUnit = panelManager.getBattleScreen().getUser();
+        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
         //todo: Боец может стрелять только в случае, если сейчас наш ход и он сейчас не выполняет других команд
-        if (panelManager.getBattleScreen().isMyTurn() && WarriorHelper.mayHastilyShot(battleUnit.getUnit().getWarrior())) {
-            battleUnit.getUnit().stop(); //todo: Нужно ли?
-            battleUnit.getUnit().shoot();
-            WarriorHelper.doHastilyShot(battleUnit.getUnit().getWarrior());
+        if (unit.getLogic().isIdle() && WarriorHelper.mayHastilyShot(unit)) {
+            unit.getLogic().doHastilyShot();
+            WarriorHelper.doHastilyShot(unit);
+            panelManager.getBattleScreen().doMapReachabilityUpdate(); //todo: пусть это делается в WarriorHelper.doHastilyShot()
         }
     }
 
@@ -72,11 +80,11 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
     public void onAccurateShotButtonClick() {
         NotificationBox.info("Прицельный выстрел", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        BattleUnit battleUnit = panelManager.getBattleScreen().getUser();
+        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
         //todo: Боец может стрелять только в случае, если сейчас наш ход и он сейчас не выполняет других команд
-        if (panelManager.getBattleScreen().isMyTurn()) {
-            battleUnit.getUnit().stop(); //todo: Нужно ли?
-            battleUnit.getUnit().hit();
+        //todo: Здесь определено другое действие - "Получение урона" вместо "Прицельный выстрел"
+        if (unit.getLogic().isIdle()) {
+            unit.getLogic().doHit();
         }
     }
 

@@ -5,7 +5,7 @@ import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.helpers.BattleHelper;
+import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.managers.ServerTrainingBattleCreationManager;
 import com.geargames.regolith.serializers.MainServerRequestUtils;
 import com.geargames.regolith.serializers.answers.ServerGroupReadyStateAnswer;
@@ -37,9 +37,9 @@ public class ServerGroupRemoveWarriorsRequest extends ServerRequest {
         List<SocketChannel> recipients;
         SerializedMessage message;
         Battle battle = battleManagerContext.getBattlesById().get(SimpleDeserializer.deserializeInt(from));
-        BattleAlliance alliance = BattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(from));
+        BattleAlliance alliance = ServerBattleHelper.findAllianceById(battle, SimpleDeserializer.deserializeInt(from));
         if (alliance != null) {
-            BattleGroup group = BattleHelper.findBattleGroupById(alliance, SimpleDeserializer.deserializeInt(from));
+            BattleGroup group = ServerBattleHelper.findBattleGroupById(alliance, SimpleDeserializer.deserializeInt(from));
             if (group != null) {
                 battleCreationManager.removeWarriors(group);
                 if (battleCreationManager.isNotReady(group)) {

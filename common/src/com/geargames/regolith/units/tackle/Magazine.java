@@ -1,12 +1,12 @@
 package com.geargames.regolith.units.tackle;
 
-import com.geargames.regolith.units.CellElement;
-import com.geargames.regolith.units.CellElementLayers;
-import com.geargames.regolith.units.CellElementTypes;
+import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.CellElementLayers;
+import com.geargames.regolith.units.map.CellElementTypes;
 
 /**
- * Особая сущность - куча зарядов, существует только когда бойцу надо выложить(забрать) заряды из сумки
- * на поле боя или в коробку.
+ * Особая сущность - куча зарядов, существует только тогда, когда бойцу надо выложить заряды из сумки
+ * на поле боя (в коробку) или забрать их с поля боя в сумку.
  * User: mkutuzov
  * Date: 29.03.12
  */
@@ -24,6 +24,7 @@ public class Magazine extends CellElement {
 
     /**
      * Количество зарядов.
+     *
      * @return
      */
     public short getCount() {
@@ -34,24 +35,34 @@ public class Magazine extends CellElement {
         this.count = count;
     }
 
+    @Override
     public boolean isAbleToLookThrough() {
         return true;
     }
 
+    @Override
     public boolean isAbleToWalkThrough() {
         return true;
     }
 
+    @Override
     public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
         return true;
     }
 
+    @Override
     public boolean isHalfLong() {
         return true;
     }
 
+    @Override
     public int getFrameId() {
         return projectile.getFrameId();
+    }
+
+    @Override
+    public boolean isBarrier() {
+        return false;
     }
 
     @Override

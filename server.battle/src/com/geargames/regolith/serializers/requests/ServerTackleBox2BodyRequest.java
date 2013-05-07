@@ -5,7 +5,7 @@ import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.BodyParticles;
-import com.geargames.regolith.units.battle.Box;
+import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerStateTackleCollection;
@@ -27,7 +27,7 @@ public class ServerTackleBox2BodyRequest extends ServerBox2WarriorRequest {
     }
 
     @Override
-    protected boolean putElement(int elementId, Box box, Warrior warrior) throws RegolithException{
+    protected boolean putElement(int elementId, Box box, Warrior warrior) throws RegolithException {
         StateTackle tackle = null;
 
         for (StateTackle sTackle : ((ServerStateTackleCollection) box.getTackles()).getTackles()) {
@@ -77,7 +77,7 @@ public class ServerTackleBox2BodyRequest extends ServerBox2WarriorRequest {
                     break;
             }
         }
-        ((ServerStateTackleCollection)box.getTackles()).getTackles().remove(tackle);
+        ((ServerStateTackleCollection) box.getTackles()).getTackles().remove(tackle);
         return false;
     }
 }

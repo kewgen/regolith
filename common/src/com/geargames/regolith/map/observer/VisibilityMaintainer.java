@@ -1,48 +1,61 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
-import com.geargames.regolith.units.dictionaries.AllyCollection;
+import com.geargames.regolith.units.battle.Human;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.battle.Ally;
+import com.geargames.regolith.units.map.CellElementTypes;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 15.03.12
  */
 public class VisibilityMaintainer extends BattleCellMaintainer {
-    private AllyCollection allies;
+    private WarriorCollection allies;
 
-    public VisibilityMaintainer(AllyCollection allies) {
+    public VisibilityMaintainer(WarriorCollection allies) {
         this.allies = allies;
     }
 
     /**
-     * Если ячейку видно , то проверяем: нет ли там преграды для взгляда?
-     * если есть возвращаем true иначе - false.
-     * Затем помечаем ячейку видимой.
-     * Если ячейку не видно - помечаем не видимой и возвращаем true
+     * Если ячейку видно, то проверяем: нет ли там преграды для взгляда?
+     * если есть возвращаем true, иначе - false.
+     * Затем помечаем ячейку видимой бойцом warrior если она не была им видима ранее и она стала видимой.
+     * Если ячейку стало не видно - помечаем не видимой и возвращаем true.
      *
      * @param warrior
      * @param hidden
+     * @param x       координата по первому измерению массива
+     * @param y       координата по второму измерению массива
      * @return
      */
-    public boolean maintain(BattleCell[][] cells, Ally warrior, boolean hidden, int x, int y) {
+    @Override
+    public boolean maintain(BattleCell[][] cells, Warrior warrior, boolean hidden, int x, int y) {
         if (!hidden) {
             BattleCell cell = cells[x][y];
             boolean was = BattleMapHelper.isVisible(cell, warrior.getBattleGroup().getAlliance());
-            warrior.getBattleGroup().getAccount().getSecurity().adjustObserve(x + y);
+            SecurityOperationManager security = warrior.getBattleGroup().getAccount().getSecurity();
+            if (security != null) {
+                security.adjustObserve(x + y);
+            }
             BattleMapHelper.show(cell, warrior);
             if (cell.getElement() != null) {
                 hidden = !cell.getElement().isAbleToLookThrough();
-                if (!was && cell.getElement() instanceof Ally) {
-                    allies.add((Ally)cell.getElement());
+                if (!was && cell.getElement().getElementType() == CellElementTypes.HUMAN) {
+                    Warrior warriorElement = (Warrior) cell.getElement();
+                    if (warriorElement.getMembershipType() == Human.ALLY) {
+                        allies.add(warriorElement);
+                    }
                 }
             }
         }
         return hidden;
     }
 
-    public AllyCollection getAllies() {
+    public WarriorCollection getAllies() {
         return allies;
     }
+
 }

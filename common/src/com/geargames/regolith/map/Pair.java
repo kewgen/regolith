@@ -1,9 +1,8 @@
 package com.geargames.regolith.map;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 15.02.12
- * Time: 17:15
  */
 public class Pair {
     int x;
@@ -14,7 +13,9 @@ public class Pair {
         this.y = y;
     }
 
-    public Pair(){}
+    public Pair() {
+        this(0, 0);
+    }
 
     public int getX() {
         return x;
@@ -31,4 +32,10 @@ public class Pair {
     public void setY(int y) {
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return "X = " + x + "; Y = " + y;
+    }
+
 }

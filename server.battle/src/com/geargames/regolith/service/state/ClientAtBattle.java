@@ -131,7 +131,7 @@ public class ClientAtBattle extends BattleState {
                 request = new ServerUseMedikitRequest(serverBattle, regolithConfiguration);
                 break;
             default:
-                logger.debug("An unknown battle type {} ", type);
+                logger.debug("An unknown battle message type {} ", type);
         }
         List<MessageToClient> messages = null;
         if (request != null) {

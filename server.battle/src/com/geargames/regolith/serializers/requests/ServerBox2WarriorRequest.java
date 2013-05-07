@@ -9,7 +9,8 @@ import com.geargames.regolith.serializers.answers.ServerBox2WarriorAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.map.Box;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
 

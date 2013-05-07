@@ -3,13 +3,10 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.BattleMapHelper;
-import com.geargames.regolith.units.CellElement;
-import com.geargames.regolith.units.battle.Box;
-import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.*;
+import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.dictionaries.ServerStateTackleCollection;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 /**
@@ -24,7 +21,7 @@ public class ServerTackleBox2GroundRequest extends ServerBox2GroundRequest {
     }
 
     @Override
-    protected CellElement putOut(int elementId, Box box, Warrior warrior, short x, short y) {
+    protected CellElement putOut(int elementId, Box box, Warrior warrior, short x, short y) throws RegolithException {
         StateTackle stateTackle = null;
         int i = 0;
         for (StateTackle tackle : ((ServerStateTackleCollection) box.getTackles()).getTackles()) {

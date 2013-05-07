@@ -10,7 +10,7 @@ import com.geargames.regolith.serializers.answers.ServerGround2WarriorAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.tackle.StateTackle;
@@ -39,7 +39,6 @@ public abstract class ServerGround2WarriorRequest extends ServerRequest {
 
     protected abstract boolean putStateTackle(CellElement element, BattleCell cell, Warrior warrior);
 
-
     @Override
     public List<MessageToClient> request(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         byte allianceNumber = from.get();
@@ -67,7 +66,7 @@ public abstract class ServerGround2WarriorRequest extends ServerRequest {
                     ServerConfirmationAnswer.answerSuccess(writeBuffer, type).serialize()));
 
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(clients),
-                    new ServerGround2WarriorAnswer(writeBuffer,  type, x, y, warrior).serialize()));
+                    new ServerGround2WarriorAnswer(writeBuffer, type, x, y, warrior).serialize()));
 
         } else {
             messages.add(new BattleMessageToClient(BattleServiceRequestUtils.singleRecipientByClient(client),
@@ -75,4 +74,5 @@ public abstract class ServerGround2WarriorRequest extends ServerRequest {
         }
         return messages;
     }
+
 }

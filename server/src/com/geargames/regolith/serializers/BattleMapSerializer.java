@@ -3,11 +3,10 @@ package com.geargames.regolith.serializers;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.CellElement;
+import com.geargames.regolith.units.battle.Human;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.*;
@@ -19,8 +18,8 @@ import com.geargames.regolith.units.tackle.Weapon;
  */
 public class BattleMapSerializer {
 
-    private static void serialize(Warrior warrior, MicroByteBuffer buffer) {
-        SerializeHelper.serializeEntityReference(warrior, buffer);
+    private static void serialize(Human human, MicroByteBuffer buffer) {
+        SerializeHelper.serializeEntityReference(human, buffer);
     }
 
     private static void serialize(Barrier barrier, MicroByteBuffer buffer) {
@@ -40,11 +39,11 @@ public class BattleMapSerializer {
         StateTackleCollection states = box.getTackles();
         for (int i = 0; i < states.size(); i++) {
             StateTackle tackle = states.get(i);
-            if (tackle instanceof Armor) {
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
+            if (tackle.getElementType() == CellElementTypes.ARMOR) {
+                SimpleSerializer.serialize(SerializeHelper.ARMOR, buffer);
                 TackleSerializer.serializeArmor((Armor) tackle, buffer);
-            } else if (tackle instanceof Weapon) {
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
+            } else if (tackle.getElementType() == CellElementTypes.WEAPON) {
+                SimpleSerializer.serialize(SerializeHelper.WEAPON, buffer);
                 TackleSerializer.serializeWeapon((Weapon) tackle, buffer);
             }
         }
@@ -74,51 +73,59 @@ public class BattleMapSerializer {
     public static void serialize(BattleCell[][] cells, short x, short y, Account account, MicroByteBuffer buffer) {
         CellElement element = cells[x][y].getElement();
         if (element != null) {
-            if (element instanceof Warrior) {
-                Warrior warrior = (Warrior) element;
-                if (warrior.getBattleGroup().getAccount().getId() == account.getId()) {
+            switch (element.getElementType()) {
+                case CellElementTypes.HUMAN:
+                    Warrior warrior = (Warrior) element;
+                    if (warrior.getBattleGroup().getAccount().getId() == account.getId()) {
+                        SimpleSerializer.serialize(x, buffer);
+                        SimpleSerializer.serialize(y, buffer);
+                        SimpleSerializer.serialize(SerializeHelper.WARRIOR, buffer);
+                        serialize(warrior, buffer);
+                    } else if (WarriorHelper.isAlly(warrior, account)) {
+                        SimpleSerializer.serialize(x, buffer);
+                        SimpleSerializer.serialize(y, buffer);
+                        SimpleSerializer.serialize(SerializeHelper.ALLY, buffer);
+                        serialize(warrior, buffer);
+                    }
+                    break;
+                case CellElementTypes.BARRIER:
                     SimpleSerializer.serialize(x, buffer);
                     SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SerializeHelper.findTypeId("Warrior"), buffer);
-                    serialize(warrior, buffer);
-                } else if (WarriorHelper.isAlly(warrior, account)) {
+                    SimpleSerializer.serialize(SerializeHelper.BARRIER, buffer);
+                    serialize((Barrier) element, buffer);
+                    break;
+                case CellElementTypes.ARMOR:
                     SimpleSerializer.serialize(x, buffer);
                     SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SerializeHelper.findTypeId("Ally"), buffer);
-                    serialize(warrior, buffer);
-                }
-            } else if (element instanceof Barrier) {
-                SimpleSerializer.serialize(x, buffer);
-                SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Barrier"), buffer);
-                serialize((Barrier) element, buffer);
-            } else if (element instanceof Armor) {
-                SimpleSerializer.serialize(x, buffer);
-                SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
-                TackleSerializer.serializeArmor((Armor) element, buffer);
-            } else if (element instanceof Weapon) {
-                SimpleSerializer.serialize(x, buffer);
-                SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
-                TackleSerializer.serializeWeapon((Weapon) element, buffer);
-            } else if (element instanceof Medikit) {
-                SimpleSerializer.serialize(x, buffer);
-                SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Medikit"), buffer);
-                TackleSerializer.serializeMedikit((Medikit) element, buffer);
-            } else if (element instanceof Magazine) {
-                SimpleSerializer.serialize(x, buffer);
-                SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Magazine"), buffer);
-                serialize((Magazine) element, buffer);
-            } else if (element instanceof Box) {
-                SimpleSerializer.serialize(x, buffer);
-                SimpleSerializer.serialize(y, buffer);
-                SimpleSerializer.serialize(SerializeHelper.findTypeId("Box"), buffer);
-                serialize((Box) element, buffer);
-            } else {
-                throw new IllegalArgumentException();
+                    SimpleSerializer.serialize(SerializeHelper.ARMOR, buffer);
+                    TackleSerializer.serializeArmor((Armor) element, buffer);
+                    break;
+                case CellElementTypes.WEAPON:
+                    SimpleSerializer.serialize(x, buffer);
+                    SimpleSerializer.serialize(y, buffer);
+                    SimpleSerializer.serialize(SerializeHelper.WEAPON, buffer);
+                    TackleSerializer.serializeWeapon((Weapon) element, buffer);
+                    break;
+                case CellElementTypes.MEDIKIT:
+                    SimpleSerializer.serialize(x, buffer);
+                    SimpleSerializer.serialize(y, buffer);
+                    SimpleSerializer.serialize(SerializeHelper.MEDIKIT, buffer);
+                    TackleSerializer.serializeMedikit((Medikit) element, buffer);
+                    break;
+                case CellElementTypes.MAGAZINE:
+                    SimpleSerializer.serialize(x, buffer);
+                    SimpleSerializer.serialize(y, buffer);
+                    SimpleSerializer.serialize(SerializeHelper.MAGAZINE, buffer);
+                    serialize((Magazine) element, buffer);
+                    break;
+                case CellElementTypes.BOX:
+                    SimpleSerializer.serialize(x, buffer);
+                    SimpleSerializer.serialize(y, buffer);
+                    SimpleSerializer.serialize(SerializeHelper.BOX, buffer);
+                    serialize((Box) element, buffer);
+                    break;
+                default:
+                    throw new IllegalArgumentException();
             }
         }
     }

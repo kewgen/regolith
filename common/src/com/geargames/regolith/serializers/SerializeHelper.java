@@ -3,12 +3,7 @@ package com.geargames.regolith.serializers;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.units.Entity;
-import com.geargames.regolith.units.battle.Ally;
-import com.geargames.regolith.units.battle.Barrier;
-import com.geargames.regolith.units.battle.Box;
-import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.EntityCollection;
-import com.geargames.regolith.units.tackle.*;
 
 /**
  * User: mkutuzov
@@ -16,6 +11,19 @@ import com.geargames.regolith.units.tackle.*;
  */
 public class SerializeHelper {
     public static final int NULL_REFERENCE = -1;
+    public static final short NULL_COORDINATE = -1;
+
+    public static final short ENEMY = 1;
+    public static final short ALLY = 2;
+    public static final short WARRIOR = 3;
+    public static final short BARRIER = 4;
+    public static final short MEDIKIT = 5;
+    public static final short PROJECTILE = 6;
+    public static final short HARVESTER = 7;
+    public static final short ARMOR = 8;
+    public static final short MAGAZINE = 9;
+    public static final short WEAPON = 10;
+    public static final short BOX = 11;
 
     public static void serializeEntityReference(Entity entity, MicroByteBuffer buffer) {
         if (entity == null) {
@@ -34,27 +42,6 @@ public class SerializeHelper {
         for (int i = 0; i < length; i++) {
             serializeEntityReference(entities.get(i), buffer);
         }
-    }
-
-    public static final String[] CLASSES = new String[] {
-            Warrior.class.getSimpleName(),
-            Box.class.getSimpleName(),
-            Magazine.class.getSimpleName(),
-            Barrier.class.getSimpleName(),
-            Armor.class.getSimpleName(),
-            Weapon.class.getSimpleName(),
-            Medikit.class.getSimpleName(),
-            Ally.class.getSimpleName(),
-            Projectile.class.getSimpleName()
-    };
-
-    public static short findTypeId(String clazz) {
-        for (short i = 0; i < CLASSES.length; i++) {
-            if (CLASSES[i].equals(clazz)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
 }

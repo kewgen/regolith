@@ -5,14 +5,14 @@ import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.battle.BattleType;
-import com.geargames.regolith.units.battle.Barrier;
+import com.geargames.regolith.units.map.Barrier;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.tackle.*;
 
 /**
  * User: mkutuzov
  * Date: 19.04.12
- *
+ * <p/>
  * Класс помошник, предназначен для общего(для клиента и сервера) поиска сущностей внутри текущей конфигурации.
  */
 public class BaseConfigurationHelper {

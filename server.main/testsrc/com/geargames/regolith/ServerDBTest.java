@@ -4,8 +4,7 @@ import com.geargames.regolith.helpers.*;
 import com.geargames.regolith.units.*;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
-import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.ExitZone;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.tackle.*;
 import junit.framework.Assert;
 import org.hibernate.Session;
@@ -426,46 +425,46 @@ public class ServerDBTest {
         BattleType battleType1x1 = new TrainingBattle();
         battleType1x1.setName("1x1");
         battleType1x1.setScores((byte) 5);
-        battleType1x1.setAllianceAmount((short)2);
-        battleType1x1.setAllianceSize((short)1);
-        battleType1x1.setGroupSize((short)1);
-        battleType1x1.setTurnTime((short)30);
+        battleType1x1.setAllianceAmount((short) 2);
+        battleType1x1.setAllianceSize((short) 1);
+        battleType1x1.setGroupSize((short) 1);
+        battleType1x1.setTurnTime((short) 30);
         battleTypes.add(battleType1x1);
 
         BattleType battleType1x1x1 = new TrainingBattle();
         battleType1x1x1.setName("1x1x1");
         battleType1x1x1.setScores((byte) 10);
-        battleType1x1x1.setAllianceAmount((short)3);
-        battleType1x1x1.setAllianceSize((short)1);
-        battleType1x1x1.setGroupSize((short)1);
-        battleType1x1x1.setTurnTime((short)30);
+        battleType1x1x1.setAllianceAmount((short) 3);
+        battleType1x1x1.setAllianceSize((short) 1);
+        battleType1x1x1.setGroupSize((short) 1);
+        battleType1x1x1.setTurnTime((short) 30);
         battleTypes.add(battleType1x1x1);
 
         BattleType battleType1x1x1x1 = new TrainingBattle();
         battleType1x1x1x1.setName("1x1x1x1");
         battleType1x1x1x1.setScores((byte) 10);
-        battleType1x1x1x1.setAllianceAmount((short)4);
-        battleType1x1x1x1.setAllianceSize((short)1);
-        battleType1x1x1x1.setGroupSize((short)1);
-        battleType1x1x1x1.setTurnTime((short)30);
+        battleType1x1x1x1.setAllianceAmount((short) 4);
+        battleType1x1x1x1.setAllianceSize((short) 1);
+        battleType1x1x1x1.setGroupSize((short) 1);
+        battleType1x1x1x1.setTurnTime((short) 30);
         battleTypes.add(battleType1x1x1x1);
 
         BattleType battleType2x2 = new TrainingBattle();
         battleType2x2.setName("2x2");
         battleType2x2.setScores((byte) 15);
-        battleType2x2.setAllianceAmount((short)2);
-        battleType2x2.setAllianceSize((short)2);
-        battleType2x2.setGroupSize((short)1);
-        battleType2x2.setTurnTime((short)30);
+        battleType2x2.setAllianceAmount((short) 2);
+        battleType2x2.setAllianceSize((short) 2);
+        battleType2x2.setGroupSize((short) 1);
+        battleType2x2.setTurnTime((short) 30);
         battleTypes.add(battleType2x2);
 
         BattleType battleType1x1_2 = new TrainingBattle();
         battleType1x1_2.setName("1x1");
         battleType1x1_2.setScores((byte) 5);
-        battleType1x1_2.setAllianceAmount((short)2);
-        battleType1x1_2.setAllianceSize((short)1);
-        battleType1x1_2.setGroupSize((short)2);
-        battleType1x1_2.setTurnTime((short)30);
+        battleType1x1_2.setAllianceAmount((short) 2);
+        battleType1x1_2.setAllianceSize((short) 1);
+        battleType1x1_2.setGroupSize((short) 2);
+        battleType1x1_2.setTurnTime((short) 30);
         battleTypes.add(battleType1x1_2);
 
         baseConfiguration.setBattleTypes(battleTypes);
@@ -536,12 +535,12 @@ public class ServerDBTest {
         battleConfiguration.setAbilityMax(skills[skills.length - 1].getAction());
 
         ActionFees fees = new ActionFees();
-        fees.setChangeWeapon((byte)1);
-        fees.setMove((byte)1);
-        fees.setPickupTackle((byte)1);
-        fees.setRechargeWeapon((byte)1);
-        fees.setShutOrOpen((byte)1);
-        fees.setSitOrStand((byte)1);
+        fees.setChangeWeapon((byte) 1);
+        fees.setMove((byte) 1);
+        fees.setPickupTackle((byte) 1);
+        fees.setRechargeWeapon((byte) 1);
+        fees.setShutOrOpen((byte) 1);
+        fees.setSitOrStand((byte) 1);
 
         battleConfiguration.setActionFees(fees);
         battleConfiguration.setWalkSpeed(4);
@@ -553,7 +552,7 @@ public class ServerDBTest {
         Bag bag1 = new Bag();
         bag1.setTackles(new ServerStateTackleCollection(new LinkedList<StateTackle>()));
         AmmunitionBag ammunitionBag1 = ServerHelper.createAmmunitionBag(baseConfiguration);
-        Warrior warrior1 = WarriorHelper.createWarrior(baseConfiguration, bag1, ammunitionBag1, "ВОИН1", 12);
+        Warrior warrior1 = ServerHelper.createWarrior(baseConfiguration, bag1, ammunitionBag1, "ВОИН1", 12);
         warrior1.setRank(baseConfiguration.getRanks().get(0));
         warrior1.setFrameId(49);
         warrior1.setVitality((byte) 50);
@@ -623,7 +622,7 @@ public class ServerDBTest {
         Bag bag2 = new Bag();
         bag2.setTackles(new ServerStateTackleCollection(new LinkedList<StateTackle>()));
         AmmunitionBag ammunitionBag2 = ServerHelper.createAmmunitionBag(baseConfiguration);
-        Warrior warrior2 = WarriorHelper.createWarrior(baseConfiguration, bag2, ammunitionBag2, "ВОИН2", 12);
+        Warrior warrior2 = ServerHelper.createWarrior(baseConfiguration, bag2, ammunitionBag2, "ВОИН2", 12);
         warrior2.setRank(baseConfiguration.getRanks().get(1));
         warrior2.setFrameId(50);
         warrior2.setVitality((byte) 50);
@@ -788,7 +787,7 @@ public class ServerDBTest {
         bag.setTackles(new ServerStateTackleCollection(new LinkedList<StateTackle>()));
 
         AmmunitionBag ammunitionBag = ServerHelper.createAmmunitionBag(baseConfiguration);
-        Warrior warrior = WarriorHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "ВОИН", 12);
+        Warrior warrior = ServerHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "ВОИН", 12);
         warrior.setRank(baseConfiguration.getRanks().get(0));
         warrior.setFrameId(49);
         warrior.setStrength((short) 10000);
@@ -803,7 +802,8 @@ public class ServerDBTest {
 
         Weapon rifle = new Weapon();
         WeaponCategory weaponCategory = null;
-        for (int i = 0; !(weaponCategory = baseConfiguration.getWeaponCategories().get(i)).getName().equals("ДАЛЬНОБОЙНОЕ"); i++);
+        for (int i = 0; !(weaponCategory = baseConfiguration.getWeaponCategories().get(i)).getName().equals("ДАЛЬНОБОЙНОЕ"); i++)
+            ;
 
         rifle.setWeaponType(weaponCategory.getWeaponTypes().get(0));
         for (int i = 0; i < baseConfiguration.getProjectiles().size(); i++) {
@@ -889,7 +889,7 @@ public class ServerDBTest {
 
     @Test
     public void battleTest() throws Exception {
-        BattleMap map1 = BattleHelper.createBattleMap(10);
+        BattleMap map1 = ServerBattleHelper.createBattleMap(10);
         map1.setName("КАРТА1");
         ExitZone[] exits = new ExitZone[2];
         ExitZone exit = new ExitZone();
@@ -915,11 +915,11 @@ public class ServerDBTest {
         map1.setPossibleBattleTypes(types);
         types[0] = baseConfiguration.getBattleTypes().get(0); // 1x1
 
-        Battle battle = BattleHelper.createBattle("qqq", map1, types[0]);
-        BattleHelper.prepareBattle(battle);
+        Battle battle = ServerBattleHelper.createBattle("qqq", map1, types[0]);
+        ServerBattleHelper.prepareBattle(battle);
 
-        Barrier barBarrier0    = baseConfiguration.getBarriers().get(0);
-        Barrier barBarrier1    = baseConfiguration.getBarriers().get(1);
+        Barrier barBarrier0 = baseConfiguration.getBarriers().get(0);
+        Barrier barBarrier1 = baseConfiguration.getBarriers().get(1);
         Barrier fenceBarrier0l = baseConfiguration.getBarriers().get(2);
         Barrier fenceBarrier0r = baseConfiguration.getBarriers().get(3);
         Barrier fenceBarrier1l = baseConfiguration.getBarriers().get(4);
@@ -965,7 +965,7 @@ public class ServerDBTest {
         map1.getCells()[6][9].addElement(fenceBarrier0l);
         map1.getCells()[8][7].addElement(barBarrier1);
 
-        Box box = new Box();
+        ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
         serverMagazineCollection.setMagazines(new LinkedList<Magazine>());
         box.setMagazines(serverMagazineCollection);
@@ -985,7 +985,7 @@ public class ServerDBTest {
         box.getTackles().add(rifle);
         map1.getCells()[1][1].addElement(box);
 
-        map1.setContent(BattleHelper.serializeBattleCells(map1.getCells()));
+        map1.setContent(ServerBattleHelper.serializeBattleCells(map1.getCells()));
 
         session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
@@ -1000,7 +1000,7 @@ public class ServerDBTest {
         newBattle.getMap().getContent();
         session.close();
 
-        newBattle.getMap().setCells(BattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
+        newBattle.getMap().setCells(ServerBattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
         Assert.assertTrue(battle.getMap().getCells()[1][1].getElements()[0] instanceof Box);
         Assert.assertTrue(battle.getMap().getCells()[4][3].getElements()[0] instanceof Barrier);
 
@@ -1011,7 +1011,7 @@ public class ServerDBTest {
 
     @Test
     public void addMap2() throws Exception {
-        BattleMap map2 = BattleHelper.createBattleMap(10);
+        BattleMap map2 = ServerBattleHelper.createBattleMap(10);
         map2.setName("КАРТА2");
         ExitZone[] exits = new ExitZone[3];
         ExitZone exit = new ExitZone();
@@ -1044,13 +1044,13 @@ public class ServerDBTest {
         types[0] = baseConfiguration.getBattleTypes().get(0); // 1x1
         types[1] = baseConfiguration.getBattleTypes().get(1); // 1x1x1
 
-//        Battle battle = BattleHelper.createBattle("qqq", map2, types[0]);
-//        BattleHelper.prepareBattle(battle);
+//        Battle battle = ServerBattleHelper.createBattle("qqq", map2, types[0]);
+//        ServerBattleHelper.prepareBattle(battle);
 
         Barrier barrier = baseConfiguration.getBarriers().get(0);
         map2.getCells()[3][3].addElement(barrier);
 
-        Box box = new Box();
+        ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
         serverMagazineCollection.setMagazines(new LinkedList<Magazine>());
         box.setMagazines(serverMagazineCollection);
@@ -1069,7 +1069,7 @@ public class ServerDBTest {
 
         box.getTackles().add(rifle);
         map2.getCells()[1][1].addElement(box);
-        map2.setContent(BattleHelper.serializeBattleCells(map2.getCells()));
+        map2.setContent(ServerBattleHelper.serializeBattleCells(map2.getCells()));
 
         session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
@@ -1084,7 +1084,7 @@ public class ServerDBTest {
 //        newBattle.getMap().getContent();
 //        session.close();
 //
-//        newBattle.getMap().setCells(BattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
+//        newBattle.getMap().setCells(ServerBattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
 //        Assert.assertTrue(battle.getMap().getCells()[1][1].getElement() instanceof Box);
 //        Assert.assertTrue(battle.getMap().getCells()[3][3].getElement() instanceof Barrier);
 //
@@ -1095,7 +1095,7 @@ public class ServerDBTest {
 
     @Test
     public void addMap3() throws Exception {
-        BattleMap map3 = BattleHelper.createBattleMap(10);
+        BattleMap map3 = ServerBattleHelper.createBattleMap(10);
         map3.setName("КАРТА3");
         ExitZone[] exits = new ExitZone[4];
         ExitZone exit = new ExitZone();
@@ -1137,7 +1137,7 @@ public class ServerDBTest {
         Barrier barrier = baseConfiguration.getBarriers().get(0);
         map3.getCells()[3][3].addElement(barrier);
 
-        Box box = new Box();
+        ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
         serverMagazineCollection.setMagazines(new LinkedList<Magazine>());
         box.setMagazines(serverMagazineCollection);
@@ -1156,7 +1156,7 @@ public class ServerDBTest {
 
         box.getTackles().add(rifle);
         map3.getCells()[1][1].addElement(box);
-        map3.setContent(BattleHelper.serializeBattleCells(map3.getCells()));
+        map3.setContent(ServerBattleHelper.serializeBattleCells(map3.getCells()));
 
         session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
@@ -1167,7 +1167,7 @@ public class ServerDBTest {
 
     @Test
     public void addMap4() throws Exception {
-        BattleMap map4 = BattleHelper.createBattleMap(10);
+        BattleMap map4 = ServerBattleHelper.createBattleMap(10);
         map4.setName("КАРТА4");
         ExitZone[] exits = new ExitZone[4];
         ExitZone exit = new ExitZone();
@@ -1210,7 +1210,7 @@ public class ServerDBTest {
         Barrier barrier = baseConfiguration.getBarriers().get(0);
         map4.getCells()[3][3].addElement(barrier);
 
-        Box box = new Box();
+        ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
         serverMagazineCollection.setMagazines(new LinkedList<Magazine>());
         box.setMagazines(serverMagazineCollection);
@@ -1229,7 +1229,7 @@ public class ServerDBTest {
 
         box.getTackles().add(rifle);
         map4.getCells()[1][1].addElement(box);
-        map4.setContent(BattleHelper.serializeBattleCells(map4.getCells()));
+        map4.setContent(ServerBattleHelper.serializeBattleCells(map4.getCells()));
 
         session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
@@ -1240,7 +1240,7 @@ public class ServerDBTest {
 
     @Test
     public void addMap5() throws Exception {
-        BattleMap map5 = BattleHelper.createBattleMap(20);
+        BattleMap map5 = ServerBattleHelper.createBattleMap(20);
         map5.setName("КАРТА5");
         ExitZone[] exits = new ExitZone[4];
         ExitZone exit = new ExitZone();
@@ -1282,8 +1282,8 @@ public class ServerDBTest {
         types[3] = baseConfiguration.getBattleTypes().get(2); // 1x1x1x1
         types[4] = baseConfiguration.getBattleTypes().get(3); // 2x2
 
-        Barrier barBarrier0    = baseConfiguration.getBarriers().get(0);
-        Barrier barBarrier1    = baseConfiguration.getBarriers().get(1);
+        Barrier barBarrier0 = baseConfiguration.getBarriers().get(0);
+        Barrier barBarrier1 = baseConfiguration.getBarriers().get(1);
         Barrier fenceBarrier0l = baseConfiguration.getBarriers().get(2);
         Barrier fenceBarrier0r = baseConfiguration.getBarriers().get(3);
         Barrier fenceBarrier1l = baseConfiguration.getBarriers().get(4);
@@ -1373,7 +1373,7 @@ public class ServerDBTest {
         map5.getCells()[18][16].addElement(fenceBarrier1l);
         map5.getCells()[19][16].addElement(fenceBarrier1r);
 
-        Box box = new Box();
+        ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
         serverMagazineCollection.setMagazines(new LinkedList<Magazine>());
         box.setMagazines(serverMagazineCollection);
@@ -1392,7 +1392,7 @@ public class ServerDBTest {
 
         box.getTackles().add(rifle);
         map5.getCells()[1][1].addElement(box);
-        map5.setContent(BattleHelper.serializeBattleCells(map5.getCells()));
+        map5.setContent(ServerBattleHelper.serializeBattleCells(map5.getCells()));
 
         session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
@@ -1403,7 +1403,7 @@ public class ServerDBTest {
 
     @Test
     public void addMap6() throws Exception {
-        BattleMap map5 = BattleHelper.createBattleMap(10);
+        BattleMap map5 = ServerBattleHelper.createBattleMap(10);
         map5.setName("КАРТА6");
         ExitZone[] exits = new ExitZone[4];
         ExitZone exit = new ExitZone();
@@ -1445,7 +1445,7 @@ public class ServerDBTest {
         Barrier barrier = baseConfiguration.getBarriers().get(0);
         map5.getCells()[3][3].addElement(barrier);
 
-        Box box = new Box();
+        ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
         serverMagazineCollection.setMagazines(new LinkedList<Magazine>());
         box.setMagazines(serverMagazineCollection);
@@ -1464,7 +1464,7 @@ public class ServerDBTest {
 
         box.getTackles().add(rifle);
         map5.getCells()[1][1].addElement(box);
-        map5.setContent(BattleHelper.serializeBattleCells(map5.getCells()));
+        map5.setContent(ServerBattleHelper.serializeBattleCells(map5.getCells()));
 
         session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();

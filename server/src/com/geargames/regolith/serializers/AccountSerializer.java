@@ -8,6 +8,7 @@ import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerAmmunitionPacketCollection;
 import com.geargames.regolith.units.dictionaries.ServerStateTackleCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
+import com.geargames.regolith.units.map.CellElementTypes;
 import com.geargames.regolith.units.tackle.*;
 
 /**
@@ -17,11 +18,11 @@ import com.geargames.regolith.units.tackle.*;
 public class AccountSerializer {
 
     private static void serialize(StateTackle tackle, MicroByteBuffer buffer) {
-        if (tackle instanceof Armor) {
-            SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
+        if (tackle.getElementType() == CellElementTypes.ARMOR) {
+            SimpleSerializer.serialize(SerializeHelper.ARMOR, buffer);
             TackleSerializer.serializeArmor((Armor) tackle, buffer);
-        } else if (tackle instanceof Weapon) {
-            SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
+        } else if (tackle.getElementType() == CellElementTypes.WEAPON) {
+            SimpleSerializer.serialize(SerializeHelper.WEAPON, buffer);
             TackleSerializer.serializeWeapon((Weapon) tackle, buffer);
         }
     }
@@ -29,8 +30,8 @@ public class AccountSerializer {
     private static void serialize(Bag bag, MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(bag, buffer);
         SimpleSerializer.serialize(bag.getWeight(), buffer);
-        SimpleSerializer.serialize((short)bag.getTackles().size(), buffer);
-        for (StateTackle tackle : ((ServerStateTackleCollection)bag.getTackles()).getTackles()) {
+        SimpleSerializer.serialize((short) bag.getTackles().size(), buffer);
+        for (StateTackle tackle : ((ServerStateTackleCollection) bag.getTackles()).getTackles()) {
             serialize(tackle, buffer);
         }
     }
@@ -39,11 +40,11 @@ public class AccountSerializer {
         SerializeHelper.serializeEntityReference(packet, buffer);
         SimpleSerializer.serialize(packet.getCount(), buffer);
         Ammunition tackle = packet.getAmmunition();
-        if (tackle instanceof Projectile) {
-            SimpleSerializer.serialize(SerializeHelper.findTypeId("Projectile"), buffer);
+        if (tackle.getElementType() == CellElementTypes.PROJECTILE) {
+            SimpleSerializer.serialize(SerializeHelper.PROJECTILE, buffer);
             TackleSerializer.serializeProjectile((Projectile) tackle, buffer);
-        } else if (tackle instanceof Medikit) {
-            SimpleSerializer.serialize(SerializeHelper.findTypeId("Medikit"), buffer);
+        } else if (tackle.getElementType() == CellElementTypes.MEDIKIT) {
+            SimpleSerializer.serialize(SerializeHelper.MEDIKIT, buffer);
             TackleSerializer.serializeMedikit((Medikit) tackle, buffer);
         }
     }
@@ -51,14 +52,14 @@ public class AccountSerializer {
     private static void serialize(AmmunitionBag bag, MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(bag, buffer);
         SimpleSerializer.serialize(bag.getSize(), buffer);
-        ServerAmmunitionPacketCollection packets = (ServerAmmunitionPacketCollection)bag.getPackets();
+        ServerAmmunitionPacketCollection packets = (ServerAmmunitionPacketCollection) bag.getPackets();
         for (AmmunitionPacket packet : packets.getPackets()) {
             serialize(packet, buffer);
         }
     }
 
     public static void serialize(Warrior warrior, MicroByteBuffer buffer) {
-        BattleSerializer.serializeAlly(warrior, buffer);
+        BattleSerializer.serializeHuman(warrior, buffer);
 
         SimpleSerializer.serialize(warrior.getStrength(), buffer);
         SimpleSerializer.serialize(warrior.getSpeed(), buffer);
@@ -73,12 +74,11 @@ public class AccountSerializer {
         serialize(warrior.getAmmunitionBag(), buffer);
     }
 
-    public static void serializeAnother(Account account, MicroByteBuffer buffer){
+    public static void serializeAnother(Account account, MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(account, buffer);
         SimpleSerializer.serialize(account.getName(), buffer);
         SimpleSerializer.serialize(account.getFrameId(), buffer);
     }
-
 
     public static void serialize(Account account, MicroByteBuffer buffer) {
         serializeAnother(account, buffer);
