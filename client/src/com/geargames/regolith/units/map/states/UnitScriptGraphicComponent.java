@@ -5,7 +5,7 @@ import com.geargames.common.env.Environment;
 import com.geargames.common.packer.PUnit;
 import com.geargames.common.packer.PUnitScript;
 import com.geargames.regolith.helpers.ClientGUIHelper;
-import com.geargames.regolith.units.map.AbstractClientHumanElement;
+import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 
 /**
  * User: abarakov
@@ -26,10 +26,13 @@ public class UnitScriptGraphicComponent extends AbstractUnitScriptGraphicCompone
     }
 
     @Override
-    public void start(AbstractClientHumanElement unit, byte action) {
-        script = Environment.getRender().getUnitScript(unit.getHuman().getWeapon().getWeaponType().getCategory().getPackerId()
-                + action
-                + ClientGUIHelper.convertPackerScriptsDirection(unit.getDirection()));
+    public void start(AbstractClientWarriorElement warrior, byte action) {
+        script = Environment.getRender().getUnitScript(
+                warrior.getFrameId()
+                        + ClientGUIHelper.convertPackerScriptsDirection(warrior.getDirection())
+                        + action
+                        + warrior.getWeapon().getWeaponType().getCategory().getPackerId()
+        );
         index = 0;
         limit = (byte) script.getIndexes().size();
         cyclesCount = 0;

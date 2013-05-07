@@ -552,7 +552,7 @@ public class ServerDBTest {
         Bag bag1 = new Bag();
         bag1.setTackles(new ServerStateTackleCollection(new LinkedList<StateTackle>()));
         AmmunitionBag ammunitionBag1 = ServerHelper.createAmmunitionBag(baseConfiguration);
-        Warrior warrior1 = WarriorHelper.createWarrior(baseConfiguration, bag1, ammunitionBag1, "ВОИН1", 12);
+        Warrior warrior1 = ServerHelper.createWarrior(baseConfiguration, bag1, ammunitionBag1, "ВОИН1", 12);
         warrior1.setRank(baseConfiguration.getRanks().get(0));
         warrior1.setFrameId(49);
         warrior1.setVitality((byte) 50);
@@ -622,7 +622,7 @@ public class ServerDBTest {
         Bag bag2 = new Bag();
         bag2.setTackles(new ServerStateTackleCollection(new LinkedList<StateTackle>()));
         AmmunitionBag ammunitionBag2 = ServerHelper.createAmmunitionBag(baseConfiguration);
-        Warrior warrior2 = WarriorHelper.createWarrior(baseConfiguration, bag2, ammunitionBag2, "ВОИН2", 12);
+        Warrior warrior2 = ServerHelper.createWarrior(baseConfiguration, bag2, ammunitionBag2, "ВОИН2", 12);
         warrior2.setRank(baseConfiguration.getRanks().get(1));
         warrior2.setFrameId(50);
         warrior2.setVitality((byte) 50);
@@ -787,7 +787,7 @@ public class ServerDBTest {
         bag.setTackles(new ServerStateTackleCollection(new LinkedList<StateTackle>()));
 
         AmmunitionBag ammunitionBag = ServerHelper.createAmmunitionBag(baseConfiguration);
-        Warrior warrior = WarriorHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "ВОИН", 12);
+        Warrior warrior = ServerHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "ВОИН", 12);
         warrior.setRank(baseConfiguration.getRanks().get(0));
         warrior.setFrameId(49);
         warrior.setStrength((short) 10000);

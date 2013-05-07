@@ -15,7 +15,6 @@ import com.geargames.regolith.map.Pair;
 import com.geargames.regolith.map.observer.LineViewCaster;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.SubordinationDamage;
-import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.tackle.*;
 
 import java.util.*;
@@ -25,7 +24,7 @@ import java.util.*;
  *         created: 16.03.12  14:28
  */
 public class FightHelper {
-    private static Map<HumanElement, Random> shootProbability = new HashMap<HumanElement, Random>();
+    private static Map<Warrior, Random> shootProbability = new HashMap<Warrior, Random>();
     private static Random random = new Random();
 
     private static int getRealDamage(Warrior victim, int damage) {
@@ -105,25 +104,23 @@ public class FightHelper {
      * @param accurately = true - боец стреляет прицельно, иначе - false
      * @return true - если цель поражена, иначе - false
      */
-    public static boolean shoot(HumanElement hunter, HumanElement victim, boolean accurately) {
+    public static boolean shoot(Warrior hunter, Warrior victim, boolean accurately) {
         RegolithConfiguration regolithConfiguration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration();
         BattleConfiguration battleConfiguration = regolithConfiguration.getBattleConfiguration();
         BaseConfiguration baseConfiguration = regolithConfiguration.getBaseConfiguration();
-        Warrior hunterWarrior = (Warrior) hunter.getHuman();
-        Warrior victimWarrior = (Warrior) victim.getHuman();
-        if ((accurately && !WarriorHelper.isAbleToShootAccurately(hunterWarrior)) || (!accurately && !WarriorHelper.isAbleToShootQuickly(victimWarrior))) {
+        if ((accurately && !WarriorHelper.isAbleToShootAccurately(hunter)) || (!accurately && !WarriorHelper.isAbleToShootQuickly(victim))) {
             return false;
         }
-        Weapon weapon = hunterWarrior.getWeapon();
+        Weapon weapon = hunter.getWeapon();
         boolean goal = false;
         if (WeaponHelper.mayShoot(weapon)) {
             weapon.onShoot(battleConfiguration);
             if (weapon.getState() > 0 || random.nextInt(100) >= 30) {
                 BattleConfiguration configuration = battleConfiguration;
-                BattleMap map = hunterWarrior.getBattleGroup().getAlliance().getBattle().getMap();
-                WeaponType weaponType = hunterWarrior.getWeapon().getWeaponType();
+                BattleMap map = hunter.getBattleGroup().getAlliance().getBattle().getMap();
+                WeaponType weaponType = hunter.getWeapon().getWeaponType();
                 double distance = getDistance(hunter, victim);
-                double distanceI = getDistanceShootProbabilityFix(weaponType, getBaseShootProbability(hunterWarrior, baseConfiguration), distance);
+                double distanceI = getDistanceShootProbabilityFix(weaponType, getBaseShootProbability(hunter, baseConfiguration), distance);
                 Pair barrierCoordinates = findBarrier(hunter, victim, map);
                 ShootProbability barriersProbability = getShootFixedByBarriers(hunter, victim, map, barrierCoordinates, battleConfiguration);
                 double barriersI = barriersProbability.probability;
@@ -137,9 +134,9 @@ public class FightHelper {
                     shootProbability.put(hunter, new Random());
                 }
                 if (probabilityOfGoodShoot >= shootProbability.get(hunter).nextInt(100)) {
-                    Armor torso = victimWarrior.getTorsoArmor();
-                    Armor legs = victimWarrior.getLegsArmor();
-                    Armor head = victimWarrior.getHeadArmor();
+                    Armor torso = victim.getTorsoArmor();
+                    Armor legs = victim.getLegsArmor();
+                    Armor head = victim.getHeadArmor();
                     short torsoArmor = 0;
                     if (torso != null) {
                         torsoArmor = torso.getArmorType().getArmor();
@@ -153,7 +150,7 @@ public class FightHelper {
                         headArmor = head.getArmorType().getArmor();
                     }
 
-                    int skillProbability = 100 * (hunterWarrior.getMarksmanship() / 100) * (hunterWarrior.getMarksmanship() / 100);
+                    int skillProbability = 100 * (hunter.getMarksmanship() / 100) * (hunter.getMarksmanship() / 100);
                     Armor armor;
                     if (barriersProbability.inLegs) {
                         if (skillProbability >= shootProbability.get(hunter).nextInt(100)) {
@@ -191,7 +188,7 @@ public class FightHelper {
                             }
                         }
                     }
-                    int damage = FightHelper.getWeaponDamage(hunterWarrior, distance, regolithConfiguration);
+                    int damage = FightHelper.getWeaponDamage(hunter, distance, regolithConfiguration);
                     int damageWI = (int) (damage * WeaponHelper.getWeaponStateInfluence(weapon));
                     int damageAI;
                     if (armor != null) {
@@ -200,21 +197,21 @@ public class FightHelper {
                     } else {
                         damageAI = damageWI;
                     }
-                    hurt(hunterWarrior, victimWarrior, damageAI);
+                    hurt(hunter, victim, damageAI);
                     goal = true;
                 }
                 if (accurately) {
-                    hunterWarrior.setActionScore((short) (hunterWarrior.getActionScore() - weaponType.getAccurateAction()));
+                    hunter.setActionScore((short) (hunter.getActionScore() - weaponType.getAccurateAction()));
                 } else {
-                    hunterWarrior.setActionScore((short) (hunterWarrior.getActionScore() - weaponType.getQuickAction()));
+                    hunter.setActionScore((short) (hunter.getActionScore() - weaponType.getQuickAction()));
                 }
             } else {
                 short selfDamage = (short) ((weapon.getWeaponType().getMaxDamage().getOptDistance() * random.nextInt(50)) / 100);
                 Armor armor;
                 if (random.nextInt(100) > 50) {
-                    armor = hunterWarrior.getHeadArmor();
+                    armor = hunter.getHeadArmor();
                 } else {
-                    armor = hunterWarrior.getTorsoArmor();
+                    armor = hunter.getTorsoArmor();
                 }
                 int damage;
                 if (armor != null) {
@@ -223,8 +220,8 @@ public class FightHelper {
                 } else {
                     damage = selfDamage;
                 }
-                int health = hunterWarrior.getHealth() - damage;
-                hunterWarrior.setHealth(health);
+                int health = hunter.getHealth() - damage;
+                hunter.setHealth(health);
             }
         }
         return goal;
@@ -309,12 +306,12 @@ public class FightHelper {
      * @param unit1
      * @return
      */
-    public static double getDistance(HumanElement unit0, HumanElement unit1) {
+    public static double getDistance(Warrior unit0, Warrior unit1) {
         return Math.sqrt((unit0.getCellX() - unit1.getCellX()) * (unit0.getCellX() - unit1.getCellX()) +
                 (unit0.getCellY() - unit1.getCellY()) * (unit0.getCellY() - unit1.getCellY()));
     }
 
-    public static Pair findBarrier(HumanElement hunter, HumanElement victim, BattleMap map) {
+    public static Pair findBarrier(Warrior hunter, Warrior victim, BattleMap map) {
         int x0 = hunter.getCellX();
         int y0 = hunter.getCellY();
 
@@ -349,17 +346,17 @@ public class FightHelper {
      * @param barriersCoordinates самая близкая(из наиболее высоких ) к victim преграда лежащая на линии выстрела
      * @return
      */
-    public static ShootProbability getShootFixedByBarriers(HumanElement hunter, HumanElement victim, BattleMap map,
+    public static ShootProbability getShootFixedByBarriers(Warrior hunter, Warrior victim, BattleMap map,
                                                            Pair barriersCoordinates, BattleConfiguration battleConfiguration) {
         BattleCell[][] cells = map.getCells();
         ShootProbability probability = new ShootProbability();
         probability.inLegs = true;
-        if (BattleMapHelper.isVisible(cells[victim.getCellX()][victim.getCellY()], hunter.getHuman())) {
+        if (BattleMapHelper.isVisible(cells[victim.getCellX()][victim.getCellY()], hunter)) {
             CellElement element = cells[barriersCoordinates.getX()][barriersCoordinates.getY()].getElement();
             if (element.isHalfLong()) {
                 double distance = getDistance(hunter, victim);
                 int criticalBarrierPercent = battleConfiguration.getCriticalBarrierToVictimDistance();
-                if (distance <= ((Warrior) hunter.getHuman()).getWeapon().getWeaponType().getDistance().getMax()) {
+                if (distance <= hunter.getWeapon().getWeaponType().getDistance().getMax()) {
                     double barrierDistance = getDistance(victim.getCellX(), victim.getCellY(), barriersCoordinates.getX(), barriersCoordinates.getY());
                     if (!victim.isHalfLong() && !hunter.isHalfLong()) {
                         if (barrierDistance * 100 / distance > criticalBarrierPercent) {

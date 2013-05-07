@@ -6,7 +6,7 @@ import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.map.ClientHumanElement;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 
 /**
  * User: abarakov
@@ -55,7 +55,7 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     /**
      * Обработчик события изменения активного бойца.
      */
-    public void onActiveUnitChanged(ClientHumanElement activeUnit) {
+    public void onActiveUnitChanged(ClientWarriorElement activeUnit) {
         if (activeUnit.isSitting()) {
             standUpButton.setVisible(true);
             sitDownButton.setVisible(false);
@@ -71,7 +71,7 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     public void onSitDownButtonClick() {
 //        NotificationBox.info("Посадить бойца", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientHumanElement unit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
         //todo: Сажать бойца можно только в случае, если сейчас наш ход и он сейчас не выполняет других команд
         if (unit.getLogic().isIdle() &&
                 WarriorHelper.maySit(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {
@@ -90,7 +90,7 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     public void onStandUpButtonClick() {
 //        NotificationBox.info("Поднять бойца", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientHumanElement unit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
         //todo: Поднимать бойца можно только в случае, если сейчас наш ход и он сейчас не выполняет других команд
         if (unit.getLogic().isIdle() &&
                 WarriorHelper.mayStand(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {

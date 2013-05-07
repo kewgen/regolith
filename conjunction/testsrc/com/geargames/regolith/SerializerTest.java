@@ -482,7 +482,7 @@ public class SerializerTest {
 
         AmmunitionBag ammunitionBag = ServerHelper.createAmmunitionBag(baseConfiguration);
 
-        Warrior warrior = WarriorHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "воин", 2);
+        Warrior warrior = ServerHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "воин", 2);
         WarriorHelper.addWarriorToGroup(group, warrior);
         warriors.add(warrior);
         warrior.setId(0);
@@ -588,7 +588,7 @@ public class SerializerTest {
         bag.setTackles(tackleCollection);
         bag.setId(1);
         AmmunitionBag ammunitionBag = ServerHelper.createAmmunitionBag(baseConfiguration);
-        Warrior warrior = WarriorHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "воин", 2);
+        Warrior warrior = ServerHelper.createWarrior(baseConfiguration, bag, ammunitionBag, "воин", 2);
         warriors.add(warrior);
         warrior.setId(1);
         warrior.setBag(bag);

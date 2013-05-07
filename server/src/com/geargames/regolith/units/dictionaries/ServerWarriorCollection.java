@@ -34,12 +34,22 @@ public class ServerWarriorCollection extends WarriorCollection {
         warriors.add(warrior);
     }
 
+    @Override
+    public void addAll(WarriorCollection collection) {
+        warriors.addAll(((ServerWarriorCollection) collection).warriors);
+    }
+
     public void insert(Warrior warrior, int index) {
         warriors.add(index, warrior);
     }
 
     public void set(Warrior warrior, int index) {
         warriors.set(index, warrior);
+    }
+
+    @Override
+    public boolean contains(Warrior warrior) {
+        return warriors.contains(warrior);
     }
 
     public void remove(int index) {
@@ -49,4 +59,10 @@ public class ServerWarriorCollection extends WarriorCollection {
     public int size() {
         return warriors.size();
     }
+
+    @Override
+    public void clear() {
+        warriors.clear();
+    }
+
 }

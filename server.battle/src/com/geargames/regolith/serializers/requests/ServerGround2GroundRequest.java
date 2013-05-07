@@ -13,10 +13,8 @@ import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.HumanElement;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,10 +54,8 @@ public class ServerGround2GroundRequest extends ServerRequest {
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
 
-        ServerHumanElementCollection units = serverBattle.getHumanElements();
-        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-        if (BattleMapHelper.ableToPeek(unit, cells, fromX, fromY)) {
-            if (BattleMapHelper.ableToPut(unit, cells, toX, toY)) {
+        if (BattleMapHelper.ableToPeek(warrior, cells, fromX, fromY)) {
+            if (BattleMapHelper.ableToPut(warrior, cells, toX, toY)) {
                 BattleMapHelper.putIn(BattleMapHelper.putOut(map, fromX, fromY), map, toX, toY);
 
                 Set<Client> clients = new HashSet<Client>();

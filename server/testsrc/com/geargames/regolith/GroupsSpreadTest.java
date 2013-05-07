@@ -2,7 +2,7 @@ package com.geargames.regolith;
 
 import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
@@ -129,7 +129,7 @@ public class GroupsSpreadTest {
         BattleCell[][] cells = battle.getMap().getCells();
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells.length; j++) {
-                if (cells[j][i].getElement() instanceof HumanElement) {
+                if (cells[j][i].getElement() instanceof Warrior) {
                     Assert.assertTrue(
                             exits[0].isWithIn(j, i)
                                     ||

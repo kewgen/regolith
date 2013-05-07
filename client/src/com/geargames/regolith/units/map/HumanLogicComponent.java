@@ -36,8 +36,8 @@ public class HumanLogicComponent extends LogicComponent {
     }
 
     @Override
-    public ClientHumanElement getOwner() {
-        return (ClientHumanElement) super.getOwner();
+    public ClientWarriorElement getOwner() {
+        return (ClientWarriorElement) super.getOwner();
     }
 
     @Override

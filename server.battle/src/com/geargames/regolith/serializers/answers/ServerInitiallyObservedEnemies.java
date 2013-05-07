@@ -5,7 +5,7 @@ import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.SerializeHelper;
-import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.battle.Warrior;
 
 import java.util.Set;
 
@@ -16,9 +16,9 @@ import java.util.Set;
  */
 public class ServerInitiallyObservedEnemies extends SerializedMessage {
     private MicroByteBuffer buffer;
-    private Set<? extends HumanElement> enemies;
+    private Set<? extends Warrior> enemies;
 
-    public ServerInitiallyObservedEnemies(MicroByteBuffer buffer, Set<? extends HumanElement> enemies) {
+    public ServerInitiallyObservedEnemies(MicroByteBuffer buffer, Set<? extends Warrior> enemies) {
         this.buffer = buffer;
         this.enemies = enemies;
     }
@@ -36,8 +36,8 @@ public class ServerInitiallyObservedEnemies extends SerializedMessage {
     @Override
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize((byte) enemies.size(), buffer);
-        for (HumanElement unit : enemies) {
-            SerializeHelper.serializeEntityReference(unit.getHuman(), buffer);
+        for (Warrior unit : enemies) {
+            SerializeHelper.serializeEntityReference(unit, buffer);
             SimpleSerializer.serialize(unit.getCellX(), buffer);
             SimpleSerializer.serialize(unit.getCellY(), buffer);
         }

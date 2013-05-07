@@ -5,8 +5,8 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
-import com.geargames.regolith.units.map.HumanElement;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 
 /**
  * Users: mikhail v. kutuzov, abarakov
@@ -15,8 +15,8 @@ import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
  */
 public class ServerMoveWarriorAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
-    private HumanElement unit;
-    private ServerHumanElementCollection enemies;
+    private Warrior unit;
+    private ServerWarriorCollection enemies;
     private boolean success;
 
     public static ServerMoveWarriorAnswer answerFailure(MicroByteBuffer buffer) {
@@ -24,11 +24,11 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
     }
 
 
-    public static ServerMoveWarriorAnswer answerSuccess(MicroByteBuffer buffer, HumanElement unit, ServerHumanElementCollection enemies) {
+    public static ServerMoveWarriorAnswer answerSuccess(MicroByteBuffer buffer, Warrior unit, ServerWarriorCollection enemies) {
         return new ServerMoveWarriorAnswer(buffer, unit, enemies, true);
     }
 
-    private ServerMoveWarriorAnswer(MicroByteBuffer buffer, HumanElement unit, ServerHumanElementCollection enemies, boolean success) {
+    private ServerMoveWarriorAnswer(MicroByteBuffer buffer, Warrior unit, ServerWarriorCollection enemies, boolean success) {
         this.buffer = buffer;
         this.unit = unit;
         this.enemies = enemies;
@@ -58,15 +58,15 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(success, buffer);
         if (success) {
-            SerializeHelper.serializeEntityReference(unit.getHuman(), buffer);
+            SerializeHelper.serializeEntityReference(unit, buffer);
             SimpleSerializer.serialize(unit.getCellX(), buffer);
             SimpleSerializer.serialize(unit.getCellY(), buffer);
             if (enemies != null) {
                 SimpleSerializer.serialize((byte) enemies.size(), buffer);
-                for (HumanElement human : enemies.getElements()) {
-                    SerializeHelper.serializeEntityReference(human.getHuman(), buffer);
-                    SimpleSerializer.serialize(human.getCellX(), buffer);
-                    SimpleSerializer.serialize(human.getCellY(), buffer);
+                for (Warrior warrior : enemies.getWarriors()) {
+                    SerializeHelper.serializeEntityReference(warrior, buffer);
+                    SimpleSerializer.serialize(warrior.getCellX(), buffer);
+                    SimpleSerializer.serialize(warrior.getCellY(), buffer);
                 }
             } else {
                 SimpleSerializer.serialize(0, buffer);

@@ -1,7 +1,7 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * User: mkutuzov
@@ -9,6 +9,6 @@ import com.geargames.regolith.units.map.HumanElement;
  */
 public abstract class BattleCellMaintainer {
 
-    public abstract boolean maintain(BattleCell[][] cells, HumanElement unit, boolean toDo, int x, int y);
+    public abstract boolean maintain(BattleCell[][] cells, Warrior warrior, boolean toDo, int x, int y);
 
 }

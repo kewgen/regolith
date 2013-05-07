@@ -7,13 +7,14 @@ import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.BattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ClientBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 import com.geargames.regolith.units.map.ExitZone;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.Weapon;
@@ -78,7 +79,7 @@ public class BattleDeserializer {
             if (buffer.get() == SimpleSerializer.NO) {
                 // Сериализация союзных бойцов
                 for (int j = 0; j < battle.getBattleType().getGroupSize(); j++) {
-                    Warrior ally = new Warrior();
+                    ClientWarriorElement ally = new ClientWarriorElement();
                     ally.setMembershipType(Human.ALLY);
                     battleGroup.getWarriors().add(ally);
                     deserializeHuman(ally, buffer, configuration);
@@ -130,7 +131,7 @@ public class BattleDeserializer {
             battleGroup.setWarriors(new ClientWarriorCollection(new Vector()));
             battleGroup.setId(SimpleDeserializer.deserializeInt(buffer));
             for (int j = 0; j < battle.getBattleType().getGroupSize(); j++) {
-                Warrior warrior = new Warrior();
+                ClientWarriorElement warrior = new ClientWarriorElement();
                 warrior.setMembershipType(Human.ENEMY);
                 deserializeHuman(warrior, buffer, configuration);
                 battleGroup.getWarriors().add(warrior);
@@ -150,7 +151,7 @@ public class BattleDeserializer {
                 BattleAlliance alliance = new BattleAlliance();
                 battleAlliances[i] = alliance;
                 alliance.setNumber((byte) i);
-                if (buffer.get() == SimpleSerializer.ALLY) {
+                if (buffer.get() == SerializeHelper.ALLY) {
                     deserializeAllies(alliance, buffer, baseConfiguration, battle, account);
                 } else {
                     deserializeEnemies(alliance, buffer, baseConfiguration, battle, account);

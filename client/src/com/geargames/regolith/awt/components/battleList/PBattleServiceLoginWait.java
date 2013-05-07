@@ -6,13 +6,12 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.*;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.common.PWaitingWindow;
-import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.map.observer.StrictPerimeterObserver;
 import com.geargames.regolith.map.router.RecursiveWaveRouter;
 import com.geargames.regolith.serializers.answers.ClientBattleLoginAnswer;
 import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.dictionaries.ClientHumanElementCollection;
+import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 
 import java.util.Vector;
 
@@ -58,11 +57,11 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
             ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
             BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
 
-            ClientHumanElementCollection groupUnits = panelManager.getBattleScreen().getGroupUnits();
-            ClientHumanElementCollection allyUnits = panelManager.getBattleScreen().getAllyUnits();
+            ClientWarriorCollection groupUnits = panelManager.getBattleScreen().getGroupUnits();
+            ClientWarriorCollection allyUnits = panelManager.getBattleScreen().getAllyUnits();
 
-            ClientHumanElementCollection units = new ClientHumanElementCollection();
-            units.setElements(new Vector(groupUnits.size() + allyUnits.size()));
+            ClientWarriorCollection units = new ClientWarriorCollection();
+            units.setWarriors(new Vector(groupUnits.size() + allyUnits.size()));
             units.addAll(groupUnits);
             units.addAll(allyUnits);
 

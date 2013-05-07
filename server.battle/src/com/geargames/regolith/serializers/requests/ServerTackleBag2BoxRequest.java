@@ -13,10 +13,8 @@ import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.Box;
-import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
@@ -52,9 +50,7 @@ public class ServerTackleBag2BoxRequest extends ServerRequest {
         BattleCell cell = cells[x][y];
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>();
 
-        ServerHumanElementCollection units = serverBattle.getHumanElements();
-        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-        if (BattleMapHelper.isNear(unit, x, y) && cell.getElement() != null && cell.getElement() instanceof Box) {
+        if (BattleMapHelper.isNear(warrior, x, y) && cell.getElement() != null && cell.getElement() instanceof Box) {
             Box box = (Box) cell.getElement();
             StateTackle tackle = WarriorHelper.putOutOfBag(warrior, number);
             box.getTackles().add(tackle);

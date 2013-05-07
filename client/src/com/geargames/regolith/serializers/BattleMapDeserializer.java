@@ -5,13 +5,10 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.RegolithException;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BaseConfigurationHelper;
-import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.helpers.ClientBattleHelper;
-import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
 import com.geargames.regolith.units.map.*;
@@ -32,11 +29,11 @@ public class BattleMapDeserializer {
         StateTackleCollection tackles = new ClientStateTackleCollection(new Vector());
         for (int i = 0; i < length; i++) {
             short typeId = SimpleDeserializer.deserializeShort(buffer);
-            if (typeId == SerializeHelper.findTypeId("Armor")) {
+            if (typeId == SerializeHelper.ARMOR) {
                 Armor armor = new Armor();
                 TackleDeserializer.deSerialize(armor, buffer, configuration);
                 tackles.add(armor);
-            } else if (typeId == SerializeHelper.findTypeId("Weapon")) {
+            } else if (typeId == SerializeHelper.WEAPON) {
                 Weapon weapon = new Weapon();
                 TackleDeserializer.deSerialize(weapon, buffer, configuration);
                 tackles.add(weapon);
@@ -89,76 +86,72 @@ public class BattleMapDeserializer {
         BattleCell[][] cells = battleMap.getCells();
         battleMap.setId(mapId);
 
-        ClientHumanElementCollection groupUnits = ClientBattleHelper.getBattleUnits(battle, account);
-        ClientHumanElementCollection allyUnits = ClientBattleHelper.getAllyBattleUnits(battle, account);
-        ClientHumanElementCollection enemyUnits = ClientBattleHelper.getEnemyBattleUnits(battle, account);
-
-        BattleScreen battleScreen = PRegolithPanelManager.getInstance().getBattleScreen();
-        battleScreen.setGroupUnits(groupUnits);
-        battleScreen.setAllyUnits(allyUnits);
-        battleScreen.setEnemyUnits(enemyUnits);
-
         while (buffer.getPosition() != last) {
             short cellX = SimpleDeserializer.deserializeShort(buffer);
             short cellY = SimpleDeserializer.deserializeShort(buffer);
             short typeId = SimpleDeserializer.deserializeShort(buffer);
-            if (typeId == SerializeHelper.findTypeId("Warrior")) {
-                int warriorId = SimpleDeserializer.deserializeInt(buffer);
-                HumanElement unit = BattleMapHelper.getHumanElementByHumanId(groupUnits, warriorId);
-                WarriorHelper.putWarriorIntoMap(cells, unit, cellX, cellY);
-            } else if (typeId == SerializeHelper.findTypeId("Ally")) {
-                int allyId = SimpleDeserializer.deserializeInt(buffer);
-                BattleAlliance[] alliances = battle.getAlliances();
-                int alliancesLength = alliances.length;
-                for (int i = 0; i < alliancesLength; i++) {
-                    for (int j = 0; j < battle.getBattleType().getAllianceSize(); j++) {
-                        if (alliances[i].getAllies().get(j).getWarriors().get(0).getBattleGroup().getAccount() == account) {
-                            BattleGroupCollection groups = alliances[i].getAllies();
-                            for (int k = 0; k < groups.size(); k++) {
-                                WarriorCollection warriors = groups.get(k).getWarriors();
-                                int len = warriors.size();
-                                boolean found = false;
-                                for (int n = 0; n < len; n++) {
-                                    Warrior warrior = warriors.get(n);
-                                    if (warrior.getId() == allyId) {
-                                        found = true;
-                                        HumanElement unit = BattleMapHelper.getHumanElementByHuman(groupUnits, warrior);
-                                        WarriorHelper.putWarriorIntoMap(cells, unit, cellX, cellY);
-                                        break;
-                                    }
-                                }
-                                if (found) {
+            switch (typeId) {
+                case SerializeHelper.WARRIOR:
+                    int warriorId = SimpleDeserializer.deserializeInt(buffer);
+                    Warrior unit = ClientBattleHelper.findWarrior(account, warriorId);
+                    WarriorHelper.putWarriorIntoMap(cells, unit, cellX, cellY);
+                    break;
+                case SerializeHelper.ALLY:
+                    int allyId = SimpleDeserializer.deserializeInt(buffer);
+                    boolean found = false;
+                    BattleAlliance alliance = ClientBattleHelper.findBattleAlliance(battle, account);
+                    BattleGroupCollection groups = alliance.getAllies();
+                    for (int i = 0; i < groups.size(); i++) {
+                        BattleGroup group = groups.get(i);
+                        if (group.getAccount() != account) {
+                            int len = group.getWarriors().size();
+                            for (int j = 0; j < len; j++) {
+                                Warrior warrior = group.getWarriors().get(j);
+                                if (warrior.getId() == allyId) {
+                                    found = true;
+                                    WarriorHelper.putWarriorIntoMap(cells, warrior, cellX, cellY);
                                     break;
                                 }
                             }
-                            break;
+                            if (found) {
+                                break;
+                            }
                         }
                     }
-                }
-            } else if (typeId == SerializeHelper.findTypeId("Box")) {
-                ClientBox box = new ClientBox();
-                cells[cellX][cellY].addElement(box);
-                deserializeBox(box, buffer, baseConfiguration);
-            } else if (typeId == SerializeHelper.findTypeId("Magazine")) {
-                Magazine magazine = new Magazine();
-                cells[cellX][cellY].addElement(magazine);
-                deserializeMagazine(magazine, buffer, baseConfiguration);
-            } else if (typeId == SerializeHelper.findTypeId("Barrier")) {
-                cells[cellX][cellY].addElement(BaseConfigurationHelper.findBarrierById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
-            } else if (typeId == SerializeHelper.findTypeId("Armor")) {
-                Armor armor = new Armor();
-                cells[cellX][cellY].addElement(armor);
-                TackleDeserializer.deSerialize(armor, buffer, baseConfiguration);
-            } else if (typeId == SerializeHelper.findTypeId("Weapon")) {
-                Weapon weapon = new Weapon();
-                cells[cellX][cellY].addElement(weapon);
-                TackleDeserializer.deSerialize(weapon, buffer, baseConfiguration);
-            } else if (typeId == SerializeHelper.findTypeId("Medikit")) {
-                Medikit medikit = new Medikit();
-                cells[cellX][cellY].addElement(medikit);
-                TackleDeserializer.deserializeMedikit(medikit, buffer, baseConfiguration);
-            } else {
-                throw new IllegalArgumentException("This map element is not recognized (type identifier = " + typeId + ")");
+                    if (!found) {
+                        Debug.critical("Deserialized warrior does not found (allyId = " + allyId + ")");
+                    }
+                    break;
+                case SerializeHelper.BOX:
+                    ClientBox box = new ClientBox();
+                    cells[cellX][cellY].addElement(box);
+                    deserializeBox(box, buffer, baseConfiguration);
+                    break;
+                case SerializeHelper.MAGAZINE:
+                    Magazine magazine = new Magazine();
+                    cells[cellX][cellY].addElement(magazine);
+                    deserializeMagazine(magazine, buffer, baseConfiguration);
+                    break;
+                case SerializeHelper.BARRIER:
+                    cells[cellX][cellY].addElement(BaseConfigurationHelper.findBarrierById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
+                    break;
+                case SerializeHelper.ARMOR:
+                    Armor armor = new Armor();
+                    cells[cellX][cellY].addElement(armor);
+                    TackleDeserializer.deSerialize(armor, buffer, baseConfiguration);
+                    break;
+                case SerializeHelper.WEAPON:
+                    Weapon weapon = new Weapon();
+                    cells[cellX][cellY].addElement(weapon);
+                    TackleDeserializer.deSerialize(weapon, buffer, baseConfiguration);
+                    break;
+                case SerializeHelper.MEDIKIT:
+                    Medikit medikit = new Medikit();
+                    cells[cellX][cellY].addElement(medikit);
+                    TackleDeserializer.deserializeMedikit(medikit, buffer, baseConfiguration);
+                    break;
+                default:
+                    throw new IllegalArgumentException("This map element is not recognized (type identifier = " + typeId + ")");
             }
         }
         return battleMap;

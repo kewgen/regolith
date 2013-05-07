@@ -6,6 +6,7 @@ import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.CellElementTypes;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.StateTackle;
 import com.geargames.regolith.units.tackle.Weapon;
@@ -46,11 +47,11 @@ public class ServerTackleBody2BoxAnswer extends SerializedMessage {
         SerializeHelper.serializeEntityReference(warrior.getBattleGroup().getAlliance(), buffer);
         SerializeHelper.serializeEntityReference(warrior.getBattleGroup(), buffer);
         SerializeHelper.serializeEntityReference(warrior, buffer);
-        if (tackle instanceof Weapon) {
-            SimpleSerializer.serialize(SerializeHelper.findTypeId("Weapon"), buffer);
+        if (tackle.getElementType() == CellElementTypes.WEAPON) {
+            SimpleSerializer.serialize(SerializeHelper.WEAPON, buffer);
             TackleSerializer.serializeWeapon((Weapon) tackle, buffer);
         } else {
-            SimpleSerializer.serialize(SerializeHelper.findTypeId("Armor"), buffer);
+            SimpleSerializer.serialize(SerializeHelper.ARMOR, buffer);
             TackleSerializer.serializeArmor((Armor) tackle, buffer);
         }
 

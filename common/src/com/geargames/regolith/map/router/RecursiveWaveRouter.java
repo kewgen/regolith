@@ -7,7 +7,6 @@ import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * Users: mkutuzov, abarakov
@@ -24,18 +23,17 @@ public class RecursiveWaveRouter extends Router {
     private static final int RIGHT_BOTTOM = 128;
 
     @Override
-    public void route(HumanElement unit, BattleConfiguration battleConfiguration) {
-        Warrior warrior = (Warrior) unit.getHuman();
+    public void route(Warrior warrior, BattleConfiguration battleConfiguration) {
         BattleMap battleMap = warrior.getBattleGroup().getAlliance().getBattle().getMap();
         int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration);
         if (radius >= BattleMapHelper.UN_ROUTED) {
             Debug.critical("Routable radius exceeds " + BattleMapHelper.UN_ROUTED + " cells");
         }
         BattleCell[][] cells = battleMap.getCells();
-        int x0 = unit.getCellX();
-        int y0 = unit.getCellY();
+        int x0 = warrior.getCellX();
+        int y0 = warrior.getCellY();
 
-        BattleMapHelper.setZeroOrder(unit);
+        BattleMapHelper.setZeroOrder(warrior);
         tryNeighbours(cells, x0, y0, radius, 0);
     }
 

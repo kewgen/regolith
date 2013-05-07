@@ -1,7 +1,7 @@
 package com.geargames.regolith.map.observer;
 
-import com.geargames.regolith.units.dictionaries.HumanElementCollection;
-import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
 
 /**
  * User: mkutuzov
@@ -10,11 +10,11 @@ import com.geargames.regolith.units.map.HumanElement;
 public abstract class Observer {
 
     /**
-     * Осмотреть окрестности бойца unit в пределах его зоны видимости.
+     * Осмотреть окрестности бойца warrior в пределах его зоны видимости.
      *
-     * @param unit
-     * @return коллекция врагов бойца unit, которых он увидел.
+     * @param warrior
+     * @return коллекция врагов бойца warrior, которых он увидел.
      */
-    public abstract HumanElementCollection observe(HumanElement unit);
+    public abstract WarriorCollection observe(Warrior warrior);
 
 }

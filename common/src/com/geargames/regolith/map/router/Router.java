@@ -1,7 +1,7 @@
 package com.geargames.regolith.map.router;
 
 import com.geargames.regolith.BattleConfiguration;
-import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.battle.Warrior;
 
 /**
  * User: mkutuzov
@@ -10,11 +10,11 @@ import com.geargames.regolith.units.map.HumanElement;
 public abstract class Router {
 
     /**
-     * Проставим стоимости достижимости (в ходах) точек карты находящихся в пределах досягаемости бойца unit
+     * Проставим стоимости достижимости (в ходах) точек карты находящихся в пределах досягаемости бойца warrior
      * Стоимость достижимости - наименьшее количество клеток, пройдя через которые, боец достигнет этой клетки.
      *
-     * @param unit
+     * @param warrior
      */
-    public abstract void route(HumanElement unit, BattleConfiguration battleConfiguration);
+    public abstract void route(Warrior warrior, BattleConfiguration battleConfiguration);
 
 }

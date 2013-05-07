@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class ServerBattleHelper {
     private static Logger logger = LoggerFactory.getLogger(ServerBattleHelper.class);
 
-    private static void putAllianceOnMap(BattleCell[][] cells, BattleAlliance alliance, ExitZone exit, ServerHumanElementCollection units) {
+    private static void putAllianceOnMap(BattleCell[][] cells, BattleAlliance alliance, ExitZone exit) {
         BattleGroupCollection groups = alliance.getAllies();
         int xAmount = (exit.getxRadius() * 2) + 1;
         int yAmount = (exit.getyRadius() * 2) + 1;
@@ -52,14 +52,12 @@ public class ServerBattleHelper {
             BattleGroup group = groups.get(j);
             for (int i = 0; i < group.getWarriors().size(); i++) {
                 Warrior warrior = group.getWarriors().get(i);
+                warrior.setDirection(Direction.UP_DOWN); //todo: Класс ExitZone должен иметь поле direction, которое здесь и нужно использовать
+
                 int x = xBegin + (n % xAmount > 1 ? (n % xAmount - 1) : 0);
                 int y = yBegin + n / yAmount;
+                WarriorHelper.putWarriorIntoMap(cells, warrior, x, y);
 
-                ServerHumanElement unit = new ServerHumanElement();
-                unit.setHuman(warrior);
-                unit.setDirection(Direction.UP_DOWN); //todo: Класс ExitZone должен иметь поле direction, которое здесь и нужно использовать
-                units.add(unit);
-                WarriorHelper.putWarriorIntoMap(cells, unit, x, y);
                 n += cellsPerWarrior;
             }
         }
@@ -68,17 +66,12 @@ public class ServerBattleHelper {
     /**
      * Расположить отряды союзников на карте случайным образом и установить точку выхода отряда.
      */
-    public static ServerHumanElementCollection spreadAlliancesOnTheMap(Battle battle) {
-        ServerHumanElementCollection units = new ServerHumanElementCollection();
-        BattleType battleType = battle.getBattleType();
-        units.setElements(new ArrayList<HumanElement>(battleType.getAllianceAmount() * battleType.getAllianceSize() * battleType.getGroupSize()));
-
+    public static void spreadAlliancesOnTheMap(Battle battle) {
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
-            putAllianceOnMap(battle.getMap().getCells(), alliances[i], battle.getMap().getExits()[i], units);
+            putAllianceOnMap(battle.getMap().getCells(), alliances[i], battle.getMap().getExits()[i]);
             alliances[i].setExit(battle.getMap().getExits()[i]);
         }
-        return units;
     }
 
     public static BattleGroup createBattleGroup(Account account) {
@@ -158,19 +151,17 @@ public class ServerBattleHelper {
      *
      * @param alliance
      * @param observer
-     * @param units
      * @return
      */
-    public static Set<HumanElement> allianceObservedBattle(BattleAlliance alliance, Observer observer, ServerHumanElementCollection units) throws RegolithException {
+    public static Set<Warrior> allianceObservedBattle(BattleAlliance alliance, Observer observer) {
         ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
-        Set<HumanElement> enemies = new HashSet<HumanElement>();
+        Set<Warrior> enemies = new HashSet<Warrior>();
         logger.debug("groups amount: {} ", groups.getBattleGroups().size());
         for (BattleGroup group : groups.getBattleGroups()) {
             ServerWarriorCollection warriors = (ServerWarriorCollection) group.getWarriors();
             for (Warrior warrior : warriors.getWarriors()) {
                 logger.debug("a warrior named {} is observing a territory ", warrior.getName());
-                HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-                enemies.addAll(((ServerHumanElementCollection) observer.observe(unit)).getElements());
+                enemies.addAll(((ServerWarriorCollection) observer.observe(warrior)).getWarriors());
             }
         }
         return enemies;
@@ -277,34 +268,6 @@ public class ServerBattleHelper {
             }
         }
         throw new RegolithException();
-    }
-
-    /**
-     * Вернуть солдатиков располагающихся на карте для битвы battle.
-     *
-     * @param battle
-     * @return
-     */
-    public static ServerHumanElementCollection getBattleUnits(Battle battle) {
-        ServerHumanElementCollection units = new ServerHumanElementCollection();
-        BattleType battleType = battle.getBattleType();
-        units.setElements(new ArrayList<HumanElement>(battleType.getAllianceAmount() * battleType.getAllianceSize() * battleType.getGroupSize()));
-        BattleAlliance[] alliances = battle.getAlliances();
-        for (int i = 0; i < alliances.length; i++) {
-            BattleGroupCollection groups = alliances[i].getAllies();
-            for (int j = 0; j < groups.size(); j++) {
-                BattleGroup group = groups.get(j);
-                WarriorCollection warriors = group.getWarriors();
-                int groupSize = battle.getBattleType().getGroupSize();
-                for (int k = 0; k < groupSize; k++) {
-                    HumanElement unit = new ServerHumanElement();
-                    unit.setHuman(warriors.get(k));
-                    unit.setDirection(Direction.UP_DOWN);
-                    units.add(unit);
-                }
-            }
-        }
-        return units;
     }
 
 }

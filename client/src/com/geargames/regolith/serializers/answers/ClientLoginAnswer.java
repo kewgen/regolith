@@ -6,8 +6,9 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 
 /**
  * User: mkutuzov
@@ -48,7 +49,7 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
                 int length = SimpleDeserializer.deserializeInt(buffer);
                 warriors = new Warrior[length];
                 for (int i = 0; i < length; i++) {
-                    Warrior warrior = new Warrior();
+                    ClientWarriorElement warrior = new ClientWarriorElement();
                     warrior.setMembershipType(Human.WARRIOR);
                     AccountDeserializer.deserialize(warrior, buffer, baseConfiguration);
                     warriors[i] = warrior;

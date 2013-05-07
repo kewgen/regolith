@@ -7,14 +7,14 @@ import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.battle.Warrior;
 
 public class ClientMoveRequest extends ClientSerializedMessage {
-    private HumanElement unit;
+    private Warrior unit;
     private short x;
     private short y;
 
-    public ClientMoveRequest(ClientConfiguration configuration, HumanElement unit, short x, short y) {
+    public ClientMoveRequest(ClientConfiguration configuration, Warrior unit, short x, short y) {
         super(configuration);
         this.unit = unit;
         this.x = x;
@@ -26,11 +26,11 @@ public class ClientMoveRequest extends ClientSerializedMessage {
     }
 
     public void serialize(MicroByteBuffer buffer) {
-        BattleGroup battleGroup = unit.getHuman().getBattleGroup();
+        BattleGroup battleGroup = unit.getBattleGroup();
         BattleAlliance alliance = battleGroup.getAlliance();
         SimpleSerializer.serialize(alliance.getNumber(), buffer);
         SerializeHelper.serializeEntityReference(battleGroup, buffer);
-        SerializeHelper.serializeEntityReference(unit.getHuman(), buffer);
+        SerializeHelper.serializeEntityReference(unit, buffer);
         SimpleSerializer.serialize(x, buffer);
         SimpleSerializer.serialize(y, buffer);
     }

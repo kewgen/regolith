@@ -1,10 +1,10 @@
 package com.geargames.regolith;
 
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.map.ExitZone;
-import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * User: mkutuzov
@@ -18,7 +18,7 @@ public class TestHelper {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
                 if (battleMap.getCells()[j][i].getElement() != null) {
-                    if (battleMap.getCells()[j][i].getElement() instanceof HumanElement) {
+                    if (battleMap.getCells()[j][i].getElement() instanceof Warrior) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
@@ -35,12 +35,12 @@ public class TestHelper {
         }
     }
 
-    public static void printRouteMap(BattleMap battleMap, HumanElement unit) {
+    public static void printRouteMap(BattleMap battleMap, Warrior unit) {
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
                 if (battleMap.getCells()[j][i].getElement() != null) {
-                    if (battleMap.getCells()[j][i].getElement() instanceof HumanElement) {
+                    if (battleMap.getCells()[j][i].getElement() instanceof Warrior) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
@@ -67,7 +67,7 @@ public class TestHelper {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
                 if (battleMap.getCells()[j][i].getElement() != null) {
-                    if (battleMap.getCells()[j][i].getElement() instanceof HumanElement) {
+                    if (battleMap.getCells()[j][i].getElement() instanceof Warrior) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');

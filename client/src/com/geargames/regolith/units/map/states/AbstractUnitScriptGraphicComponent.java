@@ -1,7 +1,7 @@
 package com.geargames.regolith.units.map.states;
 
 import com.geargames.common.packer.PUnit;
-import com.geargames.regolith.units.map.AbstractClientHumanElement;
+import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.GraphicComponent;
 
 /**
@@ -10,7 +10,7 @@ import com.geargames.regolith.units.map.GraphicComponent;
  */
 public abstract class AbstractUnitScriptGraphicComponent extends GraphicComponent {
 
-    public abstract void start(AbstractClientHumanElement unit, byte action);
+    public abstract void start(AbstractClientWarriorElement warrior, byte action);
 
     public abstract void stop();
 

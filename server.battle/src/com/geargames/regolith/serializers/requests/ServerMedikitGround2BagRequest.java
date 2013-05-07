@@ -16,8 +16,6 @@ import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
-import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.tackle.Medikit;
 
 import java.util.ArrayList;
@@ -53,9 +51,7 @@ public class ServerMedikitGround2BagRequest extends ServerRequest {
             throw new RegolithException("Warrior was not found");
         }
 
-        ServerHumanElementCollection units = serverBattle.getHumanElements();
-        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-        Medikit medikit = BattleMapHelper.peekMedikit(unit, serverBattle.getBattle().getMap().getCells(), x, y);
+        Medikit medikit = BattleMapHelper.peekMedikit(warrior, serverBattle.getBattle().getMap().getCells(), x, y);
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(2);
         if (medikit != null && WarriorHelper.putInToBag(warrior, medikit, 1,

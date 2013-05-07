@@ -16,7 +16,6 @@ import com.geargames.regolith.service.state.ClientCheckSumAwaiting;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
-import com.geargames.regolith.units.map.HumanElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +98,7 @@ public class BattleSchedulerService {
                             for (BattleAlliance alliance : alliances) {
                                 logger.debug("an alliance number {} is observing.", alliance.getNumber());
 
-                                Set<HumanElement> enemies = ServerBattleHelper.allianceObservedBattle(alliance, observer, serverBattle.getHumanElements());
+                                Set<Warrior> enemies = ServerBattleHelper.allianceObservedBattle(alliance, observer);
 
                                 if (enemies.size() > 0) {
                                     List<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getAlliances().get(alliance.getNumber()));

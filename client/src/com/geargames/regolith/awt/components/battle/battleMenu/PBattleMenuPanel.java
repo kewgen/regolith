@@ -6,7 +6,7 @@ import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.units.battle.BattleAlliance;
-import com.geargames.regolith.units.map.ClientHumanElement;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 
 /**
  * User: abarakov
@@ -72,7 +72,7 @@ public class PBattleMenuPanel extends PRootContentPanel {
     /**
      * Обработчик события изменения активного бойца.
      */
-    public void onActiveUnitChanged(ClientHumanElement activeUnit) {
+    public void onActiveUnitChanged(ClientWarriorElement activeUnit) {
 
     }
 

@@ -79,10 +79,10 @@ public abstract class LogicComponent implements Tickable {
     private void setState(AbstractLogicState state) {
         if (currentState != state) {
             if (currentState != null) {
-                currentState.stop(owner);
+                currentState.onStop(owner);
             }
             currentState = state;
-            currentState.start(owner);
+            currentState.onStart(owner);
         }
     }
 

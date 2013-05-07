@@ -7,9 +7,11 @@ import com.geargames.regolith.helpers.ClientHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.*;
 import com.geargames.regolith.units.base.*;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientStateTackleCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 import com.geargames.regolith.units.tackle.*;
 
 import java.util.Date;
@@ -21,24 +23,24 @@ import java.util.Vector;
  */
 public class AccountDeserializer {
 
-    private static StateTackle getStateTackleById(int id, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
+    private static StateTackle getStateTackleById(int typeId, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
         StateTackle tackle = null;
-        if (id == SerializeHelper.findTypeId("Weapon")) {
+        if (typeId == SerializeHelper.WEAPON) {
             tackle = new Weapon();
             TackleDeserializer.deSerialize((Weapon) tackle, buffer, baseConfiguration);
-        } else if (id == SerializeHelper.findTypeId("Armor")) {
+        } else if (typeId == SerializeHelper.ARMOR) {
             tackle = new Armor();
             TackleDeserializer.deSerialize((Armor) tackle, buffer, baseConfiguration);
         }
         return tackle;
     }
 
-    private static Ammunition getAmmunitionById(short id, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
+    private static Ammunition getAmmunitionById(short typeId, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
         Ammunition tackle = null;
-        if (id == SerializeHelper.findTypeId("Projectile")) {
+        if (typeId == SerializeHelper.PROJECTILE) {
             tackle = new Projectile();
             TackleDeserializer.deSerializeProjectile((Projectile) tackle, buffer, baseConfiguration);
-        } else if (id == SerializeHelper.findTypeId("Medikit")) {
+        } else if (typeId == SerializeHelper.MEDIKIT) {
             tackle = new Medikit();
             TackleDeserializer.deserializeMedikit((Medikit) tackle, buffer, baseConfiguration);
         }
@@ -112,7 +114,7 @@ public class AccountDeserializer {
         byte length = buffer.get();
         ClientWarriorCollection warriors = new ClientWarriorCollection(new Vector());
         for (int i = 0; i < length; i++) {
-            Warrior warrior = new Warrior();
+            Warrior warrior = new ClientWarriorElement();
             warriors.add(warrior);
             warrior.setMembershipType(Human.WARRIOR); //todo: WARRIOR ?
             deserialize(warrior, buffer, baseConfiguration);

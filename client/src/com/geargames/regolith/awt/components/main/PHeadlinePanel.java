@@ -11,7 +11,7 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.ClientHumanElement;
+import com.geargames.regolith.units.map.ClientWarriorElement;
 
 /**
  * Панель "Заголовок" висит посередине верхней стороны экрана.
@@ -67,11 +67,11 @@ public class PHeadlinePanel extends PRootContentPanel implements TimerListener {
             remainingTime = 0;
         }
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientHumanElement activeUnit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement activeUnit = panelManager.getBattleScreen().getActiveUnit();
         label.setText(
                 (panelManager.getBattleScreen().isMyTurn() ? "Наш ход" : "Ход альянса #" + alliance.getNumber() + " (id=" + alliance.getId() + ")") +
                         ", время=" + remainingTime +
-                        ", ОД=" + ((Warrior) activeUnit.getHuman()).getActionScore());
+                        ", ОД=" + ((Warrior) activeUnit).getActionScore());
     }
 
     public void onTimer(int timerId) {

@@ -7,11 +7,11 @@ import com.geargames.regolith.units.map.*;
  * User: abarakov
  * Date: 02.05.13
  */
-public class TestClientHumanElement extends AbstractClientHumanElement {
+public class TestClientWarriorElement extends AbstractClientWarriorElement {
     private HumanLogicComponent logic;
     private TestUnitScriptGraphicComponent graphic;
 
-    public TestClientHumanElement() {
+    public TestClientWarriorElement() {
         logic = new HumanLogicComponent(this);
         graphic = new TestUnitScriptGraphicComponent();
         logic.initiate();

@@ -10,14 +10,12 @@ import com.geargames.regolith.serializers.answers.ServerBag2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.HumanElement;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,13 +52,9 @@ public abstract class ServerBag2GroundRequest extends ServerRequest {
 
         BattleMap map = serverBattle.getBattle().getMap();
         BattleCell[][] cells = map.getCells();
-        BattleCell cell = cells[x][y];
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
 
-        ServerHumanElementCollection units = serverBattle.getHumanElements();
-        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-
-        if (BattleMapHelper.ableToPut(unit, cells, x, y)) {
+        if (BattleMapHelper.ableToPut(warrior, cells, x, y)) {
             CellElement element = putOut(number, warrior);
             if (element != null) {
                 BattleMapHelper.putIn(element, map, x, y);

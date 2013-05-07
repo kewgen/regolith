@@ -4,7 +4,7 @@ import com.geargames.regolith.helpers.AmmunitionBagHelper;
 import com.geargames.regolith.helpers.ServerHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.AmmunitionBag;
-import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerProjectileCollection;
 import com.geargames.regolith.units.dictionaries.ServerWeaponTypeCollection;
