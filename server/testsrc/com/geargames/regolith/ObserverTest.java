@@ -3,6 +3,7 @@ package com.geargames.regolith;
 import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.units.Human;
 import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
 import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
@@ -46,6 +47,7 @@ public class ObserverTest {
         barrier.setAbleToLookThrough(false);
         warrior = new Warrior();
         warrior.setName("Вася");
+        warrior.setMembershipType(Human.WARRIOR);
         unit = new ServerHumanElement();
         unit.setHuman(warrior);
 

@@ -697,8 +697,7 @@ public class SerializerTest {
         battleMap.setPossibleBattleTypes(types);
 
         battle.setMap(battleMap);
-        ServerHumanElementCollection units = ServerBattleHelper.getBattleUnits(battle);
-        ServerBattleHelper.spreadAlliancesOnTheMap(battle, units);
+        ServerBattleHelper.spreadAlliancesOnTheMap(battle);
 
         BattleCell[][] cells = battleMap.getCells();
 

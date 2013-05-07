@@ -9,7 +9,6 @@ import com.geargames.regolith.service.BattleManagerContext;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
@@ -70,8 +69,7 @@ public class ServerTrainingBattleCreationManager {
         } catch (ClassNotFoundException e) {
             throw new RegolithException(e);
         }
-        ServerHumanElementCollection units = ServerBattleHelper.getBattleUnits(battle); //todo: ????? где-то сохранить units (в ServerBattle)
-        ServerBattleHelper.spreadAlliancesOnTheMap(battle, units);
+        ServerBattleHelper.spreadAlliancesOnTheMap(battle);
 
         for (BattleAlliance alliance : battle.getAlliances()) {
             ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();

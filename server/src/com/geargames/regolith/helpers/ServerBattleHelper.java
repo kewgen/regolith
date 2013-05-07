@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class ServerBattleHelper {
     private static Logger logger = LoggerFactory.getLogger(ServerBattleHelper.class);
 
-    public static void putAllianceOnMap(BattleCell[][] cells, ServerHumanElementCollection units, BattleAlliance alliance, ExitZone exit) throws RegolithException {
+    private static void putAllianceOnMap(BattleCell[][] cells, BattleAlliance alliance, ExitZone exit, ServerHumanElementCollection units) {
         BattleGroupCollection groups = alliance.getAllies();
         int xAmount = (exit.getxRadius() * 2) + 1;
         int yAmount = (exit.getyRadius() * 2) + 1;
@@ -54,9 +54,12 @@ public class ServerBattleHelper {
                 Warrior warrior = group.getWarriors().get(i);
                 int x = xBegin + (n % xAmount > 1 ? (n % xAmount - 1) : 0);
                 int y = yBegin + n / yAmount;
-                HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-                WarriorHelper.putWarriorIntoMap(cells, unit, x, y);
+
+                ServerHumanElement unit = new ServerHumanElement();
+                unit.setHuman(warrior);
                 unit.setDirection(Direction.UP_DOWN); //todo: Класс ExitZone должен иметь поле direction, которое здесь и нужно использовать
+                units.add(unit);
+                WarriorHelper.putWarriorIntoMap(cells, unit, x, y);
                 n += cellsPerWarrior;
             }
         }
@@ -65,12 +68,17 @@ public class ServerBattleHelper {
     /**
      * Расположить отряды союзников на карте случайным образом и установить точку выхода отряда.
      */
-    public static void spreadAlliancesOnTheMap(Battle battle, ServerHumanElementCollection units) throws RegolithException {
+    public static ServerHumanElementCollection spreadAlliancesOnTheMap(Battle battle) {
+        ServerHumanElementCollection units = new ServerHumanElementCollection();
+        BattleType battleType = battle.getBattleType();
+        units.setElements(new ArrayList<HumanElement>(battleType.getAllianceAmount() * battleType.getAllianceSize() * battleType.getGroupSize()));
+
         BattleAlliance[] alliances = battle.getAlliances();
         for (int i = 0; i < alliances.length; i++) {
-            putAllianceOnMap(battle.getMap().getCells(), units, alliances[i], battle.getMap().getExits()[i]);
+            putAllianceOnMap(battle.getMap().getCells(), alliances[i], battle.getMap().getExits()[i], units);
             alliances[i].setExit(battle.getMap().getExits()[i]);
         }
+        return units;
     }
 
     public static BattleGroup createBattleGroup(Account account) {

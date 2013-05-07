@@ -11,19 +11,19 @@ import com.geargames.regolith.units.map.states.Actions;
  * Класс логики бойца. Служит для выполнения атомарных действий, таких как, двигаться, присесть, выстрелить, умереть и т.д.
  */
 public class HumanLogicComponent extends LogicComponent {
-    private static UnitStandState standState = new UnitStandState();   // Боец стоит
-    private static UnitSitState sitState = new UnitSitState();     // Боец сидит
+    private static UnitStandState standState = new UnitStandState();       // Боец стоит
+    private static UnitSitState sitState = new UnitSitState();             // Боец сидит
     private static UnitSitDownState sitDownState = new UnitSitDownState(); // Боец садится
     private static UnitStandUpState standUpState = new UnitStandUpState(); // Боец встает
-    private UnitRunState runState;                              // Боец бежит
-    private static UnitStandSimpleState standAndHastilyShotState = new UnitStandSimpleState(Actions.HUMAN_STAND_AND_SHOOT); // Боец делает выстрел "наспех" стоя
-    private static UnitSitSimpleState sitAndHastilyShotState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_SHOOT);   // Боец делает выстрел "наспех" сидя
+    private UnitRunState runState;                                         // Боец бежит
+    private static UnitStandSimpleState standAndHastilyShotState = new UnitStandSimpleState(Actions.HUMAN_STAND_AND_SHOOT);  // Боец делает выстрел "наспех" стоя
+    private static UnitSitSimpleState sitAndHastilyShotState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_SHOOT);          // Боец делает выстрел "наспех" сидя
     private static UnitStandSimpleState standAndAccurateShotState = new UnitStandSimpleState(Actions.HUMAN_STAND_AND_SHOOT); // Боец делает прицельный выстрел стоя
-    private static UnitSitSimpleState sitAndAccurateShotState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_SHOOT);   // Боец делает прицельный выстрел сидя
-    private static UnitStandSimpleState standAndHitState = new UnitStandSimpleState(Actions.HUMAN_STAND_AND_HIT);   // Боец получает урон стоя
-    private static UnitSitSimpleState sitAndHitState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_HIT);     // Боец получает урон сидя
-    private static UnitStandSimpleState standAndDieState = new UnitStandSimpleState(Actions.HUMAN_STAND_AND_DIE);   // Боец умирает стоя
-    private static UnitSitSimpleState sitAndDieState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_DIE);     // Боец умирает сидя
+    private static UnitSitSimpleState sitAndAccurateShotState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_SHOOT);         // Боец делает прицельный выстрел сидя
+    private static UnitStandSimpleState standAndHitState = new UnitStandSimpleState(Actions.HUMAN_STAND_AND_HIT);            // Боец получает урон стоя
+    private static UnitSitSimpleState sitAndHitState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_HIT);                    // Боец получает урон сидя
+    private static UnitStandSimpleState standAndDieState = new UnitStandSimpleState(Actions.HUMAN_STAND_AND_DIE);            // Боец умирает стоя
+    private static UnitSitSimpleState sitAndDieState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_DIE);                    // Боец умирает сидя
 
     public HumanLogicComponent(DynamicCellElement owner) {
         super(owner);

@@ -63,7 +63,7 @@ public class BattleSchedulerService {
             @Override
             public void run() {
                 if (Thread.currentThread().isInterrupted()) {
-                    logger.debug("Could not add an immediate message(the service has been interrupted) ");
+                    logger.debug("Could not add an immediate message (the service has been interrupted)");
                     return;
                 }
                 for (MessageToClient message : messages) {
@@ -79,7 +79,7 @@ public class BattleSchedulerService {
                     @Override
                     public void run() {
                         if (Thread.currentThread().isInterrupted()) {
-                            logger.debug("Could not run a battle cycle (the service has been interrupted)" + serverBattle.getBattle().getName());
+                            logger.debug("Could not run a battle cycle (the service has been interrupted): " + serverBattle.getBattle().getName());
                             return;
                         }
                         RegolithConfiguration regolithConfiguration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration();

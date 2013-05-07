@@ -1,5 +1,7 @@
 package com.geargames.regolith.units;
 
+import com.geargames.regolith.serializers.SerializeHelper;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +10,10 @@ import java.io.Serializable;
  */
 public class Entity implements Serializable {
     private int id;
+
+    public Entity() {
+        id = SerializeHelper.NULL_REFERENCE;
+    }
 
     public int getId() {
         return id;
