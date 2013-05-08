@@ -776,6 +776,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             activeUnit = null;
             initUnitFromCollection(groupUnits, battleConfiguration);
             initUnitFromCollection(allyUnits, battleConfiguration);
+            initUnitFromCollectionSimple(enemyUnits, battleConfiguration);
 
 //            BattleGroupCollection clients = alliance.getAllies();
 //            for (int j = 0; j < clients.size(); j++) {
@@ -814,8 +815,16 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private void initUnitFromCollection(ClientWarriorCollection collection, BattleConfiguration battleConfiguration) {
         for (int i = 0; i < collection.size(); i++) {
             ClientWarriorElement unit = (ClientWarriorElement) collection.get(i);
+            unit.initiate();
             ClientBattleHelper.initMapXY(this, unit);
             battleConfiguration.getObserver().observe(unit);
+        }
+    }
+
+    private void initUnitFromCollectionSimple(ClientWarriorCollection collection, BattleConfiguration battleConfiguration) {
+        for (int i = 0; i < collection.size(); i++) {
+            ClientWarriorElement unit = (ClientWarriorElement) collection.get(i);
+            unit.initiate();
         }
     }
 

@@ -28,8 +28,8 @@ public class UnitScriptGraphicComponent extends AbstractUnitScriptGraphicCompone
     @Override
     public void start(AbstractClientWarriorElement warrior, byte action) {
         script = Environment.getRender().getUnitScript(
-                warrior.getFrameId()
-                        + ClientGUIHelper.convertPackerScriptsDirection(warrior.getDirection())
+//                warrior.getFrameId()
+                +ClientGUIHelper.convertPackerScriptsDirection(warrior.getDirection())
                         + action
                         + warrior.getWeapon().getWeaponType().getCategory().getPackerId()
         );

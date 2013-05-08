@@ -1,5 +1,6 @@
 package com.geargames.regolith.serializers;
 
+import com.geargames.common.logging.Debug;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.common.serialization.SimpleSerializer;
@@ -27,9 +28,16 @@ import java.util.Vector;
  */
 public class BattleDeserializer {
 
+    public static void deserializeWarrior(Warrior warrior, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
+        deserializeHuman(warrior, buffer, baseConfiguration);
+        warrior.setCellX(SimpleDeserializer.deserializeShort(buffer));
+        warrior.setCellY(SimpleDeserializer.deserializeShort(buffer));
+    }
+
     public static void deserializeHuman(Human human, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
         human.setId(SimpleDeserializer.deserializeInt(buffer));
         human.setName(SimpleDeserializer.deserializeString(buffer));
+        human.setNumber(SimpleDeserializer.deserializeShort(buffer));
         int rankId = SimpleDeserializer.deserializeInt(buffer);
         human.setRank(BaseConfigurationHelper.findRankById(rankId, baseConfiguration));
         human.setFrameId(SimpleDeserializer.deserializeInt(buffer));
@@ -48,7 +56,6 @@ public class BattleDeserializer {
         }
         Weapon weapon = new Weapon();
         human.setWeapon(TackleDeserializer.deSerialize(weapon, buffer, baseConfiguration));
-        human.setNumber(SimpleDeserializer.deserializeShort(buffer));
     }
 
     private static void deserialize(ExitZone exitZone, MicroByteBuffer buffer) {
@@ -82,7 +89,7 @@ public class BattleDeserializer {
                     ClientWarriorElement ally = new ClientWarriorElement();
                     ally.setMembershipType(Human.ALLY);
                     battleGroup.getWarriors().add(ally);
-                    deserializeHuman(ally, buffer, configuration);
+                    deserializeWarrior(ally, buffer, configuration);
                     ally.setBattleGroup(battleGroup);
                 }
             } else {
@@ -92,13 +99,13 @@ public class BattleDeserializer {
                 for (int j = 0; j < battle.getBattleType().getGroupSize(); j++) {
                     int warriorId = SimpleDeserializer.deserializeInt(buffer);
                     short number = SimpleDeserializer.deserializeShort(buffer);
-//                    int direction = SimpleDeserializer.deserializeInt(buffer);
+                    int direction = SimpleDeserializer.deserializeInt(buffer);
                     Warrior warrior = null;
                     for (int k = 0; k < mineLength; k++) {
                         if (mineWarriors.get(k).getId() == warriorId) {
                             warrior = mineWarriors.get(k);
                             warrior.setNumber(number);
-//                            warrior.setDirection(Direction.getByNumber(direction));
+                            warrior.setDirection(Direction.getByNumber(direction));
                             break;
                         }
                     }
@@ -151,10 +158,13 @@ public class BattleDeserializer {
                 BattleAlliance alliance = new BattleAlliance();
                 battleAlliances[i] = alliance;
                 alliance.setNumber((byte) i);
-                if (buffer.get() == SerializeHelper.ALLY) {
+                short kind = SimpleDeserializer.deserializeShort(buffer);
+                if (kind == SerializeHelper.ALLY) {
                     deserializeAllies(alliance, buffer, baseConfiguration, battle, account);
-                } else {
+                } else if (kind == SerializeHelper.ENEMY) {
                     deserializeEnemies(alliance, buffer, baseConfiguration, battle, account);
+                } else {
+                    Debug.error("Failed to recognize the membership of the alliance (kind = " + kind + ")");
                 }
             }
             battle.setAlliances(battleAlliances);

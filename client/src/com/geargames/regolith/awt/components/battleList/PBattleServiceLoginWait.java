@@ -6,6 +6,7 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.*;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.common.PWaitingWindow;
+import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.map.observer.StrictPerimeterObserver;
 import com.geargames.regolith.map.router.RecursiveWaveRouter;
@@ -57,8 +58,12 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
             ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
             BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
 
-            ClientWarriorCollection groupUnits = panelManager.getBattleScreen().getGroupUnits();
-            ClientWarriorCollection allyUnits = panelManager.getBattleScreen().getAllyUnits();
+            ClientWarriorCollection groupUnits = ClientBattleHelper.getGroupBattleUnits(configuration.getBattle(), configuration.getAccount());
+            ClientWarriorCollection allyUnits = ClientBattleHelper.getAllyBattleUnits(configuration.getBattle(), configuration.getAccount());
+            ClientWarriorCollection enemyUnits = ClientBattleHelper.getEnemyBattleUnits(configuration.getBattle(), configuration.getAccount());
+            panelManager.getBattleScreen().setGroupUnits(groupUnits);
+            panelManager.getBattleScreen().setAllyUnits(allyUnits);
+            panelManager.getBattleScreen().setEnemyUnits(enemyUnits);
 
             ClientWarriorCollection units = new ClientWarriorCollection();
             units.setWarriors(new Vector(groupUnits.size() + allyUnits.size()));
@@ -78,7 +83,7 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
             }
             NotificationBox.info(string, this);
             panelManager.hideAll();
-            panelManager.getBattleScreen().setBattle(ClientConfigurationFactory.getConfiguration().getBattle());
+            panelManager.getBattleScreen().setBattle(configuration.getBattle());
             panelManager.show(panelManager.getHeadlineWindow());
 //            panelManager.show(panelManager.getLeft());
             panelManager.show(panelManager.getRight());

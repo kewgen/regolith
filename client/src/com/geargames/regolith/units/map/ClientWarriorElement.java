@@ -14,7 +14,6 @@ public class ClientWarriorElement extends AbstractClientWarriorElement {
     public ClientWarriorElement() {
         logic = new HumanLogicComponent(this);
         graphic = new UnitScriptGraphicComponent();
-        logic.initiate();
     }
 
     @Override
@@ -25,6 +24,10 @@ public class ClientWarriorElement extends AbstractClientWarriorElement {
     @Override
     public UnitScriptGraphicComponent getGraphic() {
         return graphic;
+    }
+
+    public void initiate() {
+        logic.initiate();
     }
 
     @Override
