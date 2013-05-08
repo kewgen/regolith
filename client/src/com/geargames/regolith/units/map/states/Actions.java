@@ -19,9 +19,9 @@ public class Actions {
     public static final byte HUMAN_DIE = 80;             // Лежит мертвый
     public static final byte HUMAN_SIT_AND_DIE = 88;     // Умирает сидя
 
-    public static final byte DOOR_CLOSED = 0; // закрытая дверь
-    public static final byte DOOR_OPENS = 2; // дверь открывается
-    public static final byte DOOR_OPENED = 4; // открытая дверь
+    public static final byte DOOR_CLOSED = 0;  // закрытая дверь
+    public static final byte DOOR_OPENS = 2;   // дверь открывается
+    public static final byte DOOR_OPENED = 4;  // открытая дверь
     public static final byte DOOR_CLOSING = 6; // дверь закрывается
 
 }

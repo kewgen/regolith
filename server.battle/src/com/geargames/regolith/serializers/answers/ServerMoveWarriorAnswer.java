@@ -69,7 +69,7 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
                     SimpleSerializer.serialize(warrior.getCellY(), buffer);
                 }
             } else {
-                SimpleSerializer.serialize(0, buffer);
+                SimpleSerializer.serialize((byte) 0, buffer);
             }
         }
     }

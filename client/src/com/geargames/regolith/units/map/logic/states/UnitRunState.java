@@ -83,7 +83,7 @@ public class UnitRunState extends AbstractLogicState {
 ////            battleUnit.getUnit().stop();
 ////        } else {
 //
-//            stepDirection = WarriorHelper.getStepDirection(PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells(), unit);
+        stepDirection = WarriorHelper.getStepDirection(PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells(), warrior);
 //            if (stepDirection == Direction.NONE) {
 ////                isMoving = false;
 ////                battleUnit.getUnit().stop();

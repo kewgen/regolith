@@ -75,10 +75,10 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
 
             //todo забрать из сообщения группы которые уже залогинились и сообщить о них
             BattleGroup[] loggedIn = battleLogin.getBattleGroups();
-            String string = null;
+            String string = "";
             for (int i = 0; i < loggedIn.length; i++) {
                 if (loggedIn[i] != null) {
-                    string += loggedIn[i].getAccount().getName();
+                    string += loggedIn[i].getAccount().getName() + "\n";
                 }
             }
             NotificationBox.info(string, this);
