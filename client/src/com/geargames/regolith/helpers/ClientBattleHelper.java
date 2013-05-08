@@ -386,7 +386,7 @@ public class ClientBattleHelper {
                 return warrior;
             }
         }
-        throw new RegolithException();
+        throw new RegolithException("A warrior with an id " + warriorId + " was not found.");
     }
 
     /**
