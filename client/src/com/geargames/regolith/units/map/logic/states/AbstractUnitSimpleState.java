@@ -1,6 +1,6 @@
 package com.geargames.regolith.units.map.logic.states;
 
-import com.geargames.regolith.units.map.AbstractClientHumanElement;
+import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.DynamicCellElement;
 import com.geargames.regolith.units.map.states.AbstractUnitScriptGraphicComponent;
 
@@ -11,19 +11,19 @@ import com.geargames.regolith.units.map.states.AbstractUnitScriptGraphicComponen
 public abstract class AbstractUnitSimpleState extends AbstractLogicState {
 
     @Override
-    public void start(DynamicCellElement owner) {
-        AbstractClientHumanElement unit = (AbstractClientHumanElement) owner;
+    public void onStart(DynamicCellElement owner) {
+        AbstractClientWarriorElement unit = (AbstractClientWarriorElement) owner;
         unit.getGraphic().start(unit, getAction());
     }
 
     @Override
-    public void stop(DynamicCellElement owner) {
+    public void onStop(DynamicCellElement owner) {
 
     }
 
     @Override
     public boolean onTick(DynamicCellElement owner) {
-        AbstractUnitScriptGraphicComponent graphic = ((AbstractClientHumanElement) owner).getGraphic();
+        AbstractUnitScriptGraphicComponent graphic = ((AbstractClientWarriorElement) owner).getGraphic();
         graphic.onTick();
         return graphic.getCyclesCount() > 0;
     }

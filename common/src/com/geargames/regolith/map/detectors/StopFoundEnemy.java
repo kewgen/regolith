@@ -1,10 +1,10 @@
 package com.geargames.regolith.map.detectors;
 
 import com.geargames.regolith.helpers.BattleMapHelper;
-import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.battle.Human;
+import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.CellElementTypes;
-import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * Users: mkutuzov, abarakov
@@ -16,13 +16,13 @@ public class StopFoundEnemy extends UnitDetector {
     private StopFoundEnemy() {
     }
 
-    public void detected(HumanElement unit, BattleCell cell) {
-        if (!BattleMapHelper.isVisible(cell, unit.getHuman().getBattleGroup().getAlliance())
+    public void detected(Warrior warrior, BattleCell cell) {
+        if (!BattleMapHelper.isVisible(cell, warrior.getBattleGroup().getAlliance())
                 && cell.getElement() != null
                 && cell.getElement().getElementType() == CellElementTypes.HUMAN) {
-            Human humanElement = ((HumanElement) cell.getElement()).getHuman();
-            if (humanElement.getMembershipType() == Human.ALLY && humanElement.getBattleGroup().getAlliance() != unit.getHuman().getBattleGroup().getAlliance()) {
-//                unit.setMoving(false); //todo: ?????
+            Warrior warriorElement = (Warrior) cell.getElement();
+            if (warriorElement.getMembershipType() == Human.ALLY && warriorElement.getBattleGroup().getAlliance() != warrior.getBattleGroup().getAlliance()) {
+//                warrior.setMoving(false); //todo-asap: остановить бойца
             }
         }
     }

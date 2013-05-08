@@ -6,20 +6,20 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.SerializeHelper;
 import com.geargames.regolith.helpers.ClientBattleHelper;
-import com.geargames.regolith.units.Human;
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.Warrior;
 
 public class ClientShootAnswer extends ClientDeSerializedMessage {
     private Battle battle;
 
-    private Human hunter;
-    private Human victim;
+    private Warrior hunter;
+    private Warrior victim;
 
-    public Human getHunter() {
+    public Warrior getHunter() {
         return hunter;
     }
 
-    public Human getVictim() {
+    public Warrior getVictim() {
         return victim;
     }
 

@@ -43,7 +43,7 @@ public abstract class LogicComponent implements Tickable {
     }
 
     /**
-     * Получить последний стейт, в котором динамический элемент карты будет находится при завершении выполнения очереди команд.
+     * Получить последний стейт, в котором динамический элемент карты будет находиться при завершении выполнения очереди команд.
      *
      * @return
      */
@@ -79,10 +79,10 @@ public abstract class LogicComponent implements Tickable {
     private void setState(AbstractLogicState state) {
         if (currentState != state) {
             if (currentState != null) {
-                currentState.stop(owner);
+                currentState.onStop(owner);
             }
             currentState = state;
-            currentState.start(owner);
+            currentState.onStart(owner);
         }
     }
 

@@ -26,30 +26,42 @@ public class ClientWarriorCollection extends WarriorCollection {
         this.warriors = warriors;
     }
 
+    @Override
     public Warrior get(int index) {
         return (Warrior) warriors.elementAt(index);
     }
 
+    @Override
     public void add(Warrior warrior) {
         warriors.addElement(warrior);
     }
 
+    @Override
+    public void addAll(WarriorCollection collection) {
+        warriors.addAll(((ClientWarriorCollection) collection).warriors);
+    }
+
+    @Override
     public void insert(Warrior warrior, int index) {
         warriors.insertElementAt(warrior, index);
     }
 
+    @Override
     public void set(Warrior warrior, int index) {
         warriors.setElementAt(warrior, index);
     }
 
+    @Override
     public void remove(int index) {
         warriors.removeElementAt(index);
     }
 
+    @Override
     public int size() {
         return warriors.size();
     }
 
+    @Override
     public boolean contains(Warrior warrior) {
         int size = size();
         for (int i = 0; i < size; i++) {
@@ -59,4 +71,10 @@ public class ClientWarriorCollection extends WarriorCollection {
         }
         return false;
     }
+
+    @Override
+    public void clear() {
+        warriors.clear();
+    }
+
 }

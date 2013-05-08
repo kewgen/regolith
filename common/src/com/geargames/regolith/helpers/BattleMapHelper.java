@@ -2,12 +2,10 @@ package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
-import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.map.Pair;
 import com.geargames.regolith.units.map.CellElement;
-import com.geargames.regolith.units.Human;
-import com.geargames.regolith.units.dictionaries.HumanElementCollection;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.tackle.Magazine;
@@ -28,6 +26,7 @@ public class BattleMapHelper {
         cell.addElement(element);
     }
 
+    @Deprecated
     public static CellElement putOut(BattleMap map, int x, int y) {
         BattleCell cell = map.getCells()[x][y];
         CellElement element = cell.getElement();
@@ -36,20 +35,20 @@ public class BattleMapHelper {
     }
 
     /**
-     * На карте, с проставленными из начальной точки (где стоит unit) стоимостями достижимости, выбрать кратчайший путь
+     * На карте, с проставленными из начальной точки (где стоит warrior) стоимостями достижимости, выбрать кратчайший путь
      * из точки (toX;toY) в начальную точку и отметить каждую ячейку этого пути, как часть кратчайшего пути.
      *
      * @param cells
      * @param toX
      * @param toY
-     * @param unit
+     * @param warrior
      */
-    public static void makeShortestRoute(BattleCell[][] cells, int toX, int toY, HumanElement unit) {
+    public static void makeShortestRoute(BattleCell[][] cells, int toX, int toY, Warrior warrior) {
         int x = toX;
         int y = toY;
         int length = cells.length;
         while (true) {
-            setShortestPathCell(cells[x][y], unit);
+            setShortestPathCell(cells[x][y], warrior);
             byte order = getOrder(cells[x][y]);
             if (y - 1 >= 0 && getOrder(cells[x][y - 1]) + 1 == order) {
                 y--;
@@ -88,13 +87,13 @@ public class BattleMapHelper {
     }
 
     /**
-     * Установить начальную точку пути для бойца unit.
+     * Установить начальную точку пути для бойца warrior.
      *
-     * @param unit
+     * @param warrior
      */
-    public static void setZeroOrder(HumanElement unit) {
-        unit.getHuman().getBattleGroup().getAlliance().getBattle().getMap().
-                getCells()[unit.getCellX()][unit.getCellY()].setOrder((byte) 0);
+    public static void setZeroOrder(Warrior warrior) {
+        warrior.getBattleGroup().getAlliance().getBattle().getMap().
+                getCells()[warrior.getCellX()][warrior.getCellY()].setOrder((byte) 0);
     }
 
     /**
@@ -123,69 +122,68 @@ public class BattleMapHelper {
     }
 
     /**
-     * Отметить ячейку cell как часть кратчайшего пути бойца unit.
+     * Отметить ячейку cell как часть кратчайшего пути бойца warrior.
      *
-     * @param unit
+     * @param warrior
      * @param cell
      */
-    public static void setShortestPathCell(BattleCell cell, HumanElement unit) {
-        BattleAlliance alliance = unit.getHuman().getBattleGroup().getAlliance();
-        cell.setOptimalPath(alliance, (short) (cell.getOptimalPath(alliance) | unit.getHuman().getNumber()));
+    public static void setShortestPathCell(BattleCell cell, Warrior warrior) {
+        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
+        cell.setOptimalPath(alliance, (short) (cell.getOptimalPath(alliance) | warrior.getNumber()));
     }
 
     /**
-     * Является ли ячейка cell частью кротчайшего пути бойца unit.
+     * Является ли ячейка cell частью кротчайшего пути бойца warrior.
      *
-     * @param unit
+     * @param warrior
      * @param cell
      * @return
      */
-    public static boolean isShortestPathCell(BattleCell cell, HumanElement unit) {
-        BattleAlliance alliance = unit.getHuman().getBattleGroup().getAlliance();
-        return (cell.getOptimalPath(alliance) & unit.getHuman().getNumber()) != 0;
+    public static boolean isShortestPathCell(BattleCell cell, Warrior warrior) {
+        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
+        return (cell.getOptimalPath(alliance) & warrior.getNumber()) != 0;
     }
 
-    public static boolean isEndPoint(BattleCell[][] cells, Pair pair, HumanElement unit) {
+    public static boolean isEndPoint(BattleCell[][] cells, Pair pair, Warrior warrior) {
         int x = pair.getX();
         int y = pair.getY();
         int count = 0;
-        if (isShortestPathCell(cells[x - 1][y], unit)) {
+        if (isShortestPathCell(cells[x - 1][y], warrior)) {
             count++;
         }
-        if (isShortestPathCell(cells[x - 1][y - 1], unit)) {
+        if (isShortestPathCell(cells[x - 1][y - 1], warrior)) {
             count++;
         }
-        if (isShortestPathCell(cells[x][y - 1], unit) && count < 2) {
+        if (isShortestPathCell(cells[x][y - 1], warrior) && count < 2) {
             count++;
         }
-        if (isShortestPathCell(cells[x + 1][y - 1], unit) && count < 2) {
+        if (isShortestPathCell(cells[x + 1][y - 1], warrior) && count < 2) {
             count++;
         }
-        if (isShortestPathCell(cells[x + 1][y], unit) && count < 2) {
+        if (isShortestPathCell(cells[x + 1][y], warrior) && count < 2) {
             count++;
         }
-        if (isShortestPathCell(cells[x + 1][y + 1], unit) && count < 2) {
+        if (isShortestPathCell(cells[x + 1][y + 1], warrior) && count < 2) {
             count++;
         }
-        if (isShortestPathCell(cells[x][y + 1], unit) && count < 2) {
+        if (isShortestPathCell(cells[x][y + 1], warrior) && count < 2) {
             count++;
         }
-        if (isShortestPathCell(cells[x - 1][y + 1], unit) && count < 2) {
+        if (isShortestPathCell(cells[x - 1][y + 1], warrior) && count < 2) {
             count++;
         }
         return count == 1;
     }
 
     /**
-     * Зачистить окрестность точки (x;y) от отметок кратчайшего пути бойца unit.
+     * Зачистить окрестность точки (x;y) от отметок кратчайшего пути бойца warrior.
      *
      * @param cells
-     * @param unit
+     * @param warrior
      * @param x
      * @param y
      */
-    public static void resetShortestPath(BattleCell[][] cells, HumanElement unit, int x, int y, BattleConfiguration battleConfiguration) {
-        Warrior warrior = (Warrior) unit.getHuman();
+    public static void resetShortestPath(BattleCell[][] cells, Warrior warrior, int x, int y, BattleConfiguration battleConfiguration) {
         int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration);
         int length = cells.length;
         int x0 = x - radius;
@@ -204,14 +202,14 @@ public class BattleMapHelper {
     }
 
     /**
-     * Снять отметку с ячейки cell о том, что она часть кратчайшего пути бойца с human.
+     * Снять отметку с ячейки cell о том, что она часть кратчайшего пути бойца с warrior.
      *
      * @param cell
-     * @param human
+     * @param warrior
      */
-    public static void resetShortestCell(BattleCell cell, Human human) {
-        BattleAlliance alliance = human.getBattleGroup().getAlliance();
-        cell.setOptimalPath(alliance, (short) (cell.getOptimalPath(alliance) & ~human.getNumber()));
+    public static void resetShortestCell(BattleCell cell, Warrior warrior) {
+        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
+        cell.setOptimalPath(alliance, (short) (cell.getOptimalPath(alliance) & ~warrior.getNumber()));
     }
 
     /**
@@ -229,14 +227,14 @@ public class BattleMapHelper {
     }
 
     /**
-     * Зачистить карту battleMap от маршрутов бойца unit начиная с точки (x;y).
+     * Зачистить карту battleMap от маршрутов бойца warrior начиная с точки (x;y).
      *
-     * @param unit
+     * @param warrior
      * @param x
      * @param y
      */
-    public static void clearRoutes(BattleCell[][] cells, HumanElement unit, int x, int y, BattleConfiguration battleConfiguration) {
-        int radius = WarriorHelper.getRoutableRadius((Warrior) unit.getHuman(), battleConfiguration);
+    public static void clearRoutes(BattleCell[][] cells, Warrior warrior, int x, int y, BattleConfiguration battleConfiguration) {
+        int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration);
         int length = cells.length;
         int x0 = x - radius;
         x0 = x0 < 0 ? 0 : x0;
@@ -254,39 +252,39 @@ public class BattleMapHelper {
     }
 
     /**
-     * Показать ячейку cell бойцу human.
+     * Показать ячейку cell бойцу warrior.
      * Заодно установим, что осматривали эту клетку карты и выполним некоторое действие если мы - первооткрыватели клетки.
      *
      * @param cell
-     * @param human
+     * @param warrior
      */
-    public static void show(BattleCell cell, Human human) {
-        BattleAlliance alliance = human.getBattleGroup().getAlliance();
-        cell.setVisibility(alliance, (short) (cell.getVisibility(alliance) | human.getNumber()));
+    public static void show(BattleCell cell, Warrior warrior) {
+        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
+        cell.setVisibility(alliance, (short) (cell.getVisibility(alliance) | warrior.getNumber()));
         cell.setVisited(alliance, true);
     }
 
     /**
-     * Скрыть ячейку cell от бойца human.
+     * Скрыть ячейку cell от бойца warrior.
      *
      * @param cell
-     * @param human
+     * @param warrior
      */
-    public static void hide(BattleCell cell, Human human) {
-        BattleAlliance alliance = human.getBattleGroup().getAlliance();
-        cell.setVisibility(alliance, (byte) (cell.getVisibility(alliance) & (~human.getNumber())));
+    public static void hide(BattleCell cell, Warrior warrior) {
+        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
+        cell.setVisibility(alliance, (byte) (cell.getVisibility(alliance) & (~warrior.getNumber())));
     }
 
     /**
-     * Видима ли ячейка cell бойцом human.
+     * Видима ли ячейка cell бойцом warrior.
      *
      * @param cell
-     * @param human
+     * @param warrior
      * @return
      */
-    public static boolean isVisible(BattleCell cell, Human human) {
-        BattleAlliance alliance = human.getBattleGroup().getAlliance();
-        return (cell.getVisibility(alliance) & human.getNumber()) != 0;
+    public static boolean isVisible(BattleCell cell, Warrior warrior) {
+        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
+        return (cell.getVisibility(alliance) & warrior.getNumber()) != 0;
     }
 
     /**
@@ -300,25 +298,25 @@ public class BattleMapHelper {
     }
 
     /**
-     * Скрыть все ячейки карты от бойца unit.
-     * Очистка проходит в пределах радиуса видимости бойца unit.
+     * Скрыть все ячейки карты от бойца warrior.
+     * Очистка проходит в пределах радиуса видимости бойца warrior.
      *
      * @param cells
-     * @param unit
+     * @param warrior
      */
-    public static void clearViewAround(BattleCell[][] cells, HumanElement unit) {
+    public static void clearViewAround(BattleCell[][] cells, Warrior warrior) {
         int length = cells.length;
-        int x = unit.getCellX();
-        int y = unit.getCellY();
-        int radius = WarriorHelper.getObservingRadius(unit);
-        SecurityOperationManager manager = unit.getHuman().getBattleGroup().getAccount().getSecurity();
-        System.out.println("I am clearing a view of warrior " + unit.getHuman().getName());
+        int x = warrior.getCellX();
+        int y = warrior.getCellY();
+        int radius = WarriorHelper.getObservingRadius(warrior);
+        SecurityOperationManager manager = warrior.getBattleGroup().getAccount().getSecurity();
+        System.out.println("I am clearing a view of warrior " + warrior.getName());
         for (int i = x - radius; i <= 2 * radius + 1; i++) {
             if (i >= 0 && i < length) {
                 for (int j = y - radius; j <= 2 * radius + 1; j++) {
                     if (j >= 0 && j < length) {
                         manager.adjustObserve(-(i + j));
-                        BattleMapHelper.hide(cells[i][j], unit.getHuman());
+                        BattleMapHelper.hide(cells[i][j], warrior);
                     }
                 }
             }
@@ -326,16 +324,16 @@ public class BattleMapHelper {
     }
 
     /**
-     * Выгрузить бойца unit с карты.
+     * Выгрузить бойца warrior с карты.
      *
-     * @param unit
+     * @param warrior
      */
-    public static void exitFromTheMap(HumanElement unit) {
-        BattleAlliance alliance = unit.getHuman().getBattleGroup().getAlliance();
+    public static void exitFromTheMap(Warrior warrior) {
+        BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
         ExitZone exit = alliance.getExit();
         BattleCell[][] cells = alliance.getBattle().getMap().getCells();
-        if (exit.isWithIn(unit.getCellX(), unit.getCellY())) {
-            cells[unit.getCellX()][unit.getCellY()].removeElement(unit); //todo: этого достаточно?
+        if (exit.isWithIn(warrior.getCellX(), warrior.getCellY())) {
+            cells[warrior.getCellX()][warrior.getCellY()].removeElement(warrior); //todo: этого достаточно?
         }
     }
 
@@ -352,45 +350,45 @@ public class BattleMapHelper {
         }
     }
 
-    public static boolean ableToPut(HumanElement unit, BattleCell[][] cells, short x, short y) {
-        return isNear(unit, x, y) && cells[x][y].getElement() == null; // isAbleToWalkThrough(cells[x][y])
+    public static boolean ableToPut(Warrior warrior, BattleCell[][] cells, short x, short y) {
+        return isNear(warrior, x, y) && cells[x][y].getElement() == null; // isAbleToWalkThrough(cells[x][y])
     }
 
-    public static boolean ableToPeek(HumanElement unit, BattleCell[][] cells, short x, short y) {
-        return isNear(unit, x, y) && cells[x][y].getElement() != null; // !isAbleToWalkThrough(cells[x][y])
+    public static boolean ableToPeek(Warrior warrior, BattleCell[][] cells, short x, short y) {
+        return isNear(warrior, x, y) && cells[x][y].getElement() != null; // !isAbleToWalkThrough(cells[x][y])
     }
 
-    public static boolean isNear(HumanElement unit, short x, short y) {
-        short xDifference = (short) (unit.getCellX() - x);
-        short yDifference = (short) (unit.getCellY() - y);
+    public static boolean isNear(Warrior warrior, short x, short y) {
+        short xDifference = (short) (warrior.getCellX() - x);
+        short yDifference = (short) (warrior.getCellY() - y);
         return xDifference < -1 || xDifference > 1 || yDifference < -1 || yDifference > 1;
     }
 
     /**
      * Убрать предмет с ячейки карты.
      *
-     * @param unit
+     * @param warrior
      * @param x
      * @param y
      * @return
      */
     //todo: Неверный коментарий и название функции
-    public static StateTackle peekStateTackle(HumanElement unit, BattleCell[][] cells, short x, short y) {
-        if (isNear(unit, x, y)) {
+    public static StateTackle peekStateTackle(Warrior warrior, BattleCell[][] cells, short x, short y) {
+        if (isNear(warrior, x, y)) {
             return (StateTackle) cells[x][y].getElement();
         }
         return null;
     }
 
-    public static Medikit peekMedikit(HumanElement unit, BattleCell[][] cells, short x, short y) {
-        if (isNear(unit, x, y)) {
+    public static Medikit peekMedikit(Warrior warrior, BattleCell[][] cells, short x, short y) {
+        if (isNear(warrior, x, y)) {
             return (Medikit) cells[x][y].getElement();
         }
         return null;
     }
 
-    public static Magazine peekMagazine(HumanElement unit, BattleCell[][] cells, short x, short y) {
-        if (isNear(unit, x, y)) {
+    public static Magazine peekMagazine(Warrior warrior, BattleCell[][] cells, short x, short y) {
+        if (isNear(warrior, x, y)) {
             return (Magazine) cells[x][y].getElement();
         }
         return null;
@@ -398,9 +396,9 @@ public class BattleMapHelper {
 
 
     /**
-     * Переместить предмет из одной точки на карте в другую (находящуюся рядом с бойцом unit).
+     * Переместить предмет из одной точки на карте в другую (находящуюся рядом с бойцом warrior).
      *
-     * @param unit
+     * @param warrior
      * @param cells
      * @param x1
      * @param y1
@@ -408,8 +406,8 @@ public class BattleMapHelper {
      * @param y2
      * @return
      */
-    public static boolean moveBetweenCells(HumanElement unit, BattleCell[][] cells, short x1, short y1, short x2, short y2) {
-        if (isNear(unit, x1, y1) && isNear(unit, x2, y2) && cells[x2][y2].getElement() == null) {
+    public static boolean moveBetweenCells(Warrior warrior, BattleCell[][] cells, short x1, short y1, short x2, short y2) {
+        if (isNear(warrior, x1, y1) && isNear(warrior, x2, y2) && cells[x2][y2].getElement() == null) {
             cells[x2][y2].addElement(cells[x1][y1].getElement());
             cells[x1][y1].addElement(null); //todo: remove()
             return true;
@@ -476,26 +474,6 @@ public class BattleMapHelper {
             }
         }
         return false;
-    }
-
-    public static HumanElement getHumanElementByHuman(HumanElementCollection units, Human human) throws RegolithException {
-        for (int i = 0; i < units.size(); i++) {
-            HumanElement unit = units.get(i);
-            if (human == unit.getHuman()) {
-                return unit;
-            }
-        }
-        throw new RegolithException("Human element for a warrior was not found (id = " + human.getId() + ")");
-    }
-
-    public static HumanElement getHumanElementByHumanId(HumanElementCollection units, int humanId) throws RegolithException {
-        for (int i = 0; i < units.size(); i++) {
-            HumanElement unit = units.get(i);
-            if (humanId == unit.getHuman().getId()) {
-                return unit;
-            }
-        }
-        throw new RegolithException("Human element for a warrior was not found (id = " + humanId + ")");
     }
 
 }

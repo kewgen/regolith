@@ -11,15 +11,10 @@ import com.geargames.regolith.serializers.answers.ServerMedikitGround2BoxAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
-import com.geargames.regolith.units.map.CellElement;
-import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.map.Box;
-import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.map.*;
+import com.geargames.regolith.units.battle.BattleGroup;
+import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.tackle.Medikit;
 
 import java.util.ArrayList;
@@ -59,10 +54,8 @@ public class ServerMedikitGround2BoxRequest extends ServerRequest {
 
         List<MessageToClient> messages = new ArrayList<MessageToClient>(1);
 
-        ServerHumanElementCollection units = serverBattle.getHumanElements();
-        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-        if (BattleMapHelper.ableToPeek(unit, cells, fromX, fromY)) {
-            if (BattleMapHelper.isNear(unit, boxX, boxY)) {
+        if (BattleMapHelper.ableToPeek(warrior, cells, fromX, fromY)) {
+            if (BattleMapHelper.isNear(warrior, boxX, boxY)) {
                 CellElement element = BattleMapHelper.putOut(map, fromX, fromY);
                 if (element instanceof Medikit) {
                     Medikit medikit = (Medikit) element;

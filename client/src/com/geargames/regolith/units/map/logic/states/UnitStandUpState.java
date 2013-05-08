@@ -1,7 +1,7 @@
 package com.geargames.regolith.units.map.logic.states;
 
 import com.geargames.common.logging.Debug;
-import com.geargames.regolith.units.map.AbstractClientHumanElement;
+import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.DynamicCellElement;
 import com.geargames.regolith.units.map.states.Actions;
 
@@ -38,15 +38,15 @@ public class UnitStandUpState extends AbstractUnitSimpleState {
                 Debug.critical("Invalid state transition from '" + getAction() + "' to '" + newState.getAction() + "'");
                 return;
         }
-        AbstractClientHumanElement unit = (AbstractClientHumanElement) owner;
-        unit.getLogic().pushState(newState);
+        AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
+        warrior.getLogic().pushState(newState);
     }
 
     @Override
-    public void start(DynamicCellElement owner) {
-        AbstractClientHumanElement unit = (AbstractClientHumanElement) owner;
-        unit.setSitting(false);
-        super.start(unit);
+    public void onStart(DynamicCellElement owner) {
+        AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
+        warrior.setSitting(false);
+        super.onStart(warrior);
     }
 
 }

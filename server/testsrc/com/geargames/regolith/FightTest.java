@@ -4,6 +4,7 @@ import com.geargames.regolith.helpers.AmmunitionBagHelper;
 import com.geargames.regolith.helpers.ServerHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.AmmunitionBag;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerProjectileCollection;
 import com.geargames.regolith.units.dictionaries.ServerWeaponTypeCollection;
@@ -27,8 +28,9 @@ public class FightTest {
     private Warrior warrior;
 
     @Before
-    public void before(){
+    public void before() {
         warrior = new Warrior();
+        warrior.setMembershipType(Human.WARRIOR);
         Weapon weapon = new Weapon();
 
         weaponCategory = new WeaponCategory();
@@ -46,15 +48,15 @@ public class FightTest {
         ammunitionCategory2.setName("клёвые патрончики");
         ammunitionCategory2.setQuality(1.1);
 
-        for(int i=0; i < 3; i++ ){
+        for (int i = 0; i < 3; i++) {
             Projectile projectile = new Projectile();
             faithul.add(projectile);
             projectile.setWeaponTypes(weaponTypes);
-            projectile.setWeight((short)10);
+            projectile.setWeight((short) 10);
             projectile.setName("патрон" + i);
-            if(i%2!=0){
+            if (i % 2 != 0) {
                 projectile.setCategory(ammunitionCategory1);
-            }else{
+            } else {
                 projectile.setCategory(ammunitionCategory2);
             }
         }
@@ -82,31 +84,31 @@ public class FightTest {
     }
 
     @Test
-    public void rechargeWeapon(){
+    public void rechargeWeapon() {
         Weapon weapon = warrior.getWeapon();
         weapon.setProjectile(faithul.get(0));
-        weapon.setLoad((short)20);
+        weapon.setLoad((short) 20);
         WarriorHelper.rechargeWeapon(warrior, faithul.get(1));
 
         Assert.assertEquals(weapon.getProjectile(), faithul.get(1));
         Assert.assertEquals(weapon.getLoad(), weapon.getWeaponType().getCapacity());
 
-        weapon.setLoad((short)0);
+        weapon.setLoad((short) 0);
         WarriorHelper.rechargeWeapon(warrior, faithul.get(1));
         Assert.assertEquals(weapon.getProjectile(), faithul.get(1));
         Assert.assertEquals(weapon.getLoad(), weapon.getWeaponType().getCapacity());
 
-        weapon.setLoad((short)0);
+        weapon.setLoad((short) 0);
         WarriorHelper.rechargeWeapon(warrior, faithul.get(1));
         Assert.assertEquals(weapon.getProjectile(), faithul.get(1));
         Assert.assertEquals(weapon.getLoad(), weapon.getWeaponType().getCapacity());
 
-        weapon.setLoad((short)0);
+        weapon.setLoad((short) 0);
         WarriorHelper.rechargeWeapon(warrior, faithul.get(1));
         Assert.assertEquals(weapon.getProjectile(), faithul.get(1));
         Assert.assertEquals(weapon.getLoad(), weapon.getWeaponType().getCapacity());
 
-        weapon.setLoad((short)0);
+        weapon.setLoad((short) 0);
         WarriorHelper.rechargeWeapon(warrior, faithul.get(1));
         Assert.assertEquals(weapon.getProjectile(), faithul.get(1));
         Assert.assertEquals(weapon.getLoad(), 0);

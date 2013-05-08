@@ -2,8 +2,7 @@ package com.geargames.regolith;
 
 import com.geargames.regolith.map.observer.StrictPerimeterObserver;
 import com.geargames.regolith.map.router.RecursiveWaveRouter;
-import com.geargames.regolith.units.dictionaries.ClientAllyCollection;
-import com.geargames.regolith.units.dictionaries.ClientHumanElementCollection;
+import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 
 import java.util.Vector;
 
@@ -22,8 +21,8 @@ public class ClientTestConfigurationFactory {
                     configuration = new RegolithConfiguration();
                     BattleConfiguration battleConfiguration = new BattleConfiguration();
                     configuration.setBattleConfiguration(battleConfiguration);
-                    ClientHumanElementCollection collection = new ClientHumanElementCollection();
-                    collection.setElements(new Vector());
+                    ClientWarriorCollection collection = new ClientWarriorCollection();
+                    collection.setWarriors(new Vector());
                     battleConfiguration.setObserver(new StrictPerimeterObserver(collection));
                     battleConfiguration.setRouter(new RecursiveWaveRouter());
                     battleConfiguration.setActiveTime(100);

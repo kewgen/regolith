@@ -4,11 +4,11 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
-import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Battle;
-import com.geargames.regolith.units.dictionaries.ClientHumanElementCollection;
-import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 
 import java.util.Vector;
 
@@ -19,8 +19,7 @@ import java.util.Vector;
  */
 public class ClientInitiallyObservedEnemies extends ClientDeSerializedMessage {
     private Battle battle;
-
-    private ClientHumanElementCollection enemies;
+    private ClientWarriorCollection enemies;
 
     public Battle getBattle() {
         return battle;
@@ -35,24 +34,24 @@ public class ClientInitiallyObservedEnemies extends ClientDeSerializedMessage {
      *
      * @return
      */
-    public ClientHumanElementCollection getEnemies() {
+    public ClientWarriorCollection getEnemies() {
         return enemies;
     }
 
 
     @Override
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        ClientHumanElementCollection enemyUnits = PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits();
+        ClientWarriorCollection enemyUnits = PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits();
 
         byte size = buffer.get();
-        enemies = new ClientHumanElementCollection();
-        enemies.setElements(new Vector(size));
+        enemies = new ClientWarriorCollection();
+        enemies.setWarriors(new Vector(size));
         for (int i = 0; i < size; i++) {
             int enemyId = SimpleDeserializer.deserializeInt(buffer);
-            HumanElement unit = BattleMapHelper.getHumanElementByHumanId(enemyUnits, enemyId);
-            short x = SimpleDeserializer.deserializeShort(buffer);
-            short y = SimpleDeserializer.deserializeShort(buffer);
-            WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), unit, x, y);
+            Warrior unit = ClientBattleHelper.getWarriorElementById(enemyUnits, enemyId);
+            short cellX = SimpleDeserializer.deserializeShort(buffer);
+            short cellY = SimpleDeserializer.deserializeShort(buffer);
+            WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), unit, cellX, cellY);
             enemies.add(unit);
         }
     }

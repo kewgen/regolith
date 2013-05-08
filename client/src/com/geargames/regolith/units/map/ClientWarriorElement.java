@@ -7,11 +7,11 @@ import com.geargames.regolith.units.map.states.UnitScriptGraphicComponent;
  * User: abarakov
  * Date: 30.04.13
  */
-public class ClientHumanElement extends AbstractClientHumanElement {
+public class ClientWarriorElement extends AbstractClientWarriorElement {
     private HumanLogicComponent logic;
     private UnitScriptGraphicComponent graphic;
 
-    public ClientHumanElement() {
+    public ClientWarriorElement() {
         logic = new HumanLogicComponent(this);
         graphic = new UnitScriptGraphicComponent();
         logic.initiate();

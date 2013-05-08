@@ -119,14 +119,10 @@ public class PCampButton extends PTouchButton {
             battleMap.getCells()[6][9].addElement(fenceBarrier0l);
             battleMap.getCells()[8][7].addElement(barBarrier1);
 
-            HumanElement unitMine = new ClientHumanElement();
-            Warrior mineWarrior = account.getWarriors().get(0);
-            unitMine.setHuman(mineWarrior);
-            unitMine.setDirection(Direction.LEFT_RIGHT);
-            HumanElement anotherMine = new ClientHumanElement();
-            Warrior anotherWarrior = account.getWarriors().get(1);
-            anotherMine.setHuman(anotherWarrior);
-            anotherMine.setDirection(Direction.LEFT_RIGHT);
+            Warrior mine = account.getWarriors().get(0);
+            mine.setDirection(Direction.LEFT_RIGHT);
+            Warrior another = account.getWarriors().get(1);
+            another.setDirection(Direction.LEFT_RIGHT);
 
             ExitZone[] exits = new ExitZone[2];
             battleMap.setExits(exits);
@@ -135,10 +131,10 @@ public class PCampButton extends PTouchButton {
             exit.setY((short) 1);
             exit.setxRadius((byte) 1);
             exit.setyRadius((byte) 1);
-            WarriorHelper.putWarriorIntoMap(battleMap.getCells(), unitMine, 0, 0);
-            mineWarrior.setNumber((short) 1);
-            mineWarrior.setActionScore((short) 100);
-            mineWarrior.setSpeed((byte) 100);
+            WarriorHelper.putWarriorIntoMap(battleMap.getCells(), mine, 0, 0);
+            mine.setNumber((short) 1);
+            mine.setActionScore((short) 100);
+            mine.setSpeed((byte) 100);
             battle.getAlliances()[0].setExit(exit);
             exits[0] = exit;
 
@@ -148,14 +144,14 @@ public class PCampButton extends PTouchButton {
             exit.setxRadius((byte) 1);
             exit.setyRadius((byte) 1);
             battle.getAlliances()[1].setExit(exit);
-            WarriorHelper.putWarriorIntoMap(battleMap.getCells(), anotherMine, 18, 18);
-            anotherWarrior.setNumber((short) 2);
-            anotherWarrior.setActionScore((short) 100);
-            anotherWarrior.setSpeed((byte) 100);
+            WarriorHelper.putWarriorIntoMap(battleMap.getCells(), another, 18, 18);
+            another.setNumber((short) 2);
+            another.setActionScore((short) 100);
+            another.setSpeed((byte) 100);
             exits[1] = exit;
 
-            WarriorHelper.addWarriorToGroup(battle.getAlliances()[0].getAllies().get(0), mineWarrior);
-            WarriorHelper.addWarriorToGroup(battle.getAlliances()[1].getAllies().get(0), anotherWarrior);
+            WarriorHelper.addWarriorToGroup(battle.getAlliances()[0].getAllies().get(0), mine);
+            WarriorHelper.addWarriorToGroup(battle.getAlliances()[1].getAllies().get(0), another);
 
 
             BattleConfiguration battleConfiguration = new BattleConfiguration();
@@ -212,9 +208,9 @@ public class PCampButton extends PTouchButton {
 
             battleConfiguration.setSubordinationDamage(subordinationDamages);
 
-            ClientHumanElementCollection allies = new ClientHumanElementCollection();
-            allies.setElements(new Vector());
-            allies.add(unitMine);
+            ClientWarriorCollection allies = new ClientWarriorCollection();
+            allies.setWarriors(new Vector());
+            allies.add(mine);
             battleConfiguration.setObserver(new StrictPerimeterObserver(allies));
             battleConfiguration.setRouter(new RecursiveWaveRouter());
             ClientConfigurationFactory.getConfiguration().setBattleConfiguration(battleConfiguration);

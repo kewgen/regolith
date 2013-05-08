@@ -12,12 +12,10 @@ import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.BattleGroup;
+import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
-import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
@@ -54,9 +52,7 @@ public class ServerTackleGround2BoxRequest extends ServerRequest {
             BattleGroup group = BattleServiceRequestUtils.getBattleGroupFromServerBattle(serverBattle, allianceNumber, groupId);
             Warrior warrior = BattleServiceRequestUtils.getWarriorFromGroup(group, warriorId);
 
-            ServerHumanElementCollection units = serverBattle.getHumanElements();
-            HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-            if (BattleMapHelper.isNear(unit, xGround, yGround) && BattleMapHelper.isNear(unit, xBox, yBox)) {
+            if (BattleMapHelper.isNear(warrior, xGround, yGround) && BattleMapHelper.isNear(warrior, xBox, yBox)) {
                 Box box = (Box) cells[xBox][yBox].getElement();
                 StateTackle tackle = (StateTackle) cells[xGround][yGround].getElement();
                 box.getTackles().add(tackle);

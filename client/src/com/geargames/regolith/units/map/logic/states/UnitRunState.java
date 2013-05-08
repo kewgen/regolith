@@ -6,11 +6,10 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.BattleScreen;
-import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Direction;
-import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.AbstractClientHumanElement;
 import com.geargames.regolith.units.map.DynamicCellElement;
 import com.geargames.regolith.units.map.states.Actions;
 
@@ -60,26 +59,24 @@ public class UnitRunState extends AbstractLogicState {
                 Debug.critical("Invalid state transition from '" + getAction() + "' to '" + newState.getAction() + "'");
                 return;
         }
-        AbstractClientHumanElement unit = (AbstractClientHumanElement) owner;
-        unit.getLogic().pushState(newState);
+        AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
+        warrior.getLogic().pushState(newState);
     }
 
     @Override
-    public void start(DynamicCellElement owner) {
-        AbstractClientHumanElement unit = (AbstractClientHumanElement) owner;
-        unit.getGraphic().start(unit, getAction());
+    public void onStart(DynamicCellElement owner) {
+        AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
+        warrior.getGraphic().start(warrior, getAction());
 
         speed = ClientConfigurationFactory.getConfiguration().getBattleConfiguration().getWalkSpeed();
         shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
         shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
 
-        Warrior warrior = (Warrior) unit.getHuman();
-
         ticks = 0;
         extensionX = 0;
         extensionY = 0;
-        beginMapX = unit.getMapX();
-        beginMapY = unit.getMapY();
+        beginMapX = warrior.getMapX();
+        beginMapY = warrior.getMapY();
 
 ////        if (hasToStop(warrior)) {
 ////            isMoving = false;
@@ -105,7 +102,7 @@ public class UnitRunState extends AbstractLogicState {
     }
 
     @Override
-    public void stop(DynamicCellElement owner) {
+    public void onStop(DynamicCellElement owner) {
 
     }
 
@@ -117,44 +114,44 @@ public class UnitRunState extends AbstractLogicState {
      */
     @Override
     public boolean onTick(DynamicCellElement owner) {
-        AbstractClientHumanElement unit = (AbstractClientHumanElement) owner;
+        AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
 
         boolean needStoped = false;
         if (speed - ticks > 1) {
             extensionX += shiftOnTickX * (stepDirection.getX() - stepDirection.getY());
             extensionY += shiftOnTickY * (stepDirection.getY() + stepDirection.getX());
-            unit.setMapX((short) (extensionX + beginMapX));
-            unit.setMapY((short) (extensionY + beginMapY));
+            warrior.setMapX((short) (extensionX + beginMapX));
+            warrior.setMapY((short) (extensionY + beginMapY));
             ticks++;
         } else {
-            unit.setMapX((short) (BattleScreen.HORIZONTAL_RADIUS * (stepDirection.getX() - stepDirection.getY()) + beginMapX));
-            unit.setMapY((short) (BattleScreen.VERTICAL_RADIUS * (stepDirection.getY() + stepDirection.getX()) + beginMapY));
+            warrior.setMapX((short) (BattleScreen.HORIZONTAL_RADIUS * (stepDirection.getX() - stepDirection.getY()) + beginMapX));
+            warrior.setMapY((short) (BattleScreen.VERTICAL_RADIUS * (stepDirection.getY() + stepDirection.getX()) + beginMapY));
 
             BattleCell[][] cells = PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells();
-            if (unit.getHuman().getMembershipType() == Human.ENEMY) {
-                BattleMapHelper.resetShortestCell(cells[unit.getCellX()][unit.getCellY()], unit.getHuman());
-                WarriorHelper.putWarriorIntoMap(cells, unit, unit.getCellX() + stepDirection.getX(), unit.getCellY() + stepDirection.getY());
+            if (warrior.getMembershipType() == Human.ENEMY) {
+                BattleMapHelper.resetShortestCell(cells[warrior.getCellX()][warrior.getCellY()], warrior);
+                WarriorHelper.putWarriorIntoMap(cells, warrior, warrior.getCellX() + stepDirection.getX(), warrior.getCellY() + stepDirection.getY());
             } else {
-                WarriorHelper.step(cells, unit, stepDirection.getX(), stepDirection.getY(),
+                WarriorHelper.step(cells, warrior, stepDirection.getX(), stepDirection.getY(),
                         ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
             }
 
-            stepDirection = WarriorHelper.getStepDirection(cells, unit);
+            stepDirection = WarriorHelper.getStepDirection(cells, warrior);
             if (stepDirection == Direction.NONE) {
                 needStoped = true;
-                unit.getGraphic().stop();
+                warrior.getGraphic().stop();
 //                isMoving = false;
 //                battleUnit.getUnit().stop();
             } else {
-                if (stepDirection != unit.getDirection()) {
-                    unit.getGraphic().stop();
-                    unit.setDirection(stepDirection);
-                    unit.getGraphic().start(unit, getAction());
+                if (stepDirection != warrior.getDirection()) {
+                    warrior.getGraphic().stop();
+                    warrior.setDirection(stepDirection);
+                    warrior.getGraphic().start(warrior, getAction());
                 }
             }
         }
 
-        unit.getGraphic().onTick();
+        warrior.getGraphic().onTick();
         return needStoped;
     }
 

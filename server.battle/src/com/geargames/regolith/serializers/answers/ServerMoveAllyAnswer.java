@@ -5,8 +5,8 @@ import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.serializers.SerializeHelper;
-import com.geargames.regolith.units.map.HumanElement;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 
 /**
  * Users: mvkutuzov, abarakov
@@ -15,10 +15,10 @@ import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
  */
 public class ServerMoveAllyAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
-    private HumanElement unit;
-    private ServerHumanElementCollection enemies;
+    private Warrior unit;
+    private ServerWarriorCollection enemies;
 
-    public ServerMoveAllyAnswer(MicroByteBuffer buffer, HumanElement unit, ServerHumanElementCollection enemies) {
+    public ServerMoveAllyAnswer(MicroByteBuffer buffer, Warrior unit, ServerWarriorCollection enemies) {
         this.buffer = buffer;
         this.unit = unit;
         this.enemies = enemies;
@@ -43,13 +43,13 @@ public class ServerMoveAllyAnswer extends SerializedMessage {
      */
     @Override
     public void serialize(MicroByteBuffer buffer) {
-        SerializeHelper.serializeEntityReference(unit.getHuman(), buffer);
+        SerializeHelper.serializeEntityReference(unit, buffer);
         SimpleSerializer.serialize(unit.getCellX(), buffer);
         SimpleSerializer.serialize(unit.getCellY(), buffer);
         if (enemies != null) {
             SimpleSerializer.serialize((byte) enemies.size(), buffer);
-            for (HumanElement human : enemies.getElements()) {
-                SerializeHelper.serializeEntityReference(human.getHuman(), buffer);
+            for (Warrior human : enemies.getWarriors()) {
+                SerializeHelper.serializeEntityReference(human, buffer);
                 SimpleSerializer.serialize(human.getCellX(), buffer);
                 SimpleSerializer.serialize(human.getCellY(), buffer);
             }

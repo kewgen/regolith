@@ -30,14 +30,14 @@ public abstract class AbstractLogicState {
      *
      * @param owner
      */
-    public abstract void start(DynamicCellElement owner);
+    public abstract void onStart(DynamicCellElement owner);
 
     /**
      * Остановить выполнение действия.
      *
      * @param owner
      */
-    public abstract void stop(DynamicCellElement owner);
+    public abstract void onStop(DynamicCellElement owner);
 
     /**
      * @param owner

@@ -6,7 +6,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.serializers.SerializeHelper;
-import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.battle.Warrior;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class ServerMoveEnemyAnswer extends SerializedMessage {
     private MicroByteBuffer buffer;
-    private HumanElement unit;
+    private Warrior unit;
     private List<Pair> pairs;
 
-    public ServerMoveEnemyAnswer(MicroByteBuffer buffer, HumanElement unit, List<Pair> pairs) {
+    public ServerMoveEnemyAnswer(MicroByteBuffer buffer, Warrior unit, List<Pair> pairs) {
         this.buffer = buffer;
         this.unit = unit;
         this.pairs = pairs;
@@ -40,14 +40,14 @@ public class ServerMoveEnemyAnswer extends SerializedMessage {
         short invisible = 0;
 //        SerializeHelper.serializeEntityReference(unit.getHuman().getBattleGroup().getAlliance(), buffer);
 //        SerializeHelper.serializeEntityReference(unit.getHuman().getBattleGroup(), buffer);
-        SerializeHelper.serializeEntityReference(unit.getHuman(), buffer);
+        SerializeHelper.serializeEntityReference(unit, buffer);
         buffer.mark();
         buffer.setPosition(buffer.getPosition() + 1);
         byte size = 0;
         for (Pair pair : pairs) {
             if (pair != null) {
                 if (invisible != 0) {
-                    SimpleSerializer.serialize(SimpleSerializer.NULL_COORDINATE, buffer);
+                    SimpleSerializer.serialize(SerializeHelper.NULL_COORDINATE, buffer);
                     SimpleSerializer.serialize(invisible, buffer);
                     invisible = 0;
                 }

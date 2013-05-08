@@ -4,7 +4,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.Human;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
@@ -73,7 +73,7 @@ public class BattleSerializer {
             if (!WarriorHelper.isMine(battleGroup, account)) {
                 // Сериализация союзных бойцов
                 SimpleSerializer.serialize(SimpleSerializer.NO, buffer);
-                for (Ally ally : ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors()) {
+                for (Warrior ally : ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors()) {
                     serializeHuman(ally, buffer);
                 }
             } else {
@@ -96,10 +96,10 @@ public class BattleSerializer {
             SimpleSerializer.serialize((byte) battle.getAlliances().length, buffer);
             for (BattleAlliance alliance : battle.getAlliances()) {
                 if (WarriorHelper.isAlly(alliance, account)) {
-                    SimpleSerializer.serialize(SimpleSerializer.ALLY, buffer);
+                    SimpleSerializer.serialize(SerializeHelper.ALLY, buffer);
                     serializeAllies(alliance, account, buffer);
                 } else {
-                    SimpleSerializer.serialize(SimpleSerializer.ENEMY, buffer);
+                    SimpleSerializer.serialize(SerializeHelper.ENEMY, buffer);
                     serializeEnemies(alliance, buffer);
                 }
             }

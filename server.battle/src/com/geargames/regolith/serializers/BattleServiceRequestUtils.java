@@ -5,7 +5,6 @@ import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 
-
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +35,7 @@ public class BattleServiceRequestUtils {
 
     public static List<SocketChannel> getRecipients(Collection<? extends Client> clients) {
         List<SocketChannel> recipients = new LinkedList<SocketChannel>();
-        for(Client client : clients){
+        for (Client client : clients) {
             recipients.add(client.getChannel());
         }
         return recipients;

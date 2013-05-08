@@ -3,13 +3,17 @@ package com.geargames.regolith.units.battle;
 import com.geargames.regolith.units.AmmunitionBag;
 import com.geargames.regolith.units.Bag;
 import com.geargames.regolith.units.Skill;
+import com.geargames.regolith.units.map.CellElementLayers;
+import com.geargames.regolith.units.map.CellElementTypes;
+import com.geargames.regolith.units.tackle.WeaponCategory;
 
 import java.util.Date;
 import java.util.Hashtable;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 03.02.12
+ * Класс бойца, расположенного в одной из клеток на карте.
  */
 public class Warrior extends Ally {
     private short strength;
@@ -26,8 +30,21 @@ public class Warrior extends Ally {
     private AmmunitionBag ammunitionBag;
     private Hashtable victimsDamages;
 
+    private short cellX;
+    private short cellY;
+    private Direction direction;
+    private boolean sitting;
+
+    public Warrior() {
+        cellX = 0; //todo: 0 -> -32768
+        cellY = 0; //todo: 0 -> -32768
+        direction = Direction.NONE;
+        sitting = false;
+    }
+
     /**
      * Сумка с патронами и аптечками.
+     *
      * @return
      */
     public AmmunitionBag getAmmunitionBag() {
@@ -40,6 +57,7 @@ public class Warrior extends Ally {
 
     /**
      * Таблица урона который боец причинил противникам в течение последнего боя.
+     *
      * @return
      */
     public Hashtable getVictimsDamages() {
@@ -52,6 +70,7 @@ public class Warrior extends Ally {
 
     /**
      * Сила бойца (измеряется в граммах) .
+     *
      * @return
      */
     public short getStrength() {
@@ -64,6 +83,7 @@ public class Warrior extends Ally {
 
     /**
      * Скорость перемещения бойца по карте(в клетках за секунду).
+     *
      * @return
      */
     public byte getSpeed() {
@@ -76,6 +96,7 @@ public class Warrior extends Ally {
 
     /**
      * Меткость бойца(в процентах).
+     *
      * @return
      */
     public byte getMarksmanship() {
@@ -88,6 +109,7 @@ public class Warrior extends Ally {
 
     /**
      * Ловкость бойца(в процентах).
+     *
      * @return
      */
     public byte getCraftiness() {
@@ -100,6 +122,7 @@ public class Warrior extends Ally {
 
     /**
      * День рождения.
+     *
      * @return
      */
     public Date getBirthDate() {
@@ -111,7 +134,6 @@ public class Warrior extends Ally {
     }
 
     /**
-     *
      * @return
      */
     public byte getVitality() {
@@ -124,6 +146,7 @@ public class Warrior extends Ally {
 
     /**
      * Очки опыта распределённые по категориям оружия.
+     *
      * @return
      */
     public short[] getSkillScores() {
@@ -136,6 +159,7 @@ public class Warrior extends Ally {
 
     /**
      * Уровни опыта распределённые по категориям оружия.
+     *
      * @return
      */
     public Skill[] getSkills() {
@@ -148,6 +172,7 @@ public class Warrior extends Ally {
 
     /**
      * Число очков действия доступное бойцу.
+     *
      * @return
      */
     public short getActionScore() {
@@ -160,6 +185,7 @@ public class Warrior extends Ally {
 
     /**
      * Количество ОО заработанных бойцом.
+     *
      * @return
      */
     public int getExperience() {
@@ -172,6 +198,7 @@ public class Warrior extends Ally {
 
     /**
      * Сумка с оружием и бронёй.
+     *
      * @return
      */
     public Bag getBag() {
@@ -181,4 +208,94 @@ public class Warrior extends Ally {
     public void setBag(Bag bag) {
         this.bag = bag;
     }
+
+    //todo: там где апдейтятся cellX и cellY, возможно, следует апдейтить mapX и mapY
+
+    /**
+     * Получить номер ячейки по оси X, в которой расположен боец.
+     *
+     * @return
+     */
+    public short getCellX() {
+        return cellX;
+    }
+
+    public void setCellX(short x) {
+        this.cellX = x;
+    }
+
+    /**
+     * Получить номер ячейки по оси Y, в которой расположен боец.
+     *
+     * @return
+     */
+    public short getCellY() {
+        return cellY;
+    }
+
+    public void setCellY(short y) {
+        this.cellY = y;
+    }
+
+    /**
+     * Получить направление, в котором повёрнут боец.
+     *
+     * @return
+     */
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    /**
+     * Вернет true, если боец сидит.
+     *
+     * @return
+     */
+    public boolean isSitting() {
+        return sitting;
+    }
+
+    public void setSitting(boolean sitting) {
+        this.sitting = sitting;
+    }
+
+    @Override
+    public boolean isHalfLong() {
+        return sitting;
+    }
+
+    @Override
+    public boolean isAbleToLookThrough() {
+        return sitting;
+    }
+
+    @Override
+    public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
+        return sitting;
+    }
+
+    @Override
+    public boolean isAbleToWalkThrough() {
+        return false;
+    }
+
+    @Override
+    public boolean isBarrier() {
+        return false;
+    }
+
+    @Override
+    public short getElementType() {
+        return CellElementTypes.HUMAN;
+    }
+
+    @Override
+    public byte getLayer() {
+        return CellElementLayers.HUMAN;
+    }
+
 }

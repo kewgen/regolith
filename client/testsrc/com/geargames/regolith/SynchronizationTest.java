@@ -4,6 +4,7 @@ import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
@@ -20,8 +21,7 @@ import java.util.Vector;
  * Date: 20.03.12
  */
 public class SynchronizationTest {
-    private Warrior warrior;
-    private TestClientHumanElement unit;
+    private TestClientWarriorElement warrior;
     private BattleMap battleMap;
     private Battle battle;
 
@@ -35,12 +35,12 @@ public class SynchronizationTest {
         ClientTestConfigurationFactory.getDefaultConfiguration();
         Barrier barrier = new ClientBarrier();
         barrier.setAbleToLookThrough(false);
-        warrior = new Warrior();
+        warrior = new TestClientWarriorElement();
         account.getWarriors().add(warrior);
         warrior.setName("Вася");
         warrior.setActionScore((short) 10);
-        unit = new TestClientHumanElement();
-        unit.setHuman(warrior);
+        warrior.setMembershipType(Human.WARRIOR);
+        warrior.setDirection(Direction.DOWN_UP);
 
         BattleGroup battleGroup = new BattleGroup();
         battleGroup.setWarriors(new ClientWarriorCollection(new Vector()));
@@ -76,29 +76,29 @@ public class SynchronizationTest {
 
         BattleConfiguration battleConfiguration = ClientTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
 
-        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), unit, 0, 0);
-        BattleMapHelper.clearRoutes(battleMap.getCells(), unit, 0, 0, battleConfiguration);
-        BattleMapHelper.clearViewAround(battleMap.getCells(), unit);
+        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), warrior, 0, 0);
+        BattleMapHelper.clearRoutes(battleMap.getCells(), warrior, 0, 0, battleConfiguration);
+        BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
         BattleMapHelper.prepare(battleMap.getCells());
-        battleConfiguration.getObserver().observe(unit);
+        battleConfiguration.getObserver().observe(warrior);
         MoveOneStepListener listener = new MoveOneStepListener() {
             @Override
-            public void onStep(HumanElement unit, int x, int y) {
+            public void onStep(Warrior warrior, int x, int y) {
 
             }
         };
-        WarriorHelper.move(battleMap.getCells(), unit, 10, 10, listener, battleConfiguration);
+        WarriorHelper.move(battleMap.getCells(), warrior, 10, 10, listener, battleConfiguration);
         int valO = manager.getObserve();
 
-        BattleMapHelper.clearRoutes(battleMap.getCells(), unit, 0, 0, battleConfiguration);
-        BattleMapHelper.clearViewAround(battleMap.getCells(), unit);
+        BattleMapHelper.clearRoutes(battleMap.getCells(), warrior, 0, 0, battleConfiguration);
+        BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
         manager.setObserve(0);
         manager.setX(0);
         manager.setY(0);
 
-        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), unit, 0, 0);
-        BattleMapHelper.clearRoutes(battleMap.getCells(), unit, 0, 0, battleConfiguration);
-        BattleMapHelper.clearViewAround(battleMap.getCells(), unit);
+        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), warrior, 0, 0);
+        BattleMapHelper.clearRoutes(battleMap.getCells(), warrior, 0, 0, battleConfiguration);
+        BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
 
         BattleScreen screen = new BattleScreen();
         screen.setCorrector(new CubeBorderCorrector());
@@ -107,7 +107,7 @@ public class SynchronizationTest {
         screen.onShow();
 
         screen.moveUser(10, 10);
-        unit.getLogic().quicklyCompleteAllCommands();
+        warrior.getLogic().quicklyCompleteAllCommands();
 
         Assert.assertEquals(valO, manager.getObserve());
     }

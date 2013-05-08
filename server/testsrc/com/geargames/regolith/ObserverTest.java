@@ -3,8 +3,7 @@ package com.geargames.regolith;
 import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.dictionaries.ServerAllyCollection;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.map.observer.Observer;
@@ -26,7 +25,6 @@ import java.util.LinkedList;
  */
 public class ObserverTest {
     private Warrior warrior;
-    private HumanElement unit;
     private BattleMap battleMap;
     private Barrier barrier;
     private Observer observer;
@@ -39,15 +37,14 @@ public class ObserverTest {
         account.setSecurity(manager);
         manager.setAccount(account);
 
-        ServerHumanElementCollection collection = new ServerHumanElementCollection();
-        collection.setElements(new ArrayList<HumanElement>());
+        ServerWarriorCollection collection = new ServerWarriorCollection();
+        collection.setWarriors(new ArrayList<Warrior>());
         observer = new StrictPerimeterObserver(collection);
         barrier = new ServerBarrier();
         barrier.setAbleToLookThrough(false);
         warrior = new Warrior();
         warrior.setName("Вася");
-        unit = new ServerHumanElement();
-        unit.setHuman(warrior);
+        warrior.setMembershipType(Human.WARRIOR);
 
         BattleGroup battleGroup = new BattleGroup();
         battleGroup.setAccount(account);
@@ -96,20 +93,20 @@ public class ObserverTest {
 
     @Test
     public void cubeObserver() {
-        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), unit, 5, 5);
-        observer.observe(unit);
+        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), warrior, 5, 5);
+        observer.observe(warrior);
         TestHelper.printViewMap(battleMap, warrior.getBattleGroup().getAlliance());
     }
 
     @Test
     public void observe() {
-        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), unit, 0, 5);
+        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), warrior, 0, 5);
         BattleCell[][] cells = battleMap.getCells();
         cells[0][2].addElement(barrier);
         cells[1][2].addElement(barrier);
         cells[2][2].addElement(barrier);
-        BattleMapHelper.clearViewAround(battleMap.getCells(), unit);
-        observer.observe(unit);
+        BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
+        observer.observe(warrior);
         TestHelper.printViewMap(battleMap, warrior.getBattleGroup().getAlliance());
         BattleAlliance alliance = warrior.getBattleGroup().getAlliance();
         Assert.assertTrue("Точка [3][2] должна быть видима", BattleMapHelper.isVisible(battleMap.getCells()[3][2], alliance));
@@ -120,7 +117,7 @@ public class ObserverTest {
 
     @Test
     public void route() {
-        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), unit, 1, 5);
+        WarriorHelper.putWarriorIntoMap(battleMap.getCells(), warrior, 1, 5);
         BattleCell[][] cells = battleMap.getCells();
         cells[0][2].addElement(barrier);
         cells[1][2].addElement(barrier);
@@ -134,31 +131,31 @@ public class ObserverTest {
 
         warrior.setActionScore((short) 10);
         BattleMapHelper.prepare(battleMap.getCells());
-        TestHelper.printRouteMap(battleMap, unit);
+        TestHelper.printRouteMap(battleMap, warrior);
         BattleConfiguration battleConfiguration = ServerTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
-        router.route(unit, battleConfiguration);
-        TestHelper.printRouteMap(battleMap, unit);
-        BattleMapHelper.makeShortestRoute(cells, 2, 0, unit);
-        TestHelper.printRouteMap(battleMap, unit);
-        Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[2][0], unit));
-        Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[3][1], unit));
-        Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[3][2], unit));
-        Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[3][3], unit));
+        router.route(warrior, battleConfiguration);
+        TestHelper.printRouteMap(battleMap, warrior);
+        BattleMapHelper.makeShortestRoute(cells, 2, 0, warrior);
+        TestHelper.printRouteMap(battleMap, warrior);
+        Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[2][0], warrior));
+        Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[3][1], warrior));
+        Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[3][2], warrior));
+        Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[3][3], warrior));
 
-        BattleMapHelper.resetShortestPath(cells, unit, unit.getCellX(), unit.getCellY(), battleConfiguration);
-        Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[2][0], unit));
-        Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[3][1], unit));
-        Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[3][2], unit));
-        Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[3][3], unit));
+        BattleMapHelper.resetShortestPath(cells, warrior, warrior.getCellX(), warrior.getCellY(), battleConfiguration);
+        Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[2][0], warrior));
+        Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[3][1], warrior));
+        Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[3][2], warrior));
+        Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[3][3], warrior));
 
-        TestHelper.printRouteMap(battleMap, unit);
-        BattleMapHelper.clearRoutes(cells, unit, unit.getCellX(), unit.getCellY(), battleConfiguration);
+        TestHelper.printRouteMap(battleMap, warrior);
+        BattleMapHelper.clearRoutes(cells, warrior, warrior.getCellX(), warrior.getCellY(), battleConfiguration);
 
         Assert.assertFalse("расчёта для точки нет", BattleMapHelper.isReachable(cells[2][0]));
         Assert.assertFalse("расчёта для точки нет", BattleMapHelper.isReachable(cells[3][1]));
         Assert.assertFalse("расчёта для точки нет", BattleMapHelper.isReachable(cells[3][2]));
         Assert.assertFalse("расчёта для точки нет", BattleMapHelper.isReachable(cells[3][3]));
 
-        TestHelper.printRouteMap(battleMap, unit);
+        TestHelper.printRouteMap(battleMap, warrior);
     }
 }

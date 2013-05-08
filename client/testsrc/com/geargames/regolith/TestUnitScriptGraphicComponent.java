@@ -2,8 +2,7 @@ package com.geargames.regolith;
 
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.PUnit;
-import com.geargames.regolith.units.map.AbstractClientHumanElement;
-import com.geargames.regolith.units.map.GraphicComponent;
+import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.states.AbstractUnitScriptGraphicComponent;
 
 /**
@@ -13,7 +12,7 @@ import com.geargames.regolith.units.map.states.AbstractUnitScriptGraphicComponen
 public class TestUnitScriptGraphicComponent extends AbstractUnitScriptGraphicComponent {
 
     @Override
-    public void start(AbstractClientHumanElement unit, byte action) {
+    public void start(AbstractClientWarriorElement warrior, byte action) {
 
     }
 

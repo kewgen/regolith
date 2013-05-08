@@ -1,7 +1,7 @@
 package com.geargames.regolith.units.map.logic.states;
 
 import com.geargames.common.logging.Debug;
-import com.geargames.regolith.units.map.AbstractClientHumanElement;
+import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.DynamicCellElement;
 import com.geargames.regolith.units.map.HumanLogicComponent;
 import com.geargames.regolith.units.map.states.Actions;
@@ -21,7 +21,7 @@ public class UnitSitState extends AbstractLogicState {
 
     @Override
     public void change(DynamicCellElement owner, AbstractLogicState newState) {
-        HumanLogicComponent logic = ((AbstractClientHumanElement) owner).getLogic();
+        HumanLogicComponent logic = ((AbstractClientWarriorElement) owner).getLogic();
         switch (newState.getAction()) {
 //            case Actions.HUMAN_STAND:
             case Actions.HUMAN_RUN:
@@ -46,13 +46,13 @@ public class UnitSitState extends AbstractLogicState {
     }
 
     @Override
-    public void start(DynamicCellElement owner) {
-        AbstractClientHumanElement unit = (AbstractClientHumanElement) owner;
-        unit.getGraphic().start(unit, getAction());
+    public void onStart(DynamicCellElement owner) {
+        AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
+        warrior.getGraphic().start(warrior, getAction());
     }
 
     @Override
-    public void stop(DynamicCellElement owner) {
+    public void onStop(DynamicCellElement owner) {
 
     }
 

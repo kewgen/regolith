@@ -36,6 +36,7 @@ public class Medikit extends Ammunition {
         this.value = value;
     }
 
+    @Override
     public int getType() {
         return TackleType.MEDIKIT;
     }

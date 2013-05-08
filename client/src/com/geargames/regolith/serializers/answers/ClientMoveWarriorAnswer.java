@@ -4,12 +4,11 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
-import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.battle.Battle;
-import com.geargames.regolith.units.dictionaries.ClientHumanElementCollection;
-import com.geargames.regolith.units.map.HumanElement;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 
 import java.util.Vector;
 
@@ -22,13 +21,13 @@ import java.util.Vector;
 public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
     private short x;
     private short y;
-    private ClientHumanElementCollection enemies;
+    private ClientWarriorCollection enemies;
 
     private boolean success;
 
     private Battle battle;
 
-    public ClientHumanElementCollection getEnemies() {
+    public ClientWarriorCollection getEnemies() {
         return enemies;
     }
 
@@ -60,13 +59,12 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
             x = SimpleDeserializer.deserializeShort(buffer);
             y = SimpleDeserializer.deserializeShort(buffer);
             byte size = buffer.get();
-            enemies = new ClientHumanElementCollection();
-            enemies.setElements(new Vector(size));
-            BattleScreen battleScreen = PRegolithPanelManager.getInstance().getBattleScreen();
-            ClientHumanElementCollection groupUnits = battleScreen.getGroupUnits();
+            enemies = new ClientWarriorCollection();
+            enemies.setWarriors(new Vector(size));
+            ClientWarriorCollection groupUnits = PRegolithPanelManager.getInstance().getBattleScreen().getGroupUnits();
             for (int j = 0; j < size; j++) {
                 int warriorId = SimpleDeserializer.deserializeInt(buffer);
-                HumanElement unit = BattleMapHelper.getHumanElementByHumanId(groupUnits, warriorId);
+                Warrior unit = ClientBattleHelper.getWarriorElementById(groupUnits, warriorId);
                 int xx = SimpleDeserializer.deserializeShort(buffer);
                 int yy = SimpleDeserializer.deserializeShort(buffer);
                 WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), unit, xx, yy);

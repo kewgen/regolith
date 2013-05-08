@@ -15,7 +15,7 @@ public abstract class CellElement extends Entity {
      *
      * @return
      */
-    @Deprecated
+    //todo: Переименовать
     public abstract int getFrameId();
 
     /**

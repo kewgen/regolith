@@ -2,9 +2,8 @@ package com.geargames.regolith.map.observer;
 
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.dictionaries.HumanElementCollection;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * Реализация "строгово" и "грубого" обозревателя. Проводятся прямые линии из центра ячейки где стоит боец до крайних
@@ -20,43 +19,43 @@ public class StrictPerimeterObserver extends Observer {
     private LineViewCaster lineViewCaster;
     private VisibilityMaintainer visibilityMaintainer;
 
-    public StrictPerimeterObserver(HumanElementCollection allies) {
+    public StrictPerimeterObserver(WarriorCollection allies) {
         lineViewCaster = new LineViewCaster();
         visibilityMaintainer = new VisibilityMaintainer(allies);
     }
 
     @Override
-    public HumanElementCollection observe(HumanElement unit) {
-        System.out.println("A warrior named " + unit.getHuman().getName() + " is observing a territory");
+    public WarriorCollection observe(Warrior warrior) {
+        System.out.println("A warrior named " + warrior.getName() + " is observing a territory");
 
         visibilityMaintainer.getAllies().clear();
-        BattleGroup group = unit.getHuman().getBattleGroup();
+        BattleGroup group = warrior.getBattleGroup();
         BattleAlliance alliance = group.getAlliance();
         Battle battle = alliance.getBattle();
         BattleMap battleMap = battle.getMap();
-        int radius = WarriorHelper.getObservingRadius(unit);
-        int x = unit.getCellX();
-        int y = unit.getCellY();
+        int radius = WarriorHelper.getObservingRadius(warrior);
+        int x = warrior.getCellX();
+        int y = warrior.getCellY();
 
         int rightBottomX = x + radius;
         int rightBottomY = y + radius;
         for (int i = 0; i < 2 * radius + 1; i++) {
-            lineViewCaster.castViewRight(x, y, rightBottomX, rightBottomY - i, battleMap, unit, visibilityMaintainer);
+            lineViewCaster.castViewRight(x, y, rightBottomX, rightBottomY - i, battleMap, warrior, visibilityMaintainer);
         }
         int leftTopX = x - radius;
         int leftTopY = y - radius;
         for (int i = 0; i < 2 * radius + 1; i++) {
-            lineViewCaster.castViewLeft(x, y, leftTopX, leftTopY + i, battleMap, unit, visibilityMaintainer);
+            lineViewCaster.castViewLeft(x, y, leftTopX, leftTopY + i, battleMap, warrior, visibilityMaintainer);
         }
         int leftBottomX = x - radius + 1;
         int leftBottomY = y + radius;
         for (int i = 0; i <= 2 * (radius - 1); i++) {
-            lineViewCaster.castViewDown(x, y, leftBottomX + i, leftBottomY, battleMap, unit, visibilityMaintainer);
+            lineViewCaster.castViewDown(x, y, leftBottomX + i, leftBottomY, battleMap, warrior, visibilityMaintainer);
         }
         int rightTopX = x + radius - 1;
         int rightTopY = y - radius;
         for (int i = 0; i <= 2 * (radius - 1); i++) {
-            lineViewCaster.castViewUp(x, y, rightTopX - i, rightTopY, battleMap, unit, visibilityMaintainer);
+            lineViewCaster.castViewUp(x, y, rightTopX - i, rightTopY, battleMap, warrior, visibilityMaintainer);
         }
         return visibilityMaintainer.getAllies();
     }

@@ -2,7 +2,7 @@ package com.geargames.regolith;
 
 import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
+import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
@@ -21,28 +21,31 @@ public class GroupsSpreadTest {
 
 
     @Before
-    public void befor() throws Exception {
+    public void before() throws Exception {
         ServerTestConfigurationFactory.getDefaultConfiguration().getBattleConfiguration();
         Barrier barrier = new ServerBarrier();
         barrier.setAbleToLookThrough(false);
 
         Warrior warrior = new Warrior();
         warrior.setName("Вася1");
+        warrior.setMembershipType(Human.WARRIOR);
         warrior.setActionScore((short) 5);
         Warrior warrior1 = new Warrior();
         warrior1.setName("Петя1");
+        warrior1.setMembershipType(Human.WARRIOR);
         warrior1.setActionScore((short) 5);
         BattleGroup battleGroup = new BattleGroup();
         battleGroup.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));
         battleGroup.getWarriors().add(warrior);
         battleGroup.getWarriors().add(warrior1);
 
-
         warrior = new Warrior();
         warrior.setName("Вася2");
+        warrior.setMembershipType(Human.WARRIOR);
         warrior.setActionScore((short) 5);
         warrior1 = new Warrior();
         warrior1.setName("Петя2");
+        warrior1.setMembershipType(Human.WARRIOR);
         warrior1.setActionScore((short) 5);
         BattleGroup battleGroup1 = new BattleGroup();
         battleGroup1.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));
@@ -51,9 +54,11 @@ public class GroupsSpreadTest {
 
         warrior = new Warrior();
         warrior.setName("Вася3");
+        warrior.setMembershipType(Human.WARRIOR);
         warrior.setActionScore((short) 5);
         warrior1 = new Warrior();
         warrior1.setName("Петя3");
+        warrior1.setMembershipType(Human.WARRIOR);
         warrior1.setActionScore((short) 5);
         BattleGroup battleGroup2 = new BattleGroup();
         battleGroup2.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));
@@ -62,9 +67,11 @@ public class GroupsSpreadTest {
 
         warrior = new Warrior();
         warrior.setName("Вася4");
+        warrior.setMembershipType(Human.WARRIOR);
         warrior.setActionScore((short) 5);
         warrior1 = new Warrior();
         warrior1.setName("Петя4");
+        warrior1.setMembershipType(Human.WARRIOR);
         warrior1.setActionScore((short) 5);
         BattleGroup battleGroup3 = new BattleGroup();
         battleGroup3.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));
@@ -114,8 +121,7 @@ public class GroupsSpreadTest {
     @Test
     public void spread() throws RegolithException {
         BattleMap map = battle.getMap();
-        ServerHumanElementCollection units = ServerBattleHelper.getBattleUnits(battle);
-        ServerBattleHelper.spreadAlliancesOnTheMap(battle, units);
+        ServerBattleHelper.spreadAlliancesOnTheMap(battle);
         TestHelper.printExitZones(battle.getMap());
 
         ExitZone[] exits = map.getExits();
@@ -123,7 +129,7 @@ public class GroupsSpreadTest {
         BattleCell[][] cells = battle.getMap().getCells();
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells.length; j++) {
-                if (cells[j][i].getElement() instanceof HumanElement) {
+                if (cells[j][i].getElement() instanceof Warrior) {
                     Assert.assertTrue(
                             exits[0].isWithIn(j, i)
                                     ||

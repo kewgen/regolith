@@ -2,51 +2,51 @@ package com.geargames.regolith.map.observer;
 
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
-import com.geargames.regolith.units.Human;
-import com.geargames.regolith.units.dictionaries.HumanElementCollection;
+import com.geargames.regolith.units.battle.Human;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.CellElementTypes;
-import com.geargames.regolith.units.map.HumanElement;
 
 /**
  * Users: mkutuzov, abarakov
  * Date: 15.03.12
  */
 public class VisibilityMaintainer extends BattleCellMaintainer {
-    private HumanElementCollection allies;
+    private WarriorCollection allies;
 
-    public VisibilityMaintainer(HumanElementCollection allies) {
+    public VisibilityMaintainer(WarriorCollection allies) {
         this.allies = allies;
     }
 
     /**
      * Если ячейку видно, то проверяем: нет ли там преграды для взгляда?
      * если есть возвращаем true, иначе - false.
-     * Затем помечаем ячейку видимой бойцом unit если она не была им видима ранее и она стала видимой.
+     * Затем помечаем ячейку видимой бойцом warrior если она не была им видима ранее и она стала видимой.
      * Если ячейку стало не видно - помечаем не видимой и возвращаем true.
      *
-     * @param unit
+     * @param warrior
      * @param hidden
-     * @param x      координата по первому измерению массива
-     * @param y      координата по второму измерению массива
+     * @param x       координата по первому измерению массива
+     * @param y       координата по второму измерению массива
      * @return
      */
     @Override
-    public boolean maintain(BattleCell[][] cells, HumanElement unit, boolean hidden, int x, int y) {
+    public boolean maintain(BattleCell[][] cells, Warrior warrior, boolean hidden, int x, int y) {
         if (!hidden) {
             BattleCell cell = cells[x][y];
-            boolean was = BattleMapHelper.isVisible(cell, unit.getHuman().getBattleGroup().getAlliance());
-            SecurityOperationManager security = unit.getHuman().getBattleGroup().getAccount().getSecurity();
+            boolean was = BattleMapHelper.isVisible(cell, warrior.getBattleGroup().getAlliance());
+            SecurityOperationManager security = warrior.getBattleGroup().getAccount().getSecurity();
             if (security != null) {
                 security.adjustObserve(x + y);
             }
-            BattleMapHelper.show(cell, unit.getHuman());
+            BattleMapHelper.show(cell, warrior);
             if (cell.getElement() != null) {
                 hidden = !cell.getElement().isAbleToLookThrough();
                 if (!was && cell.getElement().getElementType() == CellElementTypes.HUMAN) {
-                    HumanElement humanElement = (HumanElement) cell.getElement();
-                    if (humanElement.getHuman().getMembershipType() == Human.ALLY) {
-                        allies.add(humanElement);
+                    Warrior warriorElement = (Warrior) cell.getElement();
+                    if (warriorElement.getMembershipType() == Human.ALLY) {
+                        allies.add(warriorElement);
                     }
                 }
             }
@@ -54,7 +54,7 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
         return hidden;
     }
 
-    public HumanElementCollection getAllies() {
+    public WarriorCollection getAllies() {
         return allies;
     }
 

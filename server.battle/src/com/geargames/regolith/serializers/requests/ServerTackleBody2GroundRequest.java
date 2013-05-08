@@ -15,10 +15,8 @@ import com.geargames.regolith.units.BodyParticles;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.dictionaries.ServerHumanElementCollection;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.map.HumanElement;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
@@ -54,10 +52,7 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
         BattleCell[][] cells = map.getCells();
         StateTackle stateTackle = null;
 
-        ServerHumanElementCollection units = serverBattle.getHumanElements();
-        HumanElement unit = BattleMapHelper.getHumanElementByHuman(units, warrior);
-
-        if (BattleMapHelper.isNear(unit, x, y) && cells[x][y].getElement() == null) {
+        if (BattleMapHelper.isNear(warrior, x, y) && cells[x][y].getElement() == null) {
             if (BodyParticles.HEAD == bodyParticle) {
                 stateTackle = warrior.getHeadArmor();
             } else if (BodyParticles.TORSO == bodyParticle) {
