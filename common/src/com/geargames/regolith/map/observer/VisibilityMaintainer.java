@@ -13,10 +13,10 @@ import com.geargames.regolith.units.map.CellElementTypes;
  * Date: 15.03.12
  */
 public class VisibilityMaintainer extends BattleCellMaintainer {
-    private WarriorCollection allies;
+    private WarriorCollection enemies;
 
-    public VisibilityMaintainer(WarriorCollection allies) {
-        this.allies = allies;
+    public VisibilityMaintainer(WarriorCollection enemies) {
+        this.enemies = enemies;
     }
 
     /**
@@ -44,18 +44,16 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
             if (cell.getElement() != null) {
                 hidden = !cell.getElement().isAbleToLookThrough();
                 if (!was && cell.getElement().getElementType() == CellElementTypes.HUMAN) {
-                    Warrior warriorElement = (Warrior) cell.getElement();
-                    if (warriorElement.getMembershipType() == Human.ALLY) {
-                        allies.add(warriorElement);
-                    }
+                    Warrior human = (Warrior) cell.getElement();
+                    enemies.add(human);
                 }
             }
         }
         return hidden;
     }
 
-    public WarriorCollection getAllies() {
-        return allies;
+    public WarriorCollection getEnemies() {
+        return enemies;
     }
 
 }

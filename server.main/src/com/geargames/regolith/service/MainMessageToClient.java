@@ -29,4 +29,9 @@ public class MainMessageToClient extends MessageToClient {
     @Override
     protected void handleBrokenConnection(SocketChannel recipient) {
     }
+
+    @Override
+    protected boolean worthToSend() {
+        return true;
+    }
 }

@@ -44,7 +44,7 @@ public class ClientMoveEnemyAnswer extends ClientDeSerializedMessage {
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         int enemyId = SimpleDeserializer.deserializeInt(buffer);
         ClientWarriorCollection enemyUnits = PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits();
-        enemy = (ClientWarriorElement) ClientBattleHelper.getWarriorElementById(enemyUnits, enemyId);
+        enemy = (ClientWarriorElement) ClientBattleHelper.getWarriorById(enemyUnits, enemyId);
         if (enemy == null) {
             throw new Exception();
         }

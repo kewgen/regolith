@@ -378,7 +378,7 @@ public class ClientBattleHelper {
         return null;
     }
 
-    public static Warrior getWarriorElementById(ClientWarriorCollection collection, int warriorId) throws RegolithException {
+    public static Warrior getWarriorById(ClientWarriorCollection collection, int warriorId) throws RegolithException {
         int size = collection.size();
         for (int i = 0; i < size; i++) {
             Warrior warrior = collection.get(i);

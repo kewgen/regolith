@@ -9,6 +9,7 @@ import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.answers.FinishBattleMessage;
 import com.geargames.regolith.serializers.answers.ServerChangeActiveAllianceMessage;
+import com.geargames.regolith.serializers.answers.ServerCloseBattleMessage;
 import com.geargames.regolith.serializers.answers.ServerInitiallyObservedEnemies;
 import com.geargames.regolith.service.clientstates.ClientState;
 import com.geargames.regolith.service.state.ClientAtBattle;
@@ -81,7 +82,9 @@ public class BattleSchedulerService {
                             logger.debug("Could not run a battle cycle (the service has been interrupted): " + serverBattle.getBattle().getName());
                             return;
                         }
-                        RegolithConfiguration regolithConfiguration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration();
+                        try{
+                        BattleServiceConfiguration configuration = BattleServiceConfigurationFactory.getConfiguration();
+                        RegolithConfiguration regolithConfiguration = configuration.getRegolithConfiguration();
                         int index = serverBattle.getActive();
                         if (index != ServerBattle.NONE) {
                             for (BattleClient client : serverBattle.getAlliances().get(index)) {
@@ -112,6 +115,9 @@ public class BattleSchedulerService {
                             ClientState state = client.getState();
                             if (state instanceof ClientCheckSumAwaiting) {
                                 //todo клиент со своего последнего хода не подтвердил свои данные
+                                List<SocketChannel> recipients = BattleServiceRequestUtils.getConnectedChannels(BattleServiceRequestUtils.getRecipients(serverBattle.getClients()));
+                                MicroByteBuffer buffer = new MicroByteBuffer(new byte[128]);
+                                writer.addMessageToClient(new BattleMessageToClient(recipients, new ServerCloseBattleMessage(buffer, "One or more clients have left a battle").serialize()));
                                 CommonBattleManager.closeBattle(serverBattle);
                             } else {
                                 logger.debug("a battle client {} has been activated", client.getAccount().getName());
@@ -142,6 +148,9 @@ public class BattleSchedulerService {
                             writer.addMessageToClient(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
                                     new ServerChangeActiveAllianceMessage(new MicroByteBuffer(new byte[20]),
                                             serverBattle.getBattle().getAlliances()[serverBattle.getActive()]).serialize()));
+                        }
+                        }catch (Exception e){
+                            logger.error("An exception at [change active alliance]", e);
                         }
                     }
                 }, beginDelay, serverBattle.getBattle().getBattleType().getTurnTime(), TimeUnit.SECONDS));
