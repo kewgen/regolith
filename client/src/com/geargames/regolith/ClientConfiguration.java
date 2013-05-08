@@ -5,6 +5,7 @@ import com.geargames.common.network.Network;
 import com.geargames.regolith.managers.*;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.units.Account;
+import com.geargames.regolith.units.Login;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.finder.ProjectionFinder;
@@ -25,6 +26,7 @@ public class ClientConfiguration {
     private ClientBattleCreationManager battleCreationManager;
     private ClientBaseManager baseManager;
 
+    private Login login;
     private Network network;
     private Account account;
     private Battle battle;
@@ -145,6 +147,14 @@ public class ClientConfiguration {
 
     public void setIncomingMessage(byte[] incomingMessage) {
         this.incomingMessage = incomingMessage;
+    }
+
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
     }
 
     public Network getNetwork() {

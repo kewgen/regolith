@@ -19,6 +19,7 @@ public class BattleSerializer {
     public static void serializeHuman(Human human, MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(human, buffer);
         SimpleSerializer.serialize(human.getName(), buffer);
+        SimpleSerializer.serialize(human.getNumber(), buffer);
         SerializeHelper.serializeEntityReference(human.getRank(), buffer);
         SimpleSerializer.serialize(human.getFrameId(), buffer);
         SimpleSerializer.serialize(human.getHealth(), buffer);
@@ -41,7 +42,6 @@ public class BattleSerializer {
             SimpleSerializer.serialize(SimpleSerializer.NO, buffer);
         }
         TackleSerializer.serializeWeapon(human.getWeapon(), buffer);
-        SimpleSerializer.serialize(human.getNumber(), buffer);
     }
 
     public static void serializeEnemies(BattleAlliance battleAlliance, MicroByteBuffer buffer) {
@@ -54,6 +54,12 @@ public class BattleSerializer {
                 serializeHuman(human, buffer);
             }
         }
+    }
+
+    public static void serializeWarrior(Warrior warrior, MicroByteBuffer buffer) {
+        serializeHuman(warrior, buffer);
+        SimpleSerializer.serialize(warrior.getCellX(), buffer);
+        SimpleSerializer.serialize(warrior.getCellY(), buffer);
     }
 
     private static void serialize(ExitZone exitZone, MicroByteBuffer buffer) {
@@ -74,7 +80,7 @@ public class BattleSerializer {
                 // Сериализация союзных бойцов
                 SimpleSerializer.serialize(SimpleSerializer.NO, buffer);
                 for (Warrior ally : ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors()) {
-                    serializeHuman(ally, buffer);
+                    serializeWarrior(ally, buffer);
                 }
             } else {
                 // Сериализация своих бойцов
@@ -82,13 +88,13 @@ public class BattleSerializer {
                 for (Warrior mine : ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors()) {
                     SerializeHelper.serializeEntityReference(mine, buffer);
                     SimpleSerializer.serialize(mine.getNumber(), buffer);
-//                    SimpleSerializer.serialize(mine.getDirection().getNumber(), buffer);
+                    SimpleSerializer.serialize(mine.getDirection().getNumber(), buffer);
                 }
             }
         }
     }
 
-    public static void serialize(Battle battle, Account account, MicroByteBuffer buffer) {
+    public static void serializeBattle(Battle battle, Account account, MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(battle, buffer);
         SimpleSerializer.serialize(battle.getName(), buffer);
         SerializeHelper.serializeEntityReference(battle.getBattleType(), buffer);

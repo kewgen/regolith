@@ -10,9 +10,12 @@ import com.geargames.common.util.ArrayIntegerDual;
 import com.geargames.common.util.Recorder;
 import com.geargames.platform.packer.Graphics;
 import com.geargames.platform.packer.Image;
+import com.geargames.regolith.ClientConfiguration;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.Graph;
 import com.geargames.regolith.Port;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
+import com.geargames.regolith.network.ClientRequestHelper;
 
 public final class Application extends com.geargames.common.Application {
 
@@ -95,7 +98,7 @@ public final class Application extends com.geargames.common.Application {
     public void loading() {
         tSleep = Environment.currentTimeMillis();
 
-        Debug.config("Memory total, free: "+Environment.totalMemory()+", "+Environment.freeMemory());
+        Debug.config("Memory total, free: " + Environment.totalMemory() + ", " + Environment.freeMemory());
 
         loader = new Loader(Manager.getInstance());
         render = new Render();
@@ -118,6 +121,7 @@ public final class Application extends com.geargames.common.Application {
         PFontCollection.initiate(fontManager, baseFont);
 
         drawSplash("Init network...");
+        initNetwork();
 
         initPreferenceOnStart();
         isLoading = false;
@@ -137,6 +141,18 @@ public final class Application extends com.geargames.common.Application {
         panels.show(panels.getHeadlineWindow());
         panels.show(panels.getLeft());
         panels.show(panels.getRight());
+    }
+
+    private void initNetwork() {
+        ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
+        clientConfiguration.getNetwork().connect(clientConfiguration.getServer(), clientConfiguration.getPort());
+
+        if (!ClientRequestHelper.clientLogon(true)) {
+            return;
+        }
+        if (!ClientRequestHelper.hireWarrior()) {
+            return;
+        }
     }
 
     public void resetPreference() {
@@ -160,21 +176,21 @@ public final class Application extends com.geargames.common.Application {
     }
 
     public void destroy(boolean correct) {
-        Debug.debug("destroy "+(correct ? "correct" : "uncorrect"));
+        Debug.debug("destroy " + (correct ? "correct" : "uncorrect"));
         Manager.getInstance().destroy(correct);
     }
 
     public boolean saveOptionsRMS() {
-       boolean result = true;
-       try {
-            Recorder.storeIntegerProperty("version",1);
+        boolean result = true;
+        try {
+            Recorder.storeIntegerProperty("version", 1);
             Recorder.storeBooleanProperty("vibration", vibrationEnabled);
             Recorder.storeBooleanProperty("sound", vibrationEnabled);
             Recorder.storeIntegerProperty("user_id", userId);
             Recorder.storeIntegerProperty("client_id", clientId);
             Recorder.storeIntegerProperty("midlet", userMidletId);
 
-            Debug.debug("Rms.Prefs saved: vibra:" + (vibrationEnabled ? "On" : "Off")+" sound:"+(soundEnabled ? "On" : "Off")+" userId:"+userId+" clientId:"+clientId);
+            Debug.debug("Rms.Prefs saved: vibra:" + (vibrationEnabled ? "On" : "Off") + " sound:" + (soundEnabled ? "On" : "Off") + " userId:" + userId + " clientId:" + clientId);
         } catch (Exception e) {
             Debug.error("Save prefs ", e);
             result = false;
@@ -186,23 +202,23 @@ public final class Application extends com.geargames.common.Application {
     public boolean loadOptionsRMS() {
         boolean result = false;
         try {
-                try {
-                    int version = Recorder.loadIntegerProperty("version");
-                    if (version == 1) {
-                        vibrationEnabled = Recorder.loadBooleanProperty("vibration");
-                        soundEnabled = Recorder.loadBooleanProperty("sound");
-                        userId = Recorder.loadIntegerProperty("user_id");
-                        clientId = Recorder.loadIntegerProperty("client_id");
-                        userMidletId = Recorder.loadIntegerProperty("midlet");
-                        result = true;
+            try {
+                int version = Recorder.loadIntegerProperty("version");
+                if (version == 1) {
+                    vibrationEnabled = Recorder.loadBooleanProperty("vibration");
+                    soundEnabled = Recorder.loadBooleanProperty("sound");
+                    userId = Recorder.loadIntegerProperty("user_id");
+                    clientId = Recorder.loadIntegerProperty("client_id");
+                    userMidletId = Recorder.loadIntegerProperty("midlet");
+                    result = true;
 
-                        Debug.debug("Rms.Prefs load:");
-                        Debug.debug(" id:"+userId);
-                    }
-                } catch (Exception e) {
-                    Debug.error("RMSLoad prefs ", e);
-                    return false;
+                    Debug.debug("Rms.Prefs load:");
+                    Debug.debug(" id:" + userId);
                 }
+            } catch (Exception e) {
+                Debug.error("RMSLoad prefs ", e);
+                return false;
+            }
 
             return result;
         } catch (Exception e) {

@@ -8,6 +8,7 @@ import com.geargames.regolith.units.dictionaries.WarriorCollection;
  * User: mkutuzov
  * Date: 18.03.12
  */
+//todo: убрать наследование класса Login классом Account и добавить Login как поле класса Account
 public class Account extends Login {
     private int frameId;
     private Base base;
@@ -90,6 +91,7 @@ public class Account extends Login {
 
     /**
      * Получить величину опыта игрока.
+     *
      * @return
      */
     public int getExperience() {
@@ -102,6 +104,7 @@ public class Account extends Login {
 
     /**
      * Получить клан, к которому принадлежит игрок.
+     *
      * @return
      */
     public Clan getClan() {
@@ -122,6 +125,7 @@ public class Account extends Login {
 
     /**
      * Получить список бойцов игрока.
+     *
      * @return
      */
     public WarriorCollection getWarriors() {
