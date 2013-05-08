@@ -82,6 +82,7 @@ public class BattleSchedulerService {
                             logger.debug("Could not run a battle cycle (the service has been interrupted): " + serverBattle.getBattle().getName());
                             return;
                         }
+                        try{
                         BattleServiceConfiguration configuration = BattleServiceConfigurationFactory.getConfiguration();
                         RegolithConfiguration regolithConfiguration = configuration.getRegolithConfiguration();
                         int index = serverBattle.getActive();
@@ -147,6 +148,9 @@ public class BattleSchedulerService {
                             writer.addMessageToClient(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
                                     new ServerChangeActiveAllianceMessage(new MicroByteBuffer(new byte[20]),
                                             serverBattle.getBattle().getAlliances()[serverBattle.getActive()]).serialize()));
+                        }
+                        }catch (Exception e){
+                            logger.error("An exception at [change active alliance]", e);
                         }
                     }
                 }, beginDelay, serverBattle.getBattle().getBattleType().getTurnTime(), TimeUnit.SECONDS));

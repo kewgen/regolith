@@ -28,7 +28,7 @@ public class StrictPerimeterObserver extends Observer {
     public WarriorCollection observe(Warrior warrior) {
         System.out.println("A warrior named " + warrior.getName() + " is observing a territory");
 
-        visibilityMaintainer.getAllies().clear();
+        visibilityMaintainer.getEnemies().clear();
         BattleGroup group = warrior.getBattleGroup();
         BattleAlliance alliance = group.getAlliance();
         Battle battle = alliance.getBattle();
@@ -57,7 +57,7 @@ public class StrictPerimeterObserver extends Observer {
         for (int i = 0; i <= 2 * (radius - 1); i++) {
             lineViewCaster.castViewUp(x, y, rightTopX - i, rightTopY, battleMap, warrior, visibilityMaintainer);
         }
-        return visibilityMaintainer.getAllies();
+        return visibilityMaintainer.getEnemies();
     }
 
 }

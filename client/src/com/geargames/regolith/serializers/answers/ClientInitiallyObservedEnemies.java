@@ -48,7 +48,7 @@ public class ClientInitiallyObservedEnemies extends ClientDeSerializedMessage {
         enemies.setWarriors(new Vector(size));
         for (int i = 0; i < size; i++) {
             int enemyId = SimpleDeserializer.deserializeInt(buffer);
-            Warrior unit = ClientBattleHelper.getWarriorElementById(enemyUnits, enemyId);
+            Warrior unit = ClientBattleHelper.getWarriorById(enemyUnits, enemyId);
             short cellX = SimpleDeserializer.deserializeShort(buffer);
             short cellY = SimpleDeserializer.deserializeShort(buffer);
             WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), unit, cellX, cellY);
