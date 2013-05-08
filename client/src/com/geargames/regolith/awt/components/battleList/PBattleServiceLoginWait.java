@@ -58,6 +58,7 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
             ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
             BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
 
+            //todo-asap: убрать от сюда заполнение списков
             ClientWarriorCollection groupUnits = ClientBattleHelper.getGroupBattleUnits(configuration.getBattle(), configuration.getAccount());
             ClientWarriorCollection allyUnits = ClientBattleHelper.getAllyBattleUnits(configuration.getBattle(), configuration.getAccount());
             ClientWarriorCollection enemyUnits = ClientBattleHelper.getEnemyBattleUnits(configuration.getBattle(), configuration.getAccount());

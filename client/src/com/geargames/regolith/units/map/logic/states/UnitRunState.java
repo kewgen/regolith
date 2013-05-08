@@ -116,14 +116,17 @@ public class UnitRunState extends AbstractLogicState {
     public boolean onTick(DynamicCellElement owner) {
         AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
 
-        boolean needStoped = false;
+        boolean needStopped = false;
         if (speed - ticks > 1) {
+            // Движение от центра одной клетки до центра другой клетки карты
             extensionX += shiftOnTickX * (stepDirection.getX() - stepDirection.getY());
             extensionY += shiftOnTickY * (stepDirection.getY() + stepDirection.getX());
             warrior.setMapX((short) (extensionX + beginMapX));
             warrior.setMapY((short) (extensionY + beginMapY));
             ticks++;
         } else {
+            // Мы, приблезительно, в центре одной из клеток карты
+            // использовать battleScreen.coordinateFinder для вычисления положения бойца
             warrior.setMapX((short) (BattleScreen.HORIZONTAL_RADIUS * (stepDirection.getX() - stepDirection.getY()) + beginMapX));
             warrior.setMapY((short) (BattleScreen.VERTICAL_RADIUS * (stepDirection.getY() + stepDirection.getX()) + beginMapY));
 
@@ -136,9 +139,15 @@ public class UnitRunState extends AbstractLogicState {
                         ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
             }
 
+            ticks = 0;
+            extensionX = 0;
+            extensionY = 0;
+            beginMapX = warrior.getMapX();
+            beginMapY = warrior.getMapY();
+
             stepDirection = WarriorHelper.getStepDirection(cells, warrior);
             if (stepDirection == Direction.NONE) {
-                needStoped = true;
+                needStopped = true;
                 warrior.getGraphic().stop();
 //                isMoving = false;
 //                battleUnit.getUnit().stop();
@@ -151,8 +160,8 @@ public class UnitRunState extends AbstractLogicState {
             }
         }
 
-        warrior.getGraphic().onTick();
-        return needStoped;
+//        warrior.getGraphic().onTick();
+        return needStopped;
     }
 
 }

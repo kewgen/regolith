@@ -61,10 +61,10 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
             byte size = buffer.get();
             enemies = new ClientWarriorCollection();
             enemies.setWarriors(new Vector(size));
-            ClientWarriorCollection groupUnits = PRegolithPanelManager.getInstance().getBattleScreen().getGroupUnits();
+            ClientWarriorCollection enemyUnits = PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits();
             for (int i = 0; i < size; i++) {
                 int warriorId = SimpleDeserializer.deserializeInt(buffer);
-                Warrior warrior = ClientBattleHelper.getWarriorById(groupUnits, warriorId);
+                Warrior warrior = ClientBattleHelper.getWarriorById(enemyUnits, warriorId);
                 int xx = SimpleDeserializer.deserializeShort(buffer);
                 int yy = SimpleDeserializer.deserializeShort(buffer);
                 WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), warrior, xx, yy);

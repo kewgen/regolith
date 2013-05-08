@@ -24,7 +24,7 @@ public abstract class AbstractUnitSimpleState extends AbstractLogicState {
     @Override
     public boolean onTick(DynamicCellElement owner) {
         AbstractUnitScriptGraphicComponent graphic = ((AbstractClientWarriorElement) owner).getGraphic();
-        graphic.onTick();
+//        graphic.onTick();
         return graphic.getCyclesCount() > 0;
     }
 

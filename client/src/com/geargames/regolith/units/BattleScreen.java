@@ -723,17 +723,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         return enemyUnits;
     }
 
-    //todo-asap: задать значение
     public void setGroupUnits(ClientWarriorCollection list) {
         groupUnits = list;
     }
 
-    //todo-asap: задать значение
     public void setAllyUnits(ClientWarriorCollection list) {
         allyUnits = list;
     }
 
-    //todo-asap: задать значение
     public void setEnemyUnits(ClientWarriorCollection list) {
         enemyUnits = list;
     }
