@@ -83,14 +83,14 @@ public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
         ClientWarriorCollection allyUnits = battleScreen.getAllyUnits();
         ClientWarriorCollection enemyUnits = battleScreen.getEnemyUnits();
 
-        ally = (ClientWarriorElement) ClientBattleHelper.getWarriorElementById(allyUnits, allyId);
+        ally = (ClientWarriorElement) ClientBattleHelper.getWarriorById(allyUnits, allyId);
 
         byte size = buffer.get();
         enemies = new ClientWarriorCollection();
         enemies.setWarriors(new Vector(size));
         for (int j = 0; j < size; j++) {
             int enemyId = SimpleDeserializer.deserializeInt(buffer);
-            ClientWarriorElement enemy = (ClientWarriorElement) ClientBattleHelper.getWarriorElementById(enemyUnits, enemyId);
+            ClientWarriorElement enemy = (ClientWarriorElement) ClientBattleHelper.getWarriorById(enemyUnits, enemyId);
             int xx = SimpleDeserializer.deserializeInt(buffer);
             int yy = SimpleDeserializer.deserializeInt(buffer);
             WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), enemy, xx, yy);

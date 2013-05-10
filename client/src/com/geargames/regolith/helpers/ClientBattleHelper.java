@@ -115,116 +115,116 @@ public class ClientBattleHelper {
 //            }
 //        }
 //    }
-//
-//
-//    /**
-//     * Вернуть солдатиков аккаунта account для BattleScreen из битвы battle.
-//     *
-//     * @param battle
-//     * @param account
-//     * @return
-//     */
-//    public static ClientWarriorCollection getGroupBattleUnits(Battle battle, Account account) {
-//        BattleAlliance[] alliances = battle.getAlliances();
-//        int id = account.getId();
-//        for (int i = 0; i < alliances.length; i++) {
-//            BattleGroupCollection groups = alliances[i].getAllies();
-//            for (int j = 0; j < groups.size(); j++) {
-//                BattleGroup group = groups.get(j);
-//                if (group.getAccount().getId() == id) {
-//                    int groupSize = battle.getBattleType().getGroupSize();
-//                    ClientWarriorCollection units = new ClientWarriorCollection();
-//                    units.setElements(new Vector(groupSize));
-//                    WarriorCollection warriors = group.getWarriors();
-//                    for (int k = 0; k < groupSize; k++) {
-//                        units.add((WarriorElement) warriors.get(k));
-//                    }
-//                    return units;
-//                }
-//            }
-//        }
-//        return null;
-//    }
-//
-//    /**
-//     * Вернуть солдатиков для отрисовки на BattleScreen для всех союзников account по битве battle.
-//     *
-//     * @param battle
-//     * @param account
-//     * @return
-//     */
-//    public static ClientWarriorCollection getAllyBattleUnits(Battle battle, Account account) {
-//        BattleAlliance[] alliances = battle.getAlliances();
-//        int id = account.getId();
-//        for (int i = 0; i < alliances.length; i++) {
-//            BattleGroupCollection groups = alliances[i].getAllies();
-//            boolean found = false;
-//            for (int j = 0; j < groups.size(); j++) {
-//                if (groups.get(j).getAccount().getId() == id) {
-//                    found = true;
-//                    break;
-//                }
-//            }
-//            if (found) {
-//                int groupSize = battle.getBattleType().getGroupSize();
-//                ClientWarriorCollection units = new ClientWarriorCollection();
-//                units.setElements(new Vector(groupSize * (battle.getBattleType().getAllianceSize() - 1)));
-//                for (int j = 0; j < groups.size(); j++) {
-//                    BattleGroup group = groups.get(j);
-//                    if (group.getAccount().getId() != id) {
-//                        WarriorCollection warriors = group.getWarriors();
-//                        for (int k = 0; k < groupSize; k++) {
-//                            units.add((WarriorElement) warriors.get(k));
-//                        }
-//                    }
-//                }
-//                return units;
-//            }
-//        }
-//        ClientWarriorCollection units = new ClientWarriorCollection();
-//        units.setElements(new Vector(0));
-//        return units;
-//    }
-//
-//    /**
-//     * Вернуть солдатиков для отрисовки на BattleScreen - противников по битве battle для account.
-//     *
-//     * @param battle
-//     * @param account
-//     * @return
-//     */
-//    public static ClientWarriorCollection getEnemyBattleUnits(Battle battle, Account account) {
-//        BattleAlliance[] alliances = battle.getAlliances();
-//        int id = account.getId();
-//        boolean found = false;
-//
-//        int groupSize = battle.getBattleType().getGroupSize();
-//        ClientWarriorCollection units = new ClientWarriorCollection();
-//        units.setElements(new Vector(groupSize * (battle.getBattleType().getAllianceSize()) * (battle.getBattleType().getAllianceAmount() - 1)));
-//
-//        for (int i = 0; i < alliances.length; i++) {
-//            BattleGroupCollection groups = alliances[i].getAllies();
-//            if (!found) {
-//                for (int j = 0; j < groups.size(); j++) {
-//                    if (groups.get(j).getAccount().getId() == id) {
-//                        found = true;
-//                        break;
-//                    }
-//                }
-//                if (found) {
-//                    continue;
-//                }
-//            }
-//            for (int j = 0; j < groups.size(); j++) {
-//                BattleGroup group = groups.get(j);
-//                WarriorCollection warriors = group.getWarriors();
-//                for (int k = 0; k < groupSize; k++) {
-//                    units.add((WarriorElement) warriors.get(k));
-//                }
-//            }
-//        }
-//        return units;
-//    }
+
+
+    /**
+     * Вернуть солдатиков аккаунта account для BattleScreen из битвы battle.
+     *
+     * @param battle
+     * @param account
+     * @return
+     */
+    public static ClientWarriorCollection getGroupBattleUnits(Battle battle, Account account) {
+        BattleAlliance[] alliances = battle.getAlliances();
+        int id = account.getId();
+        for (int i = 0; i < alliances.length; i++) {
+            BattleGroupCollection groups = alliances[i].getAllies();
+            for (int j = 0; j < groups.size(); j++) {
+                BattleGroup group = groups.get(j);
+                if (group.getAccount().getId() == id) {
+                    int groupSize = battle.getBattleType().getGroupSize();
+                    ClientWarriorCollection units = new ClientWarriorCollection();
+                    units.setWarriors(new Vector(groupSize));
+                    WarriorCollection warriors = group.getWarriors();
+                    for (int k = 0; k < groupSize; k++) {
+                        units.add(warriors.get(k));
+                    }
+                    return units;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Вернуть солдатиков для отрисовки на BattleScreen для всех союзников account по битве battle.
+     *
+     * @param battle
+     * @param account
+     * @return
+     */
+    public static ClientWarriorCollection getAllyBattleUnits(Battle battle, Account account) {
+        BattleAlliance[] alliances = battle.getAlliances();
+        int id = account.getId();
+        for (int i = 0; i < alliances.length; i++) {
+            BattleGroupCollection groups = alliances[i].getAllies();
+            boolean found = false;
+            for (int j = 0; j < groups.size(); j++) {
+                if (groups.get(j).getAccount().getId() == id) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                int groupSize = battle.getBattleType().getGroupSize();
+                ClientWarriorCollection units = new ClientWarriorCollection();
+                units.setWarriors(new Vector(groupSize * (battle.getBattleType().getAllianceSize() - 1)));
+                for (int j = 0; j < groups.size(); j++) {
+                    BattleGroup group = groups.get(j);
+                    if (group.getAccount().getId() != id) {
+                        WarriorCollection warriors = group.getWarriors();
+                        for (int k = 0; k < groupSize; k++) {
+                            units.add(warriors.get(k));
+                        }
+                    }
+                }
+                return units;
+            }
+        }
+        ClientWarriorCollection units = new ClientWarriorCollection();
+        units.setWarriors(new Vector(0));
+        return units;
+    }
+
+    /**
+     * Вернуть солдатиков для отрисовки на BattleScreen - противников по битве battle для account.
+     *
+     * @param battle
+     * @param account
+     * @return
+     */
+    public static ClientWarriorCollection getEnemyBattleUnits(Battle battle, Account account) {
+        BattleAlliance[] alliances = battle.getAlliances();
+        int id = account.getId();
+        boolean found = false;
+
+        int groupSize = battle.getBattleType().getGroupSize();
+        ClientWarriorCollection units = new ClientWarriorCollection();
+        units.setWarriors(new Vector(groupSize * (battle.getBattleType().getAllianceSize()) * (battle.getBattleType().getAllianceAmount() - 1)));
+
+        for (int i = 0; i < alliances.length; i++) {
+            BattleGroupCollection groups = alliances[i].getAllies();
+            if (!found) {
+                for (int j = 0; j < groups.size(); j++) {
+                    if (groups.get(j).getAccount().getId() == id) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    continue;
+                }
+            }
+            for (int j = 0; j < groups.size(); j++) {
+                BattleGroup group = groups.get(j);
+                WarriorCollection warriors = group.getWarriors();
+                for (int k = 0; k < groupSize; k++) {
+                    units.add(warriors.get(k));
+                }
+            }
+        }
+        return units;
+    }
 
     /**
      * Создать игровую карту размера size*size.
@@ -378,7 +378,7 @@ public class ClientBattleHelper {
         return null;
     }
 
-    public static Warrior getWarriorElementById(ClientWarriorCollection collection, int warriorId) throws RegolithException {
+    public static Warrior getWarriorById(ClientWarriorCollection collection, int warriorId) throws RegolithException {
         int size = collection.size();
         for (int i = 0; i < size; i++) {
             Warrior warrior = collection.get(i);
@@ -386,7 +386,7 @@ public class ClientBattleHelper {
                 return warrior;
             }
         }
-        throw new RegolithException();
+        throw new RegolithException("A warrior with an id " + warriorId + " was not found.");
     }
 
     /**

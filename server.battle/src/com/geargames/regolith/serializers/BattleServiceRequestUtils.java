@@ -54,4 +54,14 @@ public class BattleServiceRequestUtils {
         return null;
     }
 
+    public static List<SocketChannel> getConnectedChannels(List<SocketChannel> channels) {
+        LinkedList<SocketChannel> connected = new LinkedList<SocketChannel>();
+        for (SocketChannel channel : channels) {
+            if (channel.isConnected()) {
+                connected.add(channel);
+            }
+        }
+        return connected;
+    }
+
 }

@@ -111,7 +111,11 @@ public abstract class LogicComponent implements Tickable {
      * @param state
      */
     public void pushState(AbstractLogicState state) {
-        queueStates.add(state);
+        if (isIdle()) {
+            setState(state);
+        } else {
+            queueStates.add(state);
+        }
     }
 
     /**

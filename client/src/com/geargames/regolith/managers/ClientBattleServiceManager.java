@@ -1,6 +1,5 @@
 package com.geargames.regolith.managers;
 
-import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.serializers.answers.ClientListenToBattleAnswer;
 import com.geargames.regolith.serializers.answers.ClientMoveWarriorAnswer;
@@ -30,7 +29,7 @@ public class ClientBattleServiceManager {
         clientMoveMyWarriorAnswer = new ClientMoveWarriorAnswer();
     }
 
-    public ClientDeSerializedMessage login(Battle battle, BattleAlliance alliance) throws Exception {
+    public ClientListenToBattleAnswer login(Battle battle, BattleAlliance alliance) throws Exception {
         configuration.getNetwork().sendSynchronousMessage(
                 new ClientBattleServiceLoginRequest(configuration, battle, alliance, configuration.getAccount()),
                 clientListenToBattleAnswer, 30000);
@@ -46,7 +45,7 @@ public class ClientBattleServiceManager {
      * @return
      * @throws Exception
      */
-    public ClientDeSerializedMessage move(Warrior warrior, short x, short y) throws Exception {
+    public ClientMoveWarriorAnswer move(Warrior warrior, short x, short y) throws Exception {
         clientMoveMyWarriorAnswer.setBattle(warrior.getBattleGroup().getAlliance().getBattle());
         configuration.getNetwork().sendSynchronousMessage(
                 new ClientMoveRequest(configuration, warrior, x, y),
@@ -63,7 +62,7 @@ public class ClientBattleServiceManager {
         configuration.getNetwork().sendMessage(checkSumRequest);
     }
 
-    public ClientDeSerializedMessage shoot(Warrior hunter, Warrior victim) throws Exception {
+    public ClientListenToBattleAnswer shoot(Warrior hunter, Warrior victim) throws Exception {
         //todo ожидается ответ неправильного типа
         configuration.getNetwork().sendSynchronousMessage(
                 new ClientShootRequest(configuration, hunter, victim),

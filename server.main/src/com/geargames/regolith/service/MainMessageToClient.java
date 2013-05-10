@@ -10,7 +10,7 @@ import java.util.Collection;
  * Time: 10:50
  */
 public class MainMessageToClient extends MessageToClient {
-    public static  ThreadLocal<ByteBuffer> BYTE_BUFFER = new ThreadLocal<ByteBuffer>(){
+    public static ThreadLocal<ByteBuffer> BYTE_BUFFER = new ThreadLocal<ByteBuffer>() {
         @Override
         protected ByteBuffer initialValue() {
             return ByteBuffer.allocateDirect(MainServerConfigurationFactory.getConfiguration().getMessageBufferSize());
@@ -28,5 +28,10 @@ public class MainMessageToClient extends MessageToClient {
 
     @Override
     protected void handleBrokenConnection(SocketChannel recipient) {
+    }
+
+    @Override
+    protected boolean worthToSend() {
+        return true;
     }
 }

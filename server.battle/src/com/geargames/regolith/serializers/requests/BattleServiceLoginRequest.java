@@ -65,7 +65,7 @@ public class BattleServiceLoginRequest extends ServerRequest {
                     serverBattle.getClients().add((BattleClient) client);
                     serverBattle.getReadyGroups().add(group);
 
-                    List<SocketChannel> recipient = new ArrayList<SocketChannel>(1);
+                    List<SocketChannel> recipient = new ArrayList<SocketChannel>(2);
                     recipient.add(client.getChannel());
                     message = BattleServiceLoginAnswer.answerSuccess(to, battle, serverBattle.getReadyGroups());
                     messages.add(new BattleMessageToClient(recipient, message.serialize()));

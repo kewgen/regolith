@@ -366,19 +366,26 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 if (isMyTurn()) {
                     if (isOnTheMap(x, y)) {
                         if (Mathematics.abs(touchedXX - x) <= SPOT && Mathematics.abs(touchedYY - y) <= SPOT) {
-                            Pair cellCoordinate = cellFinder.find(x + mapX, y + mapY, this);
-                            BattleCell battleCell = battle.getMap().getCells()[cellCoordinate.getX()][cellCoordinate.getY()];
-                            CellElement[] elements = battleCell.getElements();
-                            for (int i = 0; i < battleCell.getSize(); i++) {
-                                CellElement element = elements[i];
-                                if (element.getElementType() == CellElementTypes.HUMAN) {
-                                    ClientWarriorElement unit = (ClientWarriorElement) element;
-                                    Debug.debug("Is warrior " + unit.getName());
-                                    if (unit.getBattleGroup() == battleGroup) {
-                                        setActiveUnit(unit);
+                            if (activeUnit.getLogic().isIdle()) {
+                                Pair cellCoordinate = cellFinder.find(x + mapX, y + mapY, this);
+                                BattleCell battleCell = battle.getMap().getCells()[cellCoordinate.getX()][cellCoordinate.getY()];
+                                CellElement[] elements = battleCell.getElements();
+                                boolean hasHumanInCell = false;
+                                for (int i = 0; i < battleCell.getSize(); i++) {
+                                    CellElement element = elements[i];
+                                    if (element.getElementType() == CellElementTypes.HUMAN) {
+                                        ClientWarriorElement warrior = (ClientWarriorElement) element;
+                                        Debug.debug("Is warrior " + warrior.getName());
+                                        if (warrior.getBattleGroup() == battleGroup) {
+                                            setActiveUnit(warrior);
+                                        } else {
+                                            // Показать инфу о союзном или вражеском бойце
+                                        }
+                                        hasHumanInCell = true;
                                         break;
                                     }
-                                } else if (activeUnit.getLogic().isIdle()) {
+                                }
+                                if (!hasHumanInCell) {
                                     if (BattleMapHelper.isReachable(battleCell)) {
                                         Debug.debug("Trace for a user " + activeUnit.getNumber());
                                         ClientBattleHelper.trace(battle.getMap().getCells(), activeUnit, cellCoordinate.getX(), cellCoordinate.getY(),
@@ -386,9 +393,9 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                                     } else {
                                         Debug.debug("Cell " + cellCoordinate.getX() + ":" + cellCoordinate.getY() + " is not reachable");
                                     }
-                                } else {
-                                    Debug.debug("Unit " + activeUnit.getName() + " is not idle");
                                 }
+                            } else {
+                                Debug.debug("Unit " + activeUnit.getName() + " is not idle");
                             }
                         }
                     }
@@ -482,7 +489,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     public void moveUser(int x, int y) {
         try {
-            ClientMoveWarriorAnswer move = (ClientMoveWarriorAnswer) configuration.getBattleServiceManager().move(activeUnit, (short) x, (short) y);
+            ClientMoveWarriorAnswer move = configuration.getBattleServiceManager().move(activeUnit, (short) x, (short) y);
             if (move.isSuccess()) {
                 short xx = move.getX();
                 short yy = move.getY();
@@ -716,17 +723,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         return enemyUnits;
     }
 
-    //todo-asap: задать значение
     public void setGroupUnits(ClientWarriorCollection list) {
         groupUnits = list;
     }
 
-    //todo-asap: задать значение
     public void setAllyUnits(ClientWarriorCollection list) {
         allyUnits = list;
     }
 
-    //todo-asap: задать значение
     public void setEnemyUnits(ClientWarriorCollection list) {
         enemyUnits = list;
     }
@@ -776,6 +780,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             activeUnit = null;
             initUnitFromCollection(groupUnits, battleConfiguration);
             initUnitFromCollection(allyUnits, battleConfiguration);
+            initUnitFromCollectionSimple(enemyUnits, battleConfiguration);
 
 //            BattleGroupCollection clients = alliance.getAllies();
 //            for (int j = 0; j < clients.size(); j++) {
@@ -814,8 +819,16 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private void initUnitFromCollection(ClientWarriorCollection collection, BattleConfiguration battleConfiguration) {
         for (int i = 0; i < collection.size(); i++) {
             ClientWarriorElement unit = (ClientWarriorElement) collection.get(i);
+            unit.initiate();
             ClientBattleHelper.initMapXY(this, unit);
             battleConfiguration.getObserver().observe(unit);
+        }
+    }
+
+    private void initUnitFromCollectionSimple(ClientWarriorCollection collection, BattleConfiguration battleConfiguration) {
+        for (int i = 0; i < collection.size(); i++) {
+            ClientWarriorElement unit = (ClientWarriorElement) collection.get(i);
+            unit.initiate();
         }
     }
 

@@ -51,7 +51,7 @@ public class WarriorHelper {
      * @param cellX
      * @param cellY
      */
-    public static void putWarriorIntoMap(BattleCell[][] cells, Warrior warrior, int cellX, int cellY) { //todo-asap: cellX, cellY -> short
+    public static void putWarriorIntoMap(BattleCell[][] cells, Warrior warrior, int cellX, int cellY) { //todo: cellX, cellY -> short
         BattleCell previousCell = cells[warrior.getCellX()][warrior.getCellY()];
         previousCell.removeElement(warrior);
 

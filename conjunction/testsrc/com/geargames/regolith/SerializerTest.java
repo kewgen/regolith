@@ -716,7 +716,7 @@ public class SerializerTest {
         buffer.setLimit(2000);
         buffer.setPosition(0);
         buffer.mark();
-        BattleSerializer.serialize(battle, account, buffer);
+        BattleSerializer.serializeBattle(battle, account, buffer);
         buffer.reset();
         Battle newBattle = BattleDeserializer.deserializeBattle(buffer, baseConfiguration, account);
 
@@ -742,7 +742,7 @@ public class SerializerTest {
         battle.setName("пустая битва");
 
         MicroByteBuffer buffer = new MicroByteBuffer(new byte[2000]);
-        BattleSerializer.serialize(battle, account, buffer);
+        BattleSerializer.serializeBattle(battle, account, buffer);
         buffer.setPosition(0);
         Battle newBattle = BattleDeserializer.deserializeBattle(buffer, baseConfiguration, account);
         Assert.assertEquals(newBattle.getName(), battle.getName());

@@ -67,6 +67,8 @@ public interface Packets {
 
     short FINISH_BATTLE = 43;
 
+    short SERVER_CLOSE_BATTLE = 44;
+
     short SHOOT = 49;
 
     short MOVE_WARRIOR = 50;

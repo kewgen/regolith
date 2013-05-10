@@ -41,14 +41,12 @@ public class ClientInitiallyObservedEnemies extends ClientDeSerializedMessage {
 
     @Override
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        ClientWarriorCollection enemyUnits = PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits();
-
         byte size = buffer.get();
         enemies = new ClientWarriorCollection();
         enemies.setWarriors(new Vector(size));
         for (int i = 0; i < size; i++) {
             int enemyId = SimpleDeserializer.deserializeInt(buffer);
-            Warrior unit = ClientBattleHelper.getWarriorElementById(enemyUnits, enemyId);
+            Warrior unit = ClientBattleHelper.findWarrior(battle, enemyId);
             short cellX = SimpleDeserializer.deserializeShort(buffer);
             short cellY = SimpleDeserializer.deserializeShort(buffer);
             WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), unit, cellX, cellY);

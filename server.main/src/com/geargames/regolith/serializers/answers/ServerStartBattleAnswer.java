@@ -20,11 +20,11 @@ public class ServerStartBattleAnswer extends SerializedMessage {
     private Account account;
     private BattleServiceDescriptor battleServiceDescriptor;
 
-    public static ServerStartBattleAnswer answerSuccess(MicroByteBuffer buffer, Battle battle, Account account, BattleServiceDescriptor battleServiceDescriptor){
+    public static ServerStartBattleAnswer answerSuccess(MicroByteBuffer buffer, Battle battle, Account account, BattleServiceDescriptor battleServiceDescriptor) {
         return new ServerStartBattleAnswer(buffer, battle, account, battleServiceDescriptor, true);
     }
 
-    public static ServerStartBattleAnswer answerFailure(MicroByteBuffer buffer){
+    public static ServerStartBattleAnswer answerFailure(MicroByteBuffer buffer) {
         return new ServerStartBattleAnswer(buffer, null, null, null, false);
     }
 
@@ -47,7 +47,7 @@ public class ServerStartBattleAnswer extends SerializedMessage {
     public void serialize(MicroByteBuffer buffer) {
         SimpleSerializer.serialize(successfully, buffer);
         if (successfully) {
-            BattleSerializer.serialize(battle, account, buffer);
+            BattleSerializer.serializeBattle(battle, account, buffer);
             SimpleSerializer.serialize(battleServiceDescriptor.getHost(), buffer);
             SimpleSerializer.serialize(battleServiceDescriptor.getPort(), buffer);
         }

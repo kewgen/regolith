@@ -8,7 +8,6 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.serializers.answers.*;
 
@@ -94,6 +93,6 @@ public class RegolithMessageDispatcher extends MessageDispatcher {
 
     @Override
     protected void unhandledMessageHandler(DataMessage message) {
-        Debug.debug(message.getMessageType() + " was not handled");
+        Debug.warning(message.getMessageType() + " was not handled");
     }
 }

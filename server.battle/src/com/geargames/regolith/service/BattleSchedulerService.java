@@ -9,6 +9,7 @@ import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.regolith.serializers.answers.FinishBattleMessage;
 import com.geargames.regolith.serializers.answers.ServerChangeActiveAllianceMessage;
+import com.geargames.regolith.serializers.answers.ServerCloseBattleMessage;
 import com.geargames.regolith.serializers.answers.ServerInitiallyObservedEnemies;
 import com.geargames.regolith.service.clientstates.ClientState;
 import com.geargames.regolith.service.state.ClientAtBattle;
@@ -81,67 +82,75 @@ public class BattleSchedulerService {
                             logger.debug("Could not run a battle cycle (the service has been interrupted): " + serverBattle.getBattle().getName());
                             return;
                         }
-                        RegolithConfiguration regolithConfiguration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration();
-                        int index = serverBattle.getActive();
-                        if (index != ServerBattle.NONE) {
+                        try {
+                            BattleServiceConfiguration configuration = BattleServiceConfigurationFactory.getConfiguration();
+                            RegolithConfiguration regolithConfiguration = configuration.getRegolithConfiguration();
+                            int index = serverBattle.getActive();
+                            if (index != ServerBattle.NONE) {
+                                for (BattleClient client : serverBattle.getAlliances().get(index)) {
+                                    client.lock();
+                                    client.setState(new ClientCheckSumAwaiting());
+                                    client.release();
+                                }
+                            } else {
+                                logger.debug("Every client is trying to observe its neighbours");
+                                Battle battle = serverBattle.getBattle();
+                                BattleAlliance[] alliances = battle.getAlliances();
+                                Observer observer = regolithConfiguration.getBattleConfiguration().getObserver();
+                                logger.debug("alliances' amount: {}.", alliances.length);
+                                for (BattleAlliance alliance : alliances) {
+                                    logger.debug("an alliance number {} is observing.", alliance.getNumber());
+
+                                    Set<Warrior> enemies = ServerBattleHelper.allianceObservedBattle(alliance, observer);
+
+                                    if (enemies.size() > 0) {
+                                        List<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getAlliances().get(alliance.getNumber()));
+                                        writer.addMessageToClient(new BattleMessageToClient(recipients, new ServerInitiallyObservedEnemies(MICRO_BYTE_BUFFER.get(), enemies).serialize()));
+                                    }
+                                }
+                            }
+                            index = (index + 1) % serverBattle.getAlliances().size();
                             for (BattleClient client : serverBattle.getAlliances().get(index)) {
                                 client.lock();
-                                client.setState(new ClientCheckSumAwaiting());
+                                ClientState state = client.getState();
+                                if (state instanceof ClientCheckSumAwaiting) {
+                                    //todo клиент со своего последнего хода не подтвердил свои данные
+                                    List<SocketChannel> recipients = BattleServiceRequestUtils.getConnectedChannels(BattleServiceRequestUtils.getRecipients(serverBattle.getClients()));
+                                    MicroByteBuffer buffer = new MicroByteBuffer(new byte[128]);
+                                    writer.addMessageToClient(new BattleMessageToClient(recipients, new ServerCloseBattleMessage(buffer, "One or more clients have left a battle").serialize()));
+                                    CommonBattleManager.closeBattle(serverBattle);
+                                } else {
+                                    logger.debug("a battle client {} has been activated", client.getAccount().getName());
+                                    FightHelper.resetAllianceScores(serverBattle.getBattle().getAlliances()[index], regolithConfiguration.getBaseConfiguration());
+                                    client.setState(new ClientAtBattle(serverBattle));
+                                }
                                 client.release();
                             }
-                        } else {
-                            logger.debug("Every client is trying to observe its neighbours");
+                            serverBattle.setActive(index);
+                            logger.debug("an alliance number {} has been activated", index);
+
                             Battle battle = serverBattle.getBattle();
-                            BattleAlliance[] alliances = battle.getAlliances();
-                            Observer observer = regolithConfiguration.getBattleConfiguration().getObserver();
-                            logger.debug("alliances' amount: {}.", alliances.length);
-                            for (BattleAlliance alliance : alliances) {
-                                logger.debug("an alliance number {} is observing.", alliance.getNumber());
-
-                                Set<Warrior> enemies = ServerBattleHelper.allianceObservedBattle(alliance, observer);
-
-                                if (enemies.size() > 0) {
-                                    List<SocketChannel> recipients = BattleServiceRequestUtils.getRecipients(serverBattle.getAlliances().get(alliance.getNumber()));
-                                    writer.addMessageToClient(new BattleMessageToClient(recipients, new ServerInitiallyObservedEnemies(MICRO_BYTE_BUFFER.get(), enemies).serialize()));
+                            ServerBattleType type = (ServerBattleType) (battle.getBattleType());
+                            BattleAlliance winner = type.getWinner(battle);
+                            if (type.haveToFinish(battle)) {
+                                for (BattleGroup group : ((ServerBattleGroupCollection) winner.getAllies()).getBattleGroups()) {
+                                    for (Warrior warrior : ((ServerWarriorCollection) group.getWarriors()).getWarriors()) {
+                                        warrior.setExperience(FightHelper.countExperience(warrior) * type.getScores());
+                                        warrior.getVictimsDamages().clear();
+                                    }
                                 }
-                            }
-                        }
-                        index = (index + 1) % serverBattle.getAlliances().size();
-                        for (BattleClient client : serverBattle.getAlliances().get(index)) {
-                            client.lock();
-                            ClientState state = client.getState();
-                            if (state instanceof ClientCheckSumAwaiting) {
-                                //todo клиент со своего последнего хода не подтвердил свои данные
-                                CommonBattleManager.closeBattle(serverBattle);
+                                logger.debug("sent [finish a battle]");
+                                writer.addMessageToClient(new BattleMessageToClient(
+                                        BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
+                                        new FinishBattleMessage(new MicroByteBuffer(new byte[20]), winner).serialize()));
                             } else {
-                                logger.debug("a battle client {} has been activated", client.getAccount().getName());
-                                FightHelper.resetAllianceScores(serverBattle.getBattle().getAlliances()[index], regolithConfiguration.getBaseConfiguration());
-                                client.setState(new ClientAtBattle(serverBattle));
+                                logger.debug("sent [change active alliance] {}", index);
+                                writer.addMessageToClient(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
+                                        new ServerChangeActiveAllianceMessage(new MicroByteBuffer(new byte[20]),
+                                                serverBattle.getBattle().getAlliances()[serverBattle.getActive()]).serialize()));
                             }
-                            client.release();
-                        }
-                        serverBattle.setActive(index);
-                        logger.debug("an alliance number {} has been activated", index);
-
-                        Battle battle = serverBattle.getBattle();
-                        ServerBattleType type = (ServerBattleType) (battle.getBattleType());
-                        BattleAlliance winner = type.getWinner(battle);
-                        if (type.haveToFinish(battle)) {
-                            for (BattleGroup group : ((ServerBattleGroupCollection) winner.getAllies()).getBattleGroups()) {
-                                for (Warrior warrior : ((ServerWarriorCollection) group.getWarriors()).getWarriors()) {
-                                    warrior.setExperience(FightHelper.countExperience(warrior) * type.getScores());
-                                    warrior.getVictimsDamages().clear();
-                                }
-                            }
-                            logger.debug("sent [finish a battle]");
-                            writer.addMessageToClient(new BattleMessageToClient(
-                                    BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
-                                    new FinishBattleMessage(new MicroByteBuffer(new byte[20]), winner).serialize()));
-                        } else {
-                            logger.debug("sent [change active alliance] {}", index);
-                            writer.addMessageToClient(new BattleMessageToClient(BattleServiceRequestUtils.getRecipients(serverBattle.getClients()),
-                                    new ServerChangeActiveAllianceMessage(new MicroByteBuffer(new byte[20]),
-                                            serverBattle.getBattle().getAlliances()[serverBattle.getActive()]).serialize()));
+                        } catch (Exception e) {
+                            logger.error("An exception at [change active alliance]", e);
                         }
                     }
                 }, beginDelay, serverBattle.getBattle().getBattleType().getTurnTime(), TimeUnit.SECONDS));
