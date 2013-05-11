@@ -14,28 +14,29 @@ public class ClientGUIHelper {
         int rest = grams % 1000;
         if (kilos != 0) {
             if (rest != 0) {
-                return "" + kilos + kg + rest + g;
+                return kilos + kg + " " + rest + g;
             } else {
-                return kilos+kg;
+                return kilos + kg;
             }
         } else {
             return rest + g;
         }
     }
 
-    public static String getWeightRepresentation(short grams){
+    public static String getWeightRepresentation(short grams) {
         return getWeightRepresentation(grams, "kg", "g");
     }
 
 
     /**
-     * Класс работает с набором напрвлений от 0 до 7 с отсутсвием направления класс работает не корректно.
-     * @see Direction
+     * Класс работает с набором направлений от 0 до 7; с отсутствием направления класс работает не корректно.
+     *
      * @param direction
      * @return
+     * @see Direction
      */
-    public static int convertPackerScriptsDirection(Direction direction){
-        return  (direction.getNumber() + 2) % Direction.NONE.getNumber();
+    public static int convertPackerScriptsDirection(Direction direction) {
+        return (direction.getNumber() + 2) % Direction.NONE.getNumber();
     }
 
 }

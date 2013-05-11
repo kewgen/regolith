@@ -30,8 +30,8 @@ public class BattleDeserializer {
 
     public static void deserializeWarrior(Warrior warrior, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
         deserializeHuman(warrior, buffer, baseConfiguration);
-        warrior.setCellX(SimpleDeserializer.deserializeShort(buffer));
-        warrior.setCellY(SimpleDeserializer.deserializeShort(buffer));
+//        warrior.setCellX(SimpleDeserializer.deserializeShort(buffer));
+//        warrior.setCellY(SimpleDeserializer.deserializeShort(buffer));
     }
 
     public static void deserializeHuman(Human human, MicroByteBuffer buffer, BaseConfiguration baseConfiguration) {
@@ -99,13 +99,13 @@ public class BattleDeserializer {
                 for (int j = 0; j < battle.getBattleType().getGroupSize(); j++) {
                     int warriorId = SimpleDeserializer.deserializeInt(buffer);
                     short number = SimpleDeserializer.deserializeShort(buffer);
-                    int direction = SimpleDeserializer.deserializeInt(buffer);
+//                    int direction = SimpleDeserializer.deserializeInt(buffer);
                     Warrior warrior = null;
                     for (int k = 0; k < mineLength; k++) {
                         if (mineWarriors.get(k).getId() == warriorId) {
                             warrior = mineWarriors.get(k);
                             warrior.setNumber(number);
-                            warrior.setDirection(Direction.getByNumber(direction));
+//                            warrior.setDirection(Direction.getByNumber(direction));
                             break;
                         }
                     }

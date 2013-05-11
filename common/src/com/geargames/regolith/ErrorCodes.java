@@ -32,6 +32,9 @@ public class ErrorCodes {
             case SUCCESS:
                 errorString = "Нет ошибки";
                 break;
+            case UNKNOWN_ERROR:
+                errorString = "Произошла неизвестная ошибка";
+                break;
             case INTERNAL_ERROR:
                 errorString = "Произошла внутренная ошибка";
                 break;

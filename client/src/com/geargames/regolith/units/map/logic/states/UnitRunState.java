@@ -1,9 +1,11 @@
 package com.geargames.regolith.units.map.logic.states;
 
 import com.geargames.common.logging.Debug;
+import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.battle.Human;
@@ -72,38 +74,17 @@ public class UnitRunState extends AbstractLogicState {
         shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
         shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
 
-        ticks = 0;
-        extensionX = 0;
-        extensionY = 0;
-        beginMapX = warrior.getMapX();
-        beginMapY = warrior.getMapY();
-
-////        if (hasToStop(warrior)) {
-////            isMoving = false;
-////            battleUnit.getUnit().stop();
-////        } else {
-//
-        stepDirection = WarriorHelper.getStepDirection(PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells(), warrior);
-//            if (stepDirection == Direction.NONE) {
-////                isMoving = false;
-////                battleUnit.getUnit().stop();
-//            } else {
-//                if (stepDirection != unit.getDirection()) {
-//                    unit.getGraphic().stop();
-//                    unit.setDirection(stepDirection);
-//                    unit.getGraphic().start(unit, getAction());
-//                }
-//            }
-////        }
-//
-//        if (screen.getActiveUnit() == unit) {
-//            routeMap(warrior);
-//        }
+        startStep(warrior);
     }
 
     @Override
     public void onStop(DynamicCellElement owner) {
-
+        AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
+        if (warrior.getMembershipType() == Human.WARRIOR) {
+            BattleCell[][] cells = PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells();
+            BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
+            ClientBattleHelper.route(cells, warrior, battleConfiguration.getRouter(), battleConfiguration);
+        }
     }
 
     /**
@@ -116,7 +97,6 @@ public class UnitRunState extends AbstractLogicState {
     public boolean onTick(DynamicCellElement owner) {
         AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
 
-        boolean needStopped = false;
         if (speed - ticks > 1) {
             // Движение от центра одной клетки до центра другой клетки карты
             extensionX += shiftOnTickX * (stepDirection.getX() - stepDirection.getY());
@@ -126,7 +106,7 @@ public class UnitRunState extends AbstractLogicState {
             ticks++;
         } else {
             // Мы, приблезительно, в центре одной из клеток карты
-            // использовать battleScreen.coordinateFinder для вычисления положения бойца
+            //todo: использовать battleScreen.coordinateFinder для вычисления положения бойца
             warrior.setMapX((short) (BattleScreen.HORIZONTAL_RADIUS * (stepDirection.getX() - stepDirection.getY()) + beginMapX));
             warrior.setMapY((short) (BattleScreen.VERTICAL_RADIUS * (stepDirection.getY() + stepDirection.getX()) + beginMapY));
 
@@ -138,30 +118,33 @@ public class UnitRunState extends AbstractLogicState {
                 WarriorHelper.step(cells, warrior, stepDirection.getX(), stepDirection.getY(),
                         ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
             }
+            return startStep(warrior);
+        }
+        return false;
+    }
 
-            ticks = 0;
-            extensionX = 0;
-            extensionY = 0;
-            beginMapX = warrior.getMapX();
-            beginMapY = warrior.getMapY();
+    private boolean startStep(AbstractClientWarriorElement warrior) {
+        ticks = 0;
+        extensionX = 0;
+        extensionY = 0;
+        beginMapX = warrior.getMapX();
+        beginMapY = warrior.getMapY();
 
-            stepDirection = WarriorHelper.getStepDirection(cells, warrior);
-            if (stepDirection == Direction.NONE) {
-                needStopped = true;
-                warrior.getGraphic().stop();
+        BattleCell[][] cells = PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells();
+        stepDirection = WarriorHelper.getStepDirection(cells, warrior);
+        if (stepDirection == Direction.NONE) {
+            warrior.getGraphic().stop();
 //                isMoving = false;
 //                battleUnit.getUnit().stop();
-            } else {
-                if (stepDirection != warrior.getDirection()) {
-                    warrior.getGraphic().stop();
-                    warrior.setDirection(stepDirection);
-                    warrior.getGraphic().start(warrior, getAction());
-                }
+            return true;
+        } else {
+            if (stepDirection != warrior.getDirection()) {
+                warrior.getGraphic().stop();
+                warrior.setDirection(stepDirection);
+                warrior.getGraphic().start(warrior, getAction());
             }
+            return false;
         }
-
-//        warrior.getGraphic().onTick();
-        return needStopped;
     }
 
 }

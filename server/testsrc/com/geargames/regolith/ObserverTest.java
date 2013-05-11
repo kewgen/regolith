@@ -142,7 +142,7 @@ public class ObserverTest {
         Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[3][2], warrior));
         Assert.assertTrue("часть пути", BattleMapHelper.isShortestPathCell(cells[3][3], warrior));
 
-        BattleMapHelper.resetShortestPath(cells, warrior, warrior.getCellX(), warrior.getCellY(), battleConfiguration);
+        BattleMapHelper.resetShortestPath(cells, warrior, battleConfiguration);
         Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[2][0], warrior));
         Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[3][1], warrior));
         Assert.assertFalse("не часть пути", BattleMapHelper.isShortestPathCell(cells[3][2], warrior));

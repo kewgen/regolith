@@ -56,6 +56,13 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
      * Обработчик события изменения активного бойца.
      */
     public void onActiveUnitChanged(ClientWarriorElement activeUnit) {
+        onActiveUnitSittingChanged(activeUnit);
+    }
+
+    /**
+     * Обработчик события изменения активного бойца.
+     */
+    public void onActiveUnitSittingChanged(ClientWarriorElement activeUnit) {
         if (activeUnit.isSitting()) {
             standUpButton.setVisible(true);
             sitDownButton.setVisible(false);

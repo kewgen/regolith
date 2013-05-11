@@ -1,6 +1,7 @@
 package com.geargames.regolith.units.map.logic.states;
 
 import com.geargames.common.logging.Debug;
+import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.DynamicCellElement;
 import com.geargames.regolith.units.map.HumanLogicComponent;
@@ -49,6 +50,7 @@ public class UnitSitDownState extends AbstractUnitSimpleState {
     public void onStart(DynamicCellElement owner) {
         AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
         warrior.setSitting(true);
+        PRegolithPanelManager.getInstance().getBattleScreen().onChangeWarriorSitting(warrior);
         super.onStart(warrior);
     }
 

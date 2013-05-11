@@ -180,19 +180,18 @@ public class BattleMapHelper {
      *
      * @param cells
      * @param warrior
-     * @param x
-     * @param y
      */
-    public static void resetShortestPath(BattleCell[][] cells, Warrior warrior, int x, int y, BattleConfiguration battleConfiguration) {
-        int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration);
+    public static void resetShortestPath(BattleCell[][] cells, Warrior warrior, BattleConfiguration battleConfiguration) {
+        //todo-asap: исследовать как заполняется и чистится область достижимости, строится путь и прочее. Учесть передачу хода другому альянсу, смену активного бойца и др.
+        int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration); //todo: Использовать всегда максимальное значение радиуса
         int length = cells.length;
-        int x0 = x - radius;
+        int x0 = warrior.getCellX() - radius;
         x0 = x0 < 0 ? 0 : x0;
-        int y0 = y - radius;
+        int y0 = warrior.getCellY() - radius;
         y0 = y0 < 0 ? 0 : y0;
-        int x1 = x + radius;
+        int x1 = warrior.getCellX() + radius;
         x1 = x1 > length - 1 ? length - 1 : x1;
-        int y1 = y + radius;
+        int y1 = warrior.getCellY() + radius;
         y1 = y1 > length - 1 ? length - 1 : y1;
         for (int i = x0; i <= x1; i++) {
             for (int j = y0; j <= y1; j++) {

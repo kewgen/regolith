@@ -3,7 +3,6 @@ package com.geargames.regolith.serializers;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.*;
@@ -18,8 +17,9 @@ import com.geargames.regolith.units.tackle.Weapon;
  */
 public class BattleMapSerializer {
 
-    private static void serialize(Human human, MicroByteBuffer buffer) {
-        SerializeHelper.serializeEntityReference(human, buffer);
+    private static void serializeWarrior(Warrior warrior, MicroByteBuffer buffer) {
+        SerializeHelper.serializeEntityReference(warrior, buffer);
+        SimpleSerializer.serialize(warrior.getDirection().getNumber(), buffer);
     }
 
     private static void serialize(Barrier barrier, MicroByteBuffer buffer) {
@@ -70,22 +70,22 @@ public class BattleMapSerializer {
      * @param account
      * @param buffer
      */
-    public static void serialize(BattleCell[][] cells, short x, short y, Account account, MicroByteBuffer buffer) {
+    private static void serialize(BattleCell[][] cells, short x, short y, Account account, MicroByteBuffer buffer) {
         CellElement element = cells[x][y].getElement();
         if (element != null) {
             switch (element.getElementType()) {
                 case CellElementTypes.HUMAN:
                     Warrior warrior = (Warrior) element;
-                    if (warrior.getBattleGroup().getAccount().getId() == account.getId()) {
+                    if (WarriorHelper.isMine(warrior.getBattleGroup(), account)) {
                         SimpleSerializer.serialize(x, buffer);
                         SimpleSerializer.serialize(y, buffer);
                         SimpleSerializer.serialize(SerializeHelper.WARRIOR, buffer);
-                        serialize(warrior, buffer);
+                        serializeWarrior(warrior, buffer);
                     } else if (WarriorHelper.isAlly(warrior, account)) {
                         SimpleSerializer.serialize(x, buffer);
                         SimpleSerializer.serialize(y, buffer);
                         SimpleSerializer.serialize(SerializeHelper.ALLY, buffer);
-                        serialize(warrior, buffer);
+                        serializeWarrior(warrior, buffer);
                     }
                     break;
                 case CellElementTypes.BARRIER:
@@ -130,9 +130,10 @@ public class BattleMapSerializer {
         }
     }
 
-    public static void serialize(BattleMap battleMap, Account account, MicroByteBuffer buffer) {
+    public static void serializeBattleMap(BattleMap battleMap, Account account, MicroByteBuffer buffer) {
         SerializeHelper.serializeEntityReference(battleMap, buffer);
         if (battleMap == null) {
+            //todo: Нельзя просто так завершать метод
             return;
         }
         BattleCell[][] cells = battleMap.getCells();

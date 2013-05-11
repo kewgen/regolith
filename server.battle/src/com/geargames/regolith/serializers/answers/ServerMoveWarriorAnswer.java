@@ -67,6 +67,7 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
                     SerializeHelper.serializeEntityReference(warrior, buffer);
                     SimpleSerializer.serialize(warrior.getCellX(), buffer);
                     SimpleSerializer.serialize(warrior.getCellY(), buffer);
+                    SimpleSerializer.serialize(warrior.getDirection().getNumber(), buffer);
                 }
             } else {
                 SimpleSerializer.serialize((byte) 0, buffer);

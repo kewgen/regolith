@@ -90,14 +90,18 @@ public class BattleMapDeserializer {
             short cellX = SimpleDeserializer.deserializeShort(buffer);
             short cellY = SimpleDeserializer.deserializeShort(buffer);
             short typeId = SimpleDeserializer.deserializeShort(buffer);
+            int direction;
             switch (typeId) {
                 case SerializeHelper.WARRIOR:
                     int warriorId = SimpleDeserializer.deserializeInt(buffer);
+                    direction = SimpleDeserializer.deserializeInt(buffer);
                     Warrior unit = ClientBattleHelper.findWarrior(account, warriorId);
                     WarriorHelper.putWarriorIntoMap(cells, unit, cellX, cellY);
+                    unit.setDirection(Direction.getByNumber(direction));
                     break;
                 case SerializeHelper.ALLY:
                     int allyId = SimpleDeserializer.deserializeInt(buffer);
+                    direction = SimpleDeserializer.deserializeInt(buffer);
                     boolean found = false;
                     BattleAlliance alliance = ClientBattleHelper.findBattleAlliance(battle, account);
                     BattleGroupCollection groups = alliance.getAllies();
@@ -110,6 +114,7 @@ public class BattleMapDeserializer {
                                 if (warrior.getId() == allyId) {
                                     found = true;
                                     WarriorHelper.putWarriorIntoMap(cells, warrior, cellX, cellY);
+                                    warrior.setDirection(Direction.getByNumber(direction));
                                     break;
                                 }
                             }

@@ -7,6 +7,7 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.Direction;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 
@@ -67,7 +68,9 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
                 Warrior warrior = ClientBattleHelper.getWarriorById(enemyUnits, warriorId);
                 int xx = SimpleDeserializer.deserializeShort(buffer);
                 int yy = SimpleDeserializer.deserializeShort(buffer);
+                int direction = SimpleDeserializer.deserializeInt(buffer);
                 WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), warrior, xx, yy);
+                warrior.setDirection(Direction.getByNumber(direction));
                 enemies.add(warrior);
             }
         }

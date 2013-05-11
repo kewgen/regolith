@@ -31,7 +31,7 @@ public class ClientBattleHelper {
      * @param router
      */
     public static void route(BattleCell[][] cells, Warrior warrior, Router router, BattleConfiguration battleConfiguration) {
-        BattleMapHelper.resetShortestPath(cells, warrior, warrior.getCellX(), warrior.getCellY(), battleConfiguration);
+        BattleMapHelper.resetShortestPath(cells, warrior, battleConfiguration);
         BattleMapHelper.prepare(cells);
         router.route(warrior, battleConfiguration);
     }
@@ -46,7 +46,7 @@ public class ClientBattleHelper {
      * @param y
      */
     public static void trace(BattleCell[][] cells, Warrior warrior, int x, int y, BattleConfiguration battleConfiguration) {
-        BattleMapHelper.resetShortestPath(cells, warrior, warrior.getCellX(), warrior.getCellY(), battleConfiguration);
+        BattleMapHelper.resetShortestPath(cells, warrior, battleConfiguration);
         BattleMapHelper.makeShortestRoute(cells, x, y, warrior);
     }
 

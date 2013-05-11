@@ -58,8 +58,8 @@ public class BattleSerializer {
 
     public static void serializeWarrior(Warrior warrior, MicroByteBuffer buffer) {
         serializeHuman(warrior, buffer);
-        SimpleSerializer.serialize(warrior.getCellX(), buffer);
-        SimpleSerializer.serialize(warrior.getCellY(), buffer);
+//        SimpleSerializer.serialize(warrior.getCellX(), buffer);
+//        SimpleSerializer.serialize(warrior.getCellY(), buffer);
     }
 
     private static void serialize(ExitZone exitZone, MicroByteBuffer buffer) {
@@ -88,7 +88,7 @@ public class BattleSerializer {
                 for (Warrior mine : ((ServerWarriorCollection) battleGroup.getWarriors()).getWarriors()) {
                     SerializeHelper.serializeEntityReference(mine, buffer);
                     SimpleSerializer.serialize(mine.getNumber(), buffer);
-                    SimpleSerializer.serialize(mine.getDirection().getNumber(), buffer);
+//                    SimpleSerializer.serialize(mine.getDirection().getNumber(), buffer);
                 }
             }
         }
@@ -112,7 +112,7 @@ public class BattleSerializer {
         } else {
             SimpleSerializer.serialize((byte) 0, buffer);
         }
-        BattleMapSerializer.serialize(battle.getMap(), account, buffer);
+        BattleMapSerializer.serializeBattleMap(battle.getMap(), account, buffer);
 
         SerializeHelper.serializeEntityReference(battle.getAuthor(), buffer);
         SimpleSerializer.serialize(battle.getAuthor().getName(), buffer);

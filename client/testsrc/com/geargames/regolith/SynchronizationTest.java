@@ -106,7 +106,7 @@ public class SynchronizationTest {
         screen.setBattle(battle);
         screen.onShow();
 
-        screen.moveUser(10, 10);
+        screen.moveWarrior((short) 10, (short) 10);
         warrior.getLogic().quicklyCompleteAllCommands();
 
         Assert.assertEquals(valO, manager.getObserve());
