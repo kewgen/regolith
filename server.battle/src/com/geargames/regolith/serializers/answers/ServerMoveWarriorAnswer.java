@@ -19,13 +19,12 @@ public class ServerMoveWarriorAnswer extends SerializedMessage {
     private ServerWarriorCollection enemies;
     private boolean success;
 
-    public static ServerMoveWarriorAnswer answerFailure(MicroByteBuffer buffer) {
-        return new ServerMoveWarriorAnswer(buffer, null, null, false);
-    }
-
-
     public static ServerMoveWarriorAnswer answerSuccess(MicroByteBuffer buffer, Warrior unit, ServerWarriorCollection enemies) {
         return new ServerMoveWarriorAnswer(buffer, unit, enemies, true);
+    }
+
+    public static ServerMoveWarriorAnswer answerFailure(MicroByteBuffer buffer) {
+        return new ServerMoveWarriorAnswer(buffer, null, null, false);
     }
 
     private ServerMoveWarriorAnswer(MicroByteBuffer buffer, Warrior unit, ServerWarriorCollection enemies, boolean success) {

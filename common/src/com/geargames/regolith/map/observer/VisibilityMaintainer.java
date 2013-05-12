@@ -2,6 +2,7 @@ package com.geargames.regolith.map.observer;
 
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
@@ -44,8 +45,10 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
             if (cell.getElement() != null) {
                 hidden = !cell.getElement().isAbleToLookThrough();
                 if (!was && cell.getElement().getElementType() == CellElementTypes.HUMAN) {
-                    Warrior human = (Warrior) cell.getElement();
-                    enemies.add(human);
+                    Warrior warriorElement = (Warrior) cell.getElement();
+                    if (!WarriorHelper.isAlly(warrior, warriorElement)) {
+                        enemies.add(warriorElement);
+                    }
                 }
             }
         }
