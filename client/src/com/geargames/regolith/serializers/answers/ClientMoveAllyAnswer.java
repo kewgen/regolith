@@ -3,10 +3,10 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
+import com.geargames.regolith.ClientBattleContext;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
@@ -79,9 +79,9 @@ public class ClientMoveAllyAnswer extends ClientDeSerializedMessage {
         x = SimpleDeserializer.deserializeShort(buffer);
         y = SimpleDeserializer.deserializeShort(buffer);
 
-        BattleScreen battleScreen = PRegolithPanelManager.getInstance().getBattleScreen();
-        ClientWarriorCollection allyUnits = battleScreen.getAllyUnits();
-        ClientWarriorCollection enemyUnits = battleScreen.getEnemyUnits();
+        ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
+        ClientWarriorCollection allyUnits = battleContext.getAllyUnits();
+        ClientWarriorCollection enemyUnits = battleContext.getEnemyUnits();
 
         ally = (ClientWarriorElement) ClientBattleHelper.getWarriorById(allyUnits, allyId);
 

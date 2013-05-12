@@ -35,7 +35,7 @@ public class ClientWarriorElement extends AbstractClientWarriorElement {
 
     @Override
     public void draw(Graphics graphics, int x, int y) {
-        //todo: getMapX() и getMapY() переименовать в getMapOffsetX() и getMapOffsetY() соответственно и должны они означать смещение бойца относительно центра ячейки которую он занимает
+        //todo-asap: getMapX() и getMapY() переименовать в getMapOffsetX() и getMapOffsetY() соответственно и должны они означать смещение бойца относительно центра ячейки которую он занимает
 //      graphic.draw(graphics, x + getMapOffsetX(), y + getMapOffsetY());
 
         BattleScreen battleScreen = PRegolithPanelManager.getInstance().getBattleScreen();

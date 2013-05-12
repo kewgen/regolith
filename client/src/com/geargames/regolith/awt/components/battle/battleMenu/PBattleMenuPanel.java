@@ -2,6 +2,7 @@ package com.geargames.regolith.awt.components.battle.battleMenu;
 
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
@@ -44,7 +45,7 @@ public class PBattleMenuPanel extends PRootContentPanel {
 
     @Override
     public void onShow() {
-        onActiveAllianceChanged(PRegolithPanelManager.getInstance().getBattleScreen().getActiveAlliance());
+        onActiveAllianceChanged(ClientConfigurationFactory.getConfiguration().getBattleContext().getActiveAlliance());
     }
 
     @Override
@@ -56,7 +57,7 @@ public class PBattleMenuPanel extends PRootContentPanel {
      * Обработчик события об изменении активного военного союза, того чей, в данный момент, ход.
      */
     public void onActiveAllianceChanged(BattleAlliance alliance) {
-        skipMoveButton.setVisible(PRegolithPanelManager.getInstance().getBattleScreen().isMyTurn());
+        skipMoveButton.setVisible(ClientConfigurationFactory.getConfiguration().getBattleContext().isMyTurn());
 //        ArrayList group = PRegolithPanelManager.getInstance().getBattleScreen().getGroupUnits();
 //        boolean exitAllowed = group.size() > 0;
 //        for (int i = 0; i < group.size(); i++) {

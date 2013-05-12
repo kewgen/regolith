@@ -2,12 +2,12 @@ package com.geargames.regolith.units.map.unit.states;
 
 import com.geargames.common.logging.Debug;
 import com.geargames.regolith.BattleConfiguration;
+import com.geargames.regolith.ClientBattleContext;
+import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.BattleScreen;
 import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Direction;
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;
@@ -24,6 +24,7 @@ import com.geargames.regolith.units.map.unit.Actions;
  * бойца по игровому полю.
  */
 public class UnitRunState extends AbstractLogicState {
+    private BattleCell[][] cells;
     private Direction stepDirection;
     private int ticks;
 
@@ -70,9 +71,11 @@ public class UnitRunState extends AbstractLogicState {
         AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
         warrior.getGraphic().start(warrior, getAction());
 
-        speed = ClientConfigurationFactory.getConfiguration().getBattleConfiguration().getWalkSpeed();
-        shiftOnTickX = BattleScreen.HORIZONTAL_RADIUS / speed;
-        shiftOnTickY = BattleScreen.VERTICAL_RADIUS / speed;
+        ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
+        cells = configuration.getBattleContext().getBattle().getMap().getCells();
+        speed = configuration.getBattleConfiguration().getWalkSpeed();
+        shiftOnTickX = ClientBattleContext.HORIZONTAL_RADIUS / speed;
+        shiftOnTickY = ClientBattleContext.VERTICAL_RADIUS / speed;
 
         startStep(warrior);
     }
@@ -81,7 +84,6 @@ public class UnitRunState extends AbstractLogicState {
     public void onStop(DynamicCellElement owner) {
         AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
         if (warrior.getMembershipType() == Human.WARRIOR) {
-            BattleCell[][] cells = PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells();
             BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
             ClientBattleHelper.route(cells, warrior, battleConfiguration.getRouter(), battleConfiguration);
         }
@@ -107,10 +109,9 @@ public class UnitRunState extends AbstractLogicState {
         } else {
             // Мы, приблезительно, в центре одной из клеток карты
             //todo: использовать battleScreen.coordinateFinder для вычисления положения бойца
-            warrior.setMapX((short) (BattleScreen.HORIZONTAL_RADIUS * (stepDirection.getX() - stepDirection.getY()) + beginMapX));
-            warrior.setMapY((short) (BattleScreen.VERTICAL_RADIUS * (stepDirection.getY() + stepDirection.getX()) + beginMapY));
+            warrior.setMapX((short) (ClientBattleContext.HORIZONTAL_RADIUS * (stepDirection.getX() - stepDirection.getY()) + beginMapX));
+            warrior.setMapY((short) (ClientBattleContext.VERTICAL_RADIUS * (stepDirection.getY() + stepDirection.getX()) + beginMapY));
 
-            BattleCell[][] cells = PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells();
             if (warrior.getMembershipType() == Human.ENEMY) {
                 BattleMapHelper.resetShortestCell(cells[warrior.getCellX()][warrior.getCellY()], warrior);
                 WarriorHelper.putWarriorIntoMap(cells, warrior, warrior.getCellX() + stepDirection.getX(), warrior.getCellY() + stepDirection.getY());
@@ -130,7 +131,6 @@ public class UnitRunState extends AbstractLogicState {
         beginMapX = warrior.getMapX();
         beginMapY = warrior.getMapY();
 
-        BattleCell[][] cells = PRegolithPanelManager.getInstance().getBattleScreen().getBattle().getMap().getCells();
         stepDirection = WarriorHelper.getStepDirection(cells, warrior);
         if (stepDirection == Direction.NONE) {
             warrior.getGraphic().stop();

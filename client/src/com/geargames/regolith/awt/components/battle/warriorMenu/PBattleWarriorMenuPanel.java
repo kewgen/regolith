@@ -2,6 +2,7 @@ package com.geargames.regolith.awt.components.battle.warriorMenu;
 
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.ClientBattleContext;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
@@ -77,8 +78,9 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
      */
     public void onSitDownButtonClick() {
 //        NotificationBox.info("Посадить бойца", this);
+        ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement unit = battleContext.getActiveUnit();
         //todo: Сажать бойца можно только в случае, если сейчас наш ход и он сейчас не выполняет других команд
         if (unit.getLogic().isIdle() &&
                 WarriorHelper.maySit(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {
@@ -96,8 +98,9 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
      */
     public void onStandUpButtonClick() {
 //        NotificationBox.info("Поднять бойца", this);
+        ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement unit = battleContext.getActiveUnit();
         //todo: Поднимать бойца можно только в случае, если сейчас наш ход и он сейчас не выполняет других команд
         if (unit.getLogic().isIdle() &&
                 WarriorHelper.mayStand(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {

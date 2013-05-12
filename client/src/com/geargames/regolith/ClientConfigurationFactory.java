@@ -10,8 +10,8 @@ import com.geargames.regolith.units.map.finder.ProjectionFinder;
 import com.geargames.regolith.units.map.finder.ReverseProjectionFinder;
 
 /**
- * @author Mikhail_Kutuzov
- *         created: 25.05.12  13:08
+ * User: Mikhail_Kutuzov
+ * Date: 25.05.12
  */
 public class ClientConfigurationFactory {
     private static ClientConfiguration configuration;
@@ -28,7 +28,7 @@ public class ClientConfigurationFactory {
         return configuration;
     }
 
-    public static ClientConfiguration produce() {
+    private static ClientConfiguration produce() {
         ClientConfiguration configuration = new ClientConfiguration();
 
         configuration.setMaxErrorsAmount(3);
@@ -40,6 +40,8 @@ public class ClientConfigurationFactory {
         configuration.setNetwork(new ConsoleNetwork(new MicroByteBuffer(new byte[SIZE])));
         configuration.setPort(1238);
         configuration.setServer("localhost");
+
+        configuration.setBattleContext(new ClientBattleContext());
 
         configuration.setMessageDispatcher(new RegolithMessageDispatcher(configuration.getNetwork(), Packets.MESSAGES_AMOUNT, configuration));
         configuration.setBattleCreationManager(new ClientBattleCreationManager(configuration));

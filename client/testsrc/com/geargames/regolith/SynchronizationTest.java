@@ -100,10 +100,11 @@ public class SynchronizationTest {
         BattleMapHelper.clearRoutes(battleMap.getCells(), warrior, 0, 0, battleConfiguration);
         BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
 
+        ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
+        battleContext.initiate(battle);
+
         BattleScreen screen = new BattleScreen();
         screen.setCorrector(new CubeBorderCorrector());
-        screen.setActiveAlliance(warrior.getBattleGroup().getAlliance());
-        screen.setBattle(battle);
         screen.onShow();
 
         screen.moveWarrior((short) 10, (short) 10);

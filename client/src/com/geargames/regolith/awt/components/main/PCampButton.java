@@ -214,10 +214,10 @@ public class PCampButton extends PTouchButton {
             battleConfiguration.setObserver(new StrictPerimeterObserver(allies));
             battleConfiguration.setRouter(new RecursiveWaveRouter());
             ClientConfigurationFactory.getConfiguration().setBattleConfiguration(battleConfiguration);
+            ClientConfigurationFactory.getConfiguration().getBattleContext().initiate(battle);
 
             PRegolithPanelManager manager = PRegolithPanelManager.getInstance();
             manager.hideAll();
-            manager.getBattleScreen().setBattle(battle);
             manager.show(manager.getBattleScreen());
             manager.show(manager.getBattleMenuWindow());
             manager.show(manager.getBattleWarriorListWindow());

@@ -3,7 +3,7 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Battle;
@@ -62,7 +62,7 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
             byte size = buffer.get();
             enemies = new ClientWarriorCollection();
             enemies.setWarriors(new Vector(size));
-            ClientWarriorCollection enemyUnits = PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits();
+            ClientWarriorCollection enemyUnits = ClientConfigurationFactory.getConfiguration().getBattleContext().getEnemyUnits();
             for (int i = 0; i < size; i++) {
                 int warriorId = SimpleDeserializer.deserializeInt(buffer);
                 Warrior warrior = ClientBattleHelper.getWarriorById(enemyUnits, warriorId);
