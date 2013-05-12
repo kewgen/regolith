@@ -1,4 +1,4 @@
-package com.geargames.regolith.units.map.logic.states;
+package com.geargames.regolith.units.map.unit.states;
 
 import com.geargames.regolith.units.map.DynamicCellElement;
 

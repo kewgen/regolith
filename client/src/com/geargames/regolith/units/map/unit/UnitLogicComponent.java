@@ -1,8 +1,9 @@
-package com.geargames.regolith.units.map;
+package com.geargames.regolith.units.map.unit;
 
-import com.geargames.regolith.units.map.logic.LogicComponent;
-import com.geargames.regolith.units.map.logic.states.*;
-import com.geargames.regolith.units.map.states.Actions;
+import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.DynamicCellElement;
+import com.geargames.regolith.units.map.LogicComponent;
+import com.geargames.regolith.units.map.unit.states.*;
 
 /**
  * User: abarakov
@@ -10,7 +11,7 @@ import com.geargames.regolith.units.map.states.Actions;
  * <p/>
  * Класс логики бойца. Служит для выполнения атомарных действий, таких как, двигаться, присесть, выстрелить, умереть и т.д.
  */
-public class HumanLogicComponent extends LogicComponent {
+public class UnitLogicComponent extends LogicComponent {
     private static UnitStandState standState = new UnitStandState();       // Боец стоит
     private static UnitSitState sitState = new UnitSitState();             // Боец сидит
     private static UnitSitDownState sitDownState = new UnitSitDownState(); // Боец садится
@@ -25,7 +26,7 @@ public class HumanLogicComponent extends LogicComponent {
     private static UnitStandSimpleState standAndDieState = new UnitStandSimpleState(Actions.HUMAN_STAND_AND_DIE);            // Боец умирает стоя
     private static UnitSitSimpleState sitAndDieState = new UnitSitSimpleState(Actions.HUMAN_SIT_AND_DIE);                    // Боец умирает сидя
 
-    public HumanLogicComponent(DynamicCellElement owner) {
+    public UnitLogicComponent(DynamicCellElement owner) {
         super(owner);
         runState = new UnitRunState();
     }

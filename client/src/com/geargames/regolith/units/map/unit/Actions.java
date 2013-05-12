@@ -1,4 +1,4 @@
-package com.geargames.regolith.units.map.states;
+package com.geargames.regolith.units.map.unit;
 
 /**
  * Users: m.v.kutuzov, abarakov

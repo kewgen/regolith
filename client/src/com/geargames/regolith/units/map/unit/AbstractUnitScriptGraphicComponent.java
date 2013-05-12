@@ -1,4 +1,4 @@
-package com.geargames.regolith.units.map.states;
+package com.geargames.regolith.units.map.unit;
 
 import com.geargames.common.packer.PUnit;
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;

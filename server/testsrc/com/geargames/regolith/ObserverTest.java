@@ -44,7 +44,6 @@ public class ObserverTest {
         barrier.setAbleToLookThrough(false);
         warrior = new Warrior();
         warrior.setName("Вася");
-        warrior.setMembershipType(Human.WARRIOR);
 
         BattleGroup battleGroup = new BattleGroup();
         battleGroup.setAccount(account);

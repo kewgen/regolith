@@ -114,7 +114,7 @@ public class AccountDeserializer {
         byte length = buffer.get();
         ClientWarriorCollection warriors = new ClientWarriorCollection(new Vector());
         for (int i = 0; i < length; i++) {
-            Warrior warrior = new ClientWarriorElement();
+            ClientWarriorElement warrior = new ClientWarriorElement();
             warriors.add(warrior);
             warrior.setMembershipType(Human.WARRIOR); //todo: WARRIOR ?
             deserialize(warrior, buffer, baseConfiguration);

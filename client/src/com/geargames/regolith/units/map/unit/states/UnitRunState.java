@@ -1,4 +1,4 @@
-package com.geargames.regolith.units.map.logic.states;
+package com.geargames.regolith.units.map.unit.states;
 
 import com.geargames.common.logging.Debug;
 import com.geargames.regolith.BattleConfiguration;
@@ -13,7 +13,7 @@ import com.geargames.regolith.units.battle.Direction;
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.DynamicCellElement;
-import com.geargames.regolith.units.map.states.Actions;
+import com.geargames.regolith.units.map.unit.Actions;
 
 /**
  * Users: abarakov, mkutuzov

@@ -3,7 +3,7 @@ package com.geargames.regolith;
 import com.geargames.common.Graphics;
 import com.geargames.common.packer.PUnit;
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;
-import com.geargames.regolith.units.map.states.AbstractUnitScriptGraphicComponent;
+import com.geargames.regolith.units.map.unit.AbstractUnitScriptGraphicComponent;
 
 /**
  * User: abarakov

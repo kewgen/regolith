@@ -49,7 +49,7 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
         if (errorCode == ErrorCodes.SUCCESS) {
             baseConfiguration = ConfigurationDeserializer.deserializeBaseConfiguration(buffer);
             account = AccountDeserializer.deserialize(buffer, baseConfiguration);
-            if (account.getWarriors() == null || account.getWarriors().size() == 0) { //todo: этот if будет всегда выдавать false
+            if (account.getWarriors() == null || account.getWarriors().size() == 0) { //todo: СЌС‚РѕС‚ if Р±СѓРґРµС‚ РІСЃРµРіРґР° РІС‹РґР°РІР°С‚СЊ false
                 int length = SimpleDeserializer.deserializeInt(buffer);
                 warriors = new Warrior[length];
                 for (int i = 0; i < length; i++) {

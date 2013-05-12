@@ -1,10 +1,10 @@
-package com.geargames.regolith.units.map.logic.states;
+package com.geargames.regolith.units.map.unit.states;
 
 import com.geargames.common.logging.Debug;
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.DynamicCellElement;
-import com.geargames.regolith.units.map.HumanLogicComponent;
-import com.geargames.regolith.units.map.states.Actions;
+import com.geargames.regolith.units.map.unit.UnitLogicComponent;
+import com.geargames.regolith.units.map.unit.Actions;
 
 /**
  * User: abarakov
@@ -26,7 +26,7 @@ public class UnitSitSimpleState extends AbstractUnitSimpleState {
 
     @Override
     public void change(DynamicCellElement owner, AbstractLogicState newState) {
-        HumanLogicComponent logic = ((AbstractClientWarriorElement) owner).getLogic();
+        UnitLogicComponent logic = ((AbstractClientWarriorElement) owner).getLogic();
         switch (newState.getAction()) {
 //            case Actions.HUMAN_STAND:
             case Actions.HUMAN_RUN:

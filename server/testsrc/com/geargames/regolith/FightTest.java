@@ -30,7 +30,6 @@ public class FightTest {
     @Before
     public void before() {
         warrior = new Warrior();
-        warrior.setMembershipType(Human.WARRIOR);
         Weapon weapon = new Weapon();
 
         weaponCategory = new WeaponCategory();

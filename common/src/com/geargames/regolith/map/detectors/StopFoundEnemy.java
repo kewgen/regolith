@@ -1,7 +1,6 @@
 package com.geargames.regolith.map.detectors;
 
 import com.geargames.regolith.helpers.BattleMapHelper;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.CellElementTypes;
@@ -21,8 +20,8 @@ public class StopFoundEnemy extends UnitDetector {
                 && cell.getElement() != null
                 && cell.getElement().getElementType() == CellElementTypes.HUMAN) {
             Warrior warriorElement = (Warrior) cell.getElement();
-            if (warriorElement.getMembershipType() == Human.ALLY && warriorElement.getBattleGroup().getAlliance() != warrior.getBattleGroup().getAlliance()) {
-//                warrior.setMoving(false); //todo-asap: остановить бойца
+            if (/*warriorElement.getMembershipType() == Human.ALLY && */warriorElement.getBattleGroup().getAlliance() != warrior.getBattleGroup().getAlliance()) {
+//                warrior.setMoving(false); //todo: Правильно остановить бойца
             }
         }
     }

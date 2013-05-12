@@ -3,23 +3,24 @@ package com.geargames.regolith.units.map;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.units.BattleScreen;
-import com.geargames.regolith.units.map.states.UnitScriptGraphicComponent;
+import com.geargames.regolith.units.map.unit.UnitScriptGraphicComponent;
+import com.geargames.regolith.units.map.unit.UnitLogicComponent;
 
 /**
  * User: abarakov
  * Date: 30.04.13
  */
 public class ClientWarriorElement extends AbstractClientWarriorElement {
-    private HumanLogicComponent logic;
+    private UnitLogicComponent logic;
     private UnitScriptGraphicComponent graphic;
 
     public ClientWarriorElement() {
-        logic = new HumanLogicComponent(this);
+        logic = new UnitLogicComponent(this);
         graphic = new UnitScriptGraphicComponent();
     }
 
     @Override
-    public HumanLogicComponent getLogic() {
+    public UnitLogicComponent getLogic() {
         return logic;
     }
 

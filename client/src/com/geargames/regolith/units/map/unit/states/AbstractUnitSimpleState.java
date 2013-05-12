@@ -1,8 +1,8 @@
-package com.geargames.regolith.units.map.logic.states;
+package com.geargames.regolith.units.map.unit.states;
 
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.DynamicCellElement;
-import com.geargames.regolith.units.map.states.AbstractUnitScriptGraphicComponent;
+import com.geargames.regolith.units.map.unit.AbstractUnitScriptGraphicComponent;
 
 /**
  * User: abarakov

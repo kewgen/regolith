@@ -1,9 +1,9 @@
-package com.geargames.regolith.units.map.logic;
+package com.geargames.regolith.units.map;
 
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.units.map.DynamicCellElement;
 import com.geargames.regolith.units.map.Tickable;
-import com.geargames.regolith.units.map.logic.states.AbstractLogicState;
+import com.geargames.regolith.units.map.unit.states.AbstractLogicState;
 
 /**
  * Логическая компонента динамического элемента на карте.
