@@ -20,7 +20,7 @@ public abstract class AbstractClientWarriorElement extends Warrior implements Dr
     }
 
     public byte getMembershipType() {
-        if (Debug.IS_DEBUG && (membershipType < ENEMY || membershipType > WARRIOR)) {
+        if (Debug.IS_DEBUG && (membershipType < WarriorMembershipType.ENEMY || membershipType > WarriorMembershipType.WARRIOR)) {
             throw new RuntimeException("Invalid value of MembershipType (membershipType = " + membershipType + ")");
         }
         return membershipType;

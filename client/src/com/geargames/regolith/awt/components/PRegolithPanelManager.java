@@ -69,7 +69,7 @@ public class PRegolithPanelManager extends PPanelManager {
 
     private DefaultDrawablePPanel battleMenuWindow;
     private DefaultDrawablePPanel battleWarriorMenuWindow;
-    private DefaultDrawablePPanel battleShotMenuWindow;
+    private ElementActionMenuDrawablePPanel battleShotMenuWindow;
     private DefaultDrawablePPanel battleWeaponMenuWindow;
     private DefaultDrawablePPanel battleWarriorListWindow;
 
@@ -226,8 +226,8 @@ public class PRegolithPanelManager extends PPanelManager {
         battleWarriorMenuWindow.setElement(battleWarriorMenuPanel);
 
         PBattleShotMenuPanel battleShotMenuPanel = new PBattleShotMenuPanel(render.getObject(Graph.PAN_BAT_FIRE));
-        battleShotMenuWindow = new MiddleDrawablePPanel();
-        battleShotMenuWindow.setAnchor(Anchors.BOTTOM_CENTER_ANCHOR);
+        battleShotMenuWindow = new ElementActionMenuDrawablePPanel();
+        battleShotMenuWindow.setAnchor(Anchors.NONE_ANCHOR);
         battleShotMenuWindow.setElement(battleShotMenuPanel);
 
         PBattleWeaponMenuPanel battleWeaponMenuPanel = new PBattleWeaponMenuPanel(render.getObject(Graph.PAN_BAT_WEAPON));
@@ -377,7 +377,7 @@ public class PRegolithPanelManager extends PPanelManager {
         return (PBattleWarriorMenuPanel) battleWarriorMenuWindow.getElement();
     }
 
-    public DefaultDrawablePPanel getBattleShotMenuWindow() {
+    public ElementActionMenuDrawablePPanel getBattleShotMenuWindow() {
         return battleShotMenuWindow;
     }
 

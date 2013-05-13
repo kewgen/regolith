@@ -7,11 +7,11 @@ import com.geargames.regolith.helpers.ClientHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.*;
 import com.geargames.regolith.units.base.*;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientStateTackleCollection;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.WarriorMembershipType;
 import com.geargames.regolith.units.tackle.*;
 
 import java.util.Date;
@@ -116,7 +116,7 @@ public class AccountDeserializer {
         for (int i = 0; i < length; i++) {
             ClientWarriorElement warrior = new ClientWarriorElement();
             warriors.add(warrior);
-            warrior.setMembershipType(Human.WARRIOR); //todo: WARRIOR ?
+            warrior.setMembershipType(WarriorMembershipType.WARRIOR); //todo: WARRIOR ?
             deserialize(warrior, buffer, baseConfiguration);
         }
         account.setWarriors(warriors);

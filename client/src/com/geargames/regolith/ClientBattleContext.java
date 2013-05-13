@@ -7,6 +7,7 @@ import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.DynamicCellElement;
 
 /**
  * User: abarakov
@@ -22,14 +23,18 @@ public class ClientBattleContext {
     public static final int VERTICAL_RADIUS = VERTICAL_DIAGONAL / 2;
     public static final double TANGENT = (VERTICAL_RADIUS + 0.0) / (HORIZONTAL_RADIUS + 0.0);
 
-    private ClientWarriorCollection groupUnits; // бойцы текущего клиента
-    private ClientWarriorCollection allyUnits;  // союзные бойцы
-    private ClientWarriorCollection enemyUnits; // вражеские бойцы
-
     private Battle battle;                      // Текущая битва
     private BattleGroup battleGroup;            //
     private BattleAlliance activeAlliance;      // Активный в данный момент боевой альянс, чей сейчас ход
     private ClientWarriorElement activeUnit;    // Активный боец
+
+    private DynamicCellElement selectedElement; // Выбранный на карте динамический элемент
+    private short selectedElementCellX;
+    private short selectedElementCellY;
+
+    private ClientWarriorCollection groupUnits; // Бойцы текущего клиента
+    private ClientWarriorCollection allyUnits;  // Союзные бойцы
+    private ClientWarriorCollection enemyUnits; // Вражеские бойцы
 
     public void initiate(Battle battle) {
         Account account = ClientConfigurationFactory.getConfiguration().getAccount();
@@ -39,15 +44,17 @@ public class ClientBattleContext {
         this.activeAlliance = null;
         this.activeUnit = null;
 
+        selectedElement = null;
+        selectedElementCellX = -1;
+        selectedElementCellY = -1;
+
         groupUnits = ClientBattleHelper.getGroupBattleUnits(battle, account);
         allyUnits = ClientBattleHelper.getAllyBattleUnits(battle, account);
         enemyUnits = ClientBattleHelper.getEnemyBattleUnits(battle, account);
     }
 
     /**
-     * Вернуть объект битва отрисовка которой происходит с помощью экрана.
-     *
-     * @return
+     * Вернуть объект битва, в которой, в настоящий момент, участвует игрок.
      */
     public Battle getBattle() {
         return battle;
@@ -61,14 +68,8 @@ public class ClientBattleContext {
         return battleGroup;
     }
 
-    public void setBattleGroup(BattleGroup battleGroup) {
-        this.battleGroup = battleGroup;
-    }
-
     /**
      * Моя ли очередь ходить?
-     *
-     * @return
      */
     public boolean isMyTurn() {
         return battleGroup.getAlliance() == activeAlliance;
@@ -76,8 +77,6 @@ public class ClientBattleContext {
 
     /**
      * Вернуть активный боевой союз.
-     *
-     * @return
      */
     public BattleAlliance getActiveAlliance() {
         return activeAlliance;
@@ -88,9 +87,7 @@ public class ClientBattleContext {
     }
 
     /**
-     * Вернуть своего активного бойца.
-     *
-     * @return
+     * Получить своего активного бойца.
      */
     public ClientWarriorElement getActiveUnit() {
         return activeUnit;
@@ -100,28 +97,58 @@ public class ClientBattleContext {
         this.activeUnit = activeUnit;
     }
 
+    /**
+     * Получить элемент на карте, который в данный момент выделен.
+     */
+    public DynamicCellElement getSelectedElement() {
+        return selectedElement;
+    }
+
+    public void setSelectedElement(DynamicCellElement selectedElement) {
+        this.selectedElement = selectedElement;
+    }
+
+    public short getSelectedElementCellX() {
+        return selectedElementCellX;
+    }
+
+    public void setSelectedElementCellX(short x) {
+        selectedElementCellX = x;
+    }
+
+    public short getSelectedElementCellY() {
+        return selectedElementCellY;
+    }
+
+    public void setSelectedElementCellY(short y) {
+        selectedElementCellY = y;
+    }
+
+    /**
+     * Получить список собственных бойцов на карте.
+     *
+     * @return список объектов класса Warrior.
+     */
     public ClientWarriorCollection getGroupUnits() {
         return groupUnits;
     }
 
+    /**
+     * Получить список союзных бойцов на карте.
+     *
+     * @return список объектов класса Warrior.
+     */
     public ClientWarriorCollection getAllyUnits() {
         return allyUnits;
     }
 
+    /**
+     * Получить список вражеских бойцов на карте.
+     *
+     * @return список объектов класса Warrior.
+     */
     public ClientWarriorCollection getEnemyUnits() {
         return enemyUnits;
-    }
-
-    public void setGroupUnits(ClientWarriorCollection list) {
-        groupUnits = list;
-    }
-
-    public void setAllyUnits(ClientWarriorCollection list) {
-        allyUnits = list;
-    }
-
-    public void setEnemyUnits(ClientWarriorCollection list) {
-        enemyUnits = list;
     }
 
 }

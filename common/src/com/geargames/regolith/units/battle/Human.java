@@ -11,10 +11,6 @@ import com.geargames.regolith.units.tackle.Weapon;
  * Базовый класс для всех бойцов.
  */
 public abstract class Human extends DynamicCellElement {
-    public static final byte ENEMY = 1;
-    public static final byte ALLY = 2;
-    public static final byte WARRIOR = 3; //todo: переименовать
-
     private BattleGroup battleGroup;
     private short number; //todo: short -> byte
 

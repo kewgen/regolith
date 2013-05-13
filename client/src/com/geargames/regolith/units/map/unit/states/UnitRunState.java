@@ -8,11 +8,11 @@ import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Direction;
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.DynamicCellElement;
+import com.geargames.regolith.units.map.WarriorMembershipType;
 import com.geargames.regolith.units.map.unit.Actions;
 
 /**
@@ -83,7 +83,7 @@ public class UnitRunState extends AbstractLogicState {
     @Override
     public void onStop(DynamicCellElement owner) {
         AbstractClientWarriorElement warrior = (AbstractClientWarriorElement) owner;
-        if (warrior.getMembershipType() == Human.WARRIOR) {
+        if (warrior.getMembershipType() == WarriorMembershipType.WARRIOR) {
             BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
             ClientBattleHelper.route(cells, warrior, battleConfiguration.getRouter(), battleConfiguration);
         }
@@ -112,7 +112,7 @@ public class UnitRunState extends AbstractLogicState {
             warrior.setMapX((short) (ClientBattleContext.HORIZONTAL_RADIUS * (stepDirection.getX() - stepDirection.getY()) + beginMapX));
             warrior.setMapY((short) (ClientBattleContext.VERTICAL_RADIUS * (stepDirection.getY() + stepDirection.getX()) + beginMapY));
 
-            if (warrior.getMembershipType() == Human.ENEMY) {
+            if (warrior.getMembershipType() == WarriorMembershipType.ENEMY) {
                 BattleMapHelper.resetShortestCell(cells[warrior.getCellX()][warrior.getCellY()], warrior);
                 WarriorHelper.putWarriorIntoMap(cells, warrior, warrior.getCellX() + stepDirection.getX(), warrior.getCellY() + stepDirection.getY());
             } else {

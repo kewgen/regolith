@@ -6,12 +6,12 @@ import com.geargames.common.packer.PObject;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
 /**
- * Реализация клиентского класса преграды. Целиком опирается на то, что weaponCategory.getId() возвращает
+ * Реализация клиентского класса двери. Целиком опирается на то, что weaponCategory.getId() возвращает
  * последовательные номера категорий, которые лежат в области от 0 до 7.
- * Users: mkutuzov, abarakov
- * Date: 28.03.12
+ * User: abarakov
+ * Date: 13.05.13
  */
-public class ClientBarrier extends Barrier implements DrawableElement {
+public class ClientDoor extends Door implements DrawableElement {
     private PObject obj;
     private byte shootThrough;
 

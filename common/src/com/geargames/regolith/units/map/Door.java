@@ -3,43 +3,43 @@ package com.geargames.regolith.units.map;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
 /**
- * User: mkutuzov
- * Date: 18.02.12
- * Time: 15:00
+ * User: abarakov
+ * Date: 13.05.13
  */
-public abstract class Barrier extends DynamicCellElement {
-    private boolean ableToLookThrough;
-    private boolean ableToWalkThrough;
-    private boolean halfLong;
+public abstract class Door extends DynamicCellElement {
+    private boolean opened;
+
+    public Door() {
+        opened = false;
+    }
+
+    /**
+     * Вернет true, если дверь открыта.
+     */
+    public boolean getOpened() {
+        return opened;
+    }
+
+    public void setOpened(boolean opened) {
+        this.opened = opened;
+    }
 
     /**
      * Вернет true, если это препятствие в полроста и false, если препятствие выше роста бойца.
-     *
-     * @return
      */
     @Override
     public boolean isHalfLong() {
-        return halfLong;
-    }
-
-    public void setHalfLong(boolean halfLong) {
-        this.halfLong = halfLong;
+        return false;
     }
 
     public abstract void setFrameId(int unitFrameId);
 
     /**
      * Вернет true, если препятствие не является помехой для обзора.
-     *
-     * @return
      */
     @Override
     public boolean isAbleToLookThrough() {
-        return ableToLookThrough;
-    }
-
-    public void setAbleToLookThrough(boolean ableToLookThrough) {
-        this.ableToLookThrough = ableToLookThrough;
+        return opened;
     }
 
     /**
@@ -49,21 +49,12 @@ public abstract class Barrier extends DynamicCellElement {
      */
     @Override
     public boolean isAbleToWalkThrough() {
-        return ableToWalkThrough;
-    }
-
-    public void setAbleToWalkThrough(boolean ableToWalkThrough) {
-        this.ableToWalkThrough = ableToWalkThrough;
+        return opened;
     }
 
     @Override
     public boolean isBarrier() {
-        return true;
-    }
-
-    @Override
-    public short getElementType() {
-        return CellElementTypes.BARRIER;
+        return !opened;
     }
 
     /**
@@ -73,6 +64,11 @@ public abstract class Barrier extends DynamicCellElement {
      * @param able
      */
     public abstract void setAbleToShootThrough(WeaponCategory category, boolean able);
+
+    @Override
+    public short getElementType() {
+        return CellElementTypes.DOOR;
+    }
 
     @Override
     public byte getLayer() {

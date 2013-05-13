@@ -4,7 +4,6 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.NotificationBox;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.map.ClientWarriorElement;

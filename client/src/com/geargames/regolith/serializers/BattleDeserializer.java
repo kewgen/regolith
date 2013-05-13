@@ -17,6 +17,7 @@ import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.map.ClientWarriorElement;
 import com.geargames.regolith.units.map.ExitZone;
+import com.geargames.regolith.units.map.WarriorMembershipType;
 import com.geargames.regolith.units.tackle.Armor;
 import com.geargames.regolith.units.tackle.Weapon;
 
@@ -87,7 +88,7 @@ public class BattleDeserializer {
                 // Сериализация союзных бойцов
                 for (int j = 0; j < battle.getBattleType().getGroupSize(); j++) {
                     ClientWarriorElement ally = new ClientWarriorElement();
-                    ally.setMembershipType(Human.ALLY);
+                    ally.setMembershipType(WarriorMembershipType.ALLY);
                     battleGroup.getWarriors().add(ally);
                     deserializeWarrior(ally, buffer, configuration);
                     ally.setBattleGroup(battleGroup);
@@ -139,7 +140,7 @@ public class BattleDeserializer {
             battleGroup.setId(SimpleDeserializer.deserializeInt(buffer));
             for (int j = 0; j < battle.getBattleType().getGroupSize(); j++) {
                 ClientWarriorElement warrior = new ClientWarriorElement();
-                warrior.setMembershipType(Human.ENEMY);
+                warrior.setMembershipType(WarriorMembershipType.ENEMY);
                 deserializeHuman(warrior, buffer, configuration);
                 battleGroup.getWarriors().add(warrior);
                 warrior.setBattleGroup(battleGroup);

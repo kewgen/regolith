@@ -8,6 +8,7 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.DynamicCellElement;
 
 /**
  * User: abarakov
@@ -57,6 +58,13 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
      * Обработчик события изменения активного бойца.
      */
     public void onActiveUnitChanged(ClientWarriorElement activeUnit) {
+
+    }
+
+    /**
+     * Обработчик события сообщающего об выборе нового элемента на карте.
+     */
+    public void onSelectedElementChanged(DynamicCellElement element) {
 
     }
 

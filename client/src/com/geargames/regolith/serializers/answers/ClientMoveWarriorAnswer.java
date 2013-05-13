@@ -71,6 +71,7 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
                 int direction = SimpleDeserializer.deserializeInt(buffer);
                 WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), warrior, xx, yy);
                 warrior.setDirection(Direction.getByNumber(direction));
+                //todo-asap: установить значение свойству Sitting
                 enemies.add(warrior);
             }
         }

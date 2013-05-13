@@ -14,6 +14,7 @@ import com.geargames.common.util.Mathematics;
 import com.geargames.common.Graphics;
 import com.geargames.regolith.*;
 import com.geargames.regolith.application.Event;
+import com.geargames.regolith.awt.components.ElementActionMenuDrawablePPanel;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
@@ -39,9 +40,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     private int touchedX;
     private int touchedY;
-    private int touchedXX;
-    private int touchedYY;
+    private int backupMapX;
+    private int backupMapY;
 
+    //todo: Избавиться от 4 x Pair
     private Pair topCenter;
     private Pair centerRight;
     private Pair bottomCenter;
@@ -52,18 +54,20 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private int b3;
     private int b4;
 
-    private Pair center;
     private ClientConfiguration configuration;
     private ClientBattleContext battleContext;
 
     private short[] listenedTypes;
     private int timerId;
 
+    private PSprite groundSprite;
     private PSprite shadowSprite;
     private PSprite reachableCellSprite;
     private PSprite unreachableCellSprite;
     private PObject symbolOfProtectionObject;
     private PObject iconHeightOfBarriersObject;
+
+    private ElementActionMenuDrawablePPanel actionMenuWindow; // Панелька с кнопками для выполнения действий над выделенным элементом карты
 
     public BattleScreen() {
         timerId = TimerManager.NULL_TIMER;
@@ -74,6 +78,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         cellFinder = configuration.getCellFinder();
         coordinateFinder = configuration.getCoordinateFinder();
 
+        groundSprite = Environment.getRender().getSprite(Graph.SPR_GROUND);
         shadowSprite = Environment.getRender().getSprite(Graph.SPR_SHADOW);
         reachableCellSprite = Environment.getRender().getSprite(Graph.SPR_DISTANCE);
         unreachableCellSprite = Environment.getRender().getSprite(Graph.SPR_DISTANCE + 1);
@@ -95,15 +100,20 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * @param y
      * @param cell
      */
-    private void drawCell(Graphics graphics, int x, int y, BattleCell cell) {
+    //todo: Аргументы cellX и cellY здесь временно, незабыть убрать
+    private void drawCell(Graphics graphics, int x, int y, BattleCell cell, short cellX, short cellY) {
         if (battleContext.isMyTurn()) {
             boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
             if (isReachableCell) {
                 reachableCellSprite.draw(graphics, x, y);
             } else {
-                if (BattleMapHelper.isBarrier(cell)) {
-                    unreachableCellSprite.draw(graphics, x, y);
-                }
+//                if (BattleMapHelper.isBarrier(cell)) {
+//                    unreachableCellSprite.draw(graphics, x, y);
+//                }
+            }
+            DynamicCellElement element = battleContext.getSelectedElement();
+            if (element != null && battleContext.getSelectedElementCellX() == cellX && battleContext.getSelectedElementCellY() == cellY) {
+                unreachableCellSprite.draw(graphics, x, y);
             }
             if (BattleMapHelper.isShortestPathCell(cell, battleContext.getActiveUnit())) {
                 shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
@@ -221,12 +231,12 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private void drawBattleMap(Graphics graphics) {
         BattleCell[][] cells = battleContext.getBattle().getMap().getCells();
         int length = cells.length;
-        for (int yCell = 0; yCell < length; yCell++) {
+        for (short yCell = 0; yCell < length; yCell++) {
             int y = yCell * ClientBattleContext.VERTICAL_RADIUS;
             int x = (length - 1 + yCell) * ClientBattleContext.HORIZONTAL_RADIUS;
-            for (int xCell = 0; xCell < length; xCell++) {
+            for (short xCell = 0; xCell < length; xCell++) {
                 if (isOnTheScreen(x, y)) {
-                    drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell]);
+                    drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell], xCell, yCell);
                 }
                 x -= ClientBattleContext.HORIZONTAL_RADIUS;
                 y += ClientBattleContext.VERTICAL_RADIUS;
@@ -235,12 +245,12 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     private void drawGround(Graphics graphics) {
-        int x = -mapX % ClientBattleContext.GROUND_WIDTH - ClientBattleContext.HORIZONTAL_RADIUS;
-        int tmp = -mapY % ClientBattleContext.GROUND_HEIGHT - ClientBattleContext.VERTICAL_RADIUS;
+        int x = -mapX % ClientBattleContext.GROUND_WIDTH - ClientBattleContext.HORIZONTAL_RADIUS * 3; //todo-asap: Использовать getMapMinX()
+        int tmp = -mapY % ClientBattleContext.GROUND_HEIGHT - ClientBattleContext.VERTICAL_RADIUS * 5; //todo-asap: Использовать getMapMinY()
         while (x < getWidth()) {
             int y = tmp;
             while (y < getHeight()) {
-                Environment.getRender().getSprite(1).draw(graphics, x, y);
+                groundSprite.draw(graphics, x, y);
                 y += ClientBattleContext.GROUND_HEIGHT;
             }
             x += ClientBattleContext.GROUND_WIDTH;
@@ -275,29 +285,17 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * @param y координата карты
      */
     public void setCenter(int x, int y) {
-        setMapX(x - (getWidth() >> 1));
-        setMapY(y - (getHeight() >> 1));
-        center.setX(x);
-        center.setY(y);
-        corrector.correct(getMapX(), getMapY(), this);
-    }
-
-    /**
-     * Переместить центр экрана к ячейке карты.
-     *
-     * @param x правый номер сетки
-     * @param y левый номер сетки
-     */
-    public void setCellCenter(int x, int y) {
-        Pair pair = coordinateFinder.find(y, x, this);
-        setCenter(pair.getX(), pair.getY());
+        Pair pair = corrector.correct(x - (getWidth() / 2), y - (getHeight() / 2), this);
+        scrollingMapTo(pair.getX(), pair.getY());
     }
 
     /**
      * Центрировать область просмотра на ячейке карты.
      */
     public void displayCell(int cellX, int cellY) {
-        setCellCenter(cellX, cellY);
+        //todo-asap: Подкорректировать все find-ы, чтобы первым аргументом был x вторым y!
+        Pair pair = coordinateFinder.find(cellY, cellX, this);
+        setCenter(pair.getX(), pair.getY());
     }
 
     /**
@@ -326,44 +324,53 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
             case Event.EVENT_TOUCH_PRESSED:
                 touchedX = x;
                 touchedY = y;
-                touchedXX = x;
-                touchedYY = y;
+                backupMapX = mapX;
+                backupMapY = mapY;
                 break;
             case Event.EVENT_TOUCH_MOVED:
                 int dx = touchedX - x;
                 int dy = touchedY - y;
-                setMapX(mapX + dx);
-                setMapY(mapY + dy);
-                touchedX = x;
-                touchedY = y;
-                corrector.correct(mapX, mapY, this);
+                Pair pair = corrector.correct(backupMapX + dx, backupMapY + dy, this);
+                scrollingMapTo(pair.getX(), pair.getY());
                 break;
             case Event.EVENT_TOUCH_RELEASED:
                 if (battleContext.isMyTurn()) {
                     Debug.debug("BattleScreen.onEvent(): code = Event.EVENT_TOUCH_RELEASED");
                     if (isOnTheMap(x, y)) {
-                        if (Mathematics.abs(touchedXX - x) <= ClientBattleContext.SPOT && Mathematics.abs(touchedYY - y) <= ClientBattleContext.SPOT) {
+                        if (Mathematics.abs(touchedX - x) <= ClientBattleContext.SPOT && Mathematics.abs(touchedY - y) <= ClientBattleContext.SPOT) {
                             if (battleContext.getActiveUnit().getLogic().isIdle()) {
                                 Pair cellCoordinate = cellFinder.find(x + mapX, y + mapY, this);
                                 BattleCell battleCell = battleContext.getBattle().getMap().getCells()[cellCoordinate.getX()][cellCoordinate.getY()];
                                 CellElement[] elements = battleCell.getElements();
-                                boolean hasHumanInCell = false;
-                                for (int i = 0; i < battleCell.getSize(); i++) {
+                                boolean wasSelectedElement = false;
+                                for (int i = battleCell.getSize() - 1; i >= 0; i--) {
                                     CellElement element = elements[i];
-                                    if (element.getElementType() == CellElementTypes.HUMAN) {
-                                        ClientWarriorElement warrior = (ClientWarriorElement) element;
-                                        Debug.debug("Is warrior " + warrior.getName() + " (id=" + warrior.getId() + ")"
-                                                + " [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "]");
-                                        if (warrior.getBattleGroup() == battleContext.getBattleGroup()) {
-                                            setActiveUnit(warrior);
-                                        } else {
-                                            // Показать инфу о союзном или вражеском бойце
-                                        }
-                                        hasHumanInCell = true;
+                                    switch (element.getElementType()) {
+                                        case CellElementTypes.HUMAN:
+                                            ClientWarriorElement warrior = (ClientWarriorElement) element;
+                                            Debug.debug("Is warrior " + warrior.getName() + " (id=" + warrior.getId() + ")"
+                                                    + " [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "]");
+                                            if (warrior.getBattleGroup() == battleContext.getBattleGroup()) {
+                                                setActiveUnit(warrior);
+                                                setSelectedElement(null, -1, -1);
+                                            } else {
+                                                setSelectedElement(warrior, cellCoordinate.getX(), cellCoordinate.getY());
+                                            }
+                                            wasSelectedElement = true;
+                                            break;
+                                        case CellElementTypes.DOOR:
+                                        case CellElementTypes.REGOLITH:
+                                        case CellElementTypes.BOX:
+                                            setSelectedElement((DynamicCellElement) element, cellCoordinate.getX(), cellCoordinate.getY());
+                                            wasSelectedElement = true;
+                                            break;
+                                    }
+                                    if (wasSelectedElement) {
                                         break;
                                     }
                                 }
-                                if (!hasHumanInCell) {
+                                if (!wasSelectedElement) {
+                                    setSelectedElement(null, -1, -1);
                                     if (BattleMapHelper.isReachable(battleCell)) {
                                         Debug.debug("Trace for a user " + battleContext.getActiveUnit().getNumber()
                                                 + " from [" + battleContext.getActiveUnit().getCellX() + ":" + battleContext.getActiveUnit().getCellY() + "]"
@@ -388,6 +395,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                     if (isOnTheMap(x, y)) {
                         Pair cellCoordinate = cellFinder.find(x + mapX, y + mapY, this);
                         Debug.debug("A cell to go [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "] remaining action scores = " + battleContext.getActiveUnit().getActionScore());
+                        //todo: Проверять, что ячейка не занята
                         if (BattleMapHelper.isShortestPathCell(battleContext.getBattle().getMap().getCells()[cellCoordinate.getX()][cellCoordinate.getY()], battleContext.getActiveUnit())) {
                             Debug.debug("Move an user " + battleContext.getActiveUnit().getNumber());
                             moveWarrior((short) cellCoordinate.getX(), (short) cellCoordinate.getY());
@@ -560,6 +568,21 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     /**
+     * Обработчик события прокрутки игровой карты.
+     */
+    private void onScrollingMapChanged() {
+        if (actionMenuWindow != null) {
+            actionMenuWindow.onScrollingMapChanged();
+        }
+    }
+
+    public void scrollingMapTo(int mapX, int mapY) {
+        this.mapX = mapX;
+        this.mapY = mapY;
+        onScrollingMapChanged();
+    }
+
+    /**
      * Вернуть X координату точки карты которая отображается в левом верхнем углу экрана.
      */
     public int getMapX() {
@@ -567,7 +590,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void setMapX(int mapX) {
-        this.mapX = mapX;
+        scrollingMapTo(mapX, this.mapY);
     }
 
     /**
@@ -578,7 +601,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void setMapY(int mapY) {
-        this.mapY = mapY;
+        scrollingMapTo(this.mapX, mapY);
     }
 
     /**
@@ -669,19 +692,19 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 //        allyUnits = ClientBattleHelper.getAllyBattleUnits(battle, account);
 //        enemyUnits = ClientBattleHelper.getEnemyBattleUnits(battle, account);
 
-        int length = battleContext.getBattle().getMap().getCells().length;
+        int size = battleContext.getBattle().getMap().getCells().length;
 
         topCenter = new Pair();
-        topCenter.setX((length - 1) * ClientBattleContext.HORIZONTAL_RADIUS);
+        topCenter.setX((size - 1) * ClientBattleContext.HORIZONTAL_RADIUS);
         topCenter.setY(0);
 
         centerRight = new Pair();
-        centerRight.setX((length - 1) * ClientBattleContext.HORIZONTAL_DIAGONAL);
-        centerRight.setY(topCenter.getY() + (length - 1) * ClientBattleContext.VERTICAL_RADIUS);
+        centerRight.setX((size - 1) * ClientBattleContext.HORIZONTAL_DIAGONAL);
+        centerRight.setY(topCenter.getY() + (size - 1) * ClientBattleContext.VERTICAL_RADIUS);
 
         bottomCenter = new Pair();
         bottomCenter.setX(topCenter.getX());
-        bottomCenter.setY(topCenter.getY() + (length - 1) * ClientBattleContext.VERTICAL_DIAGONAL);
+        bottomCenter.setY(topCenter.getY() + (size - 1) * ClientBattleContext.VERTICAL_DIAGONAL);
 
         centerLeft = new Pair();
         centerLeft.setX(0);
@@ -691,11 +714,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         b2 = (int) (centerRight.getY() + centerRight.getX() * ClientBattleContext.TANGENT) + ClientBattleContext.VERTICAL_RADIUS;
         b3 = (int) (bottomCenter.getY() - bottomCenter.getX() * ClientBattleContext.TANGENT) + ClientBattleContext.VERTICAL_RADIUS;
         b4 = (int) (centerLeft.getY() + centerLeft.getX() * ClientBattleContext.TANGENT) - ClientBattleContext.VERTICAL_RADIUS;
-        center = new Pair();
 
         BattleAlliance alliance = battleContext.getBattleGroup().getAlliance();
         ExitZone exit = alliance.getExit();
-        setCellCenter(exit.getX(), exit.getY());
+        displayCell(exit.getX(), exit.getY());
 
         BattleConfiguration battleConfiguration = ClientConfigurationFactory.getConfiguration().getBattleConfiguration();
         initUnitFromCollection(battleContext.getGroupUnits(), battleConfiguration);
@@ -754,7 +776,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         panelManager.show(panelManager.getBattleWarriorListWindow());
         panelManager.show(panelManager.getBattleWeaponMenuWindow());
         panelManager.show(panelManager.getBattleWarriorMenuWindow());
-        panelManager.show(panelManager.getBattleShotMenuWindow());
+//        panelManager.show(panelManager.getBattleShotMenuWindow());
     }
 
     /**
@@ -788,15 +810,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     public void setActiveUnit(ClientWarriorElement unit) {
 //        if (this.activeUnit != unit) {
         battleContext.setActiveUnit(unit);
-        onChangeActiveUnit();
+        onActiveUnitChanged(unit);
 //        }
     }
 
     /**
      * Обработчик события сообщающего об изменении активного бойца.
      */
-    private void onChangeActiveUnit() {
-        ClientWarriorElement unit = battleContext.getActiveUnit();
+    private void onActiveUnitChanged(ClientWarriorElement unit) {
         Debug.debug("The current user number = " + unit.getNumber());
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.getBattleWarriorListPanel().onActiveUnitChanged(unit);
@@ -813,6 +834,69 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         ClientBattleHelper.route(battleContext.getBattle().getMap().getCells(), battleContext.getActiveUnit(),
                 ClientConfigurationFactory.getConfiguration().getBattleConfiguration().getRouter(),
                 ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+    }
+
+    public void setSelectedElement(DynamicCellElement element, int cellX, int cellY) {
+        // element - что за объект                  как реагировать на выбор element-а:
+        // * null, пустая клетка                    - убрать все action-кнопки и просто протрейсить путь до клетки
+        // * союзный warrior                        - отобразить панельку AllyWarriorMenu ("Инфа о бойце")
+        // * вражеский warrior                      - отобразить панельку EnemyWarriorMenu ("Инфа о бойце", "Выстрел наспех", "Прицельный выстрел")
+        // * дверь                                  - отобразить панельку DoorMenu ("Открыть/Закрыть дверь")
+        // * кучка реголита                         - отобразить панельку RegolithMenu ("Собрать реголит")
+        // * ящик (с амуницией, боеприпасами)       - отобразить панельку BoxMenu ("Посмотреть содержимое ящика")
+        // * предмет (оружие, какая-нибудь плюшка)  - отобразить панельку TackleMenu ("Подобрать предмет")
+
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        if (actionMenuWindow != null) {
+            panelManager.hide(actionMenuWindow);
+        }
+
+        battleContext.setSelectedElementCellX((short) cellX);
+        battleContext.setSelectedElementCellY((short) cellY);
+
+        if (element != null) {
+            switch (element.getElementType()) {
+                case CellElementTypes.HUMAN:
+                    ClientWarriorElement warrior = (ClientWarriorElement) element;
+                    if (warrior.getMembershipType() == WarriorMembershipType.ENEMY) {
+                        actionMenuWindow = panelManager.getBattleShotMenuWindow();
+                        panelManager.getBattleShotMenuPanel().onSelectedElementChanged(warrior); // onSelectedWarriorChanged
+                    } else {
+//                        actionMenuWindow = panelManager.getBattleAllyWarriorMenuWindow();
+//                        panelManager.getBattleAllyWarriorMenuPanel().onSelectedElementChanged(warrior); // onSelectedWarriorChanged
+                    }
+                    break;
+//                case CellElementTypes.DOOR:
+//                    ClientDoor door = (ClientDoor) element;
+//                    actionMenuWindow = panelManager.getBattleDoorMenuWindow();
+//                    panelManager.getBattleDoorMenuPanel().onSelectedElementChanged(door); // onSelectedDoorChanged
+//                    break;
+//                case CellElementTypes.REGOLITH:
+//                    ClientRegolithElement regolithElement = (ClientRegolithElement) element;
+//                    actionMenuWindow = panelManager.getBattleRegolithMenuWindow();
+//                    panelManager.getBattleRegolithMenuPanel().onSelectedElementChanged(regolithElement);
+//                    break;
+                default:
+                    actionMenuWindow = null;
+            }
+
+            if (actionMenuWindow != null) {
+                actionMenuWindow.setCellXY(cellX, cellY);
+                panelManager.show(actionMenuWindow);
+            }
+            battleContext.setSelectedElement(element);
+            onSelectedElementChanged(element);
+        }
+    }
+
+    /**
+     * Обработчик события сообщающего об выборе нового элемента на карте.
+     */
+    private void onSelectedElementChanged(DynamicCellElement element) {
+        Debug.debug("The current selected element '" + element.getElementType() + "'");
+        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
+        panelManager.getBattleWarriorMenuPanel().onSelectedElementChanged(element);
+        panelManager.getBattleShotMenuPanel().onSelectedElementChanged(element);
     }
 
     /**

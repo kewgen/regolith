@@ -8,6 +8,7 @@ import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.DynamicCellElement;
 
 /**
  * User: abarakov
@@ -61,7 +62,7 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     }
 
     /**
-     * Обработчик события изменения активного бойца.
+     * Обработчик события изменения положения (стоит/сидит) активного бойца.
      */
     public void onActiveUnitSittingChanged(ClientWarriorElement activeUnit) {
         if (activeUnit.isSitting()) {
@@ -71,6 +72,13 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
             standUpButton.setVisible(false);
             sitDownButton.setVisible(true);
         }
+    }
+
+    /**
+     * Обработчик события сообщающего об выборе нового элемента на карте.
+     */
+    public void onSelectedElementChanged(DynamicCellElement element) {
+
     }
 
     /**

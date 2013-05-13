@@ -25,7 +25,7 @@ public class ProjectionFinder extends Finder {
     }
 
     public Pair find(int x, int y, BattleScreen battleScreen) {
-        int length = ClientConfigurationFactory.getConfiguration().getBattleContext().getBattle().getMap().getCells().length;
+        int size = ClientConfigurationFactory.getConfiguration().getBattleContext().getBattle().getMap().getCells().length;
         double k = ClientBattleContext.TANGENT;
         int b1 = battleScreen.getB1();
         int b4 = battleScreen.getB4();
@@ -35,8 +35,8 @@ public class ProjectionFinder extends Finder {
         int x1 = (b4 - b41) / (int) (k * 2);
         int x2 = (b11 - b1) / (int) (k * 2);
 
-        int index1 = length - 1 - (x1 + ClientBattleContext.HORIZONTAL_RADIUS) / ClientBattleContext.HORIZONTAL_RADIUS;
-        int index2 = x2 / ClientBattleContext.HORIZONTAL_RADIUS - length + 1;
+        int index1 = size - 1 - (x1 + ClientBattleContext.HORIZONTAL_RADIUS) / ClientBattleContext.HORIZONTAL_RADIUS;
+        int index2 = x2 / ClientBattleContext.HORIZONTAL_RADIUS - size + 1;
 
         cell.setY(index1);
         cell.setX(index2);

@@ -5,9 +5,8 @@ import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.common.util.ArrayList;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumberRequest;
-import com.geargames.regolith.units.battle.Human;
-import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.WarriorMembershipType;
 import com.geargames.regolith.units.tackle.Weapon;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -30,7 +29,7 @@ public class ClientSerializationTest {
         weapon.setId(1);
         ClientWarriorElement warrior = new ClientWarriorElement();
         warrior.setId(1);
-        warrior.setMembershipType(Human.WARRIOR);
+        warrior.setMembershipType(WarriorMembershipType.WARRIOR);
 
         ClientMoveTackleByNumberRequest move = new ClientMoveTackleByNumberRequest(configuration);
         move.setNumber((short) 0);
