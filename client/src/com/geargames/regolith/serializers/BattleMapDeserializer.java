@@ -89,74 +89,77 @@ public class BattleMapDeserializer {
         while (buffer.getPosition() != last) {
             short cellX = SimpleDeserializer.deserializeShort(buffer);
             short cellY = SimpleDeserializer.deserializeShort(buffer);
-            short typeId = SimpleDeserializer.deserializeShort(buffer);
+            byte size = buffer.get();
             int direction;
-            switch (typeId) {
-                case SerializeHelper.WARRIOR:
-                    int warriorId = SimpleDeserializer.deserializeInt(buffer);
-                    direction = SimpleDeserializer.deserializeInt(buffer);
-                    Warrior unit = ClientBattleHelper.findWarrior(account, warriorId);
-                    WarriorHelper.putWarriorIntoMap(cells, unit, cellX, cellY);
-                    unit.setDirection(Direction.getByNumber(direction));
-                    break;
-                case SerializeHelper.ALLY:
-                    int allyId = SimpleDeserializer.deserializeInt(buffer);
-                    direction = SimpleDeserializer.deserializeInt(buffer);
-                    boolean found = false;
-                    BattleAlliance alliance = ClientBattleHelper.findBattleAlliance(battle, account);
-                    BattleGroupCollection groups = alliance.getAllies();
-                    for (int i = 0; i < groups.size(); i++) {
-                        BattleGroup group = groups.get(i);
-                        if (group.getAccount() != account) {
-                            int len = group.getWarriors().size();
-                            for (int j = 0; j < len; j++) {
-                                Warrior warrior = group.getWarriors().get(j);
-                                if (warrior.getId() == allyId) {
-                                    found = true;
-                                    WarriorHelper.putWarriorIntoMap(cells, warrior, cellX, cellY);
-                                    warrior.setDirection(Direction.getByNumber(direction));
+            for (int k = 0; k < size; k++) {
+                short typeId = SimpleDeserializer.deserializeShort(buffer);
+                switch (typeId) {
+                    case SerializeHelper.WARRIOR:
+                        int warriorId = SimpleDeserializer.deserializeInt(buffer);
+                        direction = SimpleDeserializer.deserializeInt(buffer);
+                        Warrior unit = ClientBattleHelper.findWarrior(account, warriorId);
+                        WarriorHelper.putWarriorIntoMap(cells, unit, cellX, cellY);
+                        unit.setDirection(Direction.getByNumber(direction));
+                        break;
+                    case SerializeHelper.ALLY:
+                        int allyId = SimpleDeserializer.deserializeInt(buffer);
+                        direction = SimpleDeserializer.deserializeInt(buffer);
+                        boolean found = false;
+                        BattleAlliance alliance = ClientBattleHelper.findBattleAlliance(battle, account);
+                        BattleGroupCollection groups = alliance.getAllies();
+                        for (int i = 0; i < groups.size(); i++) {
+                            BattleGroup group = groups.get(i);
+                            if (group.getAccount() != account) {
+                                int len = group.getWarriors().size();
+                                for (int j = 0; j < len; j++) {
+                                    Warrior warrior = group.getWarriors().get(j);
+                                    if (warrior.getId() == allyId) {
+                                        found = true;
+                                        WarriorHelper.putWarriorIntoMap(cells, warrior, cellX, cellY);
+                                        warrior.setDirection(Direction.getByNumber(direction));
+                                        break;
+                                    }
+                                }
+                                if (found) {
                                     break;
                                 }
                             }
-                            if (found) {
-                                break;
-                            }
                         }
-                    }
-                    if (!found) {
-                        Debug.critical("Deserialized warrior does not found (allyId = " + allyId + ")");
-                    }
-                    break;
-                case SerializeHelper.BOX:
-                    ClientBox box = new ClientBox();
-                    cells[cellX][cellY].addElement(box);
-                    deserializeBox(box, buffer, baseConfiguration);
-                    break;
-                case SerializeHelper.MAGAZINE:
-                    Magazine magazine = new Magazine();
-                    cells[cellX][cellY].addElement(magazine);
-                    deserializeMagazine(magazine, buffer, baseConfiguration);
-                    break;
-                case SerializeHelper.BARRIER:
-                    cells[cellX][cellY].addElement(BaseConfigurationHelper.findBarrierById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
-                    break;
-                case SerializeHelper.ARMOR:
-                    Armor armor = new Armor();
-                    cells[cellX][cellY].addElement(armor);
-                    TackleDeserializer.deSerialize(armor, buffer, baseConfiguration);
-                    break;
-                case SerializeHelper.WEAPON:
-                    Weapon weapon = new Weapon();
-                    cells[cellX][cellY].addElement(weapon);
-                    TackleDeserializer.deSerialize(weapon, buffer, baseConfiguration);
-                    break;
-                case SerializeHelper.MEDIKIT:
-                    Medikit medikit = new Medikit();
-                    cells[cellX][cellY].addElement(medikit);
-                    TackleDeserializer.deserializeMedikit(medikit, buffer, baseConfiguration);
-                    break;
-                default:
-                    throw new IllegalArgumentException("This map element is not recognized (type identifier = " + typeId + ")");
+                        if (!found) {
+                            Debug.critical("Deserialized warrior does not found (allyId = " + allyId + ")");
+                        }
+                        break;
+                    case SerializeHelper.BOX:
+                        ClientBox box = new ClientBox();
+                        cells[cellX][cellY].addElement(box);
+                        deserializeBox(box, buffer, baseConfiguration);
+                        break;
+                    case SerializeHelper.MAGAZINE:
+                        Magazine magazine = new Magazine();
+                        cells[cellX][cellY].addElement(magazine);
+                        deserializeMagazine(magazine, buffer, baseConfiguration);
+                        break;
+                    case SerializeHelper.BARRIER:
+                        cells[cellX][cellY].addElement(BaseConfigurationHelper.findBarrierById(SimpleDeserializer.deserializeInt(buffer), baseConfiguration));
+                        break;
+                    case SerializeHelper.ARMOR:
+                        Armor armor = new Armor();
+                        cells[cellX][cellY].addElement(armor);
+                        TackleDeserializer.deSerialize(armor, buffer, baseConfiguration);
+                        break;
+                    case SerializeHelper.WEAPON:
+                        Weapon weapon = new Weapon();
+                        cells[cellX][cellY].addElement(weapon);
+                        TackleDeserializer.deSerialize(weapon, buffer, baseConfiguration);
+                        break;
+                    case SerializeHelper.MEDIKIT:
+                        Medikit medikit = new Medikit();
+                        cells[cellX][cellY].addElement(medikit);
+                        TackleDeserializer.deserializeMedikit(medikit, buffer, baseConfiguration);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("This map element is not recognized (type identifier = " + typeId + ")");
+                }
             }
         }
         return battleMap;

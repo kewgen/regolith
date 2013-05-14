@@ -8,7 +8,6 @@ import com.geargames.regolith.map.PairAndElement;
 import com.geargames.regolith.map.observer.LineViewCaster;
 import com.geargames.regolith.map.observer.ShootBarriersFinder;
 import com.geargames.regolith.units.map.CellElement;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.tackle.Magazine;
