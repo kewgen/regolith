@@ -10,7 +10,7 @@ import com.geargames.regolith.awt.components.warrior.PWarriorPanel;
 import com.geargames.regolith.awt.components.warrior.exchange.PExchangeButton;
 import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
-import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;
+import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumberRequest;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.base.StoreHouse;
 import com.geargames.regolith.units.battle.Warrior;
@@ -45,7 +45,7 @@ public class PTStoreHouse2BagButton extends PExchangeButton {
             warriorPanel.getBagTacklesElement().initiateMotionListener();
 
             ClientConfirmationAnswer answer = new ClientConfirmationAnswer();
-            ClientMoveTackleByNumber move = new ClientMoveTackleByNumber(configuration);
+            ClientMoveTackleByNumberRequest move = new ClientMoveTackleByNumberRequest(configuration);
             move.setNumber(number);
             move.setAmount((short)1);
             move.setRealAmount((short)1);

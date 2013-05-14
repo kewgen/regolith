@@ -6,7 +6,7 @@ import com.geargames.common.packer.PObject;
 import com.geargames.regolith.units.tackle.WeaponCategory;
 
 /**
- * Реализация клиентского класса преграды целиком опирается на то, что weaponCategory.getId() возвращает
+ * Реализация клиентского класса преграды. Целиком опирается на то, что weaponCategory.getId() возвращает
  * последовательные номера категорий, которые лежат в области от 0 до 7.
  * Users: mkutuzov, abarakov
  * Date: 28.03.12
@@ -25,6 +25,11 @@ public class ClientBarrier extends Barrier implements DrawableElement {
         obj = Environment.getRender().getObject(unitFrameId);
     }
 
+    @Override
+    public void draw(Graphics graphics, int x, int y) {
+        obj.draw(graphics, x, y);
+    }
+
     public byte getShootThrough() {
         return shootThrough;
     }
@@ -33,6 +38,7 @@ public class ClientBarrier extends Barrier implements DrawableElement {
         this.shootThrough = shootThrough;
     }
 
+    @Override
     public void setAbleToShootThrough(WeaponCategory category, boolean able) {
         if (able) {
             shootThrough |= 1 << category.getId();
@@ -41,13 +47,9 @@ public class ClientBarrier extends Barrier implements DrawableElement {
         }
     }
 
+    @Override
     public boolean isAbleToShootThrough(WeaponCategory weaponCategory) {
         return ((shootThrough >> weaponCategory.getId()) & 1) != 0;
-    }
-
-    @Override
-    public void draw(Graphics graphics, int x, int y) {
-        obj.draw(graphics, x, y);
     }
 
 }

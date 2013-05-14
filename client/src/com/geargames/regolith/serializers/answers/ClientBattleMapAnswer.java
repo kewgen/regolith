@@ -4,32 +4,37 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.ErrorCodes;
 import com.geargames.regolith.serializers.BattleMapDeserializer;
 import com.geargames.regolith.units.map.BattleMap;
 
 /**
- * User: m.v.kutuzov
+ * Users: m.v.kutuzov, abarakov
  * Date: 27.03.13
  */
 public class ClientBattleMapAnswer extends ClientDeSerializedMessage {
     private BattleMap battleMap;
+    private short errorCode;
 
     public BattleMap getBattleMap() {
         return battleMap;
     }
 
-    @Override
-    public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        boolean success = SimpleDeserializer.deserializeBoolean(buffer);
-        if (success) {
-            battleMap = BattleMapDeserializer.deserializeLightBattleMap(buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
-        } else {
-            battleMap = null;
-        }
+    public short getErrorCode() {
+        return errorCode;
     }
 
     public boolean isSuccess() {
-        return battleMap != null;
+        return errorCode == ErrorCodes.SUCCESS;
+    }
+
+    @Override
+    public void deSerialize(MicroByteBuffer buffer) throws Exception {
+        battleMap = null;
+        errorCode = SimpleDeserializer.deserializeShort(buffer);
+        if (errorCode == ErrorCodes.SUCCESS) {
+            battleMap = BattleMapDeserializer.deserializeLightBattleMap(buffer, ClientConfigurationFactory.getConfiguration().getBaseConfiguration());
+        }
     }
 
 }

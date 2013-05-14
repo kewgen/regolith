@@ -29,11 +29,9 @@ public class GroupsSpreadTest {
 
         Warrior warrior = new Warrior();
         warrior.setName("Вася1");
-        warrior.setMembershipType(Human.WARRIOR);
         warrior.setActionScore((short) 5);
         Warrior warrior1 = new Warrior();
         warrior1.setName("Петя1");
-        warrior1.setMembershipType(Human.WARRIOR);
         warrior1.setActionScore((short) 5);
         BattleGroup battleGroup = new BattleGroup();
         battleGroup.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));
@@ -42,11 +40,9 @@ public class GroupsSpreadTest {
 
         warrior = new Warrior();
         warrior.setName("Вася2");
-        warrior.setMembershipType(Human.WARRIOR);
         warrior.setActionScore((short) 5);
         warrior1 = new Warrior();
         warrior1.setName("Петя2");
-        warrior1.setMembershipType(Human.WARRIOR);
         warrior1.setActionScore((short) 5);
         BattleGroup battleGroup1 = new BattleGroup();
         battleGroup1.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));
@@ -55,11 +51,9 @@ public class GroupsSpreadTest {
 
         warrior = new Warrior();
         warrior.setName("Вася3");
-        warrior.setMembershipType(Human.WARRIOR);
         warrior.setActionScore((short) 5);
         warrior1 = new Warrior();
         warrior1.setName("Петя3");
-        warrior1.setMembershipType(Human.WARRIOR);
         warrior1.setActionScore((short) 5);
         BattleGroup battleGroup2 = new BattleGroup();
         battleGroup2.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));
@@ -68,11 +62,9 @@ public class GroupsSpreadTest {
 
         warrior = new Warrior();
         warrior.setName("Вася4");
-        warrior.setMembershipType(Human.WARRIOR);
         warrior.setActionScore((short) 5);
         warrior1 = new Warrior();
         warrior1.setName("Петя4");
-        warrior1.setMembershipType(Human.WARRIOR);
         warrior1.setActionScore((short) 5);
         BattleGroup battleGroup3 = new BattleGroup();
         battleGroup3.setWarriors(new ServerWarriorCollection(new LinkedList<Warrior>()));

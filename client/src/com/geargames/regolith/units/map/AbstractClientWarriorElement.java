@@ -1,19 +1,34 @@
 package com.geargames.regolith.units.map;
 
+import com.geargames.common.logging.Debug;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.states.AbstractUnitScriptGraphicComponent;
+import com.geargames.regolith.units.map.unit.AbstractUnitScriptGraphicComponent;
+import com.geargames.regolith.units.map.unit.UnitLogicComponent;
 
 /**
  * User: abarakov
  * Date: 02.05.13
  */
 public abstract class AbstractClientWarriorElement extends Warrior implements DrawableElement, Tickable {
+    private byte membershipType;
     private short mapX;
     private short mapY;
 
     public AbstractClientWarriorElement() {
         mapX = -32768;
         mapY = -32768;
+    }
+
+    public byte getMembershipType() {
+        if (Debug.IS_DEBUG && (membershipType < WarriorMembershipType.ENEMY || membershipType > WarriorMembershipType.WARRIOR)) {
+            throw new RuntimeException("Invalid value of MembershipType (membershipType = " + membershipType + ")");
+        }
+        return membershipType;
+    }
+
+    //todo-asap: Везде ли правильно проставляется принадлежность бойца?
+    public void setMembershipType(byte value) {
+        membershipType = value;
     }
 
     /**
@@ -42,7 +57,7 @@ public abstract class AbstractClientWarriorElement extends Warrior implements Dr
         this.mapY = y;
     }
 
-    public abstract HumanLogicComponent getLogic();
+    public abstract UnitLogicComponent getLogic();
 
     public abstract AbstractUnitScriptGraphicComponent getGraphic();
 

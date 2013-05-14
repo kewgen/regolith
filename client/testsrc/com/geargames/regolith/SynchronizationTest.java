@@ -4,7 +4,6 @@ import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.BattleScreen;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
@@ -39,7 +38,7 @@ public class SynchronizationTest {
         account.getWarriors().add(warrior);
         warrior.setName("Вася");
         warrior.setActionScore((short) 10);
-        warrior.setMembershipType(Human.WARRIOR);
+        warrior.setMembershipType(WarriorMembershipType.WARRIOR);
         warrior.setDirection(Direction.DOWN_UP);
 
         BattleGroup battleGroup = new BattleGroup();
@@ -100,13 +99,14 @@ public class SynchronizationTest {
         BattleMapHelper.clearRoutes(battleMap.getCells(), warrior, 0, 0, battleConfiguration);
         BattleMapHelper.clearViewAround(battleMap.getCells(), warrior);
 
+        ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
+        battleContext.initiate(battle);
+
         BattleScreen screen = new BattleScreen();
         screen.setCorrector(new CubeBorderCorrector());
-        screen.setActiveAlliance(warrior.getBattleGroup().getAlliance());
-        screen.setBattle(battle);
         screen.onShow();
 
-        screen.moveUser(10, 10);
+        screen.moveWarrior((short) 10, (short) 10);
         warrior.getLogic().quicklyCompleteAllCommands();
 
         Assert.assertEquals(valO, manager.getObserve());

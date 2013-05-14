@@ -39,25 +39,25 @@ public class ClientBattleMarketManager {
 
     public ClientListenToBattleAnswer createBattle(BattleMap battleMap, BattleType battleType) throws Exception {
         configuration.getNetwork().sendSynchronousMessage(
-                new CreateBattleRequest(configuration, battleMap, battleType), listenToBattleAnswer, 100);
+                new ClientCreateBattleRequest(configuration, battleMap, battleType), listenToBattleAnswer, 100);
         return listenToBattleAnswer;
     }
 
     public ClientListenToBattleAnswer listenToBattle(Battle battle) throws Exception {
         configuration.getNetwork().sendSynchronousMessage(
-                new ListenToBattleRequest(configuration, battle), listenToBattleAnswer, 100);
+                new ClientListenToBattleRequest(configuration, battle), listenToBattleAnswer, 100);
         return listenToBattleAnswer;
     }
 
     public ClientConfirmationAnswer listenToCreatedBattles() throws Exception {
         configuration.getNetwork().sendSynchronousMessage(
-                new SimpleRequest(configuration, Packets.LISTEN_TO_BROWSED_CREATED_BATTLES), confirmationAnswer, 100);
+                new ClientSimpleRequest(configuration, Packets.LISTEN_TO_BROWSED_CREATED_BATTLES), confirmationAnswer, 100);
         return confirmationAnswer;
     }
 
     public ClientConfirmationAnswer doNotListenToCreatedBattles() throws Exception {
         configuration.getNetwork().sendSynchronousMessage(
-                new SimpleRequest(configuration, Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES), confirmationAnswer, 100);
+                new ClientSimpleRequest(configuration, Packets.DO_NOT_LISTEN_TO_BROWSED_CREATED_BATTLES), confirmationAnswer, 100);
         return confirmationAnswer;
     }
 
@@ -74,7 +74,7 @@ public class ClientBattleMarketManager {
     }
 
     public void goToBase() {
-        configuration.getNetwork().sendMessage(new SimpleRequest(configuration, Packets.GO_TO_BASE));
+        configuration.getNetwork().sendMessage(new ClientSimpleRequest(configuration, Packets.GO_TO_BASE));
     }
 
 }

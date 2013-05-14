@@ -251,11 +251,11 @@ public final class Manager extends com.geargames.platform.Manager implements Run
             case Canvas.ACTION_UP:
                 if (isDoubleClick()) {
                     app.eventAdd(Event.EVENT_TOUCH_DOUBLE_CLICK, 0, null, x, y);
-                }
-                if (isLongClick()) {
+                } else if (isLongClick()) {
                     app.eventAdd(Event.EVENT_TOUCH_LONG_CLICK, 0, null, x, y);
+                } else {
+                    app.eventAdd(Event.EVENT_TOUCH_RELEASED, 0, null, x, y);
                 }
-                app.eventAdd(Event.EVENT_TOUCH_RELEASED, 0, null, x, y);
                 touch_up_last = System.currentTimeMillis();
                 break;
             case Canvas.ACTION_MOVE:

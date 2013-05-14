@@ -2,11 +2,13 @@ package com.geargames.regolith.awt.components.battle.shotMenu;
 
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.DynamicCellElement;
 
 /**
  * User: abarakov
@@ -60,12 +62,19 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
     }
 
     /**
+     * Обработчик события сообщающего об выборе нового элемента на карте.
+     */
+    public void onSelectedElementChanged(DynamicCellElement element) {
+
+    }
+
+    /**
      * Обработчик нажатия на кнопку "Выстрел наспех".
      */
     public void onHastilyShotButtonClick() {
         NotificationBox.info("Выстрел наспех", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement unit = ClientConfigurationFactory.getConfiguration().getBattleContext().getActiveUnit();
         //todo: Боец может стрелять только в случае, если сейчас наш ход и он сейчас не выполняет других команд
         if (unit.getLogic().isIdle() && WarriorHelper.mayHastilyShot(unit)) {
             unit.getLogic().doHastilyShot();
@@ -80,7 +89,7 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
     public void onAccurateShotButtonClick() {
         NotificationBox.info("Прицельный выстрел", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement unit = ClientConfigurationFactory.getConfiguration().getBattleContext().getActiveUnit();
         //todo: Боец может стрелять только в случае, если сейчас наш ход и он сейчас не выполняет других команд
         //todo: Здесь определено другое действие - "Получение урона" вместо "Прицельный выстрел"
         if (unit.getLogic().isIdle()) {

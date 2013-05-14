@@ -32,7 +32,7 @@ public class ClientAtBattleCreation extends MainState {
                 request = new ServerGroupRemoveWarriorsRequest();
                 break;
             case Packets.CANCEL_BATTLE:
-                request = new ServerCancelBattleRequest(client.getAccount());
+                request = new ServerCancelBattleRequest();
                 break;
             case Packets.START_BATTLE:
                 request = new ServerStartBattleRequest();

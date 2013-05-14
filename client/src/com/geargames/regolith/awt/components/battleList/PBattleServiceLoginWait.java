@@ -58,21 +58,18 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
             ClientConfiguration configuration = ClientConfigurationFactory.getConfiguration();
             BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
 
-            //todo-asap: убрать от сюда заполнение списков
-            ClientWarriorCollection groupUnits = ClientBattleHelper.getGroupBattleUnits(configuration.getBattle(), configuration.getAccount());
-            ClientWarriorCollection allyUnits = ClientBattleHelper.getAllyBattleUnits(configuration.getBattle(), configuration.getAccount());
-            ClientWarriorCollection enemyUnits = ClientBattleHelper.getEnemyBattleUnits(configuration.getBattle(), configuration.getAccount());
-            panelManager.getBattleScreen().setGroupUnits(groupUnits);
-            panelManager.getBattleScreen().setAllyUnits(allyUnits);
-            panelManager.getBattleScreen().setEnemyUnits(enemyUnits);
+            ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
+            battleContext.initiate(configuration.getBattle());
 
             ClientWarriorCollection units = new ClientWarriorCollection();
-            units.setWarriors(new Vector(groupUnits.size() + allyUnits.size()));
-            units.addAll(groupUnits);
-            units.addAll(allyUnits);
+            units.setWarriors(new Vector(battleContext.getGroupUnits().size() + battleContext.getAllyUnits().size()));
+            units.addAll(battleContext.getGroupUnits());
+            units.addAll(battleContext.getAllyUnits());
 
             battleConfiguration.setObserver(new StrictPerimeterObserver(units));
             battleConfiguration.setRouter(new RecursiveWaveRouter());
+
+            //todo: Следует ожидать остальных игроков, т.е. ждать оповещения от сервера, что все игроки залогинились к битве, только после этого закрывать это окно и отображать окошко битвы
 
             //todo забрать из сообщения группы которые уже залогинились и сообщить о них
             BattleGroup[] loggedIn = battleLogin.getBattleGroups();
@@ -84,7 +81,6 @@ public class PBattleServiceLoginWait extends PWaitingWindow implements DataMessa
             }
             NotificationBox.info(string, this);
             panelManager.hideAll();
-            panelManager.getBattleScreen().setBattle(configuration.getBattle());
             panelManager.show(panelManager.getHeadlineWindow());
 //            panelManager.show(panelManager.getLeft());
             panelManager.show(panelManager.getRight());

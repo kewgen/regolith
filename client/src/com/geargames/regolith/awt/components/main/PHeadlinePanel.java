@@ -7,6 +7,8 @@ import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
 import com.geargames.common.timers.TimerListener;
 import com.geargames.common.timers.TimerManager;
+import com.geargames.regolith.ClientBattleContext;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.units.battle.BattleAlliance;
@@ -66,12 +68,12 @@ public class PHeadlinePanel extends PRootContentPanel implements TimerListener {
         if (remainingTime < 0) {
             remainingTime = 0;
         }
-        PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientWarriorElement activeUnit = panelManager.getBattleScreen().getActiveUnit();
+        ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
+        ClientWarriorElement activeUnit = battleContext.getActiveUnit();
         label.setText(
-                (panelManager.getBattleScreen().isMyTurn() ? "Наш ход" : "Ход альянса #" + alliance.getNumber() + " (id=" + alliance.getId() + ")") +
+                (battleContext.isMyTurn() ? "Наш ход" : "Ход альянса #" + alliance.getNumber() + " (id=" + alliance.getId() + ")") +
                         ", время=" + remainingTime +
-                        ", ОД=" + ((Warrior) activeUnit).getActionScore());
+                        ", ОД=" + activeUnit.getActionScore());
     }
 
     public void onTimer(int timerId) {

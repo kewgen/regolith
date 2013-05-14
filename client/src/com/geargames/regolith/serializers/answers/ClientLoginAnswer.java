@@ -4,20 +4,21 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.BaseConfiguration;
+import com.geargames.regolith.ErrorCodes;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.WarriorMembershipType;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 06.07.12
  */
 public class ClientLoginAnswer extends ClientDeSerializedMessage {
     private BaseConfiguration baseConfiguration;
+    private short errorCode;
     private Account account;
-    private String error;
     private Warrior[] warriors;
 
     public Warrior[] getWarriors() {
@@ -32,17 +33,20 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
         return account;
     }
 
-    public String getError() {
-        return error;
+    public short getErrorCode() {
+        return errorCode;
+    }
+
+    public boolean isSuccess() {
+        return errorCode == ErrorCodes.SUCCESS;
     }
 
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
         baseConfiguration = null;
         account = null;
-        error = null;
         warriors = null;
-        boolean success = SimpleDeserializer.deserializeBoolean(buffer);
-        if (success) {
+        errorCode = SimpleDeserializer.deserializeShort(buffer);
+        if (errorCode == ErrorCodes.SUCCESS) {
             baseConfiguration = ConfigurationDeserializer.deserializeBaseConfiguration(buffer);
             account = AccountDeserializer.deserialize(buffer, baseConfiguration);
             if (account.getWarriors() == null || account.getWarriors().size() == 0) { //todo: этот if будет всегда выдавать false
@@ -50,13 +54,11 @@ public class ClientLoginAnswer extends ClientDeSerializedMessage {
                 warriors = new Warrior[length];
                 for (int i = 0; i < length; i++) {
                     ClientWarriorElement warrior = new ClientWarriorElement();
-                    warrior.setMembershipType(Human.WARRIOR);
+                    warrior.setMembershipType(WarriorMembershipType.WARRIOR);
                     AccountDeserializer.deserialize(warrior, buffer, baseConfiguration);
                     warriors[i] = warrior;
                 }
             }
-        } else {
-            error = SimpleDeserializer.deserializeString(buffer);
         }
     }
 

@@ -33,7 +33,6 @@ public class ServerHelper {
     public static Warrior createWarrior(BaseConfiguration configuration, Bag bag, AmmunitionBag ammunitionBag, String name, int frameId) {
         Warrior warrior = new Warrior();
         warrior.setName(name);
-        warrior.setMembershipType(Human.WARRIOR);
         warrior.setFrameId(frameId);
         warrior.setBirthDate(new Date());
         int length = configuration.getWeaponCategories().size();

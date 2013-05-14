@@ -21,7 +21,7 @@ import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.managers.ClientBattleMarketManager;
 import com.geargames.regolith.network.ClientRequestHelper;
 import com.geargames.regolith.serializers.answers.*;
-import com.geargames.regolith.serializers.requests.LoginToBattleServiceRequest;
+import com.geargames.regolith.serializers.requests.ClientLoginToBattleServiceRequest;
 import com.geargames.regolith.units.battle.Battle;
 import com.geargames.regolith.units.battle.BattleGroup;
 
@@ -246,7 +246,7 @@ public class PBattlesPanel extends PRootContentPanel implements DataMessageListe
                 return;
             }
             configuration.setBattle(battle);
-            LoginToBattleServiceRequest request = new LoginToBattleServiceRequest();
+            ClientLoginToBattleServiceRequest request = new ClientLoginToBattleServiceRequest();
             request.setBattle(answer.getBattle());
             request.setConfiguration(configuration);
             try {

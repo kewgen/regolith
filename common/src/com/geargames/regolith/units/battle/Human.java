@@ -1,6 +1,5 @@
 package com.geargames.regolith.units.battle;
 
-import com.geargames.common.logging.Debug;
 import com.geargames.regolith.units.Rank;
 import com.geargames.regolith.units.map.DynamicCellElement;
 import com.geargames.regolith.units.tackle.Armor;
@@ -12,13 +11,8 @@ import com.geargames.regolith.units.tackle.Weapon;
  * Базовый класс для всех бойцов.
  */
 public abstract class Human extends DynamicCellElement {
-    public static final byte ENEMY = 1;
-    public static final byte ALLY = 2;
-    public static final byte WARRIOR = 3; //todo: переименовать
-
     private BattleGroup battleGroup;
     private short number; //todo: short -> byte
-    private byte membershipType; //todo-asap: перетащить в ClientWarriorElement
 
     private int frameId;
     private int avatarFrameId;
@@ -31,18 +25,6 @@ public abstract class Human extends DynamicCellElement {
     private Armor torsoArmor;
     private Armor legsArmor;
     private Weapon weapon;
-
-    public byte getMembershipType() {
-        if (Debug.IS_DEBUG && (membershipType < ENEMY || membershipType > WARRIOR)) {
-            throw new RuntimeException("Invalid value of MembershipType (membershipType = " + membershipType + ")");
-        }
-        return membershipType;
-    }
-
-    //todo-asap: Везде ли правильно проставляется принадлежность бойца?
-    public void setMembershipType(byte value) {
-        membershipType = value;
-    }
 
     public BattleGroup getBattleGroup() {
         return battleGroup;

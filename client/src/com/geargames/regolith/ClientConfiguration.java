@@ -19,6 +19,8 @@ public class ClientConfiguration {
     private BaseConfiguration baseConfiguration;
     private BattleConfiguration battleConfiguration;
 
+    private ClientBattleContext battleContext;
+
     private ClientBattleServiceManager battleServiceManager;
     private ClientBaseWarriorMarketManager baseWarriorMarketManager;
     private ClientCommonManager commonManager;
@@ -227,6 +229,14 @@ public class ClientConfiguration {
 
     public void setBaseConfiguration(BaseConfiguration baseConfiguration) {
         this.baseConfiguration = baseConfiguration;
+    }
+
+    public ClientBattleContext getBattleContext() {
+        return battleContext;
+    }
+
+    public void setBattleContext(ClientBattleContext battleContext) {
+        this.battleContext = battleContext;
     }
 
 }

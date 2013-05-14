@@ -7,7 +7,7 @@ import com.geargames.regolith.units.tackle.WeaponCategory;
  * Date: 18.02.12
  * Time: 15:00
  */
-public abstract class Barrier extends CellElement {
+public abstract class Barrier extends DynamicCellElement {
     private boolean ableToLookThrough;
     private boolean ableToWalkThrough;
     private boolean halfLong;

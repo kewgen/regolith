@@ -2,6 +2,13 @@ package com.geargames.regolith.map.observer;
 
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
+<<<<<<< .mine
+
+
+=======
+import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.units.battle.Human;
+>>>>>>> .theirs
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;

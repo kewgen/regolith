@@ -11,7 +11,7 @@ import com.geargames.regolith.awt.components.warrior.exchange.PExchangeButton;
 import com.geargames.regolith.helpers.StoreHouseHelper;
 import com.geargames.regolith.serializers.BatchMessageManager;
 import com.geargames.regolith.serializers.answers.ClientConfirmationAnswer;
-import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumber;
+import com.geargames.regolith.serializers.requests.ClientMoveTackleByNumberRequest;
 import com.geargames.regolith.units.Account;
 import com.geargames.regolith.units.AmmunitionPacket;
 import com.geargames.regolith.units.base.StoreHouse;
@@ -53,7 +53,7 @@ public class PAStoreHouse2WarriorButton extends PExchangeButton {
                             warriorPanel.getStoreTacklesElement().initiateMotionListener();
 
                             ClientConfirmationAnswer answer = new ClientConfirmationAnswer();
-                            ClientMoveTackleByNumber move = new ClientMoveTackleByNumber(configuration);
+                            ClientMoveTackleByNumberRequest move = new ClientMoveTackleByNumberRequest(configuration);
                             move.setNumber((short) number);
                             move.setWarrior(warrior);
                             move.setAmount((short) amount);

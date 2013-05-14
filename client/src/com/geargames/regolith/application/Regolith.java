@@ -14,7 +14,7 @@ public final class Regolith extends MIDlet {
 
     @Override
     public void startApp() {
-        Manager manager = (Manager)getManager();
+        Manager manager = (Manager) getManager();
         try {
             if (manager == null) {
                 manager = Manager.getInstance(this);
@@ -35,12 +35,16 @@ public final class Regolith extends MIDlet {
         ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
 
         Debug.debug("The client going to logout");
-        clientConfiguration.getCommonManager().logout();
-//        clientConfiguration.setBaseConfiguration(null);
-//        clientConfiguration.setBaseWarriors(null);
-//        clientConfiguration.setAccount(null);
-        Debug.debug("Disconnecting from the server...");
-        clientConfiguration.getNetwork().disconnect();
+        try {
+            clientConfiguration.getCommonManager().logout();
+//            clientConfiguration.setBaseConfiguration(null);
+//            clientConfiguration.setBaseWarriors(null);
+//            clientConfiguration.setAccount(null);
+            Debug.debug("Disconnecting from the server...");
+            clientConfiguration.getNetwork().disconnect();
+        } catch (Exception e) {
+            Debug.error("Exception during the window closing:", e);
+        }
 
         super.formWindowClosing(evt);
     }

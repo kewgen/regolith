@@ -8,7 +8,7 @@ package com.geargames.regolith;
 public interface Packets {
 
     int HEAD_SIZE = 4;
-    int SIZE_FIELD_SIZE = 2;
+    int LENGTH_FIELD_SIZE = 2;
     int TYPE_FIELD_SIZE = 2;
 
     byte SUCCESS = 0;
@@ -17,7 +17,7 @@ public interface Packets {
 
     short CLIENT_RECONNECT = 0;
 
-    short CLIENT_CONNECT_TO_BATTLE_SEVER = 1;
+    short CLIENT_CONNECT_TO_BATTLE_SERVER = 1;
 
     short CLIENT_REGISTRATION = 2;
 
@@ -49,34 +49,20 @@ public interface Packets {
 
     short JOIN_BASE_WARRIORS_TO_ACCOUNT = 22;
 
-
     short GO_TO_WARRIOR_MARKET = 30;
-
     short GO_TO_TACKLE_MARKET = 31;
-
     short GO_TO_BATTLE_MARKET = 32;
-
     short GO_TO_BASE = 33;
 
-
     short CHANGE_ACTIVE_ALLIANCE = 40;
-
     short EXIT_BATTLE = 41;
-
     short CONTROL_SUM = 42;
-
     short FINISH_BATTLE = 43;
-
     short SERVER_CLOSE_BATTLE = 44;
-
     short SHOOT = 49;
-
     short MOVE_WARRIOR = 50;
-
     short MOVE_ENEMY = 51;
-
     short MOVE_ALLY = 52;
-
     short INITIALLY_OBSERVED_ENEMIES = 53;
 
 

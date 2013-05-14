@@ -3,10 +3,11 @@ package com.geargames.regolith.serializers.answers;
 import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
-import com.geargames.regolith.awt.components.PRegolithPanelManager;
+import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Battle;
+import com.geargames.regolith.units.battle.Direction;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 
@@ -61,13 +62,16 @@ public class ClientMoveWarriorAnswer extends ClientDeSerializedMessage {
             byte size = buffer.get();
             enemies = new ClientWarriorCollection();
             enemies.setWarriors(new Vector(size));
-            ClientWarriorCollection enemyUnits = PRegolithPanelManager.getInstance().getBattleScreen().getEnemyUnits();
+            ClientWarriorCollection enemyUnits = ClientConfigurationFactory.getConfiguration().getBattleContext().getEnemyUnits();
             for (int i = 0; i < size; i++) {
                 int warriorId = SimpleDeserializer.deserializeInt(buffer);
                 Warrior warrior = ClientBattleHelper.getWarriorById(enemyUnits, warriorId);
                 int xx = SimpleDeserializer.deserializeShort(buffer);
                 int yy = SimpleDeserializer.deserializeShort(buffer);
+                int direction = SimpleDeserializer.deserializeInt(buffer);
                 WarriorHelper.putWarriorIntoMap(battle.getMap().getCells(), warrior, xx, yy);
+                warrior.setDirection(Direction.getByNumber(direction));
+                //todo-asap: установить значение свойству Sitting
                 enemies.add(warrior);
             }
         }

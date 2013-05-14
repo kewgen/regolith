@@ -4,6 +4,7 @@ import com.geargames.awt.components.PObjectElement;
 import com.geargames.common.logging.Debug;
 import com.geargames.regolith.ClientConfiguration;
 import com.geargames.regolith.ClientConfigurationFactory;
+import com.geargames.regolith.ErrorCodes;
 import com.geargames.regolith.NotificationBox;
 import com.geargames.regolith.localization.LocalizedStrings;
 import com.geargames.regolith.managers.ClientBaseWarriorMarketManager;
@@ -58,8 +59,8 @@ public class ClientRequestHelper {
             Debug.debug("Going to login");
 
             ClientLoginAnswer loginAnswer = commonManager.login(login);
-            if (loginAnswer.getError() != null) {
-                Debug.critical("Cannot login to account: " + loginAnswer.getError()); //to do: на сервер не должно отсылаться никаких сообщений по случаю ошибки
+            if (!loginAnswer.isSuccess()) {
+                Debug.critical("Cannot login to account: " + ErrorCodes.getLocalizedError(loginAnswer.getErrorCode())); //to do: на сервер не должно отсылаться никаких сообщений по случаю ошибки
                 return false;
             }
             Debug.debug("The connection is established successfully");

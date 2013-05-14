@@ -5,7 +5,7 @@ import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SerializedMessage;
 
 /**
- * Клиентское сщщьщение на основе байтового буффера из клиентской конфигурации.
+ * Клиентское сообщение на основе байтового буффера из клиентской конфигурации.
  */
 public abstract class ClientSerializedMessage extends SerializedMessage {
     private ClientConfiguration configuration;

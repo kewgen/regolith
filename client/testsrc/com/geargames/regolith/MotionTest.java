@@ -3,7 +3,6 @@ package com.geargames.regolith;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.Account;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.map.ClientBarrier;
 import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
@@ -29,7 +28,7 @@ public class MotionTest {
         warrior = new TestClientWarriorElement();
         warrior.setName("Вася");
         warrior.setActionScore((short) 5);
-        warrior.setMembershipType(Human.WARRIOR);
+        warrior.setMembershipType(WarriorMembershipType.WARRIOR);
         warrior.setDirection(Direction.DOWN_UP);
 
         BattleGroup battleGroup = new BattleGroup();

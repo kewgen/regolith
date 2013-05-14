@@ -2,11 +2,13 @@ package com.geargames.regolith.awt.components.battle.warriorMenu;
 
 import com.geargames.common.packer.IndexObject;
 import com.geargames.common.packer.PObject;
+import com.geargames.regolith.ClientBattleContext;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.awt.components.PRegolithPanelManager;
 import com.geargames.regolith.awt.components.PRootContentPanel;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.map.ClientWarriorElement;
+import com.geargames.regolith.units.map.DynamicCellElement;
 
 /**
  * User: abarakov
@@ -56,6 +58,13 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
      * Обработчик события изменения активного бойца.
      */
     public void onActiveUnitChanged(ClientWarriorElement activeUnit) {
+        onActiveUnitSittingChanged(activeUnit);
+    }
+
+    /**
+     * Обработчик события изменения положения (стоит/сидит) активного бойца.
+     */
+    public void onActiveUnitSittingChanged(ClientWarriorElement activeUnit) {
         if (activeUnit.isSitting()) {
             standUpButton.setVisible(true);
             sitDownButton.setVisible(false);
@@ -66,12 +75,20 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
     }
 
     /**
+     * Обработчик события сообщающего об выборе нового элемента на карте.
+     */
+    public void onSelectedElementChanged(DynamicCellElement element) {
+
+    }
+
+    /**
      * Обработчик нажатия на кнопку "Посадить бойца".
      */
     public void onSitDownButtonClick() {
 //        NotificationBox.info("Посадить бойца", this);
+        ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement unit = battleContext.getActiveUnit();
         //todo: Сажать бойца можно только в случае, если сейчас наш ход и он сейчас не выполняет других команд
         if (unit.getLogic().isIdle() &&
                 WarriorHelper.maySit(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {
@@ -89,8 +106,9 @@ public class PBattleWarriorMenuPanel extends PRootContentPanel {
      */
     public void onStandUpButtonClick() {
 //        NotificationBox.info("Поднять бойца", this);
+        ClientBattleContext battleContext = ClientConfigurationFactory.getConfiguration().getBattleContext();
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
-        ClientWarriorElement unit = panelManager.getBattleScreen().getActiveUnit();
+        ClientWarriorElement unit = battleContext.getActiveUnit();
         //todo: Поднимать бойца можно только в случае, если сейчас наш ход и он сейчас не выполняет других команд
         if (unit.getLogic().isIdle() &&
                 WarriorHelper.mayStand(unit, ClientConfigurationFactory.getConfiguration().getBattleConfiguration())) {

@@ -2,23 +2,24 @@ package com.geargames.regolith;
 
 import com.geargames.common.Graphics;
 import com.geargames.regolith.units.map.*;
+import com.geargames.regolith.units.map.unit.UnitLogicComponent;
 
 /**
  * User: abarakov
  * Date: 02.05.13
  */
 public class TestClientWarriorElement extends AbstractClientWarriorElement {
-    private HumanLogicComponent logic;
+    private UnitLogicComponent logic;
     private TestUnitScriptGraphicComponent graphic;
 
     public TestClientWarriorElement() {
-        logic = new HumanLogicComponent(this);
+        logic = new UnitLogicComponent(this);
         graphic = new TestUnitScriptGraphicComponent();
         logic.initiate();
     }
 
     @Override
-    public HumanLogicComponent getLogic() {
+    public UnitLogicComponent getLogic() {
         return logic;
     }
 

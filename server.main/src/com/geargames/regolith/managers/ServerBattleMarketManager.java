@@ -37,7 +37,7 @@ public class ServerBattleMarketManager {
         session.save(battle);
         tx.commit();
         Integer id = (Integer) session.getIdentifier(battle);
-        battle = (Battle) session.load(Battle.class, id);
+        battle = (Battle) session.load(Battle.class, id); //todo: Это точно нужно?
         session.close();
         BattleManagerContext battleManagerContext = configuration.getServerContext().getBattleManagerContext();
         Set<Account> listeners = new HashSet<Account>();

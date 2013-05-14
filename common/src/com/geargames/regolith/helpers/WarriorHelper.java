@@ -493,6 +493,17 @@ public class WarriorHelper {
     }
 
     /**
+     * Являются ли бойцы warrior1 и warrior2 союзниками.
+     *
+     * @param warrior1
+     * @param warrior2
+     * @return
+     */
+    public static boolean isAlly(Warrior warrior1, Warrior warrior2) {
+        return warrior1.getBattleGroup().getAlliance().getId() == warrior2.getBattleGroup().getAlliance().getId();
+    }
+
+    /**
      * Положить в сумку броню или оружие.
      *
      * @param warrior

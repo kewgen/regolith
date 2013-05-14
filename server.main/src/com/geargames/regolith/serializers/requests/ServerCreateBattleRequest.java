@@ -37,8 +37,12 @@ public class ServerCreateBattleRequest extends MainOneToClientRequest {
     public SerializedMessage clientRequest(MicroByteBuffer from, MicroByteBuffer writeBuffer, Client client) throws RegolithException {
         Session session = serverConfiguration.getSessionFactory().openSession();
         int battleMapId = SimpleDeserializer.deserializeInt(from);
-        BattleMap battleMap = (BattleMap) session.load(BattleMap.class, battleMapId);
-        session.close();
+        BattleMap battleMap = null;
+        try {
+            battleMap = (BattleMap) session.load(BattleMap.class, battleMapId);
+        } finally {
+            session.close();
+        }
         int battleTypeId = SimpleDeserializer.deserializeInt(from);
         Battle battle = battleMarketManager.createBattle(battleMap, battleTypeId, client.getAccount());
         client.setState(new ClientAtBattleCreation());

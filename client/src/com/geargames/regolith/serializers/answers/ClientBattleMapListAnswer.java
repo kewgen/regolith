@@ -4,9 +4,8 @@ import com.geargames.common.serialization.ClientDeSerializedMessage;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.ClientConfiguration;
-import com.geargames.regolith.helpers.BaseConfigurationHelper;
+import com.geargames.regolith.ErrorCodes;
 import com.geargames.regolith.serializers.BattleMapDeserializer;
-import com.geargames.regolith.units.battle.BattleType;
 import com.geargames.regolith.units.map.BattleMap;
 
 /**
@@ -16,6 +15,7 @@ import com.geargames.regolith.units.map.BattleMap;
 public class ClientBattleMapListAnswer extends ClientDeSerializedMessage {
     private ClientConfiguration configuration;
     private BattleMap[] battleMaps;
+    private short errorCode;
 
     public ClientBattleMapListAnswer(ClientConfiguration configuration) {
         this.configuration = configuration;
@@ -25,13 +25,26 @@ public class ClientBattleMapListAnswer extends ClientDeSerializedMessage {
         return battleMaps;
     }
 
+    public short getErrorCode() {
+        return errorCode;
+    }
+
+    public boolean isSuccess() {
+        return errorCode == ErrorCodes.SUCCESS;
+    }
+
+    @Override
     public void deSerialize(MicroByteBuffer buffer) throws Exception {
-        int size = SimpleDeserializer.deserializeShort(buffer);
-        BattleMap[] battleMaps = new BattleMap[size];
-        for (int i = 0; i < size; i++) {
-            battleMaps[i] = BattleMapDeserializer.deserializeLightBattleMap(buffer, configuration.getBaseConfiguration());
+        battleMaps = null;
+        errorCode = SimpleDeserializer.deserializeShort(buffer);
+        if (errorCode == ErrorCodes.SUCCESS) {
+            short length = SimpleDeserializer.deserializeShort(buffer);
+            BattleMap[] battleMaps = new BattleMap[length];
+            for (int i = 0; i < length; i++) {
+                battleMaps[i] = BattleMapDeserializer.deserializeLightBattleMap(buffer, configuration.getBaseConfiguration());
+            }
+            this.battleMaps = battleMaps;
         }
-        this.battleMaps = battleMaps;
     }
 
 }
