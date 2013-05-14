@@ -48,10 +48,10 @@ public class BattleMapHelper {
      * @param type
      * @return null если тип не представлен в ячейке.
      */
-    public static CellElement getElementByType(BattleCell cell, int type) {
+    public static CellElement getElementByType(BattleCell cell, short type) {
         CellElement[] elements = cell.getElements();
-        int length = elements.length;
-        for (int i = length - 1; i > 0; i--) {
+        int size = cell.getSize();
+        for (int i = size - 1; i > 0; i--) {
             CellElement element = elements[i];
             if (element.getElementType() == type) {
                 return element;

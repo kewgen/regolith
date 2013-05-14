@@ -11,6 +11,7 @@ import com.geargames.regolith.units.map.CellElement;
 public class BattleCellHelper {
     /**
      * Есть ли что либо над или в этом слое.
+     *
      * @param cell
      * @param layer
      * @return
@@ -28,9 +29,10 @@ public class BattleCellHelper {
 
     /**
      * Получить первый объект из заданного слоя ячейки cell.
+     *
      * @param cell
      * @param layer
-     * @return  null если слой отсутсвует.
+     * @return null если слой отсутсвует.
      */
     public static CellElement getElementFromLayer(BattleCell cell, byte layer) {
         CellElement[] elements = cell.getElements();

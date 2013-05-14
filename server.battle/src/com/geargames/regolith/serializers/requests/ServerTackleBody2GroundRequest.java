@@ -56,7 +56,7 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
         StateTackle stateTackle = null;
         RegolithConfiguration regolithConfiguration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration();
 
-        if (BattleMapHelper.ableToPut(warrior, cells , x, y)) {
+        if (BattleMapHelper.ableToPut(warrior, cells, x, y)) {
             if (BodyParticles.HEAD == bodyParticle) {
                 stateTackle = warrior.getHeadArmor();
             } else if (BodyParticles.TORSO == bodyParticle) {

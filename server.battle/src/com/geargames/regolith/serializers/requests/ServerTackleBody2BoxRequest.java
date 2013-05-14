@@ -80,7 +80,7 @@ public class ServerTackleBody2BoxRequest extends ServerRequest {
             box.getTackles().add(stateTackle);
 
             BattleConfiguration configuration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration().getBattleConfiguration();
-            WarriorHelper.payForPickOrPut(warrior,  configuration);
+            WarriorHelper.payForPickOrPut(warrior, configuration);
 
             Set<Client> clients = new HashSet<Client>();
             clients.addAll(serverBattle.getClients());

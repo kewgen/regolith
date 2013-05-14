@@ -52,7 +52,7 @@ public class ServerTackleBag2BoxRequest extends ServerRequest {
         CellElement cellElement = BattleMapHelper.getElementByType(cell, CellElementTypes.BOX);
 
         if (BattleMapHelper.isNear(warrior, x, y) && cellElement != null && cellElement instanceof Box) {
-            Box box = (Box)  cellElement;
+            Box box = (Box) cellElement;
             StateTackle tackle = WarriorHelper.putOutOfBag(warrior, number);
             box.getTackles().add(tackle);
 

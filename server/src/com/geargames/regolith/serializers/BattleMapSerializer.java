@@ -81,7 +81,7 @@ public class BattleMapSerializer {
             switch (element.getElementType()) {
                 case CellElementTypes.HUMAN:
                     Warrior warrior = (Warrior) element;
-                    if (warrior.getBattleGroup().getAccount().getId() == account.getId()) {
+                    if (WarriorHelper.isMine(warrior.getBattleGroup(), account)) {
                         SimpleSerializer.serialize(SerializeHelper.WARRIOR, buffer);
                         serializeWarrior(warrior, buffer);
                     } else if (WarriorHelper.isAlly(warrior, account)) {
