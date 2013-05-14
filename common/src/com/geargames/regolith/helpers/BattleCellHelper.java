@@ -35,7 +35,7 @@ public class BattleCellHelper {
     public static CellElement getElementFromLayer(BattleCell cell, byte layer) {
         CellElement[] elements = cell.getElements();
         int size = cell.getSize();
-        for (int i = size - 1; i > 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             CellElement element = elements[i];
             if (element.getLayer() == layer) {
                 return element;
