@@ -2,6 +2,7 @@ package com.geargames.regolith.serializers;
 
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleSerializer;
+import com.geargames.regolith.helpers.BattleCellHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
@@ -75,6 +76,12 @@ public class BattleMapSerializer {
         byte size = cells[x][y].getSize();
         SimpleSerializer.serialize(x, buffer);
         SimpleSerializer.serialize(y, buffer);
+        CellElement cellElement = BattleCellHelper.getElementFromLayer(cells[x][y], CellElementLayers.HUMAN);
+        if (cellElement != null) {
+            if (!WarriorHelper.isAlly((Warrior) cellElement, account)) {
+                size--;
+            }
+        }
         SimpleSerializer.serialize(size, buffer);
         for (int i = 0; i < size; i++) {
             CellElement element = elements[i];

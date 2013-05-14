@@ -51,7 +51,7 @@ public class BattleMapHelper {
     public static CellElement getElementByType(BattleCell cell, short type) {
         CellElement[] elements = cell.getElements();
         int size = cell.getSize();
-        for (int i = size - 1; i > 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             CellElement element = elements[i];
             if (element.getElementType() == type) {
                 return element;
