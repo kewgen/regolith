@@ -124,10 +124,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
             }
         }
-        final byte BARRIER_NONE = 0;
-        final byte BARRIER_HALF_HEIGHT = 1;
-        final byte BARRIER_FULL_HEIGHT = 2;
-        byte barrierType = BARRIER_NONE;
+//        final byte BARRIER_NONE = 0;
+//        final byte BARRIER_HALF_HEIGHT = 1;
+//        final byte BARRIER_FULL_HEIGHT = 2;
+//        byte barrierType = BARRIER_NONE;
         CellElement[] elements = cell.getElements();
         for (int i = 0; i < cell.getSize(); i++) {
             CellElement element = elements[i];
@@ -135,14 +135,15 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 drawSymbolOfProtection(graphics, (ClientWarriorElement) element);
             }
             ((DrawableElement) element).draw(graphics, x, y);
-            if (element.isBarrier()) {
-                if (!element.isHalfLong()) {
-                    barrierType = BARRIER_FULL_HEIGHT;
-                } else if (barrierType == BARRIER_NONE) {
-                    barrierType = BARRIER_HALF_HEIGHT;
-                }
-            }
+//            if (element.isBarrier()) {
+//                if (!element.isHalfLong()) {
+//                    barrierType = BARRIER_FULL_HEIGHT;
+//                } else if (barrierType == BARRIER_NONE) {
+//                    barrierType = BARRIER_HALF_HEIGHT;
+//                }
+//            }
         }
+        /*
         if (battleContext.isMyTurn()) {
             switch (barrierType) {
                 case BARRIER_FULL_HEIGHT: {
@@ -157,6 +158,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 }
             }
         }
+        */
     }
 
     private class Dir {

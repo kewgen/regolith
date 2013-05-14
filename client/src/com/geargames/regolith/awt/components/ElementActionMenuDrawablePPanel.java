@@ -1,17 +1,27 @@
 package com.geargames.regolith.awt.components;
 
+import com.geargames.awt.Anchors;
+import com.geargames.common.util.Region;
 import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.map.Pair;
 import com.geargames.regolith.units.BattleScreen;
 
 /**
- * Предок всех панелек, которые отображаются поверх всех остальных панелек.
+ * Окошко для панелек с кнопками действий над выделенным динамическим элементом карты. Окошко располагается поверх всего
+ * и перемещается вместе со скроллингом карты, чтобы всегда быть рядом с выделенным элементом.
  * User: abarakov
- * Date: 08.04.13
+ * Date: 13.05.13
  */
+//todo: Переименовать класс
 public class ElementActionMenuDrawablePPanel extends DefaultDrawablePPanel {
     private int cellX;
     private int cellY;
+
+    public ElementActionMenuDrawablePPanel() {
+        setAnchor(Anchors.CENTER_ANCHOR);
+        cellX = -1;
+        cellY = -1;
+    }
 
     public int getCellX() {
         return cellX;
@@ -48,8 +58,9 @@ public class ElementActionMenuDrawablePPanel extends DefaultDrawablePPanel {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         BattleScreen battleScreen = panelManager.getBattleScreen();
         Pair pair = ClientConfigurationFactory.getConfiguration().getCoordinateFinder().find(cellX, cellY, battleScreen);
-        setX(pair.getX() - battleScreen.getMapX());
-        setY(pair.getY() - battleScreen.getMapY());
+        Region region = getElement().getDrawRegion();
+        setX(pair.getX() - battleScreen.getMapX() + region.getMinX());
+        setY(pair.getY() - battleScreen.getMapY() + region.getMinY());
     }
 
 }

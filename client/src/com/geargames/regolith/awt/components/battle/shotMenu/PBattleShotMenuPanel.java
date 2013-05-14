@@ -72,7 +72,7 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
      * Обработчик нажатия на кнопку "Выстрел наспех".
      */
     public void onHastilyShotButtonClick() {
-        NotificationBox.info("Выстрел наспех", this);
+//        NotificationBox.info("Выстрел наспех", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         ClientWarriorElement unit = ClientConfigurationFactory.getConfiguration().getBattleContext().getActiveUnit();
         //todo: Боец может стрелять только в случае, если сейчас наш ход и он сейчас не выполняет других команд
@@ -87,7 +87,7 @@ public class PBattleShotMenuPanel extends PRootContentPanel {
      * Обработчик нажатия на кнопку "Прицельный выстрел".
      */
     public void onAccurateShotButtonClick() {
-        NotificationBox.info("Прицельный выстрел", this);
+//        NotificationBox.info("Прицельный выстрел", this);
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         ClientWarriorElement unit = ClientConfigurationFactory.getConfiguration().getBattleContext().getActiveUnit();
         //todo: Боец может стрелять только в случае, если сейчас наш ход и он сейчас не выполняет других команд
