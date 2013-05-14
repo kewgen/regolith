@@ -3,7 +3,6 @@ package com.geargames.regolith.map.observer;
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
@@ -24,7 +23,7 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
      * Если ячейку видно, то проверяем: нет ли там преграды для взгляда?
      * если есть возвращаем true, иначе - false.
      * Затем помечаем ячейку видимой бойцом warrior если она не была им видима ранее и она стала видимой.
-     * Если ячейку стало не видно - помечаем не видимой и возвращаем true.
+     * Если ячейку стало не видно - помечаем невидимой и возвращаем true.
      *
      * @param warrior
      * @param hidden

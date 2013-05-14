@@ -14,6 +14,7 @@ public class TestHelper {
 
 
     public static void printViewMap(BattleMap battleMap, BattleAlliance alliance) {
+        //todo: использование счетчиков i и j явно напутано, использовать вместо них названия x и y соответственно
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
@@ -36,6 +37,7 @@ public class TestHelper {
     }
 
     public static void printRouteMap(BattleMap battleMap, Warrior unit) {
+        //todo: использование счетчиков i и j явно напутано, использовать вместо них названия x и y соответственно
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
@@ -63,6 +65,7 @@ public class TestHelper {
 
     public static void printExitZones(BattleMap battleMap) {
         ExitZone[] exits = battleMap.getExits();
+        //todo: использование счетчиков i и j явно напутано, использовать вместо них названия x и y соответственно
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {

@@ -11,10 +11,10 @@ import com.geargames.regolith.map.Pair;
  * Date: 16.02.12
  * Вычисляем ячейку сетки по точке карты за конечное число шагов.
  * Проецируя точки пересечения двух прямых, проходящих через точку карты
- * x y параллельно соответсвующим сторонам сетки, с противоположными сторонами сеткиж получаем значения.
+ * x y параллельно соответсвующим сторонам сетки, с противоположными сторонами сетки получаем значения.
  * Для примера возьмём левую ось сетки:
- * проекция пересечния прямой и стороны сетки на ось X =  x1, поделив её на проекцию длины стороны клетки на ось X = BattleScreen.HORIZONTAL_RADIUS
- * получим индекс = [количество клеток - 1] - min[x1 + BattleScreen.HORIZONTAL_RADIUS /BattleScreen.HORIZONTAL_RADIUS]
+ * проекция пересечения прямой и стороны сетки на ось X = x1, поделив её на проекцию длины стороны клетки на ось X = BattleScreen.HORIZONTAL_RADIUS
+ * получим индекс = [количество клеток - 1] - min[x1 + BattleScreen.HORIZONTAL_RADIUS / BattleScreen.HORIZONTAL_RADIUS]
  * который равен индексу нажатой ячейки по левой оси сетки.
  */
 public class ProjectionFinder extends Finder {
@@ -38,8 +38,8 @@ public class ProjectionFinder extends Finder {
         int index1 = size - 1 - (x1 + ClientBattleContext.HORIZONTAL_RADIUS) / ClientBattleContext.HORIZONTAL_RADIUS;
         int index2 = x2 / ClientBattleContext.HORIZONTAL_RADIUS - size + 1;
 
-        cell.setY(index1);
-        cell.setX(index2);
+        cell.setX(index1);
+        cell.setY(index2);
 
         return cell;
     }

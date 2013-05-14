@@ -137,6 +137,7 @@ public class BattleMapSerializer {
             return;
         }
         BattleCell[][] cells = battleMap.getCells();
+        short size = (short) cells.length;
         MicroByteBuffer byteBuffer = new MicroByteBuffer(new byte[buffer.size()]);
         BattleType[] possibilities = battleMap.getPossibleBattleTypes();
         SimpleSerializer.serialize((byte) possibilities.length, buffer);
@@ -144,12 +145,12 @@ public class BattleMapSerializer {
             SerializeHelper.serializeEntityReference(possibilities[i], buffer);
         }
         SimpleSerializer.serialize(battleMap.getName(), buffer);
-        SimpleSerializer.serialize((short) cells.length, buffer);
+        SimpleSerializer.serialize(size, buffer);
         byteBuffer.setPosition(0);
         byteBuffer.setLimit(byteBuffer.size());
-        for (short i = 0; i < cells.length; i++) {
-            for (short j = 0; j < cells.length; j++) {
-                serialize(cells, i, j, account, byteBuffer);
+        for (short x = 0; x < size; x++) {
+            for (short y = 0; y < size; y++) {
+                serialize(cells, x, y, account, byteBuffer);
             }
         }
         SimpleSerializer.serialize(byteBuffer.getPosition(), buffer);

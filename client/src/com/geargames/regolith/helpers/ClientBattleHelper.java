@@ -57,7 +57,7 @@ public class ClientBattleHelper {
      * @param warrior
      */
     public static void initMapXY(BattleScreen screen, ClientWarriorElement warrior) {
-        Pair pair = ClientConfigurationFactory.getConfiguration().getCoordinateFinder().find(warrior.getCellY(), warrior.getCellX(), screen);
+        Pair pair = ClientConfigurationFactory.getConfiguration().getCoordinateFinder().find(warrior.getCellX(), warrior.getCellY(), screen);
         warrior.setMapX((short) pair.getX());
         warrior.setMapY((short) pair.getY());
     }

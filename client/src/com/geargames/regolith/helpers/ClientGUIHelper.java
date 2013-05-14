@@ -1,7 +1,5 @@
 package com.geargames.regolith.helpers;
 
-import com.geargames.regolith.units.battle.Direction;
-
 /**
  * User: mikhail v. kutuzov
  * Date: 18.12.12
@@ -25,18 +23,6 @@ public class ClientGUIHelper {
 
     public static String getWeightRepresentation(short grams) {
         return getWeightRepresentation(grams, "kg", "g");
-    }
-
-
-    /**
-     * Класс работает с набором направлений от 0 до 7; с отсутствием направления класс работает не корректно.
-     *
-     * @param direction
-     * @return
-     * @see Direction
-     */
-    public static int convertPackerScriptsDirection(Direction direction) {
-        return (direction.getNumber() + 2) % Direction.NONE.getNumber();
     }
 
 }

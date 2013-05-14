@@ -41,7 +41,7 @@ public class ClientConfiguration {
     private Warrior[] baseWarriors;
     private MessageDispatcher messageDispatcher;
     private boolean ready;
-    private ReverseProjectionFinder coordinateFinder;
+    private ReverseProjectionFinder coordinateFinder; //todo: coordinateFinder -> cellToMapConverter
     private ProjectionFinder cellFinder;
 
     public ReverseProjectionFinder getCoordinateFinder() {

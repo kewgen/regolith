@@ -47,7 +47,7 @@ public class ElementActionMenuDrawablePPanel extends DefaultDrawablePPanel {
     private void realign() {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         BattleScreen battleScreen = panelManager.getBattleScreen();
-        Pair pair = ClientConfigurationFactory.getConfiguration().getCoordinateFinder().find(cellY, cellX, battleScreen);
+        Pair pair = ClientConfigurationFactory.getConfiguration().getCoordinateFinder().find(cellX, cellY, battleScreen);
         setX(pair.getX() - battleScreen.getMapX());
         setY(pair.getY() - battleScreen.getMapY());
     }

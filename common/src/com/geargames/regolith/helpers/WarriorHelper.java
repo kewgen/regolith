@@ -87,25 +87,25 @@ public class WarriorHelper {
      * @return
      */
     public static Direction getStepDirection(BattleCell[][] cells, Warrior warrior) {
-        int length = cells.length;
+        int sizeMinusOne = cells.length - 1;
         int xx = warrior.getCellX();
         int yy = warrior.getCellY();
         Direction direction;
-        if (xx + 1 < length && BattleMapHelper.isShortestPathCell(cells[xx + 1][yy], warrior)) {
+        if (xx < sizeMinusOne && BattleMapHelper.isShortestPathCell(cells[xx + 1][yy], warrior)) {
             direction = Direction.LEFT_RIGHT;
         } else if (xx - 1 >= 0 && BattleMapHelper.isShortestPathCell(cells[xx - 1][yy], warrior)) {
             direction = Direction.RIGHT_LEFT;
-        } else if (yy + 1 < length && BattleMapHelper.isShortestPathCell(cells[xx][yy + 1], warrior)) {
+        } else if (yy < sizeMinusOne && BattleMapHelper.isShortestPathCell(cells[xx][yy + 1], warrior)) {
             direction = Direction.UP_DOWN;
         } else if (yy - 1 >= 0 && BattleMapHelper.isShortestPathCell(cells[xx][yy - 1], warrior)) {
             direction = Direction.DOWN_UP;
-        } else if (xx + 1 < length && yy + 1 < length && BattleMapHelper.isShortestPathCell(cells[xx + 1][yy + 1], warrior)) {
+        } else if (xx < sizeMinusOne && yy < sizeMinusOne && BattleMapHelper.isShortestPathCell(cells[xx + 1][yy + 1], warrior)) {
             direction = Direction.UP_DOWN_RIGHT;
-        } else if (xx + 1 < length && yy - 1 >= 0 && BattleMapHelper.isShortestPathCell(cells[xx + 1][yy - 1], warrior)) {
-            direction = Direction.DOWN_UP_RIGTH;
+        } else if (xx < sizeMinusOne && yy - 1 >= 0 && BattleMapHelper.isShortestPathCell(cells[xx + 1][yy - 1], warrior)) {
+            direction = Direction.DOWN_UP_RIGHT;
         } else if (xx - 1 >= 0 && yy - 1 >= 0 && BattleMapHelper.isShortestPathCell(cells[xx - 1][yy - 1], warrior)) {
             direction = Direction.DOWN_UP_LEFT;
-        } else if (xx - 1 >= 0 && yy + 1 < length && BattleMapHelper.isShortestPathCell(cells[xx - 1][yy + 1], warrior)) {
+        } else if (xx - 1 >= 0 && yy < sizeMinusOne && BattleMapHelper.isShortestPathCell(cells[xx - 1][yy + 1], warrior)) {
             direction = Direction.UP_DOWN_LEFT;
         } else {
             direction = Direction.NONE;

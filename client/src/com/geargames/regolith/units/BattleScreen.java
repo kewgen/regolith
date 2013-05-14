@@ -179,29 +179,32 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         if (battleContext.isMyTurn() && battleContext.getActiveUnit() == warrior) {
             byte barrierBits = Dir.NONE;
             BattleCell[][] battleCells = battleContext.getBattle().getMap().getCells();
-            if (warrior.getCellX() > 0 && warrior.getCellY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getCellX() - 1][warrior.getCellY() - 1])) {
+            int sizeMinusOne = battleCells.length - 1;
+            short x = warrior.getCellX();
+            short y = warrior.getCellY();
+            if (x > 0 && y > 0 && BattleMapHelper.isBarrier(battleCells[x - 1][y - 1])) {
                 barrierBits |= Dir.NORTHWEST;
             }
-            if (warrior.getCellY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getCellX()][warrior.getCellY() - 1])) {
-                barrierBits |= Dir.NORTH;
+            if (y > 0 && BattleMapHelper.isBarrier(battleCells[x][y - 1])) {
+                barrierBits |= Dir.WEST;
             }
-            if (warrior.getCellX() < battleCells.length - 1 && warrior.getCellY() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getCellX() + 1][warrior.getCellY() - 1])) {
-                barrierBits |= Dir.NORTHEAST;
-            }
-            if (warrior.getCellX() < battleCells.length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getCellX() + 1][warrior.getCellY()])) {
-                barrierBits |= Dir.EAST;
-            }
-            if (warrior.getCellX() < battleCells.length - 1 && warrior.getCellY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getCellX() + 1][warrior.getCellY() + 1])) {
-                barrierBits |= Dir.SOUTHEAST;
-            }
-            if (warrior.getCellY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getCellX()][warrior.getCellY() + 1])) {
-                barrierBits |= Dir.SOUTH;
-            }
-            if (warrior.getCellX() > 0 && warrior.getCellY() < battleCells[0].length - 1 && BattleMapHelper.isBarrier(battleCells[warrior.getCellX() - 1][warrior.getCellY() + 1])) {
+            if (x < sizeMinusOne && y > 0 && BattleMapHelper.isBarrier(battleCells[x + 1][y - 1])) {
                 barrierBits |= Dir.SOUTHWEST;
             }
-            if (warrior.getCellX() > 0 && BattleMapHelper.isBarrier(battleCells[warrior.getCellX() - 1][warrior.getCellY()])) {
-                barrierBits |= Dir.WEST;
+            if (x < sizeMinusOne && BattleMapHelper.isBarrier(battleCells[x + 1][y])) {
+                barrierBits |= Dir.SOUTH;
+            }
+            if (x < sizeMinusOne && y < sizeMinusOne && BattleMapHelper.isBarrier(battleCells[x + 1][y + 1])) {
+                barrierBits |= Dir.SOUTHEAST;
+            }
+            if (y < sizeMinusOne && BattleMapHelper.isBarrier(battleCells[x][y + 1])) {
+                barrierBits |= Dir.EAST;
+            }
+            if (x > 0 && y < sizeMinusOne && BattleMapHelper.isBarrier(battleCells[x - 1][y + 1])) {
+                barrierBits |= Dir.NORTHEAST;
+            }
+            if (x > 0 && BattleMapHelper.isBarrier(battleCells[x - 1][y])) {
+                barrierBits |= Dir.NORTH;
             }
             Index index = null;
             if ((barrierBits & (Dir.WEST | Dir.NORTHWEST | Dir.NORTH)) == (Dir.WEST | Dir.NORTHWEST | Dir.NORTH)) {
@@ -222,7 +225,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 index = symbolOfProtectionObject.getIndexBySlot(8);
             }
             if (index != null) {
-                Pair pair = coordinateFinder.find(warrior.getCellY(), warrior.getCellX(), this);
+                Pair pair = coordinateFinder.find(warrior.getCellX(), warrior.getCellY(), this);
                 index.draw(graphics, pair.getX() - mapX, pair.getY() - mapY);
             }
         }
@@ -230,15 +233,15 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
 
     private void drawBattleMap(Graphics graphics) {
         BattleCell[][] cells = battleContext.getBattle().getMap().getCells();
-        int length = cells.length;
-        for (short yCell = 0; yCell < length; yCell++) {
-            int y = yCell * ClientBattleContext.VERTICAL_RADIUS;
-            int x = (length - 1 + yCell) * ClientBattleContext.HORIZONTAL_RADIUS;
-            for (short xCell = 0; xCell < length; xCell++) {
+        int size = cells.length;
+        for (short xCell = 0; xCell < size; xCell++) {
+            int x = (size - 1 - xCell) * ClientBattleContext.HORIZONTAL_RADIUS;
+            int y = xCell * ClientBattleContext.VERTICAL_RADIUS;
+            for (short yCell = 0; yCell < size; yCell++) {
                 if (isOnTheScreen(x, y)) {
-                    drawCell(graphics, x - mapX, y - mapY, cells[yCell][xCell], xCell, yCell);
+                    drawCell(graphics, x - mapX, y - mapY, cells[xCell][yCell], xCell, yCell);
                 }
-                x -= ClientBattleContext.HORIZONTAL_RADIUS;
+                x += ClientBattleContext.HORIZONTAL_RADIUS;
                 y += ClientBattleContext.VERTICAL_RADIUS;
             }
         }
@@ -258,17 +261,18 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         // Рисуем границу вокруг игрового поля
         graphics.setColor(0x0000FF);
         BattleCell[][] battleCells = battleContext.getBattle().getMap().getCells();
+        int sizeMinusOne = battleCells.length - 1;
         int[] points = new int[8];
         Pair pair = coordinateFinder.find(0, 0, this);
         points[0] = pair.getX() - mapX;
         points[1] = pair.getY() - ClientBattleContext.VERTICAL_RADIUS - mapY;
-        pair = coordinateFinder.find(0, battleCells[0].length - 1, this);
+        pair = coordinateFinder.find(0, sizeMinusOne, this);
         points[2] = pair.getX() + ClientBattleContext.HORIZONTAL_RADIUS - mapX;
         points[3] = pair.getY() - mapY;
-        pair = coordinateFinder.find(battleCells.length - 1, battleCells[0].length - 1, this);
+        pair = coordinateFinder.find(sizeMinusOne, sizeMinusOne, this);
         points[4] = pair.getX() - mapX;
         points[5] = pair.getY() + ClientBattleContext.VERTICAL_RADIUS - mapY;
-        pair = coordinateFinder.find(battleCells.length - 1, 0, this);
+        pair = coordinateFinder.find(sizeMinusOne, 0, this);
         points[6] = pair.getX() - ClientBattleContext.HORIZONTAL_RADIUS - mapX;
         points[7] = pair.getY() - mapY;
         graphics.drawLine(points[0], points[1], points[2], points[3]);
@@ -293,8 +297,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * Центрировать область просмотра на ячейке карты.
      */
     public void displayCell(int cellX, int cellY) {
-        //todo-asap: Подкорректировать все find-ы, чтобы первым аргументом был x вторым y!
-        Pair pair = coordinateFinder.find(cellY, cellX, this);
+        Pair pair = coordinateFinder.find(cellX, cellY, this);
         setCenter(pair.getX(), pair.getY());
     }
 
@@ -326,12 +329,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 touchedY = y;
                 backupMapX = mapX;
                 backupMapY = mapY;
+//                Debug.debug("BattleScreen.onEvent(): code = Event.EVENT_TOUCH_PRESSED {x=" + x + "; y=" + y + "; mapX=" + mapX + "; mapY=" + mapY + "}");
                 break;
             case Event.EVENT_TOUCH_MOVED:
                 int dx = touchedX - x;
                 int dy = touchedY - y;
                 Pair pair = corrector.correct(backupMapX + dx, backupMapY + dy, this);
                 scrollingMapTo(pair.getX(), pair.getY());
+//                Debug.debug("BattleScreen.onEvent(): code = Event.EVENT_TOUCH_MOVED {x=" + x + "; y=" + y + "; newMapX=" + mapX + "; newMapY=" + mapY + "}");
                 break;
             case Event.EVENT_TOUCH_RELEASED:
                 if (battleContext.isMyTurn()) {
@@ -754,7 +759,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void putEnemyInPosition(ClientWarriorElement unit, int x, int y) {
-        Pair coordinates = coordinateFinder.find(x, y, this); //todo: Здесь x и y не перепутаны местами?
+        Pair coordinates = coordinateFinder.find(x, y, this);
         WarriorHelper.putWarriorIntoMap(battleContext.getBattle().getMap().getCells(), unit, x, y);
         unit.setMapX((short) coordinates.getX());
         unit.setMapY((short) coordinates.getY());

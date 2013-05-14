@@ -4,13 +4,13 @@ import com.geargames.regolith.units.Entity;
 import com.geargames.regolith.units.battle.BattleType;
 
 /**
- * User: mkutuzov
+ * Users: mkutuzov, abarakov
  * Date: 14.02.12
  * Игровая карта в 2d изометрии (псевдо 3d).
- *
- *         /\
- *      X /  \ Y
- *       /    \
+ * <p/>
+ * /\
+ * X /  \ Y
+ * /    \
  */
 public class BattleMap extends Entity {
     private String name;
@@ -51,7 +51,7 @@ public class BattleMap extends Entity {
         this.exits = exits;
     }
 
-    // BattleCell[y][x]
+    // BattleCell[x][y]
     public BattleCell[][] getCells() {
         return cells;
     }
@@ -65,8 +65,7 @@ public class BattleMap extends Entity {
         String dimension;
         if (cells == null) {
             dimension = "null";
-        } else
-        if (cells.length == 0) {
+        } else if (cells.length == 0) {
             dimension = "0x0";
         } else {
             dimension = cells[0].length + "x" + cells.length; //todo: или наоборот

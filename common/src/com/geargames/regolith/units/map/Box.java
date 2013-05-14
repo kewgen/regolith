@@ -10,7 +10,7 @@ import com.geargames.regolith.units.tackle.*;
  * User: mkutuzov
  * Date: 29.03.12
  */
-public abstract class Box extends CellElement {
+public abstract class Box extends DynamicCellElement {
     public static final byte TACKLE = 0;
     public static final byte MEDIKIT = 1;
     public static final byte MAGAZINE = 2;

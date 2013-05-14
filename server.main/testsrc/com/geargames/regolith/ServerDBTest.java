@@ -925,45 +925,45 @@ public class ServerDBTest {
         Barrier fenceBarrier1l = baseConfiguration.getBarriers().get(4);
         Barrier fenceBarrier1r = baseConfiguration.getBarriers().get(5);
 
-        map1.getCells()[3][0].addElement(barBarrier0);
-        map1.getCells()[3][1].addElement(fenceBarrier1l);
-        map1.getCells()[4][1].addElement(fenceBarrier1r);
-        map1.getCells()[5][1].addElement(fenceBarrier1l);
-        map1.getCells()[6][1].addElement(fenceBarrier1r);
-        map1.getCells()[7][1].addElement(barBarrier1);
-        map1.getCells()[7][2].addElement(barBarrier1);
-        map1.getCells()[9][1].addElement(barBarrier1);
-        map1.getCells()[9][2].addElement(barBarrier1);
-        map1.getCells()[4][2].addElement(fenceBarrier0r);
-        map1.getCells()[4][3].addElement(fenceBarrier0l);
-        map1.getCells()[4][4].addElement(barBarrier1);
-        map1.getCells()[5][4].addElement(barBarrier1);
-        map1.getCells()[6][4].addElement(barBarrier1);
-        map1.getCells()[6][5].addElement(fenceBarrier0r);
-        map1.getCells()[6][6].addElement(fenceBarrier0l);
-        map1.getCells()[8][4].addElement(barBarrier1);
-        map1.getCells()[9][4].addElement(barBarrier1);
-        map1.getCells()[8][5].addElement(fenceBarrier0r);
-        map1.getCells()[8][6].addElement(fenceBarrier0l);
-
-        map1.getCells()[0][3].addElement(fenceBarrier1l);
-        map1.getCells()[1][3].addElement(fenceBarrier1r);
-        map1.getCells()[2][3].addElement(barBarrier0);
-        map1.getCells()[2][4].addElement(barBarrier0);
-        map1.getCells()[2][5].addElement(barBarrier0);
-        map1.getCells()[1][5].addElement(barBarrier1);
-
-        map1.getCells()[1][8].addElement(barBarrier1);
+        map1.getCells()[0][3].addElement(barBarrier0);
+        map1.getCells()[1][3].addElement(fenceBarrier1l);
+        map1.getCells()[1][4].addElement(fenceBarrier1r);
+        map1.getCells()[1][5].addElement(fenceBarrier1l);
+        map1.getCells()[1][6].addElement(fenceBarrier1r);
         map1.getCells()[1][7].addElement(barBarrier1);
         map1.getCells()[2][7].addElement(barBarrier1);
-        map1.getCells()[3][7].addElement(fenceBarrier1l);
-        map1.getCells()[4][7].addElement(fenceBarrier1r);
-        map1.getCells()[4][6].addElement(barBarrier0);
-        map1.getCells()[4][8].addElement(barBarrier0);
+        map1.getCells()[1][9].addElement(barBarrier1);
+        map1.getCells()[2][9].addElement(barBarrier1);
+        map1.getCells()[2][4].addElement(fenceBarrier0r);
+        map1.getCells()[3][4].addElement(fenceBarrier0l);
+        map1.getCells()[4][4].addElement(barBarrier1);
+        map1.getCells()[4][5].addElement(barBarrier1);
+        map1.getCells()[4][6].addElement(barBarrier1);
+        map1.getCells()[5][6].addElement(fenceBarrier0r);
+        map1.getCells()[6][6].addElement(fenceBarrier0l);
+        map1.getCells()[4][8].addElement(barBarrier1);
+        map1.getCells()[4][9].addElement(barBarrier1);
+        map1.getCells()[5][8].addElement(fenceBarrier0r);
+        map1.getCells()[6][8].addElement(fenceBarrier0l);
 
-        map1.getCells()[6][8].addElement(fenceBarrier0r);
-        map1.getCells()[6][9].addElement(fenceBarrier0l);
-        map1.getCells()[8][7].addElement(barBarrier1);
+        map1.getCells()[3][0].addElement(fenceBarrier1l);
+        map1.getCells()[3][1].addElement(fenceBarrier1r);
+        map1.getCells()[3][2].addElement(barBarrier0);
+        map1.getCells()[4][2].addElement(barBarrier0);
+        map1.getCells()[5][2].addElement(barBarrier0);
+        map1.getCells()[5][1].addElement(barBarrier1);
+
+        map1.getCells()[8][1].addElement(barBarrier1);
+        map1.getCells()[7][1].addElement(barBarrier1);
+        map1.getCells()[7][2].addElement(barBarrier1);
+        map1.getCells()[7][3].addElement(fenceBarrier1l);
+        map1.getCells()[7][4].addElement(fenceBarrier1r);
+        map1.getCells()[6][4].addElement(barBarrier0);
+        map1.getCells()[8][4].addElement(barBarrier0);
+
+        map1.getCells()[8][6].addElement(fenceBarrier0r);
+        map1.getCells()[9][6].addElement(fenceBarrier0l);
+        map1.getCells()[7][8].addElement(barBarrier1);
 
         ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -1002,7 +1002,7 @@ public class ServerDBTest {
 
         newBattle.getMap().setCells(ServerBattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
         Assert.assertTrue(battle.getMap().getCells()[1][1].getElements()[0] instanceof Box);
-        Assert.assertTrue(battle.getMap().getCells()[4][3].getElements()[0] instanceof Barrier);
+        Assert.assertTrue(battle.getMap().getCells()[3][4].getElements()[0] instanceof Barrier);
 
         Box newBox = (Box) battle.getMap().getCells()[1][1].getElements()[0];
 
@@ -1048,7 +1048,7 @@ public class ServerDBTest {
 //        ServerBattleHelper.prepareBattle(battle);
 
         Barrier barrier = baseConfiguration.getBarriers().get(0);
-        map2.getCells()[3][3].addElement(barrier);
+        map2.getCells()[3][4].addElement(barrier);
 
         ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();
@@ -1086,7 +1086,7 @@ public class ServerDBTest {
 //
 //        newBattle.getMap().setCells(ServerBattleHelper.deserializeBattleCells(newBattle.getMap().getContent()));
 //        Assert.assertTrue(battle.getMap().getCells()[1][1].getElement() instanceof Box);
-//        Assert.assertTrue(battle.getMap().getCells()[3][3].getElement() instanceof Barrier);
+//        Assert.assertTrue(battle.getMap().getCells()[3][4].getElement() instanceof Barrier);
 //
 //        Box newBox = (Box) battle.getMap().getCells()[1][1].getElement();
 //
@@ -1289,89 +1289,89 @@ public class ServerDBTest {
         Barrier fenceBarrier1l = baseConfiguration.getBarriers().get(4);
         Barrier fenceBarrier1r = baseConfiguration.getBarriers().get(5);
 
-        map5.getCells()[3][1].addElement(barBarrier0);
-        map5.getCells()[3][2].addElement(barBarrier0);
-        map5.getCells()[4][2].addElement(barBarrier1);
-        map5.getCells()[5][2].addElement(barBarrier1);
-        map5.getCells()[6][2].addElement(barBarrier1);
-        map5.getCells()[7][2].addElement(barBarrier1);
+        map5.getCells()[1][3].addElement(barBarrier0);
+        map5.getCells()[2][3].addElement(barBarrier0);
+        map5.getCells()[2][4].addElement(barBarrier1);
+        map5.getCells()[2][5].addElement(barBarrier1);
+        map5.getCells()[2][6].addElement(barBarrier1);
+        map5.getCells()[2][7].addElement(barBarrier1);
 
-        map5.getCells()[9][0].addElement(fenceBarrier0r);
-        map5.getCells()[9][1].addElement(fenceBarrier0l);
-        map5.getCells()[9][2].addElement(fenceBarrier0r);
-        map5.getCells()[9][3].addElement(fenceBarrier0l);
-        map5.getCells()[9][4].addElement(fenceBarrier0r);
-        map5.getCells()[9][5].addElement(fenceBarrier0l);
+        map5.getCells()[0][9].addElement(fenceBarrier0r);
+        map5.getCells()[1][9].addElement(fenceBarrier0l);
+        map5.getCells()[2][9].addElement(fenceBarrier0r);
+        map5.getCells()[3][9].addElement(fenceBarrier0l);
+        map5.getCells()[4][9].addElement(fenceBarrier0r);
+        map5.getCells()[5][9].addElement(fenceBarrier0l);
 
-        map5.getCells()[0][3].addElement(fenceBarrier1l);
-        map5.getCells()[1][3].addElement(fenceBarrier1r);
-        map5.getCells()[0][6].addElement(fenceBarrier1l);
-        map5.getCells()[1][6].addElement(fenceBarrier1r);
-        map5.getCells()[2][5].addElement(fenceBarrier0r);
-        map5.getCells()[2][6].addElement(fenceBarrier0l);
+        map5.getCells()[3][0].addElement(fenceBarrier1l);
+        map5.getCells()[3][1].addElement(fenceBarrier1r);
+        map5.getCells()[6][0].addElement(fenceBarrier1l);
+        map5.getCells()[6][1].addElement(fenceBarrier1r);
+        map5.getCells()[5][2].addElement(fenceBarrier0r);
+        map5.getCells()[6][2].addElement(fenceBarrier0l);
 
-        map5.getCells()[4][5].addElement(fenceBarrier1l);
+        map5.getCells()[5][4].addElement(fenceBarrier1l);
         map5.getCells()[5][5].addElement(fenceBarrier1r);
-        map5.getCells()[6][5].addElement(fenceBarrier1l);
-        map5.getCells()[7][5].addElement(fenceBarrier1r);
-//        map5.getCells()[8][5].addElement(fenceBarrier1l);
-//        map5.getCells()[9][5].addElement(fenceBarrier1r);
+        map5.getCells()[5][6].addElement(fenceBarrier1l);
+        map5.getCells()[5][7].addElement(fenceBarrier1r);
+//        map5.getCells()[5][8].addElement(fenceBarrier1l);
+//        map5.getCells()[5][9].addElement(fenceBarrier1r);
 
-        map5.getCells()[4][7].addElement(barBarrier0);
-        map5.getCells()[4][8].addElement(barBarrier0);
-        map5.getCells()[4][9].addElement(fenceBarrier1l);
-        map5.getCells()[5][9].addElement(fenceBarrier1r);
-        map5.getCells()[7][9].addElement(barBarrier1);
-        map5.getCells()[8][9].addElement(barBarrier1);
-        map5.getCells()[9][7].addElement(barBarrier0);
-        map5.getCells()[9][8].addElement(barBarrier0);
+        map5.getCells()[7][4].addElement(barBarrier0);
+        map5.getCells()[8][4].addElement(barBarrier0);
+        map5.getCells()[9][4].addElement(fenceBarrier1l);
+        map5.getCells()[9][5].addElement(fenceBarrier1r);
+        map5.getCells()[9][7].addElement(barBarrier1);
+        map5.getCells()[9][8].addElement(barBarrier1);
+        map5.getCells()[7][9].addElement(barBarrier0);
+        map5.getCells()[8][9].addElement(barBarrier0);
         map5.getCells()[9][9].addElement(barBarrier0);
 
-        map5.getCells()[11][9].addElement(fenceBarrier1l);
-        map5.getCells()[12][9].addElement(fenceBarrier1r);
-        map5.getCells()[13][9].addElement(fenceBarrier1l);
-        map5.getCells()[14][9].addElement(fenceBarrier1r);
+        map5.getCells()[9][11].addElement(fenceBarrier1l);
+        map5.getCells()[9][12].addElement(fenceBarrier1r);
+        map5.getCells()[9][13].addElement(fenceBarrier1l);
+        map5.getCells()[9][14].addElement(fenceBarrier1r);
 
-        map5.getCells()[17][6].addElement(fenceBarrier0r);
-        map5.getCells()[17][7].addElement(fenceBarrier0l);
-        map5.getCells()[17][8].addElement(fenceBarrier0r);
-        map5.getCells()[17][9].addElement(fenceBarrier0l);
-        map5.getCells()[18][9].addElement(fenceBarrier1l);
-        map5.getCells()[19][9].addElement(fenceBarrier1r);
+        map5.getCells()[6][17].addElement(fenceBarrier0r);
+        map5.getCells()[7][17].addElement(fenceBarrier0l);
+        map5.getCells()[8][17].addElement(fenceBarrier0r);
+        map5.getCells()[9][17].addElement(fenceBarrier0l);
+        map5.getCells()[9][18].addElement(fenceBarrier1l);
+        map5.getCells()[9][19].addElement(fenceBarrier1r);
 
-        map5.getCells()[7][12].addElement(fenceBarrier1l);
-        map5.getCells()[8][12].addElement(fenceBarrier1r);
+        map5.getCells()[12][7].addElement(fenceBarrier1l);
+        map5.getCells()[12][8].addElement(fenceBarrier1r);
 
-        map5.getCells()[10][12].addElement(fenceBarrier0r);
-        map5.getCells()[10][13].addElement(fenceBarrier0l);
-        map5.getCells()[10][14].addElement(fenceBarrier0r);
-        map5.getCells()[10][15].addElement(fenceBarrier0l);
-        map5.getCells()[10][16].addElement(fenceBarrier1l);
-        map5.getCells()[11][16].addElement(fenceBarrier1r);
-        map5.getCells()[12][16].addElement(fenceBarrier1l);
-        map5.getCells()[13][16].addElement(fenceBarrier1r);
-        map5.getCells()[14][16].addElement(fenceBarrier0r);
-        map5.getCells()[14][17].addElement(fenceBarrier0l);
-        map5.getCells()[12][18].addElement(barBarrier1);
-        map5.getCells()[13][18].addElement(barBarrier1);
+        map5.getCells()[12][10].addElement(fenceBarrier0r);
+        map5.getCells()[13][10].addElement(fenceBarrier0l);
+        map5.getCells()[14][10].addElement(fenceBarrier0r);
+        map5.getCells()[15][10].addElement(fenceBarrier0l);
+        map5.getCells()[16][10].addElement(fenceBarrier1l);
+        map5.getCells()[16][11].addElement(fenceBarrier1r);
+        map5.getCells()[16][12].addElement(fenceBarrier1l);
+        map5.getCells()[16][13].addElement(fenceBarrier1r);
+        map5.getCells()[16][14].addElement(fenceBarrier0r);
+        map5.getCells()[17][14].addElement(fenceBarrier0l);
+        map5.getCells()[18][12].addElement(barBarrier1);
+        map5.getCells()[18][13].addElement(barBarrier1);
 
         map5.getCells()[12][12].addElement(fenceBarrier0r);
-        map5.getCells()[12][13].addElement(fenceBarrier0l);
-        map5.getCells()[12][14].addElement(fenceBarrier1l);
-        map5.getCells()[13][14].addElement(fenceBarrier1r);
+        map5.getCells()[13][12].addElement(fenceBarrier0l);
+        map5.getCells()[14][12].addElement(fenceBarrier1l);
+        map5.getCells()[14][13].addElement(fenceBarrier1r);
         map5.getCells()[14][14].addElement(fenceBarrier1l);
-        map5.getCells()[15][14].addElement(fenceBarrier1r);
-        map5.getCells()[16][14].addElement(fenceBarrier1l);
-        map5.getCells()[17][14].addElement(fenceBarrier1r);
-        map5.getCells()[19][14].addElement(barBarrier1);
+        map5.getCells()[14][15].addElement(fenceBarrier1r);
+        map5.getCells()[14][16].addElement(fenceBarrier1l);
+        map5.getCells()[14][17].addElement(fenceBarrier1r);
+        map5.getCells()[14][19].addElement(barBarrier1);
 
         map5.getCells()[16][16].addElement(fenceBarrier0r);
-        map5.getCells()[16][17].addElement(fenceBarrier0l);
-        map5.getCells()[16][18].addElement(fenceBarrier0r);
-        map5.getCells()[16][19].addElement(fenceBarrier0l);
+        map5.getCells()[17][16].addElement(fenceBarrier0l);
+        map5.getCells()[18][16].addElement(fenceBarrier0r);
+        map5.getCells()[19][16].addElement(fenceBarrier0l);
 
-        map5.getCells()[18][16].addElement(fenceBarrier1l);
-        map5.getCells()[19][16].addElement(fenceBarrier1r);
+        map5.getCells()[16][18].addElement(fenceBarrier1l);
+        map5.getCells()[16][19].addElement(fenceBarrier1r);
 
         ServerBox box = new ServerBox();
         ServerMagazineCollection serverMagazineCollection = new ServerMagazineCollection();

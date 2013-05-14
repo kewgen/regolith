@@ -119,13 +119,13 @@ public class GroupsSpreadTest {
         ExitZone[] exits = map.getExits();
 
         BattleCell[][] cells = battle.getMap().getCells();
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells.length; j++) {
-                if (cells[j][i].getElement() instanceof Warrior) {
+        for (int x = 0; x < cells.length; x++) {
+            for (int y = 0; y < cells.length; y++) {
+                if (cells[x][y].getElement() instanceof Warrior) {
                     Assert.assertTrue(
-                            exits[0].isWithIn(j, i)
+                            exits[0].isWithIn(x, y)
                                     ||
-                                    exits[1].isWithIn(j, i)
+                                    exits[1].isWithIn(x, y)
                     );
                 }
             }

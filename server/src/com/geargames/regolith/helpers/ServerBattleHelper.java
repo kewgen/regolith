@@ -130,9 +130,9 @@ public class ServerBattleHelper {
     public static void prepareBattle(Battle battle) {
         BattleCell[][] cells = battle.getMap().getCells();
         int allianceAmount = battle.getBattleType().getAllianceAmount();
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[i].length; j++) {
-                ServerBattleCell cell = (ServerBattleCell) cells[i][j];
+        for (int x = 0; x < cells.length; x++) {
+            for (int y = 0; y < cells[x].length; y++) {
+                ServerBattleCell cell = (ServerBattleCell) cells[x][y];
                 cell.setPaths(new HashMap<BattleAlliance, Short>());
                 cell.setVisibilities(new HashMap<BattleAlliance, Short>());
                 cell.setVisited(new HashMap<BattleAlliance, Boolean>());
@@ -208,9 +208,9 @@ public class ServerBattleHelper {
 
     public static BattleCell[][] createBattleCells(int size) {
         ServerBattleCell[][] cells = new ServerBattleCell[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                cells[i][j] = new ServerBattleCell();
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                cells[x][y] = new ServerBattleCell();
             }
         }
         return cells;

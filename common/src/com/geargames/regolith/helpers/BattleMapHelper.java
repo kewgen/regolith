@@ -46,25 +46,25 @@ public class BattleMapHelper {
     public static void makeShortestRoute(BattleCell[][] cells, int toX, int toY, Warrior warrior) {
         int x = toX;
         int y = toY;
-        int length = cells.length;
+        int sizeMinusOne = cells.length - 1;
         while (true) {
             setShortestPathCell(cells[x][y], warrior);
             byte order = getOrder(cells[x][y]);
             if (y - 1 >= 0 && getOrder(cells[x][y - 1]) + 1 == order) {
                 y--;
-            } else if (y + 1 < length && getOrder(cells[x][y + 1]) + 1 == order) {
+            } else if (y < sizeMinusOne && getOrder(cells[x][y + 1]) + 1 == order) {
                 y++;
             } else if (x - 1 >= 0 && getOrder(cells[x - 1][y]) + 1 == order) {
                 x--;
-            } else if (x + 1 < length && getOrder(cells[x + 1][y]) + 1 == order) {
+            } else if (x < sizeMinusOne && getOrder(cells[x + 1][y]) + 1 == order) {
                 x++;
-            } else if (x - 1 >= 0 && y + 1 < length && getOrder(cells[x - 1][y + 1]) + 1 == order) {
+            } else if (x - 1 >= 0 && y < sizeMinusOne && getOrder(cells[x - 1][y + 1]) + 1 == order) {
                 x--;
                 y++;
-            } else if (x + 1 < length && y + 1 < length && getOrder(cells[x + 1][y + 1]) + 1 == order) {
+            } else if (x < sizeMinusOne && y < sizeMinusOne && getOrder(cells[x + 1][y + 1]) + 1 == order) {
                 x++;
                 y++;
-            } else if (x + 1 < length && y - 1 >= 0 && getOrder(cells[x + 1][y - 1]) + 1 == order) {
+            } else if (x < sizeMinusOne && y - 1 >= 0 && getOrder(cells[x + 1][y - 1]) + 1 == order) {
                 x++;
                 y--;
             } else if (x - 1 >= 0 && y - 1 >= 0 && getOrder(cells[x - 1][y - 1]) + 1 == order) {
@@ -193,9 +193,9 @@ public class BattleMapHelper {
         x1 = x1 > length - 1 ? length - 1 : x1;
         int y1 = warrior.getCellY() + radius;
         y1 = y1 > length - 1 ? length - 1 : y1;
-        for (int i = x0; i <= x1; i++) {
-            for (int j = y0; j <= y1; j++) {
-                resetShortestCell(cells[i][j], warrior);
+        for (int x = x0; x <= x1; x++) {
+            for (int y = y0; y <= y1; y++) {
+                resetShortestCell(cells[x][y], warrior);
             }
         }
     }
@@ -217,10 +217,10 @@ public class BattleMapHelper {
      * @param cells
      */
     public static void prepare(BattleCell[][] cells) {
-        int length = cells.length;
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < length; j++) {
-                cells[i][j].setOrder(UN_ROUTED);
+        int size = cells.length;
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                cells[x][y].setOrder(UN_ROUTED);
             }
         }
     }
@@ -304,18 +304,18 @@ public class BattleMapHelper {
      * @param warrior
      */
     public static void clearViewAround(BattleCell[][] cells, Warrior warrior) {
-        int length = cells.length;
-        int x = warrior.getCellX();
-        int y = warrior.getCellY();
+        int size = cells.length;
+        short cellX = warrior.getCellX();
+        short cellY = warrior.getCellY();
         int radius = WarriorHelper.getObservingRadius(warrior);
         SecurityOperationManager manager = warrior.getBattleGroup().getAccount().getSecurity();
         System.out.println("I am clearing a view of warrior " + warrior.getName());
-        for (int i = x - radius; i <= 2 * radius + 1; i++) {
-            if (i >= 0 && i < length) {
-                for (int j = y - radius; j <= 2 * radius + 1; j++) {
-                    if (j >= 0 && j < length) {
-                        manager.adjustObserve(-(i + j));
-                        BattleMapHelper.hide(cells[i][j], warrior);
+        for (int x = cellX - radius; x <= 2 * radius + 1; x++) {
+            if (x >= 0 && x < size) { //todo: Убрать if, использовать Mathematics.min/max
+                for (int y = cellY - radius; y <= 2 * radius + 1; y++) {
+                    if (y >= 0 && y < size) { //todo: Убрать if, использовать Mathematics.min/max
+                        manager.adjustObserve(-(x + y));
+                        BattleMapHelper.hide(cells[x][y], warrior);
                     }
                 }
             }

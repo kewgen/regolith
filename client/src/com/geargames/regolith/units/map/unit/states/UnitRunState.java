@@ -101,16 +101,16 @@ public class UnitRunState extends AbstractLogicState {
 
         if (speed - ticks > 1) {
             // Движение от центра одной клетки до центра другой клетки карты
-            extensionX += shiftOnTickX * (stepDirection.getX() - stepDirection.getY());
-            extensionY += shiftOnTickY * (stepDirection.getY() + stepDirection.getX());
+            extensionX += shiftOnTickX * (stepDirection.getY() - stepDirection.getX());
+            extensionY += shiftOnTickY * (stepDirection.getX() + stepDirection.getY());
             warrior.setMapX((short) (extensionX + beginMapX));
             warrior.setMapY((short) (extensionY + beginMapY));
             ticks++;
         } else {
             // Мы, приблезительно, в центре одной из клеток карты
             //todo: использовать battleScreen.coordinateFinder для вычисления положения бойца
-            warrior.setMapX((short) (ClientBattleContext.HORIZONTAL_RADIUS * (stepDirection.getX() - stepDirection.getY()) + beginMapX));
-            warrior.setMapY((short) (ClientBattleContext.VERTICAL_RADIUS * (stepDirection.getY() + stepDirection.getX()) + beginMapY));
+            warrior.setMapX((short) (ClientBattleContext.HORIZONTAL_RADIUS * (stepDirection.getY() - stepDirection.getX()) + beginMapX));
+            warrior.setMapY((short) (ClientBattleContext.VERTICAL_RADIUS * (stepDirection.getX() + stepDirection.getY()) + beginMapY));
 
             if (warrior.getMembershipType() == WarriorMembershipType.ENEMY) {
                 BattleMapHelper.resetShortestCell(cells[warrior.getCellX()][warrior.getCellY()], warrior);
