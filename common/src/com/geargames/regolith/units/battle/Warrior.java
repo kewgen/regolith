@@ -38,7 +38,7 @@ public class Warrior extends Ally {
     public Warrior() {
         cellX = 0; //todo: 0 -> -32768
         cellY = 0; //todo: 0 -> -32768
-        direction = Direction.NONE;
+        direction = Direction.DOWN_UP_RIGHT; //todo: DOWN_UP_RIGHT -> NONE
         sitting = false;
     }
 

@@ -789,6 +789,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      */
     public void onMyTurnFinished() {
         Debug.debug("My turn has been finished");
+        setSelectedElement(null, -1, -1);
         configuration.getBattleServiceManager().checkSum();
 
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
