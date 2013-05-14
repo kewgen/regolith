@@ -71,61 +71,66 @@ public class BattleMapSerializer {
      * @param buffer
      */
     public static void serialize(BattleCell[][] cells, short x, short y, Account account, MicroByteBuffer buffer) {
-        CellElement element = cells[x][y].getElement();
-        if (element != null) {
-            switch (element.getElementType()) {
-                case CellElementTypes.HUMAN:
-                    Warrior warrior = (Warrior) element;
-                    if (warrior.getBattleGroup().getAccount().getId() == account.getId()) {
+        CellElement[] elements = cells[x][y].getElements();
+        byte length = (byte) elements.length;
+        SimpleSerializer.serialize(length, buffer);
+        for (int i = 0; i < length; i++) {
+            CellElement element = elements[i];
+            if (element != null) {
+                switch (element.getElementType()) {
+                    case CellElementTypes.HUMAN:
+                        Warrior warrior = (Warrior) element;
+                        if (warrior.getBattleGroup().getAccount().getId() == account.getId()) {
+                            SimpleSerializer.serialize(x, buffer);
+                            SimpleSerializer.serialize(y, buffer);
+                            SimpleSerializer.serialize(SerializeHelper.WARRIOR, buffer);
+                            serialize(warrior, buffer);
+                        } else if (WarriorHelper.isAlly(warrior, account)) {
+                            SimpleSerializer.serialize(x, buffer);
+                            SimpleSerializer.serialize(y, buffer);
+                            SimpleSerializer.serialize(SerializeHelper.ALLY, buffer);
+                            serialize(warrior, buffer);
+                        }
+                        break;
+                    case CellElementTypes.BARRIER:
                         SimpleSerializer.serialize(x, buffer);
                         SimpleSerializer.serialize(y, buffer);
-                        SimpleSerializer.serialize(SerializeHelper.WARRIOR, buffer);
-                        serialize(warrior, buffer);
-                    } else if (WarriorHelper.isAlly(warrior, account)) {
+                        SimpleSerializer.serialize(SerializeHelper.BARRIER, buffer);
+                        serialize((Barrier) element, buffer);
+                        break;
+                    case CellElementTypes.ARMOR:
                         SimpleSerializer.serialize(x, buffer);
                         SimpleSerializer.serialize(y, buffer);
-                        SimpleSerializer.serialize(SerializeHelper.ALLY, buffer);
-                        serialize(warrior, buffer);
-                    }
-                    break;
-                case CellElementTypes.BARRIER:
-                    SimpleSerializer.serialize(x, buffer);
-                    SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SerializeHelper.BARRIER, buffer);
-                    serialize((Barrier) element, buffer);
-                    break;
-                case CellElementTypes.ARMOR:
-                    SimpleSerializer.serialize(x, buffer);
-                    SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SerializeHelper.ARMOR, buffer);
-                    TackleSerializer.serializeArmor((Armor) element, buffer);
-                    break;
-                case CellElementTypes.WEAPON:
-                    SimpleSerializer.serialize(x, buffer);
-                    SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SerializeHelper.WEAPON, buffer);
-                    TackleSerializer.serializeWeapon((Weapon) element, buffer);
-                    break;
-                case CellElementTypes.MEDIKIT:
-                    SimpleSerializer.serialize(x, buffer);
-                    SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SerializeHelper.MEDIKIT, buffer);
-                    TackleSerializer.serializeMedikit((Medikit) element, buffer);
-                    break;
-                case CellElementTypes.MAGAZINE:
-                    SimpleSerializer.serialize(x, buffer);
-                    SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SerializeHelper.MAGAZINE, buffer);
-                    serialize((Magazine) element, buffer);
-                    break;
-                case CellElementTypes.BOX:
-                    SimpleSerializer.serialize(x, buffer);
-                    SimpleSerializer.serialize(y, buffer);
-                    SimpleSerializer.serialize(SerializeHelper.BOX, buffer);
-                    serialize((Box) element, buffer);
-                    break;
-                default:
-                    throw new IllegalArgumentException();
+                        SimpleSerializer.serialize(SerializeHelper.ARMOR, buffer);
+                        TackleSerializer.serializeArmor((Armor) element, buffer);
+                        break;
+                    case CellElementTypes.WEAPON:
+                        SimpleSerializer.serialize(x, buffer);
+                        SimpleSerializer.serialize(y, buffer);
+                        SimpleSerializer.serialize(SerializeHelper.WEAPON, buffer);
+                        TackleSerializer.serializeWeapon((Weapon) element, buffer);
+                        break;
+                    case CellElementTypes.MEDIKIT:
+                        SimpleSerializer.serialize(x, buffer);
+                        SimpleSerializer.serialize(y, buffer);
+                        SimpleSerializer.serialize(SerializeHelper.MEDIKIT, buffer);
+                        TackleSerializer.serializeMedikit((Medikit) element, buffer);
+                        break;
+                    case CellElementTypes.MAGAZINE:
+                        SimpleSerializer.serialize(x, buffer);
+                        SimpleSerializer.serialize(y, buffer);
+                        SimpleSerializer.serialize(SerializeHelper.MAGAZINE, buffer);
+                        serialize((Magazine) element, buffer);
+                        break;
+                    case CellElementTypes.BOX:
+                        SimpleSerializer.serialize(x, buffer);
+                        SimpleSerializer.serialize(y, buffer);
+                        SimpleSerializer.serialize(SerializeHelper.BOX, buffer);
+                        serialize((Box) element, buffer);
+                        break;
+                    default:
+                        throw new IllegalArgumentException();
+                }
             }
         }
     }

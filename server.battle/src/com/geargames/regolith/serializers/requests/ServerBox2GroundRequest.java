@@ -11,11 +11,9 @@ import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
-import com.geargames.regolith.units.map.BattleCell;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,9 +53,10 @@ public abstract class ServerBox2GroundRequest extends ServerRequest {
 
         List<MessageToClient> messages = new ArrayList<MessageToClient>(2);
 
+        CellElement cellElement = BattleMapHelper.getElementByType(cells[xBox][yBox], CellElementTypes.BOX);
         if (BattleMapHelper.ableToPut(warrior, cells, xGround, yGround) && BattleMapHelper.isNear(warrior, xBox, yBox)
-                && cells[xBox][yBox].getElement() != null && cells[xBox][yBox].getElement() instanceof Box) {
-            Box box = (Box) cells[xBox][yBox].getElement();
+                && cellElement != null && cellElement instanceof Box) {
+            Box box = (Box) cellElement;
             CellElement element = putOut(elementId, box, warrior, xGround, yGround);
             if (element != null) {
                 Set<Client> clients = new HashSet<Client>();

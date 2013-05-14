@@ -2,10 +2,10 @@ package com.geargames.regolith.map.observer;
 
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.helpers.BattleMapHelper;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.BattleCell;
+import com.geargames.regolith.units.map.CellElementLayers;
 import com.geargames.regolith.units.map.CellElementTypes;
 
 /**
@@ -41,10 +41,10 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
                 security.adjustObserve(x + y);
             }
             BattleMapHelper.show(cell, warrior);
-            if (cell.getElement() != null) {
-                hidden = !cell.getElement().isAbleToLookThrough();
-                if (!was && cell.getElement().getElementType() == CellElementTypes.HUMAN) {
-                    Warrior human = (Warrior) cell.getElement();
+            if (cell.getSize() > 0) {
+                hidden = !BattleMapHelper.isAbleToLookThrough(cell);
+                Warrior human = (Warrior)BattleMapHelper.getElementByType(cell, (byte)CellElementTypes.HUMAN);
+                if (!was && human != null) {
                     enemies.add(human);
                 }
             }

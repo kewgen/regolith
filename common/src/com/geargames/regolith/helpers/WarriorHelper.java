@@ -776,6 +776,26 @@ public class WarriorHelper {
         return warrior.getHealth() <= 0;
     }
 
+
+    /**
+     * Есть ли очки действия чтоб поднять.
+     * @param warrior
+     * @param configuration
+     * @return
+     */
+    public static boolean mayPeekOrPut(Warrior warrior, BattleConfiguration configuration){
+        return warrior.getActionScore() >= configuration.getActionFees().getPickupTackle();
+    }
+
+    /**
+     * Растратить очки действия на поднять\положить предмет.
+     * @param warrior
+     * @param configuration
+     */
+    public static void payForPickOrPut(Warrior warrior, BattleConfiguration configuration){
+        warrior.setActionScore((short)(warrior.getActionScore() - configuration.getActionFees().getPickupTackle()));
+    }
+
     /**
      * Хватит ли очков на прицельную стрельбу?
      *

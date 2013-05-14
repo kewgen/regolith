@@ -43,15 +43,6 @@ public abstract class BattleCell implements Serializable {
         return size;
     }
 
-    @Deprecated
-    public CellElement getElement() {
-        if (size == 0) {
-            return null;
-        } else {
-            return elements[size - 1];
-        }
-    }
-
     /**
      * Добавить элемент в ячейку в соответствующий слой.
      *

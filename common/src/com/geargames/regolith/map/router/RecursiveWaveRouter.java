@@ -33,7 +33,7 @@ public class RecursiveWaveRouter extends Router {
         int x0 = warrior.getCellX();
         int y0 = warrior.getCellY();
 
-        BattleMapHelper.setZeroOrder(warrior);
+        BattleMapHelper.setZeroOrder(warrior, cells);
         tryNeighbours(cells, x0, y0, radius, 0);
     }
 

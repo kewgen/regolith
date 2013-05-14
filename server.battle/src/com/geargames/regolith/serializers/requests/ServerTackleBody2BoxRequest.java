@@ -1,13 +1,18 @@
 package com.geargames.regolith.serializers.requests;
 
+import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleCellHelper;
+import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ServerTackleBody2BoxAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
+import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.map.CellElement;
@@ -16,6 +21,7 @@ import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleCell;
+import com.geargames.regolith.units.map.CellElementLayers;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
@@ -46,7 +52,7 @@ public class ServerTackleBody2BoxRequest extends ServerRequest {
 
         BattleCell[][] cells = serverBattle.getBattle().getMap().getCells();
 
-        CellElement element = cells[xBox][yBox].getElement();
+        CellElement element = BattleCellHelper.getElementFromLayer(cells[xBox][yBox], CellElementLayers.DYNAMIC);
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
         StateTackle stateTackle = null;
@@ -72,6 +78,9 @@ public class ServerTackleBody2BoxRequest extends ServerRequest {
 
         if (stateTackle != null) {
             box.getTackles().add(stateTackle);
+
+            BattleConfiguration configuration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration().getBattleConfiguration();
+            WarriorHelper.payForPickOrPut(warrior,  configuration);
 
             Set<Client> clients = new HashSet<Client>();
             clients.addAll(serverBattle.getClients());

@@ -54,7 +54,7 @@ public abstract class ServerGround2WarriorRequest extends ServerRequest {
             throw new RegolithException("Warrior was not found");
         }
 
-        StateTackle tackle = BattleMapHelper.peekStateTackle(warrior, group.getAlliance().getBattle().getMap().getCells(), x, y);
+        StateTackle tackle = BattleMapHelper.pickUpStateTackle(warrior, group.getAlliance().getBattle().getMap().getCells(), x, y);
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(2);
         if (tackle != null && putStateTackle(tackle, group.getAlliance().getBattle().getMap().getCells()[x][y], warrior)) {

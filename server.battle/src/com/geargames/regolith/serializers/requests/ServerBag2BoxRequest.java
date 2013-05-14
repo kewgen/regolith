@@ -1,6 +1,7 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
@@ -9,13 +10,10 @@ import com.geargames.regolith.service.BattleClient;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.BattleGroup;
-import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.battle.Warrior;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public abstract class ServerBag2BoxRequest extends ServerRequest {
         BattleCell[][] cells = map.getCells();
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(2);
 
-        Box box = (Box) cells[x][y].getElement();
+        Box box = (Box) BattleMapHelper.getElementByType(cells[x][y], CellElementTypes.BOX);
 
         CellElement element = moveBag2Box(bagNumber, box, warrior);
         if (element != null) {

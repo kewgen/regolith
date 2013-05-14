@@ -3,16 +3,15 @@ package com.geargames.regolith.serializers.requests;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.serializers.*;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ServerBox2WarriorAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
-import com.geargames.regolith.units.map.Box;
-import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.map.BattleCell;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,7 +47,7 @@ public abstract class ServerBox2WarriorRequest extends ServerRequest {
         int elementId = SimpleDeserializer.deserializeInt(from);
 
         BattleCell[][] cells = serverBattle.getBattle().getMap().getCells();
-        CellElement element = cells[x][y].getElement();
+        CellElement element = BattleMapHelper.getElementByType(cells[x][y], CellElementTypes.BOX);
         if (element != null && element instanceof Box) {
             Box box = (Box) element;
 

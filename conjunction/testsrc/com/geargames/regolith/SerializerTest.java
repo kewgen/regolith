@@ -720,8 +720,8 @@ public class SerializerTest {
         buffer.reset();
         Battle newBattle = BattleDeserializer.deserializeBattle(buffer, baseConfiguration, account);
 
-        Assert.assertEquals(((Weapon) (battle.getMap().getCells()[10][10].getElement())).getLoad(), ((Weapon) (newBattle.getMap().getCells()[10][10].getElement())).getLoad());
-        Assert.assertEquals(((Weapon) (battle.getMap().getCells()[10][10].getElement())).getWeaponType().getName(), ((Weapon) (newBattle.getMap().getCells()[10][10].getElement())).getWeaponType().getName());
+        Assert.assertEquals(((Weapon) (BattleCellHelper.getElementFromLayer(battle.getMap().getCells()[10][10], CellElementLayers.TACKLE))).getLoad(), ((Weapon) (BattleCellHelper.getElementFromLayer(newBattle.getMap().getCells()[10][10], CellElementLayers.TACKLE))).getLoad());
+        Assert.assertEquals(((Weapon) (BattleCellHelper.getElementFromLayer(battle.getMap().getCells()[10][10], CellElementLayers.TACKLE))).getWeaponType().getName(), ((Weapon) (BattleCellHelper.getElementFromLayer(newBattle.getMap().getCells()[10][10], CellElementLayers.TACKLE))).getWeaponType().getName());
 
         Assert.assertEquals(battle.getAlliances()[0].getNumber(), newBattle.getAlliances()[0].getNumber());
         warrior = battle.getAlliances()[0].getAllies().get(0).getWarriors().get(0);

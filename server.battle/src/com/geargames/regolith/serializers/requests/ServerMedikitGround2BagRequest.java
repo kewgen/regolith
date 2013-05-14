@@ -51,7 +51,7 @@ public class ServerMedikitGround2BagRequest extends ServerRequest {
             throw new RegolithException("Warrior was not found");
         }
 
-        Medikit medikit = BattleMapHelper.peekMedikit(warrior, serverBattle.getBattle().getMap().getCells(), x, y);
+        Medikit medikit = BattleMapHelper.pickUpMedikit(warrior, serverBattle.getBattle().getMap().getCells(), x, y);
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(2);
         if (medikit != null && WarriorHelper.putInToBag(warrior, medikit, 1,

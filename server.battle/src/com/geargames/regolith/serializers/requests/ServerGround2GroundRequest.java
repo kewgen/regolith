@@ -1,13 +1,16 @@
 package com.geargames.regolith.serializers.requests;
 
+import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ServerGround2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
+import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.BattleGroup;
@@ -53,10 +56,12 @@ public class ServerGround2GroundRequest extends ServerRequest {
         BattleCell[][] cells = map.getCells();
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
+        RegolithConfiguration regolithConfiguration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration();
 
         if (BattleMapHelper.ableToPeek(warrior, cells, fromX, fromY)) {
             if (BattleMapHelper.ableToPut(warrior, cells, toX, toY)) {
-                BattleMapHelper.putIn(BattleMapHelper.putOut(map, fromX, fromY), map, toX, toY);
+                BattleMapHelper.putIn(BattleMapHelper.putOut(map.getCells()[fromX][fromY]), map.getCells()[toX][toY]);
+                WarriorHelper.payForPickOrPut(warrior, regolithConfiguration.getBattleConfiguration());
 
                 Set<Client> clients = new HashSet<Client>();
                 clients.addAll(serverBattle.getClients());

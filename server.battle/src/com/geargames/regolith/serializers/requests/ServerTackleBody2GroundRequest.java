@@ -1,14 +1,17 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
 import com.geargames.common.serialization.SimpleDeserializer;
 import com.geargames.regolith.serializers.answers.ServerConfirmationAnswer;
 import com.geargames.regolith.serializers.answers.ServerTackleBody2GroundAnswer;
 import com.geargames.regolith.service.BattleMessageToClient;
+import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.BodyParticles;
@@ -51,8 +54,9 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
         BattleMap map = serverBattle.getBattle().getMap();
         BattleCell[][] cells = map.getCells();
         StateTackle stateTackle = null;
+        RegolithConfiguration regolithConfiguration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration();
 
-        if (BattleMapHelper.isNear(warrior, x, y) && cells[x][y].getElement() == null) {
+        if (BattleMapHelper.ableToPut(warrior, cells , x, y)) {
             if (BodyParticles.HEAD == bodyParticle) {
                 stateTackle = warrior.getHeadArmor();
             } else if (BodyParticles.TORSO == bodyParticle) {
@@ -62,7 +66,8 @@ public class ServerTackleBody2GroundRequest extends ServerRequest {
             } else {
                 stateTackle = warrior.getWeapon();
             }
-            BattleMapHelper.putIn(stateTackle, map, x, y);
+            BattleMapHelper.putIn(stateTackle, cells[x][y]);
+            WarriorHelper.payForPickOrPut(warrior, regolithConfiguration.getBattleConfiguration());
         }
 
         if (stateTackle != null) {

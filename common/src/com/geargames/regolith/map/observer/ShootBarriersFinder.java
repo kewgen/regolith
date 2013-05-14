@@ -1,5 +1,6 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.regolith.map.PairAndElement;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.CellElement;
 import com.geargames.regolith.units.map.BattleCell;
@@ -11,10 +12,10 @@ import com.geargames.regolith.units.tackle.WeaponCategory;
  * Date: 15.03.12
  */
 public class ShootBarriersFinder extends BattleCellMaintainer {
-    private Pair coordinates;
+    private PairAndElement coordinates;
 
     public ShootBarriersFinder() {
-        coordinates = new Pair();
+        coordinates = new PairAndElement();
     }
 
     /**
@@ -31,21 +32,28 @@ public class ShootBarriersFinder extends BattleCellMaintainer {
      */
     @Override
     public boolean maintain(BattleCell[][] cells, Warrior warrior, boolean toDo, int x, int y) {
-        CellElement element = cells[x][y].getElement();
-        if (element != null && toDo) {
-            WeaponCategory category = warrior.getWeapon().getWeaponType().getCategory();
-            if (!element.isAbleToShootThrough(category)) {
-                coordinates.setX(x);
-                coordinates.setY(y);
-                if (!element.isHalfLong()) {
-                    return false;
+        CellElement[] elements = cells[x][y].getElements();
+        int length = cells[x][y].getSize();
+
+        if (toDo) {
+            for (int i = length - 1; i >= 0; i--) {
+                CellElement element = elements[i];
+
+                WeaponCategory category = warrior.getWeapon().getWeaponType().getCategory();
+                if (!element.isAbleToShootThrough(category)) {
+                    coordinates.setX(x);
+                    coordinates.setY(y);
+                    coordinates.setElement(element);
+                    if (!element.isHalfLong()) {
+                        return false;
+                    }
                 }
             }
         }
         return toDo;
     }
 
-    public Pair getCoordinates() {
+    public PairAndElement getCoordinates() {
         return coordinates;
     }
 
