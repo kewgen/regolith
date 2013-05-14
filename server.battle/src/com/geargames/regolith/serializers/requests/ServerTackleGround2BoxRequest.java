@@ -2,6 +2,7 @@ package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
 import com.geargames.regolith.RegolithException;
+import com.geargames.regolith.helpers.BattleCellHelper;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.serializers.BattleServiceRequestUtils;
 import com.geargames.common.serialization.MicroByteBuffer;
@@ -16,6 +17,8 @@ import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.Box;
 import com.geargames.regolith.units.battle.ServerBattle;
 import com.geargames.regolith.units.map.BattleCell;
+import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.CellElementLayers;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
@@ -48,13 +51,16 @@ public class ServerTackleGround2BoxRequest extends ServerRequest {
         BattleCell[][] cells = serverBattle.getBattle().getMap().getCells();
 
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>(1);
-        if (cells[xGround][yGround].getElement() != null && cells[xGround][yGround].getElement() instanceof StateTackle && cells[xBox][yBox].getElement() != null && cells[xBox][yBox].getElement() instanceof Box) {
+
+        CellElement boxElement = BattleCellHelper.getElementFromLayer(cells[xBox][yBox], CellElementLayers.DYNAMIC);
+        CellElement tackleElement = BattleCellHelper.getElementFromLayer(cells[xGround][yGround], CellElementLayers.TACKLE);
+        if (tackleElement != null && tackleElement instanceof StateTackle && boxElement != null && boxElement instanceof Box) {
             BattleGroup group = BattleServiceRequestUtils.getBattleGroupFromServerBattle(serverBattle, allianceNumber, groupId);
             Warrior warrior = BattleServiceRequestUtils.getWarriorFromGroup(group, warriorId);
 
             if (BattleMapHelper.isNear(warrior, xGround, yGround) && BattleMapHelper.isNear(warrior, xBox, yBox)) {
-                Box box = (Box) cells[xBox][yBox].getElement();
-                StateTackle tackle = (StateTackle) cells[xGround][yGround].getElement();
+                Box box = (Box) boxElement;
+                StateTackle tackle = (StateTackle) tackleElement;
                 box.getTackles().add(tackle);
 
                 Set<Client> clients = new HashSet<Client>();

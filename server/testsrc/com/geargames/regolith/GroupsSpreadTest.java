@@ -1,5 +1,6 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.ServerBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.Human;
@@ -121,7 +122,7 @@ public class GroupsSpreadTest {
         BattleCell[][] cells = battle.getMap().getCells();
         for (int x = 0; x < cells.length; x++) {
             for (int y = 0; y < cells.length; y++) {
-                if (cells[x][y].getElement() instanceof Warrior) {
+                if (BattleMapHelper.getElementByType(cells[x][y], CellElementTypes.HUMAN) != null) {
                     Assert.assertTrue(
                             exits[0].isWithIn(x, y)
                                     ||

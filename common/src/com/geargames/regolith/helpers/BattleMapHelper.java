@@ -4,8 +4,10 @@ import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.SecurityOperationManager;
 import com.geargames.regolith.map.Pair;
+import com.geargames.regolith.map.PairAndElement;
+import com.geargames.regolith.map.observer.LineViewCaster;
+import com.geargames.regolith.map.observer.ShootBarriersFinder;
 import com.geargames.regolith.units.map.CellElement;
-import com.geargames.regolith.units.battle.Human;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.tackle.Magazine;
@@ -21,17 +23,41 @@ public class BattleMapHelper {
     private static final int VISIT_BIT = (1 << 7);
     public static final byte UN_ROUTED = 100;
 
-    public static void putIn(CellElement element, BattleMap map, int x, int y) {
-        BattleCell cell = map.getCells()[x][y];
+    public static void putIn(CellElement element, BattleCell cell) {
         cell.addElement(element);
     }
 
-    @Deprecated
-    public static CellElement putOut(BattleMap map, int x, int y) {
-        BattleCell cell = map.getCells()[x][y];
-        CellElement element = cell.getElement();
-        cell.addElement(null);
+    /**
+     * Поднять вещь с ячейки карты cell.
+     *
+     * @param cell
+     * @return вернуть поднятую вещь
+     */
+    public static CellElement putOut(BattleCell cell) {
+        CellElement element = BattleCellHelper.getElementFromLayer(cell, CellElementLayers.TACKLE);
+        if (element != null) {
+            cell.removeElement(element);
+        }
         return element;
+    }
+
+    /**
+     * Получить объект заданного типа из ячейки cell.
+     *
+     * @param cell
+     * @param type
+     * @return null если тип не представлен в ячейке.
+     */
+    public static CellElement getElementByType(BattleCell cell, int type) {
+        CellElement[] elements = cell.getElements();
+        int length = elements.length;
+        for (int i = length - 1; i > 0; i--) {
+            CellElement element = elements[i];
+            if (element.getElementType() == type) {
+                return element;
+            }
+        }
+        return null;
     }
 
     /**
@@ -91,9 +117,8 @@ public class BattleMapHelper {
      *
      * @param warrior
      */
-    public static void setZeroOrder(Warrior warrior) {
-        warrior.getBattleGroup().getAlliance().getBattle().getMap().
-                getCells()[warrior.getCellX()][warrior.getCellY()].setOrder((byte) 0);
+    public static void setZeroOrder(Warrior warrior, BattleCell[][] cells) {
+        cells[warrior.getCellX()][warrior.getCellY()].setOrder((byte) 0);
     }
 
     /**
@@ -349,12 +374,74 @@ public class BattleMapHelper {
         }
     }
 
+
+    /**
+     * Вернуть расстояние между двумя точками карты.
+     *
+     * @param x0
+     * @param y0
+     * @param x1
+     * @param y1
+     * @return
+     */
+    public static double getDistance(int x0, int y0, int x1, int y1) {
+        return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
+    }
+
+
+    /**
+     * Вернуть расстояние между двумя бойцами.
+     *
+     * @param unit0
+     * @param unit1
+     * @return
+     */
+    public static double getDistance(Warrior unit0, Warrior unit1) {
+        return Math.sqrt((unit0.getCellX() - unit1.getCellX()) * (unit0.getCellX() - unit1.getCellX()) +
+                (unit0.getCellY() - unit1.getCellY()) * (unit0.getCellY() - unit1.getCellY()));
+    }
+
+
+    /**
+     * Вернёт преграду для выстрела которая закрывает бойца victim лучше всего и при этом ближе всего к hunter.
+     * Если на пути нет преград, то вернутся координаты victim и сам объект victim.
+     *
+     * @param hunter
+     * @param victim
+     * @param map
+     * @return
+     */
+    public static PairAndElement findShotBarrier(Warrior hunter, Warrior victim, BattleMap map) {
+        int x0 = hunter.getCellX();
+        int y0 = hunter.getCellY();
+
+        int x1 = victim.getCellX();
+        int y1 = victim.getCellY();
+
+        ShootBarriersFinder finder = new ShootBarriersFinder();
+
+        if (Math.abs(y1 - y0) <= Math.abs(x1 - x0)) {
+            if (x1 > x0) {
+                LineViewCaster.instance.castViewRight(x0, y0, x1, y1, map, hunter, finder);
+            } else if (x1 < x0) {
+                LineViewCaster.instance.castViewLeft(x0, y0, x1, y1, map, hunter, finder);
+            }
+        } else {
+            if (y1 > y0) {
+                LineViewCaster.instance.castViewDown(x0, y0, x1, y1, map, hunter, finder);
+            } else if (y0 < y1) {
+                LineViewCaster.instance.castViewUp(x0, y0, x1, y1, map, hunter, finder);
+            }
+        }
+        return finder.getCoordinates();
+    }
+
     public static boolean ableToPut(Warrior warrior, BattleCell[][] cells, short x, short y) {
-        return isNear(warrior, x, y) && cells[x][y].getElement() == null; // isAbleToWalkThrough(cells[x][y])
+        return isNear(warrior, x, y) && isAbleToWalkThrough(cells[x][y]) && !(BattleCellHelper.getElementFromLayer(cells[x][y], CellElementLayers.TACKLE) != null);
     }
 
     public static boolean ableToPeek(Warrior warrior, BattleCell[][] cells, short x, short y) {
-        return isNear(warrior, x, y) && cells[x][y].getElement() != null; // !isAbleToWalkThrough(cells[x][y])
+        return isNear(warrior, x, y) && isAbleToWalkThrough(cells[x][y]) && BattleCellHelper.getElementFromLayer(cells[x][y], CellElementLayers.TACKLE) != null;
     }
 
     public static boolean isNear(Warrior warrior, short x, short y) {
@@ -364,31 +451,30 @@ public class BattleMapHelper {
     }
 
     /**
-     * Убрать предмет с ячейки карты.
+     * Поднять предмет с ячейки карты.
      *
      * @param warrior
      * @param x
      * @param y
      * @return
      */
-    //todo: Неверный коментарий и название функции
-    public static StateTackle peekStateTackle(Warrior warrior, BattleCell[][] cells, short x, short y) {
+    public static StateTackle pickUpStateTackle(Warrior warrior, BattleCell[][] cells, short x, short y) {
         if (isNear(warrior, x, y)) {
-            return (StateTackle) cells[x][y].getElement();
+            return (StateTackle) putOut(cells[x][y]);
         }
         return null;
     }
 
-    public static Medikit peekMedikit(Warrior warrior, BattleCell[][] cells, short x, short y) {
+    public static Medikit pickUpMedikit(Warrior warrior, BattleCell[][] cells, short x, short y) {
         if (isNear(warrior, x, y)) {
-            return (Medikit) cells[x][y].getElement();
+            return (Medikit) putOut(cells[x][y]);
         }
         return null;
     }
 
-    public static Magazine peekMagazine(Warrior warrior, BattleCell[][] cells, short x, short y) {
+    public static Magazine pickUpMagazine(Warrior warrior, BattleCell[][] cells, short x, short y) {
         if (isNear(warrior, x, y)) {
-            return (Magazine) cells[x][y].getElement();
+            return (Magazine) putOut(cells[x][y]);
         }
         return null;
     }
@@ -406,9 +492,9 @@ public class BattleMapHelper {
      * @return
      */
     public static boolean moveBetweenCells(Warrior warrior, BattleCell[][] cells, short x1, short y1, short x2, short y2) {
-        if (isNear(warrior, x1, y1) && isNear(warrior, x2, y2) && cells[x2][y2].getElement() == null) {
-            cells[x2][y2].addElement(cells[x1][y1].getElement());
-            cells[x1][y1].addElement(null); //todo: remove()
+        if (ableToPeek(warrior, cells, x1, y1) && ableToPut(warrior, cells, x2, y2)) {
+            CellElement element = putOut(cells[x1][y1]);
+            putIn(element, cells[x2][y2]);
             return true;
         } else {
             return false;

@@ -41,13 +41,11 @@ public class VisibilityMaintainer extends BattleCellMaintainer {
                 security.adjustObserve(x + y);
             }
             BattleMapHelper.show(cell, warrior);
-            if (cell.getElement() != null) {
-                hidden = !cell.getElement().isAbleToLookThrough();
-                if (!was && cell.getElement().getElementType() == CellElementTypes.HUMAN) {
-                    Warrior warriorElement = (Warrior) cell.getElement();
-                    if (!WarriorHelper.isAlly(warrior, warriorElement)) {
-                        enemies.add(warriorElement);
-                    }
+            if (cell.getSize() > 0) {
+                hidden = !BattleMapHelper.isAbleToLookThrough(cell);
+                Warrior human = (Warrior) BattleMapHelper.getElementByType(cell, CellElementTypes.HUMAN);
+                if (!was && human != null) {
+                    enemies.add(human);
                 }
             }
         }

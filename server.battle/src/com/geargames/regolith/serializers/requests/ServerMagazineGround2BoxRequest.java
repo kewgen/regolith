@@ -1,10 +1,10 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
-import com.geargames.regolith.units.map.CellElement;
-import com.geargames.regolith.units.map.Box;
+import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.ServerBattle;
-import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.tackle.Magazine;
 
 /**
@@ -20,7 +20,7 @@ public class ServerMagazineGround2BoxRequest extends ServerGround2BoxRequest {
 
     @Override
     protected void moveGround2Box(BattleCell cell, Box to) throws RuntimeException {
-        CellElement element = cell.getElement();
+        CellElement element = BattleMapHelper.getElementByType(cell, CellElementTypes.MAGAZINE);
         if (element != null && element instanceof Magazine) {
             Magazine magazine = (Magazine) element;
             to.getMagazines().add(magazine);

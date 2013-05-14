@@ -13,8 +13,7 @@ import com.geargames.regolith.service.BattleMessageToClient;
 import com.geargames.regolith.service.Client;
 import com.geargames.regolith.service.MessageToClient;
 import com.geargames.regolith.units.battle.*;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.Box;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.tackle.StateTackle;
 
 import java.util.ArrayList;
@@ -50,8 +49,10 @@ public class ServerTackleBag2BoxRequest extends ServerRequest {
         BattleCell cell = cells[x][y];
         ArrayList<MessageToClient> messages = new ArrayList<MessageToClient>();
 
-        if (BattleMapHelper.isNear(warrior, x, y) && cell.getElement() != null && cell.getElement() instanceof Box) {
-            Box box = (Box) cell.getElement();
+        CellElement cellElement = BattleMapHelper.getElementByType(cell, CellElementTypes.BOX);
+
+        if (BattleMapHelper.isNear(warrior, x, y) && cellElement != null && cellElement instanceof Box) {
+            Box box = (Box)  cellElement;
             StateTackle tackle = WarriorHelper.putOutOfBag(warrior, number);
             box.getTackles().add(tackle);
 

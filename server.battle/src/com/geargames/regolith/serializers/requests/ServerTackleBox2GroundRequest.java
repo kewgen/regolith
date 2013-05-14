@@ -1,8 +1,11 @@
 package com.geargames.regolith.serializers.requests;
 
 import com.geargames.regolith.Packets;
+import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.RegolithException;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.service.BattleServiceConfigurationFactory;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.ServerBattle;
@@ -38,10 +41,12 @@ public class ServerTackleBox2GroundRequest extends ServerBox2GroundRequest {
 
         BattleMap map = warrior.getBattleGroup().getAlliance().getBattle().getMap();
         BattleCell[][] cells = map.getCells();
+        RegolithConfiguration regolithConfiguration = BattleServiceConfigurationFactory.getConfiguration().getRegolithConfiguration();
 
         if (BattleMapHelper.ableToPut(warrior, cells, x, y)) {
             box.getTackles().remove(i);
-            BattleMapHelper.putIn(stateTackle, map, x, y);
+            BattleMapHelper.putIn(stateTackle, map.getCells()[x][y]);
+            WarriorHelper.payForPickOrPut(warrior, regolithConfiguration.getBattleConfiguration());
         } else {
             return null;
         }

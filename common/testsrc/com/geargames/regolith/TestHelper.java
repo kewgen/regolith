@@ -1,9 +1,11 @@
 package com.geargames.regolith;
 
+import com.geargames.regolith.helpers.BattleCellHelper;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleMap;
 import com.geargames.regolith.units.battle.BattleAlliance;
+import com.geargames.regolith.units.map.CellElementLayers;
 import com.geargames.regolith.units.map.ExitZone;
 
 /**
@@ -18,8 +20,8 @@ public class TestHelper {
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (battleMap.getCells()[j][i].getElement() != null) {
-                    if (battleMap.getCells()[j][i].getElement() instanceof Warrior) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[j][i], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[j][i], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
@@ -41,8 +43,8 @@ public class TestHelper {
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (battleMap.getCells()[j][i].getElement() != null) {
-                    if (battleMap.getCells()[j][i].getElement() instanceof Warrior) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[j][i], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[j][i], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
@@ -69,8 +71,8 @@ public class TestHelper {
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (battleMap.getCells()[j][i].getElement() != null) {
-                    if (battleMap.getCells()[j][i].getElement() instanceof Warrior) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[j][i], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[j][i], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');

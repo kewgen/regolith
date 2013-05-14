@@ -1,18 +1,14 @@
 package com.geargames.regolith.helpers;
 
 import com.geargames.regolith.*;
-import com.geargames.regolith.map.observer.ShootBarriersFinder;
+import com.geargames.regolith.map.PairAndElement;
 import com.geargames.regolith.service.BattleServiceConfigurationFactory;
-import com.geargames.regolith.units.map.CellElement;
+import com.geargames.regolith.units.map.*;
 import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.BattleGroup;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.dictionaries.ServerBattleGroupCollection;
 import com.geargames.regolith.units.dictionaries.ServerWarriorCollection;
-import com.geargames.regolith.units.map.BattleCell;
-import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.map.Pair;
-import com.geargames.regolith.map.observer.LineViewCaster;
 import com.geargames.regolith.units.Skill;
 import com.geargames.regolith.units.SubordinationDamage;
 import com.geargames.regolith.units.tackle.*;
@@ -119,9 +115,9 @@ public class FightHelper {
                 BattleConfiguration configuration = battleConfiguration;
                 BattleMap map = hunter.getBattleGroup().getAlliance().getBattle().getMap();
                 WeaponType weaponType = hunter.getWeapon().getWeaponType();
-                double distance = getDistance(hunter, victim);
+                double distance = BattleMapHelper.getDistance(hunter, victim);
                 double distanceI = getDistanceShootProbabilityFix(weaponType, getBaseShootProbability(hunter, baseConfiguration), distance);
-                Pair barrierCoordinates = findBarrier(hunter, victim, map);
+                PairAndElement barrierCoordinates = BattleMapHelper.findShotBarrier(hunter, victim, map);
                 ShootProbability barriersProbability = getShootFixedByBarriers(hunter, victim, map, barrierCoordinates, battleConfiguration);
                 double barriersI = barriersProbability.probability;
                 double hunterI = hunter.isHalfLong() ? configuration.getSitHunterShootFix() : configuration.getStandHunterShootFix();
@@ -287,57 +283,6 @@ public class FightHelper {
     }
 
     /**
-     * Вернуть расстояние между двумя точками карты.
-     *
-     * @param x0
-     * @param y0
-     * @param x1
-     * @param y1
-     * @return
-     */
-    public static double getDistance(int x0, int y0, int x1, int y1) {
-        return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
-    }
-
-    /**
-     * Вернуть расстояние между двумя бойцами.
-     *
-     * @param unit0
-     * @param unit1
-     * @return
-     */
-    public static double getDistance(Warrior unit0, Warrior unit1) {
-        return Math.sqrt((unit0.getCellX() - unit1.getCellX()) * (unit0.getCellX() - unit1.getCellX()) +
-                (unit0.getCellY() - unit1.getCellY()) * (unit0.getCellY() - unit1.getCellY()));
-    }
-
-    public static Pair findBarrier(Warrior hunter, Warrior victim, BattleMap map) {
-        int x0 = hunter.getCellX();
-        int y0 = hunter.getCellY();
-
-        int x1 = victim.getCellX();
-        int y1 = victim.getCellY();
-
-
-        ShootBarriersFinder finder = new ShootBarriersFinder();
-
-        if (Math.abs(y1 - y0) <= Math.abs(x1 - x0)) {
-            if (x1 > x0) {
-                LineViewCaster.instance.castViewRight(x0, y0, x1, y1, map, hunter, finder);
-            } else if (x1 < x0) {
-                LineViewCaster.instance.castViewLeft(x0, y0, x1, y1, map, hunter, finder);
-            }
-        } else {
-            if (y1 > y0) {
-                LineViewCaster.instance.castViewDown(x0, y0, x1, y1, map, hunter, finder);
-            } else if (y0 < y1) {
-                LineViewCaster.instance.castViewUp(x0, y0, x1, y1, map, hunter, finder);
-            }
-        }
-        return finder.getCoordinates();
-    }
-
-    /**
      * Вернуть коэфициент влияния преград между бойцами: стрелком hunter и целью victim.
      *
      * @param hunter
@@ -347,17 +292,17 @@ public class FightHelper {
      * @return
      */
     public static ShootProbability getShootFixedByBarriers(Warrior hunter, Warrior victim, BattleMap map,
-                                                           Pair barriersCoordinates, BattleConfiguration battleConfiguration) {
+                                                           PairAndElement barriersCoordinates, BattleConfiguration battleConfiguration) {
         BattleCell[][] cells = map.getCells();
         ShootProbability probability = new ShootProbability();
         probability.inLegs = true;
         if (BattleMapHelper.isVisible(cells[victim.getCellX()][victim.getCellY()], hunter)) {
-            CellElement element = cells[barriersCoordinates.getX()][barriersCoordinates.getY()].getElement();
+            CellElement element = barriersCoordinates.getElement();
             if (element.isHalfLong()) {
-                double distance = getDistance(hunter, victim);
+                double distance = BattleMapHelper.getDistance(hunter, victim);
                 int criticalBarrierPercent = battleConfiguration.getCriticalBarrierToVictimDistance();
                 if (distance <= hunter.getWeapon().getWeaponType().getDistance().getMax()) {
-                    double barrierDistance = getDistance(victim.getCellX(), victim.getCellY(), barriersCoordinates.getX(), barriersCoordinates.getY());
+                    double barrierDistance = BattleMapHelper.getDistance(victim.getCellX(), victim.getCellY(), barriersCoordinates.getX(), barriersCoordinates.getY());
                     if (!victim.isHalfLong() && !hunter.isHalfLong()) {
                         if (barrierDistance * 100 / distance > criticalBarrierPercent) {
                             probability.probability = 1;
