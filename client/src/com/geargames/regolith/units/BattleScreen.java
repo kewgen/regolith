@@ -58,7 +58,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private ClientBattleContext battleContext;
 
     private short[] listenedTypes;
-    private int timerId;
+    private int logicUpdateTimerId; // Таймер для апдейта логики всех динамических элементов на карте
+    private int finishTurnTimerId;  // Таймер сигнализирующий о завершении хода, может срабатывать раньше, чем соответствующее сообщение придет от сервера
 
     private PSprite groundSprite;
     private PSprite shadowSprite;
@@ -70,7 +71,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     private ElementActionMenuDrawablePPanel actionMenuWindow; // Панелька с кнопками для выполнения действий над выделенным элементом карты
 
     public BattleScreen() {
-        timerId = TimerManager.NULL_TIMER;
+        logicUpdateTimerId = TimerManager.NULL_TIMER;
+        finishTurnTimerId = TimerManager.NULL_TIMER;
         configuration = ClientConfigurationFactory.getConfiguration();
         battleContext = configuration.getBattleContext();
         listenedTypes = new short[]{Packets.MOVE_ALLY, Packets.MOVE_ENEMY, Packets.SHOOT, Packets.CHANGE_ACTIVE_ALLIANCE,
@@ -102,58 +104,80 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      */
     //todo: Аргументы cellX и cellY здесь временно, незабыть убрать
     private void drawCell(Graphics graphics, int x, int y, BattleCell cell, short cellX, short cellY) {
-        if (battleContext.isMyTurn()) {
-            boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
-            if (isReachableCell) {
-                reachableCellSprite.draw(graphics, x, y);
-            } else {
-//                if (BattleMapHelper.isBarrier(cell)) {
-//                    unreachableCellSprite.draw(graphics, x, y);
+        BattleAlliance alliance = battleContext.getBattleGroup().getAlliance();
+        if (cell.isVisited(alliance)) {
+            if (battleContext.isMyTurn()) {
+                boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
+                if (isReachableCell) {
+                    reachableCellSprite.draw(graphics, x, y);
+                } else {
+//                    if (BattleMapHelper.isBarrier(cell)) {
+//                        unreachableCellSprite.draw(graphics, x, y);
+//                    }
+                }
+                DynamicCellElement element = battleContext.getSelectedElement();
+                if (element != null && battleContext.getSelectedElementCellX() == cellX && battleContext.getSelectedElementCellY() == cellY) {
+                    unreachableCellSprite.draw(graphics, x, y);
+                }
+                if (BattleMapHelper.isShortestPathCell(cell, battleContext.getActiveUnit())) {
+                    shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
+                }
+                if (isReachableCell) {
+                    graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
+                }
+            }
+//            final byte BARRIER_NONE = 0;
+//            final byte BARRIER_HALF_HEIGHT = 1;
+//            final byte BARRIER_FULL_HEIGHT = 2;
+//            byte barrierType = BARRIER_NONE;
+            CellElement[] elements = cell.getElements();
+            for (int i = 0; i < cell.getSize(); i++) {
+                CellElement element = elements[i];
+                if (element.getElementType() == CellElementTypes.HUMAN) {
+                    drawSymbolOfProtection(graphics, (ClientWarriorElement) element);
+                }
+                ((DrawableElement) element).draw(graphics, x, y);
+//                if (element.isBarrier()) {
+//                    if (!element.isHalfLong()) {
+//                        barrierType = BARRIER_FULL_HEIGHT;
+//                    } else if (barrierType == BARRIER_NONE) {
+//                        barrierType = BARRIER_HALF_HEIGHT;
+//                    }
 //                }
             }
-            DynamicCellElement element = battleContext.getSelectedElement();
-            if (element != null && battleContext.getSelectedElementCellX() == cellX && battleContext.getSelectedElementCellY() == cellY) {
-                unreachableCellSprite.draw(graphics, x, y);
-            }
-            if (BattleMapHelper.isShortestPathCell(cell, battleContext.getActiveUnit())) {
-                shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
-            }
-            if (isReachableCell) {
-                graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
-            }
-        }
-        final byte BARRIER_NONE = 0;
-        final byte BARRIER_HALF_HEIGHT = 1;
-        final byte BARRIER_FULL_HEIGHT = 2;
-        byte barrierType = BARRIER_NONE;
-        CellElement[] elements = cell.getElements();
-        for (int i = 0; i < cell.getSize(); i++) {
-            CellElement element = elements[i];
-            if (element.getElementType() == CellElementTypes.HUMAN) {
-                drawSymbolOfProtection(graphics, (ClientWarriorElement) element);
-            }
-            ((DrawableElement) element).draw(graphics, x, y);
-            if (element.isBarrier()) {
-                if (!element.isHalfLong()) {
-                    barrierType = BARRIER_FULL_HEIGHT;
-                } else if (barrierType == BARRIER_NONE) {
-                    barrierType = BARRIER_HALF_HEIGHT;
+            /*
+            if (battleContext.isMyTurn()) {
+                switch (barrierType) {
+                    case BARRIER_FULL_HEIGHT: {
+                        Index index = iconHeightOfBarriersObject.getIndexBySlot(0);
+                        index.draw(graphics, x, y);
+                        break;
+                    }
+                    case BARRIER_HALF_HEIGHT: {
+                        Index index = iconHeightOfBarriersObject.getIndexBySlot(1);
+                        index.draw(graphics, x, y);
+                        break;
+                    }
                 }
             }
-        }
-        if (battleContext.isMyTurn()) {
-            switch (barrierType) {
-                case BARRIER_FULL_HEIGHT: {
-                    Index index = iconHeightOfBarriersObject.getIndexBySlot(0);
-                    index.draw(graphics, x, y);
-                    break;
-                }
-                case BARRIER_HALF_HEIGHT: {
-                    Index index = iconHeightOfBarriersObject.getIndexBySlot(1);
-                    index.draw(graphics, x, y);
-                    break;
-                }
+            */
+
+
+            if (!BattleMapHelper.isVisible(cell, alliance)) {
+                graphics.setTransparency(40);
+                graphics.setColor(0x7F7F7F);
+                int[] xPoints = new int[]{x, x + ClientBattleContext.HORIZONTAL_RADIUS, x, x - ClientBattleContext.HORIZONTAL_RADIUS};
+                int[] yPoints = new int[]{y - ClientBattleContext.VERTICAL_RADIUS, y, y + ClientBattleContext.VERTICAL_RADIUS, y};
+                graphics.fillPolygon(xPoints, yPoints, 4);
+                graphics.setTransparency(0);
+                graphics.setColor(0xFFFFFF);
             }
+        } else {
+            graphics.setColor(0x202020);
+            int[] xPoints = new int[]{x, x + ClientBattleContext.HORIZONTAL_RADIUS, x, x - ClientBattleContext.HORIZONTAL_RADIUS};
+            int[] yPoints = new int[]{y - ClientBattleContext.VERTICAL_RADIUS, y, y + ClientBattleContext.VERTICAL_RADIUS, y};
+            graphics.fillPolygon(xPoints, yPoints, 4);
+            graphics.setColor(0xFFFFFF);
         }
     }
 
@@ -317,9 +341,14 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     public void onTimer(int timerId) {
-        callTickForCollection(battleContext.getGroupUnits());
-        callTickForCollection(battleContext.getAllyUnits());
-        callTickForCollection(battleContext.getEnemyUnits());
+        if (timerId == logicUpdateTimerId) {
+            callTickForCollection(battleContext.getGroupUnits());
+            callTickForCollection(battleContext.getAllyUnits());
+            callTickForCollection(battleContext.getEnemyUnits());
+        } else if (timerId == finishTurnTimerId) {
+            finishTurnTimerId = TimerManager.NULL_TIMER;
+            doChangeActiveAlliance(null);
+        }
     }
 
     public boolean onEvent(int code, int param, int x, int y) {
@@ -443,26 +472,8 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                 }
                 break;
             case Packets.CHANGE_ACTIVE_ALLIANCE:
-//                BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
-//                //to do: Вызов следующих трех методов под вопросом
-                //todo: Все динамические элементы (юниты, двери) должны обновляться паралельно
-                //todo: Это вообще не требуется. Новый ход не начнется, пока все пользователи не подтвердят свое завершение хода. Но и сервер не должен давать возможность выполнять ходы за пределами 30-секундного хода
-                quicklyCompleteAllCommandsForUnits(battleContext.getGroupUnits());
-                quicklyCompleteAllCommandsForUnits(battleContext.getAllyUnits());
-                quicklyCompleteAllCommandsForUnits(battleContext.getEnemyUnits());
-//                ClientBattleHelper.immediateMoveAllies(groupUnits, battle, battleConfiguration, this);
-//                ClientBattleHelper.immediateMoveAllies(allyUnits, battle, battleConfiguration, this);
-//                ClientBattleHelper.immediateMoveEnemies(enemyUnits, battle, this);
-
                 ClientChangeActiveAllianceAnswer change = (ClientChangeActiveAllianceAnswer) message;
-                if (battleContext.isMyTurn()) {
-                    onMyTurnFinished();
-                }
-                battleContext.setActiveAlliance(change.getAlliance());
-                if (battleContext.isMyTurn()) {
-                    onMyTurnStarted();
-                }
-                onChangeActiveAlliance(change.getAlliance());
+                doChangeActiveAlliance(change.getAlliance());
                 break;
             case Packets.MOVE_ALLY:
                 Debug.debug("MOVE_ALLY");
@@ -732,13 +743,16 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         battleContext.setActiveUnit(null);
         setActiveUnit(getFirstLiveUnit()); //todo: нужно ли?
 
-        timerId = TimerManager.setPeriodicTimer(100, this);
+        logicUpdateTimerId = TimerManager.setPeriodicTimer(100, this);
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().register(this);
     }
 
     @Override
     public void onHide() {
-        TimerManager.killTimer(timerId);
+        TimerManager.killTimer(logicUpdateTimerId);
+        if (finishTurnTimerId != TimerManager.NULL_TIMER) {
+            TimerManager.killTimer(finishTurnTimerId);
+        }
         ClientConfigurationFactory.getConfiguration().getMessageDispatcher().unregister(this);
     }
 
@@ -771,11 +785,35 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         return (ClientWarriorElement) battleContext.getGroupUnits().get(0);
     }
 
+    private void doChangeActiveAlliance(BattleAlliance alliance) {
+//        BattleConfiguration battleConfiguration = configuration.getBattleConfiguration();
+//        //to do: Вызов следующих трех методов под вопросом
+        //todo: Все динамические элементы (юниты, двери) должны обновляться паралельно
+        //todo: Это вообще не требуется. Новый ход клиент не начнет, пока все пользователи не подтвердят свое завершение хода. Но и сервер не должен давать возможность выполнять ходы за пределами 30-секундного хода
+        quicklyCompleteAllCommandsForUnits(battleContext.getGroupUnits());
+        quicklyCompleteAllCommandsForUnits(battleContext.getAllyUnits());
+        quicklyCompleteAllCommandsForUnits(battleContext.getEnemyUnits());
+//        ClientBattleHelper.immediateMoveAllies(groupUnits, battle, battleConfiguration, this);
+//        ClientBattleHelper.immediateMoveAllies(allyUnits, battle, battleConfiguration, this);
+//        ClientBattleHelper.immediateMoveEnemies(enemyUnits, battle, this);
+
+        if (battleContext.isMyTurn()) {
+            onMyTurnFinished();
+        }
+        battleContext.setActiveAlliance(alliance);
+        if (battleContext.isMyTurn()) {
+            onMyTurnStarted();
+        }
+        onActiveAllianceChanged(alliance);
+    }
+
     /**
      * Обработчик события сообщающего о начале хода.
      */
     public void onMyTurnStarted() {
         Debug.debug("My turn has begun");
+        finishTurnTimerId = TimerManager.setSingleTimer(30000, this);
+
         ClientBattleHelper.resetActionScores(battleContext.getGroupUnits(), configuration.getBaseConfiguration());
         setActiveUnit(getFirstLiveUnit());
 
@@ -791,6 +829,10 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      */
     public void onMyTurnFinished() {
         Debug.debug("My turn has been finished");
+        if (finishTurnTimerId != TimerManager.NULL_TIMER) {
+            TimerManager.killTimer(finishTurnTimerId);
+            finishTurnTimerId = TimerManager.NULL_TIMER;
+        }
         setSelectedElement(null, -1, -1);
         configuration.getBattleServiceManager().checkSum();
 
@@ -804,7 +846,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     /**
      * Обработчик события об изменении активного военного союза, того чей, в данный момент, ход.
      */
-    private void onChangeActiveAlliance(BattleAlliance alliance) {
+    private void onActiveAllianceChanged(BattleAlliance alliance) {
         PRegolithPanelManager panelManager = PRegolithPanelManager.getInstance();
         panelManager.getHeadlinePanel().setActiveAlliance(alliance);
         panelManager.getBattleMenuPanel().onActiveAllianceChanged(alliance);

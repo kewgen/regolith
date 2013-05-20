@@ -39,17 +39,18 @@ public class TestHelper {
 
 
     public static void printViewMap(BattleMap battleMap, BattleAlliance alliance) {
-        for (int i = 0; i < battleMap.getCells().length; i++) {
+        byte size = (byte) battleMap.getCells().length;
+        for (int x = 0; x < size; x++) {
             System.out.print('|');
-            for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[i][j], CellElementLayers.DYNAMIC)) {
-                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[i][j], CellElementLayers.HUMAN) != null) {
+            for (int y = 0; y < size; y++) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[x][y], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[x][y], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
                     }
                 } else {
-                    if (BattleMapHelper.isVisible(battleMap.getCells()[i][j], alliance)) {
+                    if (BattleMapHelper.isVisible(battleMap.getCells()[x][y], alliance)) {
                         System.out.print('x');
                     } else {
                         System.out.print(' ');
@@ -61,21 +62,22 @@ public class TestHelper {
     }
 
     public static void printRouteMap(BattleMap battleMap, Warrior unit) {
-        for (int i = 0; i < battleMap.getCells().length; i++) {
+        byte size = (byte) battleMap.getCells().length;
+        for (int x = 0; x < size; x++) {
             System.out.print('|');
-            for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[i][j], CellElementLayers.DYNAMIC)) {
-                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[i][j], CellElementLayers.HUMAN) != null) {
+            for (int y = 0; y < size; y++) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[x][y], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[x][y], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
                     }
                 } else {
-                    if (BattleMapHelper.isShortestPathCell(battleMap.getCells()[i][j], unit)) {
+                    if (BattleMapHelper.isShortestPathCell(battleMap.getCells()[x][y], unit)) {
                         System.out.print('x');
                     } else {
-                        if (BattleMapHelper.isReachable(battleMap.getCells()[i][j])) {
-                            System.out.print(battleMap.getCells()[j][i].getOrder());
+                        if (BattleMapHelper.isReachable(battleMap.getCells()[x][y])) {
+                            System.out.print(battleMap.getCells()[x][y].getOrder());
                         } else {
                             System.out.print('*');
                         }
@@ -88,11 +90,12 @@ public class TestHelper {
 
     public static void printExitZones(BattleMap battleMap) {
         ExitZone[] exits = battleMap.getExits();
-        for (int i = 0; i < battleMap.getCells().length; i++) {
+        byte size = (byte) battleMap.getCells().length;
+        for (int x = 0; x < size; x++) {
             System.out.print('|');
-            for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[i][j], CellElementLayers.DYNAMIC)) {
-                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[i][j], CellElementLayers.HUMAN) != null) {
+            for (int y = 0; y < size; y++) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[x][y], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[x][y], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
@@ -100,7 +103,7 @@ public class TestHelper {
                 } else {
                     boolean found = false;
                     for (ExitZone exit : exits) {
-                        if (Math.abs(j - exit.getX()) <= exit.getxRadius() && Math.abs(i - exit.getY()) <= exit.getyRadius()) {
+                        if (Math.abs(x - exit.getX()) <= exit.getxRadius() && Math.abs(y - exit.getY()) <= exit.getyRadius()) {
                             System.out.print('*');
                             found = true;
                             break;

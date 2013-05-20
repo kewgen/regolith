@@ -54,6 +54,8 @@ public class PBattleMenuPanel extends PRootContentPanel {
 
     /**
      * Обработчик события об изменении активного военного союза, того чей, в данный момент, ход.
+     *
+     * @param alliance может быть равен null
      */
     public void onActiveAllianceChanged(BattleAlliance alliance) {
         skipMoveButton.setVisible(ClientConfigurationFactory.getConfiguration().getBattleContext().isMyTurn());
