@@ -129,8 +129,8 @@ public class BattleMapHelper {
      * @param order
      * @return
      */
-    public static boolean setOrder(BattleCell cell, byte order) {
-        if (isAbleToWalkThrough(cell) && cell.getOrder() > order) {
+    public static boolean setOrder(BattleCell cell, byte order, BattleAlliance battleAlliance) {
+        if (cell.isVisited(battleAlliance) && isAbleToWalkThrough(cell) && cell.getOrder() > order) {
             cell.setOrder(order);
             return true;
         }
@@ -212,20 +212,19 @@ public class BattleMapHelper {
         int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration); //todo: Использовать всегда максимальное значение радиуса
         int length = cells.length;
         int x0 = warrior.getCellX() - radius;
-        x0 = Mathematics.max(0 , x0);
+        x0 = Mathematics.max(0, x0);
         int y0 = warrior.getCellY() - radius;
-        y0 = Mathematics.max(0 , y0);
+        y0 = Mathematics.max(0, y0);
         int x1 = warrior.getCellX() + radius;
-        x1 = Mathematics.min(length - 1 , x1);
+        x1 = Mathematics.min(length - 1, x1);
         int y1 = warrior.getCellY() + radius;
-        y1 = Mathematics.min(length - 1 , y1);
+        y1 = Mathematics.min(length - 1, y1);
         for (int x = x0; x <= x1; x++) {
             for (int y = y0; y <= y1; y++) {
                 resetShortestCell(cells[x][y], warrior);
             }
         }
     }
-
 
 
     /**
@@ -363,7 +362,7 @@ public class BattleMapHelper {
         ExitZone exit = alliance.getExit();
         BattleCell[][] cells = alliance.getBattle().getMap().getCells();
         if (exit.isWithIn(warrior.getCellX(), warrior.getCellY())) {
-            cells[warrior.getCellX()][warrior.getCellY()].removeElement(warrior); //todo: этого достаточно?
+            WarriorHelper.putOutWarriorIntoMap(cells, warrior); //todo: этого достаточно?
         }
     }
 

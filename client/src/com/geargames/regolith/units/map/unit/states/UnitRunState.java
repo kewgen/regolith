@@ -8,7 +8,10 @@ import com.geargames.regolith.ClientConfigurationFactory;
 import com.geargames.regolith.helpers.BattleMapHelper;
 import com.geargames.regolith.helpers.ClientBattleHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
+import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.Direction;
+import com.geargames.regolith.units.battle.Warrior;
+import com.geargames.regolith.units.dictionaries.ClientWarriorCollection;
 import com.geargames.regolith.units.map.AbstractClientWarriorElement;
 import com.geargames.regolith.units.map.BattleCell;
 import com.geargames.regolith.units.map.DynamicCellElement;
@@ -107,17 +110,30 @@ public class UnitRunState extends AbstractLogicState {
             warrior.setMapY((short) (extensionY + beginMapY));
             ticks++;
         } else {
-            // Мы, приблезительно, в центре одной из клеток карты
+            // Боец, приблезительно, в центре одной из клеток карты
             //todo: использовать battleScreen.coordinateFinder для вычисления положения бойца
             warrior.setMapX((short) (ClientBattleContext.HORIZONTAL_RADIUS * (stepDirection.getY() - stepDirection.getX()) + beginMapX));
             warrior.setMapY((short) (ClientBattleContext.VERTICAL_RADIUS * (stepDirection.getX() + stepDirection.getY()) + beginMapY));
 
             if (warrior.getMembershipType() == WarriorMembershipType.ENEMY) {
-                BattleMapHelper.resetShortestCell(cells[warrior.getCellX()][warrior.getCellY()], warrior);
-                WarriorHelper.putWarriorIntoMap(cells, warrior, warrior.getCellX() + stepDirection.getX(), warrior.getCellY() + stepDirection.getY());
+                WarriorHelper.stepSimple(cells, warrior, stepDirection);
             } else {
-                WarriorHelper.step(cells, warrior, stepDirection.getX(), stepDirection.getY(),
-                        ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+                ClientConfiguration clientConfiguration = ClientConfigurationFactory.getConfiguration();
+
+                WarriorHelper.step(cells, warrior, stepDirection, clientConfiguration.getBattleConfiguration());
+
+                //todo: Требуется оптимизация и пересмотр механизма
+                BattleAlliance alliance = clientConfiguration.getBattleContext().getBattleGroup().getAlliance();
+                ClientWarriorCollection enemyUnits = clientConfiguration.getBattleContext().getEnemyUnits();
+                for (int i = 0; i < enemyUnits.size(); i++) {
+                    Warrior enemy = enemyUnits.get(i);
+                    if (enemy.getCellX() != Warrior.UNKNOWN_LOCATION && enemy.getCellY() != Warrior.UNKNOWN_LOCATION) {
+                        BattleCell cell = cells[enemy.getCellX()][enemy.getCellY()];
+                        if (!BattleMapHelper.isVisible(cell, alliance)) {
+                            WarriorHelper.putOutWarriorIntoMap(cell, enemy);
+                        }
+                    }
+                }
             }
             return startStep(warrior);
         }

@@ -18,8 +18,8 @@ public abstract class BattleCell implements Serializable {
      * dynamic  middle       выброшенные предметы
      * dynamic  top          бойцы
      * static   top          значки (высота препятствия и др.)
-     * static   very top     полупрозрачная пелина, для обозначения зоны, которую когда-то открыли, но в данный момент, ни один из бойцов альянса ее не видит
-     * static   very top     туман войны
+     * static   very top     туман войны, полупрозрачная пелина, для обозначения зоны, которую когда-то открыли, но в данный момент, ни один из бойцов альянса ее не видит
+     * static   very top     неразведанная область карты
      */
 
     private CellElement[] elements;

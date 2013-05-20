@@ -52,31 +52,55 @@ public class WarriorHelper {
      * @param cellY
      */
     public static void putWarriorIntoMap(BattleCell[][] cells, Warrior warrior, int cellX, int cellY) { //todo: cellX, cellY -> short
-        BattleCell previousCell = cells[warrior.getCellX()][warrior.getCellY()];
-        previousCell.removeElement(warrior);
+        if (warrior.getCellX() != Warrior.UNKNOWN_LOCATION && warrior.getCellY() != Warrior.UNKNOWN_LOCATION) {
+            BattleCell previousCell = cells[warrior.getCellX()][warrior.getCellY()];
+            previousCell.removeElement(warrior);
+        }
 
         BattleCell nextCell = cells[cellX][cellY];
         warrior.setCellX((short) cellX);
         warrior.setCellY((short) cellY);
-
         nextCell.addElement(warrior);
     }
 
     /**
-     * Сделать шаг на соседнюю c warrior клетку. Длина этого шага, по каждой из осей, не может превышать 1 клетку.
+     * Удалить бойца с карты.
+     *
+     * @param cells
+     * @param warrior
+     */
+    public static void putOutWarriorIntoMap(BattleCell[][] cells, Warrior warrior) {
+        if (warrior.getCellX() != Warrior.UNKNOWN_LOCATION && warrior.getCellY() != Warrior.UNKNOWN_LOCATION) {
+            BattleCell cell = cells[warrior.getCellX()][warrior.getCellY()];
+            putOutWarriorIntoMap(cell, warrior);
+        }
+    }
+
+    public static void putOutWarriorIntoMap(BattleCell cell, Warrior warrior) {
+        cell.removeElement(warrior);
+        warrior.setCellX(Warrior.UNKNOWN_LOCATION);
+        warrior.setCellY(Warrior.UNKNOWN_LOCATION);
+    }
+
+    /**
+     * Совершить перемещение вражеского бойца на соседнюю клетку по его пути перемещения. Длина этого шага, по каждой
+     * из осей, не может превышать 1 клетку.
      *
      * @param warrior
-     * @param stepX
-     * @param stepY
+     * @param direction
      * @return обнаруженных бойцов противника
      */
-    public static WarriorCollection step(BattleCell[][] cells, Warrior warrior, int stepX, int stepY, BattleConfiguration battleConfiguration) {
+    public static WarriorCollection step(BattleCell[][] cells, Warrior warrior, Direction direction, BattleConfiguration battleConfiguration) {
         BattleMapHelper.clearViewAround(cells, warrior);
-        BattleMapHelper.resetShortestCell(cells[warrior.getCellX()][warrior.getCellY()], warrior);
-        putWarriorIntoMap(cells, warrior, warrior.getCellX() + stepX, warrior.getCellY() + stepY);
+        stepSimple(cells, warrior, direction);
         warrior.setActionScore((short) (warrior.getActionScore() - battleConfiguration.getActionFees().getMove()));
         System.out.println("A warrior '" + warrior.getName() + "' observe on step (" + warrior.getCellX() + ":" + warrior.getCellY() + ")");
         return battleConfiguration.getObserver().observe(warrior);
+    }
+
+    public static void stepSimple(BattleCell[][] cells, Warrior warrior, Direction direction) {
+        BattleMapHelper.resetShortestCell(cells[warrior.getCellX()][warrior.getCellY()], warrior);
+        putWarriorIntoMap(cells, warrior, warrior.getCellX() + direction.getX(), warrior.getCellY() + direction.getY());
     }
 
     /**
@@ -144,9 +168,9 @@ public class WarriorHelper {
             Direction direction = getStepDirection(cells, warrior);
             if (direction != Direction.NONE) {
                 listener.onStep(warrior, direction.getX(), direction.getY());
-                WarriorCollection detectedUnits = step(cells, warrior, direction.getX(), direction.getY(), battleConfiguration);
+                WarriorCollection detectedUnits = step(cells, warrior, direction, battleConfiguration);
                 if (detectedUnits.size() != 0) {
-                    BattleMapHelper.resetShortestPath(cells,warrior,battleConfiguration);
+                    BattleMapHelper.resetShortestPath(cells, warrior, battleConfiguration);
                     return detectedUnits;
                 }
             } else {

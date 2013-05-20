@@ -17,6 +17,8 @@ import java.util.Hashtable;
  * Класс бойца, расположенного в одной из клеток на карте.
  */
 public class Warrior extends Ally {
+    public static final short UNKNOWN_LOCATION = -32768;
+
     private short strength;
     private byte speed;
     private byte marksmanship;
@@ -39,14 +41,15 @@ public class Warrior extends Ally {
     private WarriorCollection detectedEnemies;
 
     public Warrior() {
-        cellX = 0; //todo: 0 -> -32768
-        cellY = 0; //todo: 0 -> -32768
+        cellX = UNKNOWN_LOCATION;
+        cellY = UNKNOWN_LOCATION;
         direction = Direction.DOWN_UP_RIGHT; //todo: DOWN_UP_RIGHT -> NONE
         sitting = false;
     }
 
     /**
      * Возвращает текущий набор обнаруженных врагов.
+     *
      * @return
      */
     public WarriorCollection getDetectedEnemies() {
@@ -285,7 +288,7 @@ public class Warrior extends Ally {
 
     @Override
     public boolean isAbleToLookThrough() {
-        return sitting;
+        return true;
     }
 
     @Override

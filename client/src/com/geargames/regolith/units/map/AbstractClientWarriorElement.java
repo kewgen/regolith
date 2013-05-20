@@ -15,6 +15,7 @@ public abstract class AbstractClientWarriorElement extends Warrior implements Dr
     private short mapY;
 
     public AbstractClientWarriorElement() {
+        membershipType = -1;
         mapX = -32768;
         mapY = -32768;
     }

@@ -88,9 +88,46 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         iconHeightOfBarriersObject = Environment.getRender().getObject(Graph.OBJ_BAR + 3);
     }
 
+    @Override
     public void draw(Graphics graphics) {
         drawGround(graphics);
         drawBattleMap(graphics);
+        drawFogOfWar(graphics);
+    }
+
+    private void drawGround(Graphics graphics) {
+        int x = -mapX % ClientBattleContext.GROUND_WIDTH - ClientBattleContext.HORIZONTAL_RADIUS * 3; //todo-asap: Использовать getMapMinX()
+        int tmp = -mapY % ClientBattleContext.GROUND_HEIGHT - ClientBattleContext.VERTICAL_RADIUS * 5; //todo-asap: Использовать getMapMinY()
+        while (x < getWidth()) {
+            int y = tmp;
+            while (y < getHeight()) {
+                groundSprite.draw(graphics, x, y);
+                y += ClientBattleContext.GROUND_HEIGHT;
+            }
+            x += ClientBattleContext.GROUND_WIDTH;
+        }
+        // Рисуем границу вокруг игрового поля
+        graphics.setColor(0x0000FF);
+        BattleCell[][] battleCells = battleContext.getBattle().getMap().getCells();
+        int sizeMinusOne = battleCells.length - 1;
+        int[] points = new int[8];
+        Pair pair = coordinateFinder.find(0, 0, this);
+        points[0] = pair.getX() - mapX;
+        points[1] = pair.getY() - ClientBattleContext.VERTICAL_RADIUS - mapY;
+        pair = coordinateFinder.find(0, sizeMinusOne, this);
+        points[2] = pair.getX() + ClientBattleContext.HORIZONTAL_RADIUS - mapX;
+        points[3] = pair.getY() - mapY;
+        pair = coordinateFinder.find(sizeMinusOne, sizeMinusOne, this);
+        points[4] = pair.getX() - mapX;
+        points[5] = pair.getY() + ClientBattleContext.VERTICAL_RADIUS - mapY;
+        pair = coordinateFinder.find(sizeMinusOne, 0, this);
+        points[6] = pair.getX() - ClientBattleContext.HORIZONTAL_RADIUS - mapX;
+        points[7] = pair.getY() - mapY;
+        graphics.drawLine(points[0], points[1], points[2], points[3]);
+        graphics.drawLine(points[2], points[3], points[4], points[5]);
+        graphics.drawLine(points[4], points[5], points[6], points[7]);
+        graphics.drawLine(points[6], points[7], points[0], points[1]);
+        graphics.setColor(0xFFFFFF);
     }
 
     /**
@@ -104,81 +141,61 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      */
     //todo: Аргументы cellX и cellY здесь временно, незабыть убрать
     private void drawCell(Graphics graphics, int x, int y, BattleCell cell, short cellX, short cellY) {
-        BattleAlliance alliance = battleContext.getBattleGroup().getAlliance();
-        if (cell.isVisited(alliance)) {
-            if (battleContext.isMyTurn()) {
-                boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
-                if (isReachableCell) {
-                    reachableCellSprite.draw(graphics, x, y);
-                } else {
-//                    if (BattleMapHelper.isBarrier(cell)) {
-//                        unreachableCellSprite.draw(graphics, x, y);
-//                    }
-                }
-                DynamicCellElement element = battleContext.getSelectedElement();
-                if (element != null && battleContext.getSelectedElementCellX() == cellX && battleContext.getSelectedElementCellY() == cellY) {
-                    unreachableCellSprite.draw(graphics, x, y);
-                }
-                if (BattleMapHelper.isShortestPathCell(cell, battleContext.getActiveUnit())) {
-                    shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
-                }
-                if (isReachableCell) {
-                    graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
-                }
-            }
-//            final byte BARRIER_NONE = 0;
-//            final byte BARRIER_HALF_HEIGHT = 1;
-//            final byte BARRIER_FULL_HEIGHT = 2;
-//            byte barrierType = BARRIER_NONE;
-            CellElement[] elements = cell.getElements();
-            for (int i = 0; i < cell.getSize(); i++) {
-                CellElement element = elements[i];
-                if (element.getElementType() == CellElementTypes.HUMAN) {
-                    drawSymbolOfProtection(graphics, (ClientWarriorElement) element);
-                }
-                ((DrawableElement) element).draw(graphics, x, y);
-//                if (element.isBarrier()) {
-//                    if (!element.isHalfLong()) {
-//                        barrierType = BARRIER_FULL_HEIGHT;
-//                    } else if (barrierType == BARRIER_NONE) {
-//                        barrierType = BARRIER_HALF_HEIGHT;
-//                    }
+        if (battleContext.isMyTurn()) {
+            boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
+            if (isReachableCell) {
+                reachableCellSprite.draw(graphics, x, y);
+            } else {
+//                if (BattleMapHelper.isBarrier(cell)) {
+//                    unreachableCellSprite.draw(graphics, x, y);
 //                }
             }
-            /*
-            if (battleContext.isMyTurn()) {
-                switch (barrierType) {
-                    case BARRIER_FULL_HEIGHT: {
-                        Index index = iconHeightOfBarriersObject.getIndexBySlot(0);
-                        index.draw(graphics, x, y);
-                        break;
-                    }
-                    case BARRIER_HALF_HEIGHT: {
-                        Index index = iconHeightOfBarriersObject.getIndexBySlot(1);
-                        index.draw(graphics, x, y);
-                        break;
-                    }
+            DynamicCellElement element = battleContext.getSelectedElement();
+            if (element != null && battleContext.getSelectedElementCellX() == cellX && battleContext.getSelectedElementCellY() == cellY) {
+                unreachableCellSprite.draw(graphics, x, y);
+            }
+            if (BattleMapHelper.isShortestPathCell(cell, battleContext.getActiveUnit())) {
+                shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
+            }
+            if (isReachableCell) {
+                graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
+            }
+        }
+//        final byte BARRIER_NONE = 0;
+//        final byte BARRIER_HALF_HEIGHT = 1;
+//        final byte BARRIER_FULL_HEIGHT = 2;
+//        byte barrierType = BARRIER_NONE;
+        CellElement[] elements = cell.getElements();
+        for (int i = 0; i < cell.getSize(); i++) {
+            CellElement element = elements[i];
+            if (element.getElementType() == CellElementTypes.HUMAN) {
+                drawSymbolOfProtection(graphics, (ClientWarriorElement) element);
+            }
+            ((DrawableElement) element).draw(graphics, x, y);
+//            if (element.isBarrier()) {
+//                if (!element.isHalfLong()) {
+//                    barrierType = BARRIER_FULL_HEIGHT;
+//                } else if (barrierType == BARRIER_NONE) {
+//                    barrierType = BARRIER_HALF_HEIGHT;
+//                }
+//            }
+        }
+        /*
+        if (battleContext.isMyTurn()) {
+            switch (barrierType) {
+                case BARRIER_FULL_HEIGHT: {
+                    Index index = iconHeightOfBarriersObject.getIndexBySlot(0);
+                    index.draw(graphics, x, y);
+                    break;
+                }
+                case BARRIER_HALF_HEIGHT: {
+                    Index index = iconHeightOfBarriersObject.getIndexBySlot(1);
+                    index.draw(graphics, x, y);
+                    break;
                 }
             }
-            */
-
-
-            if (!BattleMapHelper.isVisible(cell, alliance)) {
-                graphics.setTransparency(40);
-                graphics.setColor(0x7F7F7F);
-                int[] xPoints = new int[]{x, x + ClientBattleContext.HORIZONTAL_RADIUS, x, x - ClientBattleContext.HORIZONTAL_RADIUS};
-                int[] yPoints = new int[]{y - ClientBattleContext.VERTICAL_RADIUS, y, y + ClientBattleContext.VERTICAL_RADIUS, y};
-                graphics.fillPolygon(xPoints, yPoints, 4);
-                graphics.setTransparency(0);
-                graphics.setColor(0xFFFFFF);
-            }
-        } else {
-            graphics.setColor(0x202020);
-            int[] xPoints = new int[]{x, x + ClientBattleContext.HORIZONTAL_RADIUS, x, x - ClientBattleContext.HORIZONTAL_RADIUS};
-            int[] yPoints = new int[]{y - ClientBattleContext.VERTICAL_RADIUS, y, y + ClientBattleContext.VERTICAL_RADIUS, y};
-            graphics.fillPolygon(xPoints, yPoints, 4);
-            graphics.setColor(0xFFFFFF);
         }
+        */
     }
 
     private class Dir {
@@ -271,39 +288,41 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
         }
     }
 
-    private void drawGround(Graphics graphics) {
-        int x = -mapX % ClientBattleContext.GROUND_WIDTH - ClientBattleContext.HORIZONTAL_RADIUS * 3; //todo-asap: Использовать getMapMinX()
-        int tmp = -mapY % ClientBattleContext.GROUND_HEIGHT - ClientBattleContext.VERTICAL_RADIUS * 5; //todo-asap: Использовать getMapMinY()
-        while (x < getWidth()) {
-            int y = tmp;
-            while (y < getHeight()) {
-                groundSprite.draw(graphics, x, y);
-                y += ClientBattleContext.GROUND_HEIGHT;
+    private void drawFogOfWarOverCell(Graphics graphics, int x, int y, BattleCell cell) {
+        BattleAlliance alliance = battleContext.getBattleGroup().getAlliance();
+        if (cell.isVisited(alliance)) {
+            if (!BattleMapHelper.isVisible(cell, alliance)) {
+                graphics.setTransparency(40);
+                graphics.setColor(0x7F7F7F);
+                int[] xPoints = new int[]{x, x + ClientBattleContext.HORIZONTAL_RADIUS, x, x - ClientBattleContext.HORIZONTAL_RADIUS};
+                int[] yPoints = new int[]{y - ClientBattleContext.VERTICAL_RADIUS, y, y + ClientBattleContext.VERTICAL_RADIUS, y};
+                graphics.fillPolygon(xPoints, yPoints, 4);
+                graphics.setTransparency(0);
+                graphics.setColor(0xFFFFFF);
             }
-            x += ClientBattleContext.GROUND_WIDTH;
+        } else {
+            graphics.setColor(0x202020);
+            int[] xPoints = new int[]{x, x + ClientBattleContext.HORIZONTAL_RADIUS, x, x - ClientBattleContext.HORIZONTAL_RADIUS};
+            int[] yPoints = new int[]{y - ClientBattleContext.VERTICAL_RADIUS, y, y + ClientBattleContext.VERTICAL_RADIUS, y};
+            graphics.fillPolygon(xPoints, yPoints, 4);
+            graphics.setColor(0xFFFFFF);
         }
-        // Рисуем границу вокруг игрового поля
-        graphics.setColor(0x0000FF);
-        BattleCell[][] battleCells = battleContext.getBattle().getMap().getCells();
-        int sizeMinusOne = battleCells.length - 1;
-        int[] points = new int[8];
-        Pair pair = coordinateFinder.find(0, 0, this);
-        points[0] = pair.getX() - mapX;
-        points[1] = pair.getY() - ClientBattleContext.VERTICAL_RADIUS - mapY;
-        pair = coordinateFinder.find(0, sizeMinusOne, this);
-        points[2] = pair.getX() + ClientBattleContext.HORIZONTAL_RADIUS - mapX;
-        points[3] = pair.getY() - mapY;
-        pair = coordinateFinder.find(sizeMinusOne, sizeMinusOne, this);
-        points[4] = pair.getX() - mapX;
-        points[5] = pair.getY() + ClientBattleContext.VERTICAL_RADIUS - mapY;
-        pair = coordinateFinder.find(sizeMinusOne, 0, this);
-        points[6] = pair.getX() - ClientBattleContext.HORIZONTAL_RADIUS - mapX;
-        points[7] = pair.getY() - mapY;
-        graphics.drawLine(points[0], points[1], points[2], points[3]);
-        graphics.drawLine(points[2], points[3], points[4], points[5]);
-        graphics.drawLine(points[4], points[5], points[6], points[7]);
-        graphics.drawLine(points[6], points[7], points[0], points[1]);
-        graphics.setColor(0xFFFFFF);
+    }
+
+    private void drawFogOfWar(Graphics graphics) {
+        BattleCell[][] cells = battleContext.getBattle().getMap().getCells();
+        int size = cells.length;
+        for (short xCell = 0; xCell < size; xCell++) {
+            int x = (size - 1 - xCell) * ClientBattleContext.HORIZONTAL_RADIUS;
+            int y = xCell * ClientBattleContext.VERTICAL_RADIUS;
+            for (short yCell = 0; yCell < size; yCell++) {
+                if (isOnTheScreen(x, y)) {
+                    drawFogOfWarOverCell(graphics, x - mapX, y - mapY, cells[xCell][yCell]);
+                }
+                x += ClientBattleContext.HORIZONTAL_RADIUS;
+                y += ClientBattleContext.VERTICAL_RADIUS;
+            }
+        }
     }
 
     /**
@@ -375,45 +394,49 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                             if (battleContext.getActiveUnit().getLogic().isIdle()) {
                                 Pair cellCoordinate = cellFinder.find(x + mapX, y + mapY, this);
                                 BattleCell battleCell = battleContext.getBattle().getMap().getCells()[cellCoordinate.getX()][cellCoordinate.getY()];
-                                CellElement[] elements = battleCell.getElements();
-                                boolean wasSelectedElement = false;
-                                for (int i = battleCell.getSize() - 1; i >= 0; i--) {
-                                    CellElement element = elements[i];
-                                    switch (element.getElementType()) {
-                                        case CellElementTypes.HUMAN:
-                                            ClientWarriorElement warrior = (ClientWarriorElement) element;
-                                            Debug.debug("Is warrior " + warrior.getName() + " (id=" + warrior.getId() + ")"
-                                                    + " [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "]");
-                                            if (warrior.getBattleGroup() == battleContext.getBattleGroup()) {
-                                                setActiveUnit(warrior);
-                                                setSelectedElement(null, -1, -1);
-                                            } else {
-                                                setSelectedElement(warrior, cellCoordinate.getX(), cellCoordinate.getY());
-                                            }
-                                            wasSelectedElement = true;
+                                if (battleCell.isVisited(battleContext.getBattleGroup().getAlliance())) {
+                                    CellElement[] elements = battleCell.getElements();
+                                    boolean wasSelectedElement = false;
+                                    for (int i = battleCell.getSize() - 1; i >= 0; i--) {
+                                        CellElement element = elements[i];
+                                        switch (element.getElementType()) {
+                                            case CellElementTypes.HUMAN:
+                                                ClientWarriorElement warrior = (ClientWarriorElement) element;
+                                                Debug.debug("Is warrior " + warrior.getName() + " (id=" + warrior.getId() + ")"
+                                                        + " [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "]");
+                                                if (warrior.getBattleGroup() == battleContext.getBattleGroup()) {
+                                                    setActiveUnit(warrior);
+                                                    setSelectedElement(null, -1, -1);
+                                                } else {
+                                                    setSelectedElement(warrior, cellCoordinate.getX(), cellCoordinate.getY());
+                                                }
+                                                wasSelectedElement = true;
+                                                break;
+                                            case CellElementTypes.DOOR:
+                                            case CellElementTypes.REGOLITH:
+                                            case CellElementTypes.BOX:
+                                                setSelectedElement((DynamicCellElement) element, cellCoordinate.getX(), cellCoordinate.getY());
+                                                wasSelectedElement = true;
+                                                break;
+                                        }
+                                        if (wasSelectedElement) {
                                             break;
-                                        case CellElementTypes.DOOR:
-                                        case CellElementTypes.REGOLITH:
-                                        case CellElementTypes.BOX:
-                                            setSelectedElement((DynamicCellElement) element, cellCoordinate.getX(), cellCoordinate.getY());
-                                            wasSelectedElement = true;
-                                            break;
+                                        }
                                     }
-                                    if (wasSelectedElement) {
-                                        break;
+                                    if (!wasSelectedElement) {
+                                        setSelectedElement(null, -1, -1);
+                                        if (BattleMapHelper.isReachable(battleCell)) {
+                                            Debug.debug("Trace for a user " + battleContext.getActiveUnit().getNumber()
+                                                    + " from [" + battleContext.getActiveUnit().getCellX() + ":" + battleContext.getActiveUnit().getCellY() + "]"
+                                                    + " to [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "]");
+                                            ClientBattleHelper.trace(battleContext.getBattle().getMap().getCells(), battleContext.getActiveUnit(), cellCoordinate.getX(), cellCoordinate.getY(),
+                                                    ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
+                                        } else {
+                                            Debug.debug("Cell [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "] is not reachable");
+                                        }
                                     }
-                                }
-                                if (!wasSelectedElement) {
-                                    setSelectedElement(null, -1, -1);
-                                    if (BattleMapHelper.isReachable(battleCell)) {
-                                        Debug.debug("Trace for a user " + battleContext.getActiveUnit().getNumber()
-                                                + " from [" + battleContext.getActiveUnit().getCellX() + ":" + battleContext.getActiveUnit().getCellY() + "]"
-                                                + " to [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "]");
-                                        ClientBattleHelper.trace(battleContext.getBattle().getMap().getCells(), battleContext.getActiveUnit(), cellCoordinate.getX(), cellCoordinate.getY(),
-                                                ClientConfigurationFactory.getConfiguration().getBattleConfiguration());
-                                    } else {
-                                        Debug.debug("Cell [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "] is not reachable");
-                                    }
+                                } else {
+                                    Debug.debug("Cell [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "] is not visited");
                                 }
                             } else {
                                 Debug.debug("Unit " + battleContext.getActiveUnit().getName() + " is not idle");
@@ -427,6 +450,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                     Debug.debug("BattleScreen.onEvent(): code = Event.EVENT_TOUCH_DOUBLE_CLICK");
 //                    Debug.debug("My turn & i want to move " + x + ":" + y);
                     if (isOnTheMap(x, y)) {
+                        //todo: Больше проверок, боец бездействует, клетка была засвечена и т.п.
                         Pair cellCoordinate = cellFinder.find(x + mapX, y + mapY, this);
                         Debug.debug("A cell to go [" + cellCoordinate.getX() + ":" + cellCoordinate.getY() + "] remaining action scores = " + battleContext.getActiveUnit().getActionScore());
                         //todo: Проверять, что ячейка не занята
@@ -508,11 +532,7 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
                     ClientBattleHelper.trace(battleContext.getBattle().getMap().getCells(), battleContext.getActiveUnit(), xx, yy, configuration.getBattleConfiguration());
                 }
                 battleContext.getActiveUnit().getLogic().doRun();
-                ClientWarriorCollection warriorCollection = move.getEnemies();
-                for (int i = 0; i < warriorCollection.size(); i++) {
-                    ClientWarriorElement enemy = (ClientWarriorElement) warriorCollection.get(i);
-                    ClientBattleHelper.initMapXY(this, enemy);
-                }
+                locateEnemies(move.getEnemies());
             } else {
                 NotificationBox.error(LocalizedStrings.MOVEMENT_RESTRICTION);
             }
@@ -528,16 +548,20 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      * @param ally
      * @param x
      * @param y
-     * @param enemyCollection противники которых наш товарищ засветил
+     * @param enemyCollection противники, которых засветил союзный боец
      */
     public void moveAlly(ClientWarriorElement ally, int x, int y, ClientWarriorCollection enemyCollection) {
         BattleCell[][] cells = battleContext.getBattle().getMap().getCells();
         ClientBattleHelper.route(cells, ally, configuration.getBattleConfiguration().getRouter(), configuration.getBattleConfiguration());
         ClientBattleHelper.trace(cells, ally, x, y, configuration.getBattleConfiguration());
         ally.getLogic().doRun();
+        locateEnemies(enemyCollection);
+    }
+
+    private void locateEnemies(ClientWarriorCollection enemyCollection) {
         for (int i = 0; i < enemyCollection.size(); i++) {
-            ClientWarriorElement enemyUnit = (ClientWarriorElement) enemyCollection.get(i);
-            ClientBattleHelper.initMapXY(this, enemyUnit);
+            ClientWarriorElement enemy = (ClientWarriorElement) enemyCollection.get(i);
+            ClientBattleHelper.initMapXY(this, enemy);
         }
     }
 
