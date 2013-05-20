@@ -743,10 +743,12 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
     }
 
     private void initUnitFromCollection(ClientWarriorCollection collection, BattleConfiguration battleConfiguration) {
+        BattleCell[][] cells = battleContext.getBattle().getMap().getCells();
         for (int i = 0; i < collection.size(); i++) {
             ClientWarriorElement unit = (ClientWarriorElement) collection.get(i);
             unit.initiate();
             ClientBattleHelper.initMapXY(this, unit);
+            BattleMapHelper.clearViewAround(cells, unit);
             battleConfiguration.getObserver().observe(unit);
         }
     }

@@ -1,5 +1,8 @@
 package com.geargames.regolith.map.observer;
 
+import com.geargames.common.util.Mathematics;
+import com.geargames.regolith.SecurityOperationManager;
+import com.geargames.regolith.TestHelper;
 import com.geargames.regolith.helpers.WarriorHelper;
 import com.geargames.regolith.units.battle.*;
 import com.geargames.regolith.units.dictionaries.WarriorCollection;
@@ -37,27 +40,57 @@ public class StrictPerimeterObserver extends Observer {
         int x = warrior.getCellX();
         int y = warrior.getCellY();
 
-        int rightBottomX = x + radius;
-        int rightBottomY = y + radius;
-        for (int i = 0; i < 2 * radius + 1; i++) {
-            lineViewCaster.castViewRight(x, y, rightBottomX, rightBottomY - i, battleMap, warrior, visibilityMaintainer);
+        SecurityOperationManager manager = warrior.getBattleGroup().getAccount().getSecurity();
+
+        System.out.println("BEFORE OBSERVATION " + manager.getObserve());
+        TestHelper.printViewMap(battleMap, warrior);
+
+        visibilityMaintainer.maintain(battleMap.getCells(), warrior, false, x, y);
+
+        int length = battleMap.getCells().length;
+
+        int rightBottomX = Mathematics.min(x + radius, length - 1);
+        int rightBottomY = Mathematics.min(y + radius, length - 1);
+        int amount = rightBottomY - Mathematics.max(y - radius, 0);
+        if (x != rightBottomX)
+            for (int i = 0; i <= amount; i++) {
+                lineViewCaster.castViewToBiggerX(x, y, rightBottomX, rightBottomY - i, battleMap, warrior, visibilityMaintainer);
+            }
+        int leftTopX = Mathematics.max(x - radius, 0);
+        int leftTopY = Mathematics.max(y - radius, 0);
+        if (x != leftTopX) {
+            amount = Mathematics.min(y + radius, length - 1) - leftTopY;
+            for (int i = 0; i <= amount; i++) {
+                lineViewCaster.castViewToLesserX(x, y, leftTopX, leftTopY + i, battleMap, warrior, visibilityMaintainer);
+            }
         }
-        int leftTopX = x - radius;
-        int leftTopY = y - radius;
-        for (int i = 0; i < 2 * radius + 1; i++) {
-            lineViewCaster.castViewLeft(x, y, leftTopX, leftTopY + i, battleMap, warrior, visibilityMaintainer);
+        int leftBottomX = Mathematics.max(x - radius + 1, 0);
+        int leftBottomY = Mathematics.min(y + radius, length - 1);
+        if (y != leftBottomY) {
+            amount = Mathematics.min(x + radius - 1, length - 1) - leftBottomX;
+            for (int i = 0; i <= amount; i++) {
+                lineViewCaster.castViewToBiggerY(x, y, leftBottomX + i, leftBottomY, battleMap, warrior, visibilityMaintainer);
+            }
         }
-        int leftBottomX = x - radius + 1;
-        int leftBottomY = y + radius;
-        for (int i = 0; i <= 2 * (radius - 1); i++) {
-            lineViewCaster.castViewDown(x, y, leftBottomX + i, leftBottomY, battleMap, warrior, visibilityMaintainer);
+        int rightTopX = Mathematics.min(x + radius - 1, length - 1);
+        int rightTopY = Mathematics.max(y - radius, 0);
+        if (y != rightTopY) {
+            amount = rightTopX - Mathematics.max(x - radius + 1, 0);
+            for (int i = 0; i <= amount; i++) {
+                lineViewCaster.castViewToLesserY(x, y, rightTopX - i, rightTopY, battleMap, warrior, visibilityMaintainer);
+            }
         }
-        int rightTopX = x + radius - 1;
-        int rightTopY = y - radius;
-        for (int i = 0; i <= 2 * (radius - 1); i++) {
-            lineViewCaster.castViewUp(x, y, rightTopX - i, rightTopY, battleMap, warrior, visibilityMaintainer);
-        }
-        return visibilityMaintainer.getEnemies();
+        WarriorCollection oldEnemies = warrior.getDetectedEnemies();
+        WarriorCollection newEnemies = visibilityMaintainer.getEnemies();
+
+        oldEnemies.retainAll(newEnemies);
+        newEnemies.removeAll(oldEnemies);
+        oldEnemies.addAll(newEnemies);
+
+        System.out.println("AFTER OBSERVATION " + manager.getObserve());
+        TestHelper.printViewMap(battleMap, warrior);
+
+        return newEnemies;
     }
 
 }

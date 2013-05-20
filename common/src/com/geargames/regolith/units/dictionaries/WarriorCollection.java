@@ -22,4 +22,7 @@ public abstract class WarriorCollection extends EntityCollection {
 
     public abstract void clear();
 
+    public abstract void removeAll(WarriorCollection collection);
+
+    public abstract void retainAll(WarriorCollection collection);
 }

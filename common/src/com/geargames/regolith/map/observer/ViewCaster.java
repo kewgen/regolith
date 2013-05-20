@@ -9,12 +9,12 @@ import com.geargames.regolith.units.map.BattleMap;
  */
 public abstract class ViewCaster {
 
-    public abstract void castViewUp(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer maintainer);
+    public abstract void castViewToLesserY(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer maintainer);
 
-    public abstract void castViewDown(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer maintainer);
+    public abstract void castViewToBiggerY(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer maintainer);
 
-    public abstract void castViewLeft(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer maintainer);
+    public abstract void castViewToLesserX(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer maintainer);
 
-    public abstract void castViewRight(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer maintainer);
+    public abstract void castViewToBiggerX(int x0, int y0, int x1, int y1, BattleMap battleMap, Warrior warrior, BattleCellMaintainer maintainer);
 
 }

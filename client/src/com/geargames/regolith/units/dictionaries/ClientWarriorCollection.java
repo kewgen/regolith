@@ -77,4 +77,13 @@ public class ClientWarriorCollection extends WarriorCollection {
         warriors.clear();
     }
 
+    @Override
+    public void removeAll(WarriorCollection collection) {
+        warriors.removeAll(((ClientWarriorCollection)collection).getWarriors());
+    }
+
+    @Override
+    public void retainAll(WarriorCollection collection) {
+        warriors.retainAll(((ClientWarriorCollection)collection).getWarriors());
+    }
 }

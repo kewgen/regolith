@@ -2,32 +2,54 @@ package com.geargames.regolith;
 
 import com.geargames.regolith.helpers.BattleCellHelper;
 import com.geargames.regolith.helpers.BattleMapHelper;
+import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.battle.Warrior;
 import com.geargames.regolith.units.map.BattleMap;
-import com.geargames.regolith.units.battle.BattleAlliance;
 import com.geargames.regolith.units.map.CellElementLayers;
 import com.geargames.regolith.units.map.ExitZone;
 
 /**
- * User: mkutuzov
- * Date: 03.03.12
+ * User: mvkutuzov
+ * Date: 15.05.13
+ * Time: 13:38
  */
 public class TestHelper {
 
-
-    public static void printViewMap(BattleMap battleMap, BattleAlliance alliance) {
-        //todo: использование счетчиков i и j явно напутано, использовать вместо них названия x и y соответственно
-        for (int i = 0; i < battleMap.getCells().length; i++) {
+    public static void printViewMap(BattleMap battleMap, Warrior warrior) {
+        for (int y = 0; y < battleMap.getCells().length; y++) {
             System.out.print('|');
-            for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[j][i], CellElementLayers.DYNAMIC)) {
-                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[j][i], CellElementLayers.HUMAN) != null) {
+            for (int x = 0; x < battleMap.getCells()[y].length; x++) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[x][y], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[x][y], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
                     }
                 } else {
-                    if (BattleMapHelper.isVisible(battleMap.getCells()[j][i], alliance)) {
+                    if (BattleMapHelper.isVisible(battleMap.getCells()[x][y], warrior)) {
+                        System.out.print('x');
+                    } else {
+                        System.out.print(' ');
+                    }
+                }
+            }
+            System.out.println('|');
+        }
+    }
+
+
+    public static void printViewMap(BattleMap battleMap, BattleAlliance alliance) {
+        for (int i = 0; i < battleMap.getCells().length; i++) {
+            System.out.print('|');
+            for (int j = 0; j < battleMap.getCells()[i].length; j++) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[i][j], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[i][j], CellElementLayers.HUMAN) != null) {
+                        System.out.print('w');
+                    } else {
+                        System.out.print('b');
+                    }
+                } else {
+                    if (BattleMapHelper.isVisible(battleMap.getCells()[i][j], alliance)) {
                         System.out.print('x');
                     } else {
                         System.out.print(' ');
@@ -39,21 +61,20 @@ public class TestHelper {
     }
 
     public static void printRouteMap(BattleMap battleMap, Warrior unit) {
-        //todo: использование счетчиков i и j явно напутано, использовать вместо них названия x и y соответственно
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[j][i], CellElementLayers.DYNAMIC)) {
-                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[j][i], CellElementLayers.HUMAN) != null) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[i][j], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[i][j], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
                     }
                 } else {
-                    if (BattleMapHelper.isShortestPathCell(battleMap.getCells()[j][i], unit)) {
+                    if (BattleMapHelper.isShortestPathCell(battleMap.getCells()[i][j], unit)) {
                         System.out.print('x');
                     } else {
-                        if (BattleMapHelper.isReachable(battleMap.getCells()[j][i])) {
+                        if (BattleMapHelper.isReachable(battleMap.getCells()[i][j])) {
                             System.out.print(battleMap.getCells()[j][i].getOrder());
                         } else {
                             System.out.print('*');
@@ -67,12 +88,11 @@ public class TestHelper {
 
     public static void printExitZones(BattleMap battleMap) {
         ExitZone[] exits = battleMap.getExits();
-        //todo: использование счетчиков i и j явно напутано, использовать вместо них названия x и y соответственно
         for (int i = 0; i < battleMap.getCells().length; i++) {
             System.out.print('|');
             for (int j = 0; j < battleMap.getCells()[i].length; j++) {
-                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[j][i], CellElementLayers.DYNAMIC)) {
-                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[j][i], CellElementLayers.HUMAN) != null) {
+                if (BattleCellHelper.isAnythingUpperOrEqualPresented(battleMap.getCells()[i][j], CellElementLayers.DYNAMIC)) {
+                    if (BattleCellHelper.getElementFromLayer(battleMap.getCells()[i][j], CellElementLayers.HUMAN) != null) {
                         System.out.print('w');
                     } else {
                         System.out.print('b');
@@ -94,6 +114,5 @@ public class TestHelper {
             System.out.println('|');
         }
     }
-
 
 }

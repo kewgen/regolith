@@ -146,10 +146,11 @@ public class WarriorHelper {
                 listener.onStep(warrior, direction.getX(), direction.getY());
                 WarriorCollection detectedUnits = step(cells, warrior, direction.getX(), direction.getY(), battleConfiguration);
                 if (detectedUnits.size() != 0) {
+                    BattleMapHelper.resetShortestPath(cells,warrior,battleConfiguration);
                     return detectedUnits;
                 }
             } else {
-                return null;
+                break;
             }
         }
         return null;

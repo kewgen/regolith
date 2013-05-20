@@ -156,11 +156,13 @@ public class ServerBattleHelper {
     public static Set<Warrior> allianceObservedBattle(BattleAlliance alliance, Observer observer) {
         ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
         Set<Warrior> enemies = new HashSet<Warrior>();
+        BattleCell[][] cells = alliance.getBattle().getMap().getCells();
         logger.debug("groups amount: {} ", groups.getBattleGroups().size());
         for (BattleGroup group : groups.getBattleGroups()) {
             ServerWarriorCollection warriors = (ServerWarriorCollection) group.getWarriors();
             for (Warrior warrior : warriors.getWarriors()) {
                 logger.debug("a warrior named {} is observing a territory ", warrior.getName());
+                BattleMapHelper.clearViewAround(cells, warrior);
                 enemies.addAll(((ServerWarriorCollection) observer.observe(warrior)).getWarriors());
             }
         }

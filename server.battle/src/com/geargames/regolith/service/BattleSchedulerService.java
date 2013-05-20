@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -100,6 +101,14 @@ public class BattleSchedulerService {
                                 logger.debug("alliances' amount: {}.", alliances.length);
                                 for (BattleAlliance alliance : alliances) {
                                     logger.debug("an alliance number {} is observing.", alliance.getNumber());
+
+                                    ServerBattleGroupCollection groups = (ServerBattleGroupCollection) alliance.getAllies();
+                                    for (BattleGroup group : groups.getBattleGroups()) {
+                                        ServerWarriorCollection warriors = (ServerWarriorCollection) group.getWarriors();
+                                        for (Warrior warrior : warriors.getWarriors()) {
+                                            warrior.setDetectedEnemies(new ServerWarriorCollection(new ArrayList<Warrior>(warriors.size() * groups.size() * (alliances.length - 1))));
+                                        }
+                                    }
 
                                     Set<Warrior> enemies = ServerBattleHelper.allianceObservedBattle(alliance, observer);
 

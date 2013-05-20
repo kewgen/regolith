@@ -65,4 +65,12 @@ public class ServerWarriorCollection extends WarriorCollection {
         warriors.clear();
     }
 
+    @Override
+    public void removeAll(WarriorCollection collection) {
+        warriors.removeAll(((ServerWarriorCollection)collection).getWarriors());
+    }
+
+    public void retainAll(WarriorCollection collection) {
+        warriors.retainAll(((ServerWarriorCollection)collection).getWarriors());
+    }
 }

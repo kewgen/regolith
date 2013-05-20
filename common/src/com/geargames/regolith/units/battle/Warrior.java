@@ -3,6 +3,7 @@ package com.geargames.regolith.units.battle;
 import com.geargames.regolith.units.AmmunitionBag;
 import com.geargames.regolith.units.Bag;
 import com.geargames.regolith.units.Skill;
+import com.geargames.regolith.units.dictionaries.WarriorCollection;
 import com.geargames.regolith.units.map.CellElementLayers;
 import com.geargames.regolith.units.map.CellElementTypes;
 import com.geargames.regolith.units.tackle.WeaponCategory;
@@ -35,11 +36,25 @@ public class Warrior extends Ally {
     private Direction direction;
     private boolean sitting;
 
+    private WarriorCollection detectedEnemies;
+
     public Warrior() {
         cellX = 0; //todo: 0 -> -32768
         cellY = 0; //todo: 0 -> -32768
         direction = Direction.DOWN_UP_RIGHT; //todo: DOWN_UP_RIGHT -> NONE
         sitting = false;
+    }
+
+    /**
+     * Возвращает текущий набор обнаруженных врагов.
+     * @return
+     */
+    public WarriorCollection getDetectedEnemies() {
+        return detectedEnemies;
+    }
+
+    public void setDetectedEnemies(WarriorCollection detectedEnemies) {
+        this.detectedEnemies = detectedEnemies;
     }
 
     /**

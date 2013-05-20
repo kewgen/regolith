@@ -1,5 +1,6 @@
 package com.geargames.regolith.helpers;
 
+import com.geargames.common.util.Mathematics;
 import com.geargames.regolith.BattleConfiguration;
 import com.geargames.regolith.RegolithConfiguration;
 import com.geargames.regolith.SecurityOperationManager;
@@ -211,19 +212,21 @@ public class BattleMapHelper {
         int radius = WarriorHelper.getRoutableRadius(warrior, battleConfiguration); //todo: Использовать всегда максимальное значение радиуса
         int length = cells.length;
         int x0 = warrior.getCellX() - radius;
-        x0 = x0 < 0 ? 0 : x0;
+        x0 = Mathematics.max(0 , x0);
         int y0 = warrior.getCellY() - radius;
-        y0 = y0 < 0 ? 0 : y0;
+        y0 = Mathematics.max(0 , y0);
         int x1 = warrior.getCellX() + radius;
-        x1 = x1 > length - 1 ? length - 1 : x1;
+        x1 = Mathematics.min(length - 1 , x1);
         int y1 = warrior.getCellY() + radius;
-        y1 = y1 > length - 1 ? length - 1 : y1;
+        y1 = Mathematics.min(length - 1 , y1);
         for (int x = x0; x <= x1; x++) {
             for (int y = y0; y <= y1; y++) {
                 resetShortestCell(cells[x][y], warrior);
             }
         }
     }
+
+
 
     /**
      * Снять отметку с ячейки cell о том, что она часть кратчайшего пути бойца с warrior.
@@ -334,17 +337,20 @@ public class BattleMapHelper {
         short cellY = warrior.getCellY();
         int radius = WarriorHelper.getObservingRadius(warrior);
         SecurityOperationManager manager = warrior.getBattleGroup().getAccount().getSecurity();
-        System.out.println("I am clearing a view of warrior " + warrior.getName());
-        for (int x = cellX - radius; x <= 2 * radius + 1; x++) {
-            if (x >= 0 && x < size) { //todo: Убрать if, использовать Mathematics.min/max
-                for (int y = cellY - radius; y <= 2 * radius + 1; y++) {
-                    if (y >= 0 && y < size) { //todo: Убрать if, использовать Mathematics.min/max
-                        manager.adjustObserve(-(x + y));
-                        BattleMapHelper.hide(cells[x][y], warrior);
-                    }
-                }
+
+        int xFrom = Mathematics.max(cellX - radius, 0);
+        int xTo = Mathematics.min(xFrom + 2 * radius, size - 1);
+        int yFrom = Mathematics.max(cellY - radius, 0);
+        int yTo = Mathematics.min(yFrom + 2 * radius, size - 1);
+
+        System.out.println("BEFORE CLEARING" + manager.getObserve());
+        for (int x = xFrom; x <= xTo; x++) {
+            for (int y = yFrom; y <= yTo; y++) {
+                manager.adjustObserve(-(x + y));
+                BattleMapHelper.hide(cells[x][y], warrior);
             }
         }
+        System.out.println("AFTER CLEARING" + manager.getObserve());
     }
 
     /**
@@ -422,15 +428,15 @@ public class BattleMapHelper {
 
         if (Math.abs(y1 - y0) <= Math.abs(x1 - x0)) {
             if (x1 > x0) {
-                LineViewCaster.instance.castViewRight(x0, y0, x1, y1, map, hunter, finder);
+                LineViewCaster.instance.castViewToBiggerX(x0, y0, x1, y1, map, hunter, finder);
             } else if (x1 < x0) {
-                LineViewCaster.instance.castViewLeft(x0, y0, x1, y1, map, hunter, finder);
+                LineViewCaster.instance.castViewToLesserX(x0, y0, x1, y1, map, hunter, finder);
             }
         } else {
             if (y1 > y0) {
-                LineViewCaster.instance.castViewDown(x0, y0, x1, y1, map, hunter, finder);
+                LineViewCaster.instance.castViewToBiggerY(x0, y0, x1, y1, map, hunter, finder);
             } else if (y0 < y1) {
-                LineViewCaster.instance.castViewUp(x0, y0, x1, y1, map, hunter, finder);
+                LineViewCaster.instance.castViewToLesserY(x0, y0, x1, y1, map, hunter, finder);
             }
         }
         return finder.getCoordinates();
