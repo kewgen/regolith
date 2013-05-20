@@ -11,13 +11,14 @@ import java.io.Serializable;
  */
 public abstract class BattleCell implements Serializable {
     /**
-     * Какие элементы могут располагаться в ячейке:
+     * Какие элементы могут располагаться в ячейке (перечислены в порядке отрисовки):
      * static   very bottom  подложка
      * static   bottom       подсветка зоны, подсветка препятствий
      * static   middle       препятствия
      * dynamic  middle       выброшенные предметы
      * dynamic  top          бойцы
      * static   top          значки (высота препятствия и др.)
+     * static   very top     полупрозрачная пелина, для обозначения зоны, которую когда-то открыли, но в данный момент, ни один из бойцов альянса ее не видит
      * static   very top     туман войны
      */
 

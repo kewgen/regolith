@@ -104,61 +104,81 @@ public class BattleScreen extends Screen implements TimerListener, DataMessageLi
      */
     //todo: Аргументы cellX и cellY здесь временно, незабыть убрать
     private void drawCell(Graphics graphics, int x, int y, BattleCell cell, short cellX, short cellY) {
-        if (battleContext.isMyTurn()) {
-            boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
-            if (isReachableCell) {
-                reachableCellSprite.draw(graphics, x, y);
-            } else {
-//                if (BattleMapHelper.isBarrier(cell)) {
-//                    unreachableCellSprite.draw(graphics, x, y);
-//                }
-            }
-            DynamicCellElement element = battleContext.getSelectedElement();
-            if (element != null && battleContext.getSelectedElementCellX() == cellX && battleContext.getSelectedElementCellY() == cellY) {
-                unreachableCellSprite.draw(graphics, x, y);
-            }
-            if (BattleMapHelper.isShortestPathCell(cell, battleContext.getActiveUnit())) {
-                shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
-            }
-            if (isReachableCell) {
-                graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
-            }
-        }
-//        final byte BARRIER_NONE = 0;
-//        final byte BARRIER_HALF_HEIGHT = 1;
-//        final byte BARRIER_FULL_HEIGHT = 2;
-//        byte barrierType = BARRIER_NONE;
-        CellElement[] elements = cell.getElements();
-        for (int i = 0; i < cell.getSize(); i++) {
-            CellElement element = elements[i];
-            if (element.getElementType() == CellElementTypes.HUMAN) {
-                drawSymbolOfProtection(graphics, (ClientWarriorElement) element);
-            }
-            ((DrawableElement) element).draw(graphics, x, y);
-//            if (element.isBarrier()) {
-//                if (!element.isHalfLong()) {
-//                    barrierType = BARRIER_FULL_HEIGHT;
-//                } else if (barrierType == BARRIER_NONE) {
-//                    barrierType = BARRIER_HALF_HEIGHT;
-//                }
-//            }
-        }
-        /*
-        if (battleContext.isMyTurn()) {
-            switch (barrierType) {
-                case BARRIER_FULL_HEIGHT: {
-                    Index index = iconHeightOfBarriersObject.getIndexBySlot(0);
-                    index.draw(graphics, x, y);
-                    break;
+        BattleAlliance alliance = battleContext.getBattleGroup().getAlliance();
+        if (cell.isVisited(alliance)) {
+            if (battleContext.isMyTurn()) {
+                boolean isReachableCell = cell.getOrder() != BattleMapHelper.UN_ROUTED;
+                if (isReachableCell) {
+                    reachableCellSprite.draw(graphics, x, y);
+                } else {
+//                    if (BattleMapHelper.isBarrier(cell)) {
+//                        unreachableCellSprite.draw(graphics, x, y);
+//                    }
                 }
-                case BARRIER_HALF_HEIGHT: {
-                    Index index = iconHeightOfBarriersObject.getIndexBySlot(1);
-                    index.draw(graphics, x, y);
-                    break;
+                DynamicCellElement element = battleContext.getSelectedElement();
+                if (element != null && battleContext.getSelectedElementCellX() == cellX && battleContext.getSelectedElementCellY() == cellY) {
+                    unreachableCellSprite.draw(graphics, x, y);
+                }
+                if (BattleMapHelper.isShortestPathCell(cell, battleContext.getActiveUnit())) {
+                    shadowSprite.draw(graphics, x - 29/*width*/, y - 20/*height*/);
+                }
+                if (isReachableCell) {
+                    graphics.drawString("" + cell.getOrder(), x, y, com.geargames.common.Graphics.HCENTER);
                 }
             }
+//            final byte BARRIER_NONE = 0;
+//            final byte BARRIER_HALF_HEIGHT = 1;
+//            final byte BARRIER_FULL_HEIGHT = 2;
+//            byte barrierType = BARRIER_NONE;
+            CellElement[] elements = cell.getElements();
+            for (int i = 0; i < cell.getSize(); i++) {
+                CellElement element = elements[i];
+                if (element.getElementType() == CellElementTypes.HUMAN) {
+                    drawSymbolOfProtection(graphics, (ClientWarriorElement) element);
+                }
+                ((DrawableElement) element).draw(graphics, x, y);
+//                if (element.isBarrier()) {
+//                    if (!element.isHalfLong()) {
+//                        barrierType = BARRIER_FULL_HEIGHT;
+//                    } else if (barrierType == BARRIER_NONE) {
+//                        barrierType = BARRIER_HALF_HEIGHT;
+//                    }
+//                }
+            }
+            /*
+            if (battleContext.isMyTurn()) {
+                switch (barrierType) {
+                    case BARRIER_FULL_HEIGHT: {
+                        Index index = iconHeightOfBarriersObject.getIndexBySlot(0);
+                        index.draw(graphics, x, y);
+                        break;
+                    }
+                    case BARRIER_HALF_HEIGHT: {
+                        Index index = iconHeightOfBarriersObject.getIndexBySlot(1);
+                        index.draw(graphics, x, y);
+                        break;
+                    }
+                }
+            }
+            */
+
+
+            if (!BattleMapHelper.isVisible(cell, alliance)) {
+                graphics.setTransparency(40);
+                graphics.setColor(0x7F7F7F);
+                int[] xPoints = new int[]{x, x + ClientBattleContext.HORIZONTAL_RADIUS, x, x - ClientBattleContext.HORIZONTAL_RADIUS};
+                int[] yPoints = new int[]{y - ClientBattleContext.VERTICAL_RADIUS, y, y + ClientBattleContext.VERTICAL_RADIUS, y};
+                graphics.fillPolygon(xPoints, yPoints, 4);
+                graphics.setTransparency(0);
+                graphics.setColor(0xFFFFFF);
+            }
+        } else {
+            graphics.setColor(0x202020);
+            int[] xPoints = new int[]{x, x + ClientBattleContext.HORIZONTAL_RADIUS, x, x - ClientBattleContext.HORIZONTAL_RADIUS};
+            int[] yPoints = new int[]{y - ClientBattleContext.VERTICAL_RADIUS, y, y + ClientBattleContext.VERTICAL_RADIUS, y};
+            graphics.fillPolygon(xPoints, yPoints, 4);
+            graphics.setColor(0xFFFFFF);
         }
-        */
     }
 
     private class Dir {
